@@ -77,3 +77,40 @@ git clone --recurse-submodules https://github.com/us42004-creator/Optifinish_web
 cd Optifinish_website_main/build/ztap/source
 pnpm install
 ```
+
+---
+
+## First Time Setup — Akshay's Device
+
+Run these commands in order in the terminal.
+
+**1. Install Homebrew (if not already installed):**
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+**2. Install pnpm:**
+```bash
+brew install pnpm
+```
+
+**3. Clone the project:**
+```bash
+cd ~/Desktop
+git clone --recurse-submodules https://github.com/us42004-creator/Optifinish_website_main.git
+```
+
+**4. Install dependencies:**
+```bash
+cd Optifinish_website_main/build/ztap/source
+pnpm install
+```
+
+**5. Test it works:**
+```bash
+pnpm dev
+```
+
+Should open on `http://localhost:4000`.
+
+After that, install Claude Code, open the `Optifinish_website_main` folder in it, and you're ready. Claude Code will automatically read `CLAUDE.md` and have full project context from the first session.

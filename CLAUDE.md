@@ -163,6 +163,30 @@ git push origin feat/whatever
 
 ---
 
+## First Time Setup — New Device
+
+```bash
+# 1. Install Homebrew (if not already installed)
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# 2. Install pnpm
+brew install pnpm
+
+# 3. Clone the project
+cd ~/Desktop
+git clone --recurse-submodules https://github.com/us42004-creator/Optifinish_website_main.git
+
+# 4. Install dependencies
+cd Optifinish_website_main/build/ztap/source
+pnpm install
+
+# 5. Test
+pnpm dev
+# opens on http://localhost:4000
+```
+
+---
+
 ## Full Documentation
 
 All detailed strategy, IA decisions, and planning rationale lives in:
