@@ -119,22 +119,46 @@ The broader OptiFinish site should inherit from Z-TAP: visual language, motion, 
 
 ## Collaboration
 
-- Two collaborators, same Claude Code account, different devices
+- Two collaborators: **Utkarsh** (supervisor) and **Akshay** (primary developer)
+- Same Claude Code account, different devices
 - Git remote: `https://github.com/us42004-creator/Optifinish_website_main.git`
-- Main branch: `main`
 
-### Daily git workflow:
+### Branch Rules
+
+| Person | Pushes to |
+|---|---|
+| Akshay | `main` directly |
+| Utkarsh | `feat/section-name` → Akshay merges to main |
+
+### Claude Code Push Behaviour
+Claude will ask "Utkarsh or Akshay?" before every push and push to the correct branch automatically.
+
+### Akshay's Daily Flow
 ```bash
-# start of session
 git pull
-
-# after Claude Code makes changes
+# work with Claude Code
 git add .
 git commit -m "what was done"
 git push
 ```
 
-- Do not work on the same section simultaneously — coordinate over text
+### Utkarsh's Flow
+```bash
+git checkout -b feat/whatever
+# work with Claude Code
+git add .
+git commit -m "what was done"
+git push origin feat/whatever
+# tell Akshay to merge
+```
+
+### Branch Naming
+- `feat/` — new page or section
+- `fix/` — bug or correction
+- `content/` — copy/text updates only
+- `design/` — visual/UI changes only
+
+- Do not work simultaneously — coordinate over text
 - One person works → pushes → tells the other → they pull → they work → push
 
 ---
