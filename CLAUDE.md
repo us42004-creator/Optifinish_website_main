@@ -20,8 +20,9 @@ April 2026 onwards.
 Optifinish_website_main/
 ├── CLAUDE.md                  ← you are here, read by Claude on every session
 ├── build/
+│   ├── optifinish/            ← main OptiFinish website (Next.js, port 3000)
 │   └── ztap/
-│       └── source/            ← Z-TAP Next.js source (git submodule)
+│       └── source/            ← Z-TAP Next.js source (git submodule, port 4000)
 ├── documentation/             ← master reports and strategy docs
 ├── ia/                        ← full IA mirrored as folder structure
 │   ├── home/ products/ services/ facility/ our-work/ resources/ about/ contact/
