@@ -2,8 +2,29 @@ import Link from 'next/link';
 
 export default function FacilityTeaser() {
   return (
-    <section className="bg-[#f1efea] py-20 md:py-28">
-      <div className="mx-auto max-w-7xl px-5 md:px-8">
+    <section className="relative overflow-hidden bg-[#f1efea] py-20 md:py-28">
+      {/* Grid drift layers — Z-TAP light-section technique */}
+      <div
+        className="pointer-events-none absolute inset-0 grid-drift opacity-[0.62] mix-blend-multiply"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(201,165,0,0.22) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(201,165,0,0.22) 1px, transparent 1px)
+          `,
+          backgroundSize: '88px 88px',
+        }}
+      />
+      <div
+        className="pointer-events-none absolute inset-0 grid-drift opacity-[0.32] mix-blend-multiply"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(255,243,163,0.5) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,243,163,0.5) 1px, transparent 1px)
+          `,
+          backgroundSize: '264px 264px',
+        }}
+      />
+      <div className="relative mx-auto max-w-7xl px-5 md:px-8">
         <div className="overflow-hidden rounded-[1.75rem] bg-ink">
 
           <div className="flex flex-col gap-10 p-8 md:flex-row md:items-center md:gap-16 md:p-14">

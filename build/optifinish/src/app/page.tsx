@@ -1,18 +1,30 @@
-import Hero               from '@/components/sections/home/Hero';
-import PortfolioMap       from '@/components/sections/home/PortfolioMap';
-import AutomationHighlight from '@/components/sections/home/AutomationHighlight';
-import FacilityTeaser     from '@/components/sections/home/FacilityTeaser';
-import PartnersBar        from '@/components/sections/home/PartnersBar';
-import HomeCTA            from '@/components/sections/home/HomeCTA';
+import HeroDark                  from '@/components/sections/home/HeroDark';
+import ProprietaryAutomation     from '@/components/sections/home/ProprietaryAutomation';
+import WhatWeOffer               from '@/components/sections/home/WhatWeOffer';
+import FacilityTeaserFilmstrip   from '@/components/sections/home/FacilityTeaserFilmstrip';
+import OurTeam               from '@/components/sections/home/OurTeam';
+import ClientsTestimonials   from '@/components/sections/home/ClientsTestimonials';
+import OurWorkPreview        from '@/components/sections/home/OurWorkPreview';
+import HomeCTA               from '@/components/sections/home/HomeCTA';
 
 export default function Home() {
   return (
     <>
-      <Hero />
-      <PortfolioMap />
-      <AutomationHighlight />
-      <FacilityTeaser />
-      <PartnersBar />
+      {/* S1 — Dark */}
+      <HeroDark />
+      {/* S2 — Light */}
+      <ProprietaryAutomation />
+      {/* S3 — Dark */}
+      <WhatWeOffer />
+      {/* S4 — Light */}
+      <FacilityTeaserFilmstrip />
+      {/* S5 — Dark */}
+      <OurWorkPreview />
+      {/* S6 — Light */}
+      <ClientsTestimonials />
+      {/* S7 — Dark */}
+      <OurTeam />
+      {/* S8 — Light */}
       <HomeCTA />
     </>
   );

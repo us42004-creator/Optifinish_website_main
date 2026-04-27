@@ -17,6 +17,8 @@ const NAV_LINKS = [
   { href: '/about',     label: 'About'     },
 ];
 
+const DARK_PAGES = ['/', '/sandbox/hero-b', '/blog', '/resources/blog'];
+
 export default function Navbar() {
   const [scrolled, setScrolled]   = useState(false);
   const [expanded, setExpanded]   = useState(false);
@@ -24,6 +26,7 @@ export default function Navbar() {
   const menuLinksRef               = useRef<HTMLDivElement>(null);
   const menuCtaRef                 = useRef<HTMLAnchorElement>(null);
   const pathname                   = usePathname();
+  const isDark = DARK_PAGES.includes(pathname);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -59,12 +62,12 @@ export default function Navbar() {
             animate={{ maxWidth: scrolled && !expanded ? 920 : 1100 }}
             transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
             style={{
-              background: scrolled ? 'rgba(8, 8, 8, 0.72)' : 'rgba(255, 255, 255, 0.72)',
+              background: (scrolled || isDark) ? 'rgba(8, 8, 8, 0.72)' : 'rgba(255, 255, 255, 0.72)',
               backdropFilter: 'blur(28px) saturate(165%)',
               WebkitBackdropFilter: 'blur(28px) saturate(165%)',
-              border: scrolled ? '1px solid rgba(255,255,255,0.14)' : '1px solid rgba(0,0,0,0.08)',
+              border: (scrolled || isDark) ? '1px solid rgba(255,255,255,0.14)' : '1px solid rgba(0,0,0,0.08)',
               borderRadius: '9999px',
-              boxShadow: scrolled
+              boxShadow: (scrolled || isDark)
                 ? '0 12px 42px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.12)'
                 : '0 10px 32px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.75)',
               transition: 'box-shadow 0.4s ease',
@@ -80,8 +83,8 @@ export default function Navbar() {
               transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
               className="flex items-center justify-between overflow-hidden"
             >
-              {/* Logo */}
-              <Link href="/" className="flex min-w-0 items-center self-center group">
+              {/* Logo + Brand name */}
+              <Link href="/" className="flex min-w-0 items-center gap-2.5 self-center group">
                 <Image
                   src="/logo.png"
                   alt="OptiFinish"
@@ -89,9 +92,16 @@ export default function Navbar() {
                   height={192}
                   priority
                   className={`w-auto object-contain transition-all duration-300 group-hover:opacity-85 ${
-                    scrolled && !expanded ? 'h-[34px]' : 'h-[40px]'
+                    scrolled && !expanded ? 'h-[30px]' : 'h-[36px]'
                   }`}
                 />
+                <span
+                  className={`font-display font-black tracking-[-0.03em] transition-all duration-300 group-hover:opacity-70 ${
+                    scrolled && !expanded ? 'text-[0.82rem] text-white' : `text-[0.9rem] ${isDark ? 'text-white' : 'text-ink'}`
+                  }`}
+                >
+                  OptiFinish
+                </span>
               </Link>
 
               {/* Desktop nav */}
@@ -105,7 +115,7 @@ export default function Navbar() {
                     } ${
                       pathname === link.href
                         ? 'text-yellow'
-                        : scrolled ? 'text-white/48' : 'text-black/45'
+                        : (scrolled || isDark) ? 'text-white/48' : 'text-black/45'
                     }`}
                   >
                     {link.label}
@@ -125,7 +135,7 @@ export default function Navbar() {
                 </Link>
                 <button
                   className={`flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:border-yellow/40 hover:text-yellow lg:hidden ${
-                    scrolled
+                    (scrolled || isDark)
                       ? 'border border-white/18 bg-white/[0.06] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]'
                       : 'border border-black/12 bg-white/[0.42] text-black shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]'
                   }`}
@@ -152,8 +162,9 @@ export default function Navbar() {
             style={{ paddingBottom: 'env(safe-area-inset-bottom, 1.5rem)' }}
           >
             <div className="flex items-center justify-between px-5 pt-4">
-              <Link href="/" className="flex items-center">
-                <Image src="/logo.png" alt="OptiFinish" width={192} height={192} priority className="h-10 w-auto object-contain" />
+              <Link href="/" className="flex items-center gap-2.5">
+                <Image src="/logo.png" alt="OptiFinish" width={192} height={192} priority className="h-9 w-auto object-contain" />
+                <span className="font-display text-[0.9rem] font-black tracking-[-0.03em] text-white">OptiFinish</span>
               </Link>
               <button
                 className="flex h-9 w-9 items-center justify-center rounded-full border border-white/12 bg-white/[0.04] text-white/60"

@@ -583,3 +583,84 @@ Key files:
 - page-level `overview.md` files across the IA tree
 
 This allows the IA itself to function as the organizing system for future planning and implementation work.
+
+---
+
+## 20. Build Progress — April 2026
+
+This section tracks what has been built in the live Next.js codebase under `build/optifinish/`.
+
+### Tech Stack
+
+- Next.js 16 (App Router), React 19, TypeScript
+- Tailwind CSS v4
+- Framer Motion (scroll-driven sticky sections)
+- GSAP 3 (cursor animation, magnetic hover)
+- Lenis (smooth scroll)
+- pnpm package manager
+
+### Design System
+
+Extracted from Z-TAP and adapted for the full site:
+
+- Brand tokens: `--color-yellow`, `--color-ink`, `--color-surface`, `--color-void`
+- Font stack: Inter (sans) + Instrument Serif (headings)
+- `@tailwindcss/typography` installed for blog prose rendering
+- Global cursor: `InteractiveCursor` component — frosted-glass ring + yellow dot, GSAP event-delegation magnetic hover on all interactive elements
+
+### Homepage Sections Built (`src/app/page.tsx`)
+
+| Section | Component | Status |
+|---|---|---|
+| Hero | `Hero.tsx` | Built — full-bleed dark, serif headline, yellow CTA |
+| Portfolio Map | inline in `page.tsx` | Built — product group grid |
+| Proprietary Automation | `ProprietaryAutomation.tsx` | Built — Z-TAP / ZA01 / Sieve Machine sticky scroll |
+| Facility Teaser | `FacilityTeaserFilmstrip.tsx` | Built — filmstrip photo grid (awaiting exterior photos) |
+| Our Team | `OurTeam.tsx` | Built — 10×9 bento grid, 81 member cells, 75+ stat |
+| What We Offer | `WhatWeOffer.tsx` | Built |
+| Our Work Preview | `OurWorkPreview.tsx` | Built |
+| Clients / Testimonials | `ClientsTestimonials.tsx` | Built |
+| Home CTA | `HomeCTA.tsx` | Built |
+| Partners Bar | inline | Built |
+
+### Blog / Resources (`src/app/resources/blog/`)
+
+**Architecture:**
+
+Two-source blog system — no single CMS dependency:
+
+1. **MDX index** (`src/content/blog/index.json`) — 23 polished posts migrated from the old WordPress site XML export. Metadata only; body content served from `.mdx` files.
+2. **HTML portal pipeline** (`src/content/blog-html/*.html`) — backend drops a plain `.html` file; it appears on the listing instantly without a rebuild (`force-dynamic`). Template contract defined in `_TEMPLATE.html`.
+
+**Pages built:**
+
+- `/resources/blog` — dark hero + featured lead article + `BlogGrid` client component
+- `/resources/blog/[slug]` — individual post layout with cover image, typography prose body, CTA footer
+- `BlogGrid.tsx` — masonry 3-column layout (CSS `columns`), category filter pills with post counts, live search (title + excerpt + category), dark editorial card with search input injected at position 3 in the masonry flow
+
+**Images:** 10 real cover images downloaded from the old WordPress site to `public/images/blog/`. 13 posts use a minimal placeholder tile.
+
+**Remaining blog work:**
+
+- Source or create cover images for 13 remaining posts
+- Write `.mdx` body files for posts that currently show "Post content coming soon"
+- Add newsroom section (separate from blog)
+
+### Facility Exterior Photos
+
+8 placeholder slots remain in `FacilityTeaserFilmstrip.tsx`. The original facility photos were removed — replacement photos from the Greater Noida facility are needed from the client.
+
+### Navigation
+
+`Navbar.tsx` — glass-morphism sticky bar, yellow "Get in Touch" CTA. Links wired for all 8 top-level sections.
+
+### What Is Not Yet Built
+
+- `/products` — all sub-pages (GEMA, Dürr, Z-TAP, ZA01, manufactured plants, ovens, booths)
+- `/services` — AMC, commissioning, support pages
+- `/facility` — standalone facility page
+- `/our-work` — case studies, installation gallery
+- `/about` — company, VACSPL, Vinayak Agencies, leadership
+- `/contact` — lead capture form (Zoho CRM endpoint)
+- `/resources/newsroom` — launch announcements, exhibitions
+- Backend / employee portal — deferred
