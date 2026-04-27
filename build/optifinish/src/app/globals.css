@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @theme {
   /* ── OptiFinish Brand Tokens ── */
@@ -49,6 +50,44 @@
     background: var(--color-yellow);
     color: var(--color-ink);
   }
+}
+
+/* ── Grid diagonal sweep animation (Z-TAP style) ── */
+@keyframes grid-diagonal-sweep {
+  0%   { background-position: -18% 118%; opacity: 0; }
+  8%   { opacity: 1; }
+  88%  { background-position: 118% -18%; opacity: 0.9; }
+  100% { background-position: 118% -18%; opacity: 0; }
+}
+
+.grid-sweep {
+  background-image: linear-gradient(
+    45deg,
+    transparent           38%,
+    rgba(254,206,0,0.12)  44%,
+    rgba(254,206,0,0.55)  50%,
+    rgba(254,206,0,0.12)  56%,
+    transparent           62%
+  );
+  background-size: 220% 220%;
+  background-repeat: no-repeat;
+  -webkit-mask-image:
+    linear-gradient(rgba(0,0,0,1) 1.25px, transparent 1.25px),
+    linear-gradient(90deg, rgba(0,0,0,1) 1.25px, transparent 1.25px);
+  mask-image:
+    linear-gradient(rgba(0,0,0,1) 1.25px, transparent 1.25px),
+    linear-gradient(90deg, rgba(0,0,0,1) 1.25px, transparent 1.25px);
+  -webkit-mask-size: 72px 72px;
+  mask-size: 72px 72px;
+  -webkit-mask-repeat: repeat;
+  mask-repeat: repeat;
+  opacity: 0;
+  animation: grid-diagonal-sweep 3.5s ease-in-out infinite;
+}
+
+/* ── Grid scroll parallax — driven by --sy CSS var (Z-TAP technique) ── */
+.grid-drift {
+  background-position: calc(var(--sy, 0) * 0.035px) calc(var(--sy, 0) * 0.035px);
 }
 
 @layer utilities {

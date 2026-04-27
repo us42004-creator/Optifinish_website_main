@@ -1,0 +1,278 @@
+'use client';
+
+import { useRef, useState } from 'react';
+import Link from 'next/link';
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
+import { useHeadingAnimation } from '@/hooks/useHeadingAnimation';
+
+const ease = [0.22, 1, 0.36, 1] as const;
+
+const PRODUCTS = [
+  {
+    id: 'ztap',
+    href: '/products/automation/ztap',
+    name: 'Z-TAP',
+    tag: 'Flagship',
+    tagline: 'Zero-touch robotic coating.',
+    desc: 'Mimic a motion once — Z-TAP records, perfects, and replicates it flawlessly across every part. Powered by the Fairino FR5 robot platform with native GEMA gun integration.',
+    specs: [
+      'Motion mimic technology',
+      'Fairino FR5 robot platform',
+      'GEMA gun integration',
+      'Full coating line compatible',
+    ],
+  },
+  {
+    id: 'za01',
+    href: '/products/automation/za01',
+    name: 'ZA01',
+    tag: 'Reciprocator',
+    tagline: 'Precision vertical automation.',
+    desc: 'Proprietary reciprocator designed for consistent vertical gun movement across high-throughput lines. Engineered entirely in-house for reliability and process control.',
+    specs: [
+      'Vertical axis automation',
+      'Adjustable stroke and speed',
+      'Line-compatible mounting',
+      'Low maintenance design',
+    ],
+  },
+  {
+    id: 'sieve',
+    href: '/products/automation/automatic-sieve-machine',
+    name: 'Sieve Machine',
+    tag: 'Support Equipment',
+    tagline: 'Automated powder preparation.',
+    desc: 'Automated powder sieving for consistent mesh quality and reduced contamination. Eliminates manual handling at the input stage for clean, repeatable coating results.',
+    specs: [
+      'Continuous operation',
+      'Consistent mesh output',
+      'Reduced manual handling',
+      'Compact footprint',
+    ],
+  },
+];
+
+export default function ProprietaryAutomation() {
+  const containerRef = useRef<HTMLElement>(null);
+  const eyebrowRef   = useRef<HTMLSpanElement>(null);
+  const line1Ref     = useRef<HTMLSpanElement>(null);
+  const line2Ref     = useRef<HTMLSpanElement>(null);
+  const bodyRef      = useRef<HTMLParagraphElement>(null);
+
+  const [active, setActive] = useState(0);
+  const product = PRODUCTS[active];
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start start', 'end end'],
+  });
+
+  useMotionValueEvent(scrollYProgress, 'change', (v) => {
+    if (v < 0.34) setActive(0);
+    else if (v < 0.67) setActive(1);
+    else setActive(2);
+  });
+
+  useHeadingAnimation({
+    trigger: containerRef,
+    eyebrow: eyebrowRef,
+    line1: line1Ref,
+    line2: line2Ref,
+    body: bodyRef,
+  });
+
+  return (
+    <section ref={containerRef} className="relative h-[300vh]">
+
+      {/* ── Sticky viewport ── */}
+      <div className="sticky top-0 h-screen overflow-hidden bg-[#f1efea]">
+
+        {/* Grid drift layers */}
+        <div
+          className="pointer-events-none absolute inset-0 grid-drift opacity-[0.62] mix-blend-multiply"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(201,165,0,0.22) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(201,165,0,0.22) 1px, transparent 1px)
+            `,
+            backgroundSize: '88px 88px',
+          }}
+        />
+        <div
+          className="pointer-events-none absolute inset-0 grid-drift opacity-[0.32] mix-blend-multiply"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(255,243,163,0.5) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255,243,163,0.5) 1px, transparent 1px)
+            `,
+            backgroundSize: '264px 264px',
+          }}
+        />
+
+        {/* ── Vertically centred content ── */}
+        <div className="relative flex h-full items-center">
+          <div className="mx-auto w-full max-w-7xl px-5 md:px-8">
+
+            <div className="grid gap-12 lg:grid-cols-2 lg:items-end lg:gap-16">
+
+              {/* ── LEFT col ── */}
+              <div className="flex flex-col">
+
+                {/* Eyebrow */}
+                <div className="overflow-hidden pb-[0.15em]">
+                  <span
+                    ref={eyebrowRef}
+                    className="mb-3 block text-[0.56rem] font-bold uppercase tracking-[0.22em] text-ink/40"
+                    style={{ willChange: 'transform, opacity' }}
+                  >
+                    OptiFinish Automation
+                  </span>
+                </div>
+
+                {/* Heading */}
+                <h2 className="font-display text-[clamp(2rem,4vw,3.5rem)] font-black leading-[0.92] tracking-[-0.04em] text-ink">
+                  <div className="overflow-hidden pb-[0.15em]">
+                    <span ref={line1Ref} className="block" style={{ willChange: 'transform, opacity' }}>
+                      Built by us.
+                    </span>
+                  </div>
+                  <div className="overflow-hidden pb-[0.15em]">
+                    <span ref={line2Ref} className="block" style={{ willChange: 'transform, opacity', color: '#FECE00' }}>
+                      Owned by us.
+                    </span>
+                  </div>
+                </h2>
+
+                {/* Body */}
+                <p
+                  ref={bodyRef}
+                  className="mt-4 text-[0.85rem] leading-relaxed text-ink/50"
+                  style={{ willChange: 'transform, opacity' }}
+                >
+                  Three proprietary products developed entirely in-house. No licensing, no OEM
+                  dependency — designed, manufactured, and supported by OptiFinish.
+                </p>
+
+                {/* Clickable tabs */}
+                <div className="mt-8 flex flex-wrap gap-2">
+                  {PRODUCTS.map((p, i) => (
+                    <button
+                      key={p.id}
+                      onClick={() => setActive(i)}
+                      className={`rounded-full px-4 py-2 text-[0.68rem] font-bold uppercase tracking-[0.16em] transition-all duration-200 ${
+                        i === active
+                          ? 'bg-ink text-white'
+                          : 'border border-ink/[0.12] bg-ink/[0.04] text-ink/45 hover:text-ink/70'
+                      }`}
+                    >
+                      {p.name}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Animated product content */}
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={product.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.28, ease }}
+                    className="mt-6 flex flex-col gap-5"
+                  >
+                    <div>
+                      <span className="inline-block rounded-full bg-[#FECE00] px-3 py-1 text-[0.58rem] font-bold uppercase tracking-[0.18em] text-ink">
+                        {product.tag}
+                      </span>
+                      <h3 className="mt-2 font-display text-[2rem] font-black tracking-[-0.03em] text-ink">
+                        {product.name}
+                      </h3>
+                      <p className="text-[0.8rem] font-semibold text-ink/50">{product.tagline}</p>
+                    </div>
+
+                    <p className="text-[0.85rem] leading-[1.85] text-ink/50">{product.desc}</p>
+
+                    <ul className="flex flex-col gap-2 border-t border-ink/[0.22] pt-4">
+                      {product.specs.map((s) => (
+                        <li key={s} className="flex items-center gap-3 text-[0.75rem] font-medium text-ink/55">
+                          <span className="h-[5px] w-[5px] flex-shrink-0 rounded-full bg-[#FECE00]" />
+                          {s}
+                        </li>
+                      ))}
+                    </ul>
+
+                    <div className="flex flex-wrap gap-3">
+                      <Link
+                        href={product.href}
+                        className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-[0.68rem] font-bold uppercase tracking-[0.18em] text-white transition-colors hover:bg-ink/85"
+                      >
+                        Learn more <span>→</span>
+                      </Link>
+                      <Link
+                        href="/products/automation"
+                        className="inline-flex items-center gap-2 rounded-full border border-ink/[0.12] px-5 py-2.5 text-[0.68rem] font-bold uppercase tracking-[0.18em] text-ink/40 transition-colors hover:text-ink/65"
+                      >
+                        View all automation
+                      </Link>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+              {/* ── RIGHT col — media cards ── */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={product.id + '-visual'}
+                  initial={{ opacity: 0, scale: 0.97 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.97 }}
+                  transition={{ duration: 0.34, ease }}
+                  className="flex flex-col gap-3"
+                >
+                  <div className="overflow-hidden rounded-[1.4rem] border border-ink/[0.07] bg-white/70 shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
+                    <div className="flex aspect-[16/10] w-full items-center justify-center bg-ink/[0.03]">
+                      <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-ink/20">
+                        Image placeholder
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    {(['Detail view', 'In-use shot'] as const).map((label) => (
+                      <div
+                        key={label}
+                        className="overflow-hidden rounded-[1.1rem] border border-ink/[0.07] bg-white/70 shadow-[0_4px_14px_rgba(0,0,0,0.05)]"
+                      >
+                        <div className="flex min-h-[13rem] w-full items-center justify-center bg-ink/[0.03]">
+                          <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-ink/20">
+                            {label}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+
+            </div>
+          </div>
+        </div>
+
+        {/* ── Scroll progress dots ── */}
+        <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 items-center gap-2">
+          {PRODUCTS.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setActive(i)}
+              aria-label={`Go to ${PRODUCTS[i].name}`}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                i === active ? 'w-6 bg-ink' : 'w-2 bg-ink/25 hover:bg-ink/40'
+              }`}
+            />
+          ))}
+        </div>
+
+      </div>
+    </section>
+  );
+}

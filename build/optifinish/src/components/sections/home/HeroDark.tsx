@@ -1,0 +1,194 @@
+'use client';
+
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import Link from 'next/link';
+
+const ease = [0.22, 1, 0.36, 1] as const;
+
+function PulseBullet() {
+  return (
+    <span className="relative flex h-2 w-2 shrink-0">
+      <motion.span
+        className="absolute inline-flex h-full w-full rounded-full bg-[#FECE00]"
+        animate={{ scale: [1, 1.8], opacity: [0.45, 0] }}
+        transition={{ duration: 2.4, repeat: Infinity, ease: 'easeOut', repeatDelay: 0.4 }}
+      />
+      <span className="relative inline-flex h-2 w-2 rounded-full bg-[#FECE00]" />
+    </span>
+  );
+}
+
+const STATS = [
+  { value: '14+',  label: 'Years',         sub: 'Industrial experience' },
+  { value: '500+', label: 'Installations', sub: 'Across India'          },
+];
+
+export default function HeroDark() {
+  return (
+    <section className="relative min-h-screen overflow-hidden bg-[#080a0c]">
+
+      {/* ── Yellow grid — same 72px grid, yellow lines on dark ── */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.055]"
+        style={{
+          backgroundImage:
+            'linear-gradient(rgba(254,206,0,1) 1px, transparent 1px), linear-gradient(90deg, rgba(254,206,0,1) 1px, transparent 1px)',
+          backgroundSize: '72px 72px',
+        }}
+      />
+
+      {/* Grid fade — vignette so grid fades at edges */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background: 'radial-gradient(ellipse 80% 70% at 50% 40%, transparent 30%, rgba(8,10,12,0.85) 100%)',
+        }}
+      />
+
+      {/* Grid diagonal sweep — Z-TAP style, repeats on interval */}
+      <div className="grid-sweep pointer-events-none absolute inset-0" />
+
+      {/* Yellow glow — centre top */}
+      <div className="pointer-events-none absolute -top-32 left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-[#FECE00]/[0.025] blur-[120px]" />
+      {/* Accent glow bottom right */}
+      <div className="pointer-events-none absolute bottom-0 right-0 h-[300px] w-[300px] rounded-full bg-[#FECE00]/[0.01] blur-[100px]" />
+
+      {/* Centring shell */}
+      <div className="relative mx-auto flex min-h-screen max-w-[1440px] flex-col items-center justify-center px-5 pb-44 pt-24 md:px-10 lg:px-12">
+
+        {/* ── Hero content — no card wrapper, text directly on dark bg ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease }}
+          className="relative w-full text-center"
+        >
+          {/* yellow glow behind copy */}
+          <div className="pointer-events-none absolute left-1/2 top-1/2 h-[480px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#FECE00]/[0.025] blur-[100px]" />
+          {/* Kicker */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease, delay: 0.15 }}
+            className="mb-8 flex items-center justify-center gap-2.5"
+          >
+            <PulseBullet />
+            <span style={{ fontSize: '0.56rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)' }}>
+              Value Added Coating Solutions Pvt. Ltd.
+            </span>
+          </motion.div>
+
+          {/* Headline */}
+          <motion.h1
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease, delay: 0.22 }}
+            className="font-display text-[clamp(2.4rem,5.5vw,5rem)] font-black leading-[0.9] tracking-[-0.045em] text-white"
+          >
+            Manufactured systems.{' '}
+            <br className="hidden sm:block" />
+            <span style={{ color: '#FECE00' }}>Proprietary automation.</span>
+            <br className="hidden sm:block" />
+            Expert <span style={{ color: '#FECE00' }}>coating</span> solutions.
+          </motion.h1>
+
+          {/* Subtext */}
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease, delay: 0.32 }}
+            className="mx-auto mt-8 max-w-[640px] text-[0.95rem] leading-[1.9] tracking-[0.01em] text-white/35"
+          >
+            OptiFinish designs and manufactures complete powder coating lines,
+            develops proprietary automation products, and is an authorised
+            partner for GEMA and DURR — backed by 14+ years of industrial experience.
+          </motion.p>
+
+          {/* CTAs */}
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, ease, delay: 0.42 }}
+            className="mt-10 flex flex-wrap items-center justify-center gap-3"
+          >
+            <Link href="/products" className="panel-button dynamic-button dynamic-button-yellow">
+              <span>Explore Products</span>
+              <div className="dynamic-button-glow" />
+            </Link>
+            <Link href="/contact" className="panel-button dynamic-button dynamic-button-light text-ink">
+              <span>Get in Touch</span>
+              <div className="dynamic-button-glow" />
+            </Link>
+          </motion.div>
+        </motion.div>
+
+        {/* ── Floating authority stripe ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.65, ease, delay: 0.55 }}
+          className="absolute inset-x-5 bottom-12 md:inset-x-10 md:bottom-14 lg:inset-x-12"
+        >
+          <div className="overflow-hidden rounded-[1rem] border border-[#FECE00]/[0.08] bg-[#FECE00]/[0.04] shadow-[0_-6px_40px_rgba(0,0,0,0.4),0_16px_48px_rgba(0,0,0,0.3)] backdrop-blur-md">
+
+            {/* top yellow accent line */}
+            <div className="h-[1.5px] bg-gradient-to-r from-transparent via-[#FECE00]/50 to-transparent" />
+
+            <div className="flex items-stretch divide-x divide-[#FECE00]/[0.06]">
+
+              {STATS.map(({ value, label, sub }) => (
+                <div key={value} className="flex flex-1 flex-col justify-center gap-0.5 px-6 py-5 md:px-8">
+                  <div className="flex items-baseline gap-1.5">
+                    <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 900, fontSize: '1.25rem', color: '#fff', letterSpacing: '-0.03em', lineHeight: 1 }}>
+                      {value}
+                    </span>
+                    <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: '0.72rem', color: 'rgba(255,255,255,0.4)', letterSpacing: '-0.01em' }}>
+                      {label}
+                    </span>
+                  </div>
+                  <span className="text-[0.55rem] font-semibold uppercase tracking-[0.16em] text-[#FECE00]/50">
+                    {sub}
+                  </span>
+                </div>
+              ))}
+
+              {/* GEMA */}
+              <div className="flex flex-1 items-center gap-3.5 px-6 py-5 md:px-8">
+                <Image
+                  src="/images/logos/logo.png"
+                  alt="GEMA"
+                  width={80}
+                  height={40}
+                  className="h-16 w-auto shrink-0 object-contain"
+                />
+                <span className="whitespace-nowrap text-[0.53rem] font-semibold uppercase tracking-[0.15em] text-[#FECE00]/50">Authorised partner</span>
+              </div>
+
+              {/* DÜRR */}
+              <div className="flex flex-1 items-center gap-3.5 px-6 py-5 md:px-8">
+                <Image
+                  src="/images/logos/duerr-logo-RGB.png"
+                  alt="DÜRR"
+                  width={64}
+                  height={32}
+                  className="h-7 w-auto shrink-0 object-contain brightness-0 invert"
+                />
+                <span className="whitespace-nowrap text-[0.53rem] font-semibold uppercase tracking-[0.15em] text-[#FECE00]/50">Authorised distributor</span>
+              </div>
+
+              <div className="hidden items-center px-7 md:flex">
+                <span className="whitespace-nowrap rounded-full border border-[#FECE00]/20 bg-[#FECE00]/[0.07] px-4 py-1.5 text-[0.56rem] font-bold uppercase tracking-[0.18em] text-[#FECE00]/55">
+                  Est. 2011 · Noida
+                </span>
+              </div>
+
+            </div>
+
+          </div>
+        </motion.div>
+
+      </div>
+    </section>
+  );
+}

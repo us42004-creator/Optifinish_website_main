@@ -3,6 +3,8 @@ import { Space_Grotesk, Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/ui/Navbar';
 import Footer from '@/components/ui/Footer';
+import ScrollTracker from '@/components/ui/ScrollTracker';
+import InteractiveCursor from '@/components/ui/InteractiveCursor';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -45,6 +47,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}>
       <body className="flex min-h-screen flex-col">
+        <InteractiveCursor />
+        <ScrollTracker />
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />
