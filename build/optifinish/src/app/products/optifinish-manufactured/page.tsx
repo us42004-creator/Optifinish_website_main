@@ -20,7 +20,7 @@ const PRODUCTS = [
       'Manual and conveyorised configurations; batch or continuous production',
       'Full line design: PT stages → booth → oven → conveyor → electrical control panel',
       'Custom-engineered to part size, throughput, and substrate requirements',
-      '700+ manual plants and 75+ conveyor lines installed across India',
+      '300+ manual plants and 75+ conveyor lines installed across India',
     ],
     enquireSlug: 'powder-coating-plant',
     learnMoreHref: '/products/optifinish-manufactured/powder-coating-plant',
@@ -149,7 +149,7 @@ export default function OptiFinishManufacturedPage() {
         headlineAccent="Designed and built by us."
         subline="Every powder coating plant, oven, booth, and pretreatment line we build comes from our own manufacturing and R&D facility in Greater Noida — engineered to your line requirements and commissioned by our team."
         stats={[
-          { value: '700+', label: 'Manual plants installed' },
+          { value: '300+', label: 'Manual plants installed' },
           { value: '75+', label: 'Conveyor lines delivered' },
           { value: '14+ Yrs', label: 'In production' },
         ]}

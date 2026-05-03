@@ -166,7 +166,7 @@ export default function ProductPageWireframe() {
           {/* Stats */}
           <div className="mt-10 flex flex-wrap gap-3">
             {[
-              { v: '700+', l: 'Manual plants installed' },
+              { v: '300+', l: 'Manual plants installed' },
               { v: '75+', l: 'Conveyor lines delivered' },
               { v: '14+ Yrs', l: 'In production' },
               { v: '98%', l: 'Powder recovery rate' },
@@ -215,7 +215,7 @@ export default function ProductPageWireframe() {
               {[
                 { t: 'Engineered to your spec', b: 'Part size, throughput, substrate, and space — every line is designed around your exact requirements.' },
                 { t: 'Built and commissioned by us', b: 'Our team handles design, manufacturing, delivery, and on-site commissioning. One point of accountability.' },
-                { t: 'Backed by 14 years of installations', b: '700+ plants across India — in steel furniture, automotive, HVAC, architectural, and precision engineering.' },
+                { t: 'Backed by 14 years of installations', b: '300+ plants across India — in steel furniture, automotive, HVAC, architectural, and precision engineering.' },
               ].map((item) => (
                 <div key={item.t} className="flex gap-4 rounded-[1rem] border border-black/[0.06] bg-white/70 p-5">
                   <span className="mt-0.5 h-2 w-2 shrink-0 rounded-full bg-[#FECE00]" />
@@ -470,7 +470,7 @@ export default function ProductPageWireframe() {
             <div>
               <p className="mb-2 text-[0.56rem] font-bold uppercase tracking-[0.22em] text-[#FECE00]/45">Installed Across India</p>
               <h2 className="font-display text-[clamp(1.8rem,4vw,3.2rem)] font-black leading-[0.92] tracking-[-0.04em] text-white">
-                700+ plants.<br />
+                300+ plants.<br />
                 <span className="text-[#FECE00]">Every one commissioned by us.</span>
               </h2>
             </div>
