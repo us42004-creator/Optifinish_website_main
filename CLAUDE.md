@@ -21,8 +21,9 @@ Optifinish_website_main/
 ├── CLAUDE.md                  ← you are here, read by Claude on every session
 ├── build/
 │   ├── optifinish/            ← main OptiFinish website (Next.js, port 3000)
-│   └── ztap/
-│       └── source/            ← Z-TAP Next.js source (git submodule, port 4000)
+│   ├── ztap/
+│   │   └── source/            ← Z-TAP Next.js source (git submodule, port 4000)
+│   └── blog-studio/           ← AI editorial pipeline (Vite + React, port 5000)
 ├── documentation/             ← master reports and strategy docs
 ├── ia/                        ← full IA mirrored as folder structure
 │   ├── home/ products/ services/ facility/ our-work/ resources/ about/ contact/
@@ -60,6 +61,34 @@ git add build/ztap/source
 git commit -m "update ztap submodule reference"
 git push origin main
 ```
+
+---
+
+## The Blog Studio Workspace
+
+- Lives at `build/blog-studio/`
+- Standalone Vite + React 19 + TS workspace, **port 5000**
+- Purpose: AI-driven editorial pipeline that turns category × audience picks into a publishable, image-rich, OptiFinish-branded blog post
+- Currently a separate workspace; will fold into `build/optifinish/` as an `/admin/blog-studio` route once content quality is locked
+- Tech stack: Vite 6, React 19, TypeScript, Tailwind via CDN, NVIDIA Build (Llama 3.3 70B for text, FLUX.1-dev for images)
+- API keys live in `build/blog-studio/.env.local` (gitignored). Vite's dev-server proxy injects them server-side so they never reach the browser bundle. See `vite.config.ts`.
+
+### Run locally
+```bash
+cd build/blog-studio
+pnpm install
+pnpm dev                 # http://localhost:5000
+node scripts/preview.mjs # end-to-end pipeline → public/preview.html
+```
+
+### Structure & function — see `build/blog-studio/README.md` for full detail
+
+- `src/services/topicEngine.ts` — topic generation prompt with the 18-trigger pool
+- `src/services/draftEngine.ts` — full draft + snapshot fields + image prompts
+- `src/services/nvidiaLlmService.ts` — Llama wiring (chat completions)
+- `src/services/nvidiaImageService.ts` — FLUX.1-dev wiring + brand-style suffix
+- `src/services/templateBuilder.ts` — final HTML output (Avacasa-derived shape, OptiFinish brand swaps)
+- `scripts/preview.mjs` — runs the full pipeline end-to-end without using the UI
 
 ---
 
