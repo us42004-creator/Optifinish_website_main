@@ -1,7 +1,8 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { useHeadingAnimation } from '@/hooks/useHeadingAnimation';
 
 const TOP_GROUPS = [
@@ -56,6 +57,7 @@ export default function WhatWeOffer() {
   const line1Ref   = useRef<HTMLSpanElement>(null);
   const line2Ref   = useRef<HTMLSpanElement>(null);
   const bodyRef    = useRef<HTMLParagraphElement>(null);
+  const searchParams = useSearchParams();
 
   useHeadingAnimation({
     trigger: sectionRef,
@@ -65,8 +67,32 @@ export default function WhatWeOffer() {
     body: bodyRef,
   });
 
+  /* Scroll here when navigated from another page via /?scroll=whatweoffer */
+  useEffect(() => {
+    if (searchParams.get('scroll') !== 'whatweoffer') return;
+    const el = sectionRef.current;
+    if (!el) return;
+    const start = window.scrollY;
+    const target = el.getBoundingClientRect().top + window.scrollY - 80;
+    const distance = target - start;
+    const duration = 1200;
+    let startTime: number | null = null;
+    const ease = (t: number) =>
+      t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    const step = (ts: number) => {
+      if (!startTime) startTime = ts;
+      const elapsed = ts - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      window.scrollTo(0, start + distance * ease(progress));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    /* Small delay so page paint settles first */
+    const timer = setTimeout(() => requestAnimationFrame(step), 350);
+    return () => clearTimeout(timer);
+  }, [searchParams]);
+
   return (
-    <section ref={sectionRef} className="relative overflow-hidden bg-[#070809] py-20 md:py-28">
+    <section ref={sectionRef} id="what-we-offer" className="relative overflow-hidden bg-[#070809] py-20 md:py-28">
 
       {/* Subtle dark grid */}
       <div
