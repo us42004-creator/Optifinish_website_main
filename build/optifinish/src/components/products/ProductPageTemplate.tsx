@@ -590,12 +590,12 @@ export default function ProductPageTemplate({
           >
             Full specifications
           </h2>
-          <div className="overflow-hidden rounded-[1.2rem] border border-[#FECE00]/[0.08] bg-[#0A0A0A]">
+          <div className="overflow-hidden rounded-[1.2rem] border border-[#FECE00]/[0.22] bg-[#0A0A0A]">
             {specRows.map((row, i) => (
               <div
                 key={row.l}
                 className={`flex items-start justify-between gap-8 px-6 py-4 ${
-                  i < specRows.length - 1 ? 'border-b border-white/[0.06]' : ''
+                  i < specRows.length - 1 ? 'border-b border-[#FECE00]/[0.1]' : ''
                 }`}
               >
                 <span className="min-w-[160px] text-[0.72rem] font-medium text-white/50">
