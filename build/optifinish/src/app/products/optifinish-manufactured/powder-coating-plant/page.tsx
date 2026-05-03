@@ -53,7 +53,7 @@ export default function PowderCoatingPlantPage() {
         {
           num: '02',
           title: 'Powder application',
-          body: 'Dried parts enter the powder spray booth where manual or automatic guns electrostatically apply powder coating. The integrated Venturi recovery system reclaims over-sprayed powder at 98% efficiency and returns it to the hopper.',
+          body: 'Dried parts enter the powder spray booth where manual or automatic guns electrostatically apply powder coating. The integrated Venturi recovery system reclaims over-sprayed powder at 92–96% efficiency and returns it to the hopper.',
           imageLabel: 'Step 02 · powder spray booth — electrostatic gun application',
         },
         {

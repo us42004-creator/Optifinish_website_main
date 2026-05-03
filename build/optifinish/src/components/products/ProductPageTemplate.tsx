@@ -110,7 +110,7 @@ function ImageViewport({
       className={`relative flex w-full items-center justify-center overflow-hidden rounded-[1.1rem] ${
         isDark
           ? 'border border-white/[0.06] bg-white/[0.025]'
-          : 'border border-black/[0.07] bg-black/[0.03]'
+          : 'border border-[#0A0A0A]/[0.07] bg-white/70 shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
       } ${aspect} ${className}`}
     >
       <div
@@ -118,27 +118,23 @@ function ImageViewport({
         style={{
           backgroundImage: isDark
             ? 'linear-gradient(rgba(254,206,0,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(254,206,0,0.1) 1px, transparent 1px)'
-            : 'linear-gradient(rgba(10,10,10,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(10,10,10,0.07) 1px, transparent 1px)',
+            : 'linear-gradient(rgba(10,10,10,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(10,10,10,0.04) 1px, transparent 1px)',
           backgroundSize: '32px 32px',
         }}
       />
-      <div
-        className={`absolute left-0 right-0 top-0 h-[2px] ${
-          isDark ? 'bg-[#FECE00]/25' : 'bg-[#0A0A0A]/12'
-        }`}
-      />
+      {isDark && <div className="absolute left-0 right-0 top-0 h-[2px] bg-[#FECE00]/25" />}
       <div
         className={`absolute left-4 top-4 rounded-full border px-2.5 py-1 text-[0.5rem] font-bold uppercase tracking-[0.18em] ${
           isDark
             ? 'border-white/[0.1] bg-white/[0.05] text-white/30'
-            : 'border-black/[0.08] bg-white/80 text-[#0A0A0A]/40'
+            : 'border-[#0A0A0A]/[0.08] bg-white/80 text-[#0A0A0A]/40'
         }`}
       >
         Image viewport
       </div>
       <span
         className={`relative text-[0.65rem] font-medium uppercase tracking-[0.2em] ${
-          isDark ? 'text-white/18' : 'text-[#0A0A0A]/22'
+          isDark ? 'text-white/18' : 'text-[#0A0A0A]/20'
         }`}
       >
         {label}
@@ -159,6 +155,29 @@ function GridTexture({ forYellow = false }: { forYellow?: boolean }) {
         opacity: 0.035,
       }}
     />
+  );
+}
+
+function LightGridTexture() {
+  return (
+    <>
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.62] mix-blend-multiply"
+        style={{
+          backgroundImage:
+            'linear-gradient(rgba(201,165,0,0.22) 1px, transparent 1px), linear-gradient(90deg, rgba(201,165,0,0.22) 1px, transparent 1px)',
+          backgroundSize: '88px 88px',
+        }}
+      />
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.32] mix-blend-multiply"
+        style={{
+          backgroundImage:
+            'linear-gradient(rgba(255,243,163,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,243,163,0.5) 1px, transparent 1px)',
+          backgroundSize: '264px 264px',
+        }}
+      />
+    </>
   );
 }
 
@@ -221,15 +240,16 @@ export default function ProductPageTemplate({
   const secBg = (name: string): string => {
     if (name === 'cta') return '#FECE00';
     const pos = renderedSections.indexOf(name) + 1;
-    if (isLight) return pos % 2 === 1 ? '#f1efea' : '#0A0A0A';
-    return pos % 2 === 1 ? '#0A0A0A' : '#0f1012';
+    if (isLight) return pos % 2 === 1 ? '#f1efea' : '#070809';
+    return pos % 2 === 1 ? '#070809' : '#f1efea';
   };
 
-  /* A section has a light background only for light-theme on odd positions */
+  /* Light bg: light-theme on odd positions, dark-theme on even positions */
   const secIsLight = (name: string): boolean => {
     if (name === 'cta') return true;
     const pos = renderedSections.indexOf(name) + 1;
-    return isLight && pos % 2 === 1;
+    if (isLight) return pos % 2 === 1;
+    return pos % 2 === 0;
   };
 
   /* Colour helpers given whether section bg is light */
@@ -263,28 +283,35 @@ export default function ProductPageTemplate({
 
   return (
     <main>
-      {/* ══════════════════════════════════════════════════════
-          S1 — HERO
-      ══════════════════════════════════════════════════════ */}
-      <section style={{ background: secBg('hero') }} className="relative overflow-hidden">
-        {!hero && <GridTexture />}
-        <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 md:py-28 lg:px-16">
 
-          {/* Breadcrumb */}
-          <nav className={`mb-10 flex flex-wrap items-center gap-1.5 text-[0.6rem] font-bold uppercase tracking-[0.18em] ${cEye(hero)}`}>
+      {/* ══════════════════════════════════════════════════════
+          BREADCRUMB BAR — full-width, above hero
+      ══════════════════════════════════════════════════════ */}
+      <div className={`border-b pt-[60px] md:pt-[68px] ${isLight ? 'border-black/[0.07] bg-[#f1efea]' : 'border-white/[0.06] bg-[#070809]'}`}>
+        <div className="mx-auto max-w-7xl px-6 py-3 lg:px-16">
+          <nav className={`flex flex-wrap items-center gap-1.5 text-[0.58rem] font-bold uppercase tracking-[0.2em] ${isLight ? 'text-[#0A0A0A]/35' : 'text-white/30'}`}>
             {breadcrumb.map((crumb, i) => (
               <span key={crumb.href} className="flex items-center gap-1.5">
-                {i > 0 && <span className="opacity-35">/</span>}
+                {i > 0 && <span className="opacity-40">/</span>}
                 {i < breadcrumb.length - 1 ? (
-                  <Link href={crumb.href} className="opacity-55 transition-opacity hover:opacity-90">
+                  <Link href={crumb.href} className="transition-opacity hover:opacity-80">
                     {crumb.label}
                   </Link>
                 ) : (
-                  <span>{crumb.label}</span>
+                  <span className={isLight ? 'text-[#0A0A0A]/60' : 'text-white/55'}>{crumb.label}</span>
                 )}
               </span>
             ))}
           </nav>
+        </div>
+      </div>
+
+      {/* ══════════════════════════════════════════════════════
+          S1 — HERO
+      ══════════════════════════════════════════════════════ */}
+      <section style={{ background: secBg('hero') }} className="relative overflow-hidden">
+        {hero ? <LightGridTexture /> : <GridTexture />}
+        <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 md:py-28 lg:px-16">
 
           <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-20">
             {/* Left — Text */}
@@ -356,7 +383,7 @@ export default function ProductPageTemplate({
           S2 — PROBLEM / VALUE PROPOSITION
       ══════════════════════════════════════════════════════ */}
       <section style={{ background: secBg('problem') }} className="relative overflow-hidden">
-        {!prob && <GridTexture />}
+        {prob ? <LightGridTexture /> : <GridTexture />}
         <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-16">
           <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-20">
             <div>
@@ -390,7 +417,7 @@ export default function ProductPageTemplate({
       ══════════════════════════════════════════════════════ */}
       {hasVariants && (
         <section style={{ background: secBg('variants') }} className="relative overflow-hidden">
-          {!vars && <GridTexture />}
+          {vars ? <LightGridTexture /> : <GridTexture />}
           <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-16">
             <p className={`mb-2 text-[0.6rem] font-bold uppercase tracking-[0.26em] ${cEye(vars)}`}>
               Models & Configurations
@@ -480,7 +507,7 @@ export default function ProductPageTemplate({
       ══════════════════════════════════════════════════════ */}
       {hasSteps && (
         <section style={{ background: secBg('steps') }} className="relative overflow-hidden">
-          {!stps && <GridTexture />}
+          {stps ? <LightGridTexture /> : <GridTexture />}
           <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-16">
             <p className={`mb-2 text-[0.6rem] font-bold uppercase tracking-[0.26em] ${cEye(stps)}`}>
               How it works
@@ -550,7 +577,7 @@ export default function ProductPageTemplate({
           S5 — FULL SPECIFICATIONS
       ══════════════════════════════════════════════════════ */}
       <section style={{ background: secBg('specs') }} className="relative overflow-hidden">
-        {!spec && <GridTexture />}
+        {spec ? <LightGridTexture /> : <GridTexture />}
         <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-16">
           <p className={`mb-2 text-[0.6rem] font-bold uppercase tracking-[0.26em] ${cEye(spec)}`}>
             Technical data
@@ -560,18 +587,18 @@ export default function ProductPageTemplate({
           >
             Full specifications
           </h2>
-          <div className={`overflow-hidden rounded-[1.2rem] border ${cBdr(spec)}`}>
+          <div className="overflow-hidden rounded-[1.2rem] border border-[#FECE00]/[0.08] bg-[#0A0A0A]">
             {specRows.map((row, i) => (
               <div
                 key={row.l}
                 className={`flex items-start justify-between gap-8 px-6 py-4 ${
-                  i < specRows.length - 1 ? `border-b ${cBdr(spec)}` : ''
+                  i < specRows.length - 1 ? 'border-b border-white/[0.06]' : ''
                 }`}
               >
-                <span className={`min-w-[160px] text-[0.72rem] font-medium ${cBody(spec)}`}>
+                <span className="min-w-[160px] text-[0.72rem] font-medium text-white/50">
                   {row.l}
                 </span>
-                <span className={`text-right text-[0.72rem] font-semibold ${cTx(spec)}`}>
+                <span className="text-right text-[0.72rem] font-semibold text-white/85">
                   {row.v}
                 </span>
               </div>
@@ -584,7 +611,7 @@ export default function ProductPageTemplate({
           S6 — APPLICATIONS & USE CASES
       ══════════════════════════════════════════════════════ */}
       <section style={{ background: secBg('applications') }} className="relative overflow-hidden">
-        {!appl && <GridTexture />}
+        {appl ? <LightGridTexture /> : <GridTexture />}
         <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-16">
           <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-20">
             <div>
@@ -619,7 +646,7 @@ export default function ProductPageTemplate({
           S7 — COMPATIBILITY & INTEGRATION
       ══════════════════════════════════════════════════════ */}
       <section style={{ background: secBg('compatibility') }} className="relative overflow-hidden">
-        {!comp && <GridTexture />}
+        {comp ? <LightGridTexture /> : <GridTexture />}
         <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-16">
           <p className={`mb-2 text-[0.6rem] font-bold uppercase tracking-[0.26em] ${cEye(comp)}`}>
             Works with
@@ -652,7 +679,7 @@ export default function ProductPageTemplate({
       ══════════════════════════════════════════════════════ */}
       {references.length > 0 && (
         <section style={{ background: secBg('references') }} className="relative overflow-hidden">
-          {!refs && <GridTexture />}
+          {refs ? <LightGridTexture /> : <GridTexture />}
           <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-16">
             <p className={`mb-2 text-[0.6rem] font-bold uppercase tracking-[0.26em] ${cEye(refs)}`}>
               In the field
@@ -668,7 +695,7 @@ export default function ProductPageTemplate({
                   key={i}
                   className={`rounded-[1rem] border p-6 ${
                     refs
-                      ? 'border-black/[0.08] bg-black/[0.02]'
+                      ? 'border-[#0A0A0A]/[0.07] bg-white/70 shadow-[0_4px_14px_rgba(0,0,0,0.05)]'
                       : 'border-[#FECE00]/[0.12] bg-[#FECE00]/[0.03]'
                   }`}
                 >
@@ -691,7 +718,7 @@ export default function ProductPageTemplate({
           S9 — RELATED PRODUCTS
       ══════════════════════════════════════════════════════ */}
       <section style={{ background: secBg('related') }} className="relative overflow-hidden">
-        {!rltd && <GridTexture />}
+        {rltd ? <LightGridTexture /> : <GridTexture />}
         <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-16">
           <p className={`mb-2 text-[0.6rem] font-bold uppercase tracking-[0.26em] ${cEye(rltd)}`}>
             You may also need
@@ -707,7 +734,7 @@ export default function ProductPageTemplate({
                 key={item.href}
                 className={`group flex flex-col overflow-hidden rounded-[1.1rem] border transition-all duration-300 hover:-translate-y-0.5 ${
                   rltd
-                    ? 'border-black/[0.08] bg-white/50 hover:border-black/[0.16] hover:bg-white/80'
+                    ? 'border-[#0A0A0A]/[0.07] bg-white/70 shadow-[0_4px_14px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.09)]'
                     : 'border-white/[0.06] bg-white/[0.02] hover:border-white/[0.14]'
                 }`}
               >
