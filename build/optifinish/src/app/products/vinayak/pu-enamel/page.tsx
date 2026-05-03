@@ -1,0 +1,146 @@
+import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+
+export const metadata = {
+  title: 'PU Enamel & Synthetic Enamel | Nerolac | OptiFinish',
+  description:
+    'Nerolac PU Enamel 10-in-1, Hi-Gloss Synthetic Enamel, and Satin Enamel — premium decorative and industrial enamel finishes. Supplied by Vinayak Agencies.',
+};
+
+export default function VinayakPuEnamelPage() {
+  return (
+    <ProductPageTemplate
+      theme="light"
+
+      breadcrumb={[
+        { label: 'Products', href: '/products' },
+        { label: 'Vinayak Agencies', href: '/products/vinayak' },
+        { label: 'PU Enamel', href: '/products/vinayak/pu-enamel' },
+      ]}
+      badge="Vinayak Agencies — Enamel Finishes"
+      eyebrow="Nerolac PU Enamel · Hi-Gloss Synthetic · Satin Enamel"
+      headline="Premium enamel finishes."
+      headlineAccent="Industrial and decorative."
+      subline="Nerolac PU Enamel 10-in-1, Hi-Gloss Synthetic Enamel, and Satin Enamel — premium surface finish formulations for metal, wood, and primed substrates in industrial production and high-specification decorative applications."
+      heroStats={[
+        { val: '10-in-1', label: 'PU Enamel multi-benefit' },
+        { val: 'Hi-Gloss', label: 'Synthetic enamel grade' },
+        { val: 'Satin', label: 'Low-sheen finish grade' },
+      ]}
+      heroImageLabel="Vinayak Agencies · Nerolac PU Enamel, Hi-Gloss Synthetic, Satin Enamel"
+      enquireSlug="vinayak-pu-enamel"
+      backHref="/products/vinayak"
+      backLabel="← Back to Vinayak Agencies"
+
+      problemHeadline="Standard enamel"
+      problemAccent="doesn't always meet the finish brief."
+      problemBody="Basic alkyd enamel yellows under UV, loses gloss too quickly in high-traffic environments, and doesn't offer the durability expected in industrial or premium decorative applications. Nerolac's PU Enamel and synthetic enamel range provides upgraded surface performance — better gloss retention, improved hardness, and longer service life."
+      benefits={[
+        'Nerolac PU Enamel 10-in-1: polyurethane-modified multi-benefit enamel — superior hardness, gloss retention, and washability vs standard alkyd',
+        'Nerolac Hi-Gloss Synthetic Enamel: full-gloss alkyd enamel for metal and wood — cost-effective high-gloss industrial finish',
+        'Nerolac Satin Enamel: low-sheen finish grade for applications requiring a controlled, non-reflective surface',
+        'All grades supplied through Vinayak Agencies as authorised Nerolac distributor',
+        'Suitable for brush, roller, and spray gun application depending on grade',
+        'Wide colour range across all three grades — standard and custom colours on request',
+      ]}
+
+      variants={[
+        {
+          id: 'pu-enamel',
+          label: 'PU Enamel 10-in-1',
+          tag: 'Polyurethane Modified — Premium Grade',
+          headline: 'Multi-benefit PU enamel for demanding applications.',
+          body: 'Nerolac PU Enamel 10-in-1 combines polyurethane modification with alkyd technology — delivering superior hardness, gloss retention, stain resistance, and washability in a single product. The preferred grade where standard enamel gloss life or hardness is insufficient.',
+          specs: [
+            { l: 'Binder type', v: 'Polyurethane-modified alkyd' },
+            { l: 'Finish', v: 'High gloss — superior gloss retention vs standard alkyd' },
+            { l: 'Key benefits', v: 'Hardness, gloss retention, stain resistance, washability' },
+            { l: 'Application', v: 'Brush, roller, or spray — metal and wood substrates' },
+          ],
+          imageLabel: 'Nerolac PU Enamel 10-in-1 · polyurethane modified premium enamel',
+        },
+        {
+          id: 'hi-gloss',
+          label: 'Hi-Gloss Synthetic Enamel',
+          tag: 'Full Gloss — Industrial & Decorative',
+          headline: 'Full-gloss alkyd enamel for metal and wood.',
+          body: 'Nerolac Hi-Gloss Synthetic Enamel — standard alkyd enamel formulation providing a full-gloss finish on metal and wood substrates. Cost-effective for high-volume industrial painting and general maintenance coating where gloss is the primary requirement.',
+          specs: [
+            { l: 'Binder type', v: 'Alkyd synthetic' },
+            { l: 'Finish', v: 'Full gloss' },
+            { l: 'Best for', v: 'Industrial metal, structural steel, doors, grilles, and general maintenance' },
+            { l: 'Application', v: 'Brush, roller, or spray application' },
+          ],
+          imageLabel: 'Nerolac Hi-Gloss Synthetic Enamel · full-gloss industrial enamel',
+        },
+        {
+          id: 'satin',
+          label: 'Satin Enamel',
+          tag: 'Low-Sheen — Controlled Finish',
+          headline: 'Controlled low-sheen finish where gloss is not required.',
+          body: 'Nerolac Satin Enamel provides a controlled low-sheen surface finish for applications where a full-gloss surface would be visually inappropriate or show surface imperfections. Suitable for interior metal, cabinetry, and surface finishing where a premium look without full gloss is specified.',
+          specs: [
+            { l: 'Binder type', v: 'Alkyd synthetic — low-sheen grade' },
+            { l: 'Finish', v: 'Satin — low sheen, controlled reflectance' },
+            { l: 'Best for', v: 'Interior metal surfaces, cabinetry, and premium decorative applications' },
+            { l: 'Application', v: 'Brush, roller, or spray application' },
+          ],
+          imageLabel: 'Nerolac Satin Enamel · low-sheen controlled finish enamel',
+        },
+      ]}
+      variantsSectionTitle="Select the Nerolac enamel grade for your application"
+
+      specRows={[
+        { l: 'PU Enamel 10-in-1', v: 'Polyurethane-modified alkyd — premium hardness, gloss retention, stain resistance' },
+        { l: 'Hi-Gloss Synthetic', v: 'Standard alkyd — full gloss finish for industrial metal and wood' },
+        { l: 'Satin Enamel', v: 'Alkyd low-sheen — controlled reflectance for interior and decorative applications' },
+        { l: 'Application method', v: 'Brush, roller, or spray (formulation-specific — confirm with Vinayak Agencies)' },
+        { l: 'Substrate', v: 'Metal and wood — primed substrate recommended for all grades' },
+        { l: 'Supplied by', v: 'Vinayak Agencies — authorised Nerolac distributor, India' },
+      ]}
+
+      applications={[
+        'Industrial metal fabrication — structural steel, gates, grilles, and frames',
+        'Maintenance and repair coating for metal equipment and infrastructure',
+        'Interior metal surfaces requiring a non-gloss controlled finish (Satin grade)',
+        'Premium decorative applications on wood and metal where gloss retention matters (PU Enamel)',
+        'High-volume production painting where cost-effective gloss enamel is specified (Hi-Gloss Synthetic)',
+        'General maintenance painting for industrial facilities and equipment',
+      ]}
+
+      compatibilityTags={[
+        'Dürr EcoGun HVLP and cup gun (spray application)',
+        'OptiFinish liquid spray booth',
+        'Metal and wood substrates with correct primer',
+        'Vinayak Agencies primer and undercoat range',
+        'Standard alkyd thinners (confirm per grade)',
+      ]}
+
+      references={[]}
+
+      related={[
+        {
+          name: 'Liquid Industrial Paints',
+          category: 'Vinayak Agencies',
+          href: '/products/vinayak/liquid-paint',
+          enquireSlug: 'vinayak-liquid-paint',
+        },
+        {
+          name: 'Touch-up Paints',
+          category: 'Vinayak Agencies',
+          href: '/products/vinayak/touchup-paints',
+          enquireSlug: 'vinayak-touchup-paints',
+        },
+        {
+          name: 'Adhesives',
+          category: 'Vinayak Agencies',
+          href: '/products/vinayak/adhesives',
+          enquireSlug: 'vinayak-adhesives',
+        },
+      ]}
+
+      ctaHeadline="Premium enamel for your specification."
+      ctaAccent="PU, Hi-Gloss, or Satin — Vinayak stocks all three."
+      ctaBody="Talk to OptiFinish about your substrate, finish requirement, and application volume — we'll specify the right Nerolac enamel grade through Vinayak Agencies."
+    />
+  );
+}

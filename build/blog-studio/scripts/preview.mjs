@@ -125,7 +125,32 @@ SNAPSHOT FIELDS:
 - structuralShape: pillar_guide | case_study | facility_tour | troubleshooting_drilldown | comparison_matrix | cost_of_inaction | immersive_essay
 - lever: 1-line specific differentiator
 
-IMAGE PROMPTS: exactly 2 inline. anchorHeading must be EXACT H2 text. Each prompt 30-80 words, no brand suffix, no sci-fi clichés, no hi-vis vests, no glossy reflections, no decorative robotic arms unless topic is about robots. Aim for: Indian industrial bay during normal operation, calibrated instrument on a panel, finished coated component cooling, engineer in mid-task without posed eye contact, macro process detail.
+IMAGE PROMPTS — SUBJECT MUST MATCH THE SECTION CONTENT. Exactly 2 inline. anchorHeading must be EXACT H2 text. Front-load the subject as the FIRST phrase of the prompt. Each prompt 30-80 words.
+
+The visual subject must be the specific noun the section is about. A generic "industrial bay" shot is NOT acceptable for a section about a pump, defect, or instrument.
+
+SUBJECT MAPPING EXAMPLES (follow this pattern):
+- Section about the OptiSpray pump → "A GEMA-style powder application pump, canister and nozzle visible, control valves and powder hose in frame, mounted at a powder coating booth"
+- Section about cure window control → "A calibrated K-type thermocouple probe resting against a freshly coated metal panel inside a curing oven, glowing radiant heating elements diffused in background"
+- Section about outgassing on cast aluminium → "A coated cast-aluminium part on a cooling rack showing fine micro-blistering, raked side light revealing the defect texture"
+- Section about pretreatment chemistry → "A steel part being lowered into a degreasing tank, stainless dip-cage visible, faint chemical mist hovering above the bath surface"
+- Section about transfer efficiency / Faraday-cage → "An electrostatic powder coating gun mid-spray on a recessed metal part, visible cloud of powder mist, gun-to-part distance clearly framed"
+- Section about plant capacity / line layout → "A wide overhead view of a powder coating conveyor line, parts hanging on hooks moving through a curing oven entrance"
+- Section about a curing oven / thermal profile → "The interior of an industrial curing oven photographed from the entrance, infrared heating panels glowing, panels mid-cure on mesh conveyor"
+- Section about a finished outcome / case study result → "A finished powder-coated automotive body panel cooling under exit-tunnel light, smooth finish reflecting overhead bars"
+- Section about facility / R&D booth → "A small R&D-scale spray booth at the OptiFinish Greater Noida facility, instrumented with thermal probes and powder hoppers, late-afternoon natural light"
+- Section about defect troubleshooting (orange peel) → "Macro detail of an orange-peel-textured powder-coated surface, raking side light exposing the dimpled topology"
+
+PROMPT SHAPE: "<SUBJECT 1-2 sentences>. <Composition>. <Mood line>."
+
+ABSTRACT TOPICS RULE (regulations, policies, markets, finance, compliance):
+NEVER default to a chart, graph, infographic, or data visualisation — Flux renders fake-looking graphs. Pick a CONCRETE PHYSICAL SCENE that REPRESENTS the abstract idea.
+- EU CBAM → "A coil of cold-rolled steel wrapped for export, customs paperwork resting on top, 'EU' destination stamp visible on the bill of lading"
+- PFAS phase-out → "A row of powder bags labelled 'PFAS-free' on a warehouse pallet, scanner gun and compliance clipboard in foreground"
+- BEE star-rating → "A washing-machine cabinet panel coming off a powder line under bright inspection light, the gloss surface intact under raking light"
+- AkzoNobel-Axalta merger → "Two powder bags from different brands resting side-by-side on a procurement bench, a barcode reader between them"
+
+No brand suffix. No generic "industrial bay" unless the section is literally a wide facility tour. No hi-vis vests, no glossy reflections, no posed humans with eye contact. NO charts, graphs, infographics, screenshots, text-on-screens, or data visualisations of any kind.
 
 OUTPUT: Strict JSON only.
 {
@@ -168,7 +193,7 @@ async function chatJson(systemPrompt, userPrompt, opts = {}) {
   return JSON.parse(cleaned);
 }
 
-async function fluxImage(prompt, { steps = 30, seed = 0 } = {}) {
+async function fluxImage(prompt, { steps = 30, seed = 0, attempt = 1 } = {}) {
   const res = await fetch(`${PROXY}/nvidia/flux/flux.1-dev`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -185,6 +210,12 @@ async function fluxImage(prompt, { steps = 30, seed = 0 } = {}) {
   });
   if (!res.ok) {
     const t = await res.text();
+    // Auto-retry on transient 5xx — NVIDIA's hosted Flux occasionally hiccups
+    if (res.status >= 500 && attempt < 3) {
+      console.log(`     Flux ${res.status} on attempt ${attempt}, retrying with new seed…`);
+      await new Promise((r) => setTimeout(r, 1500));
+      return fluxImage(prompt, { steps, seed: seed + 1000, attempt: attempt + 1 });
+    }
     throw new Error(`Flux ${res.status}: ${t.slice(0, 300)}`);
   }
   const j = await res.json();

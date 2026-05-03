@@ -59,13 +59,40 @@ Produce 5 specific, useful snapshot lines:
 - lever: 1-line specific differentiator the post earns (e.g. "Behaviour under heat-soak over feature parity", "Operating cost over acquisition cost")
 
 ═════════════════════════════════════════════
-  IMAGE PROMPTS
+  IMAGE PROMPTS — SUBJECT MUST MATCH SECTION CONTENT
 ═════════════════════════════════════════════
 Produce exactly 2 image placements. Both have position: "inline". Each anchorHeading must be the EXACT text of an H2 you wrote in bodyHtml — not a paraphrase.
 
-Image prompts: 30-80 words each. Describe subject, mood, framing, lighting. NO brand-style suffix (the system appends that). NO sci-fi factory clichés, no hi-vis vests, no glossy-floor reflections, no decorative robotic arms unless the topic is literally about robots.
+CRITICAL RULE: The visual SUBJECT of each image must be the specific noun the section is about. A generic "industrial bay" shot is not acceptable for a section about a specific pump, defect, or instrument. Front-load the subject as the FIRST phrase of the prompt.
 
-Aim for: an Indian industrial bay during normal operation, a calibrated instrument resting against a panel, a finished coated component cooling, an engineer in mid-task without posed eye contact, a process detail at macro scale.
+SUBJECT MAPPING EXAMPLES (study these — your prompt must follow this pattern):
+- Section about the OptiSpray pump → SUBJECT: "A GEMA-style powder application pump, canister and nozzle visible, control valves and powder hose in frame, mounted at a powder coating booth"
+- Section about cure window control → SUBJECT: "A calibrated K-type thermocouple probe resting against a freshly coated metal panel inside a curing oven, glowing radiant heating elements diffused in the background"
+- Section about outgassing on cast aluminium → SUBJECT: "A coated cast-aluminium part on a cooling rack, surface showing fine micro-blistering across one face, raked side light revealing the defect texture"
+- Section about pretreatment chemistry → SUBJECT: "A steel part being lowered into a degreasing tank, stainless dip-cage visible, faint chemical mist hovering above the bath surface"
+- Section about transfer efficiency / Faraday-cage geometry → SUBJECT: "An electrostatic powder coating gun mid-spray on a recessed metal part, visible cloud of powder mist, gun-to-part distance clearly framed"
+- Section about plant capacity / line layout → SUBJECT: "A wide overhead view of a powder coating conveyor line, parts hanging on hooks moving through a curing oven entrance"
+- Section about an oven / thermal profile → SUBJECT: "The interior of an industrial curing oven photographed from the entrance, infrared heating panels glowing, panels mid-cure on a mesh conveyor"
+- Section about a finished outcome / case study result → SUBJECT: "A finished powder-coated automotive body panel cooling under exit-tunnel light, smooth finish reflecting the tunnel's overhead bars"
+- Section about a facility tour / R&D booth → SUBJECT: "A small R&D-scale spray booth at the OptiFinish Greater Noida facility, instrumented with thermal probes and powder hoppers, late-afternoon natural light"
+- Section about defect troubleshooting (orange peel) → SUBJECT: "Macro detail of an orange-peel-textured powder-coated surface, raking side light exposing the dimpled topology"
+
+PROMPT SHAPE (30-80 words):
+"<SUBJECT 1-2 sentences>. <Composition: framing, focal point, negative space>. <Mood: 1 line>."
+
+ABSTRACT TOPICS RULE (regulations, policies, markets, finance, compliance):
+NEVER default to a chart, graph, infographic, or data visualisation — Flux renders fake-looking graphs. Instead pick a CONCRETE PHYSICAL SCENE that REPRESENTS the abstract idea.
+- Topic: EU CBAM regulation → SUBJECT: "A coil of cold-rolled steel sheet wrapped for export, customs paperwork resting on top, 'EU' destination stamp visible on the bill of lading"
+- Topic: PFAS phase-out compliance → SUBJECT: "A row of powder bags labelled 'PFAS-free' on a warehouse pallet, scanner gun and compliance clipboard in foreground"
+- Topic: BEE star-rating mandate → SUBJECT: "A washing-machine cabinet panel coming off a powder line under bright inspection light, the gloss surface intact under raking light"
+- Topic: PLI scheme growth → SUBJECT: "A new line under installation in a freshly painted factory bay, framework girders against a polished concrete floor"
+- Topic: AkzoNobel-Axalta merger market shift → SUBJECT: "Two large powder bags from different brands resting side-by-side on a procurement bench, a barcode reader between them"
+
+NO brand-style suffix (the system appends that).
+NO generic "Indian industrial bay during normal operation" unless the section is literally a wide facility tour shot.
+NO sci-fi clichés, no hi-vis vests, no glossy-floor reflections, no decorative robotic arms unless the topic is about robots.
+NO posed humans with eye contact. Hands-at-work or absent-from-frame only.
+NO charts, graphs, infographics, screenshots, text-on-screens, or data visualisations of any kind.
 
 ═════════════════════════════════════════════
   OUTPUT
