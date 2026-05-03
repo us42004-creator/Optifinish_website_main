@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import HeroDark                  from '@/components/sections/home/HeroDark';
 import ProprietaryAutomation     from '@/components/sections/home/ProprietaryAutomation';
 import WhatWeOffer               from '@/components/sections/home/WhatWeOffer';
@@ -15,7 +16,9 @@ export default function Home() {
       {/* S2 — Light */}
       <ProprietaryAutomation />
       {/* S3 — Dark */}
-      <WhatWeOffer />
+      <Suspense fallback={null}>
+        <WhatWeOffer />
+      </Suspense>
       {/* S4 — Light */}
       <FacilityTeaserFilmstrip />
       {/* S5 — Dark */}
