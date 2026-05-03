@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Scan to open Blog Studio on phone</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #0A0A0B;
+      color: #FAFAF7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: system-ui, sans-serif;
+    }
+    .card {
+      background: #111113;
+      border: 1px solid #2A2A30;
+      padding: 48px;
+      border-radius: 24px;
+      text-align: center;
+      max-width: 480px;
+    }
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #FF6B35;
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 12px;
+    }
+    h1 { font-size: 22px; margin: 0 0 8px; }
+    p { color: #9CA3AF; font-size: 14px; line-height: 1.6; margin: 0 0 28px; }
+    .qr-wrap {
+      background: white;
+      padding: 16px;
+      border-radius: 12px;
+      display: inline-block;
+    }
+    .url {
+      margin-top: 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #FF8B5C;
+    }
+    .hint {
+      margin-top: 20px;
+      font-size: 11px;
+      color: #6B7280;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="eyebrow">OptiFinish Blog Studio</div>
+    <h1>Scan to open on your phone</h1>
+    <p>Phone must be on the same Wi-Fi as this computer. The studio will live-update as we build.</p>
+    <div class="qr-wrap">
+      <img
+        src="https://api.qrserver.com/v1/create-qr-code/?size=320x320&margin=0&data=http%3A%2F%2F192.168.1.6%3A5000"
+        alt="QR code to http://192.168.1.6:5000"
+        width="320" height="320" />
+    </div>
+    <div class="url">http://192.168.1.6:5000</div>
+    <div class="hint">Same wifi only · view, not command</div>
+  </div>
+</body>
+</html>

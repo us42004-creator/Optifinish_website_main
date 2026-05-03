@@ -1,0 +1,10 @@
+node_modules
+dist
+.env
+.env.local
+*.log
+.DS_Store
+
+# Generated artefacts — re-rendered each time scripts/preview.mjs runs
+public/preview.html
+flux_test*.bin
