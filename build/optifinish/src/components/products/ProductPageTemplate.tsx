@@ -285,32 +285,34 @@ export default function ProductPageTemplate({
     <main>
 
       {/* ══════════════════════════════════════════════════════
-          BREADCRUMB BAR — full-width, above hero
+          BREADCRUMB + S1 — shared wrapper so grid covers the
+          full page from top (behind navbar) into hero
       ══════════════════════════════════════════════════════ */}
-      <div className={`border-b pt-[60px] md:pt-[68px] ${isLight ? 'border-black/[0.07] bg-[#f1efea]' : 'border-white/[0.06] bg-[#070809]'}`}>
-        <div className="mx-auto max-w-7xl px-6 py-3 lg:px-16">
-          <nav className={`flex flex-wrap items-center gap-1.5 text-[0.58rem] font-bold uppercase tracking-[0.2em] ${isLight ? 'text-[#0A0A0A]/35' : 'text-white/30'}`}>
-            {breadcrumb.map((crumb, i) => (
-              <span key={crumb.href} className="flex items-center gap-1.5">
-                {i > 0 && <span className="opacity-40">/</span>}
-                {i < breadcrumb.length - 1 ? (
-                  <Link href={crumb.href} className="transition-opacity hover:opacity-80">
-                    {crumb.label}
-                  </Link>
-                ) : (
-                  <span className={isLight ? 'text-[#0A0A0A]/60' : 'text-white/55'}>{crumb.label}</span>
-                )}
-              </span>
-            ))}
-          </nav>
-        </div>
-      </div>
-
-      {/* ══════════════════════════════════════════════════════
-          S1 — HERO
-      ══════════════════════════════════════════════════════ */}
-      <section style={{ background: secBg('hero') }} className="relative overflow-hidden">
+      <div className="relative overflow-hidden" style={{ background: secBg('hero') }}>
         {hero ? <LightGridTexture /> : <GridTexture />}
+
+        {/* Breadcrumb bar */}
+        <div className={`relative z-10 border-b pt-[60px] md:pt-[68px] ${isLight ? 'border-black/[0.07]' : 'border-white/[0.06]'}`}>
+          <div className="mx-auto max-w-7xl px-6 py-3 lg:px-16">
+            <nav className={`flex flex-wrap items-center gap-1.5 text-[0.58rem] font-bold uppercase tracking-[0.2em] ${isLight ? 'text-[#0A0A0A]/35' : 'text-white/30'}`}>
+              {breadcrumb.map((crumb, i) => (
+                <span key={crumb.href} className="flex items-center gap-1.5">
+                  {i > 0 && <span className="opacity-40">/</span>}
+                  {i < breadcrumb.length - 1 ? (
+                    <Link href={crumb.href} className="transition-opacity hover:opacity-80">
+                      {crumb.label}
+                    </Link>
+                  ) : (
+                    <span className={isLight ? 'text-[#0A0A0A]/60' : 'text-white/55'}>{crumb.label}</span>
+                  )}
+                </span>
+              ))}
+            </nav>
+          </div>
+        </div>
+
+        {/* Hero content */}
+        <section className="relative">
         <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 md:py-28 lg:px-16">
 
           <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-20">
@@ -377,7 +379,8 @@ export default function ProductPageTemplate({
             </div>
           </div>
         </div>
-      </section>
+        </section>
+      </div>{/* end breadcrumb+hero wrapper */}
 
       {/* ══════════════════════════════════════════════════════
           S2 — PROBLEM / VALUE PROPOSITION
