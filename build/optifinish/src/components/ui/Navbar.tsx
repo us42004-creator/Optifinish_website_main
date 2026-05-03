@@ -35,7 +35,7 @@ const PRODUCTS_MENU = [
     href: '/products/automation',
     count: 4,
     products: [
-      { name: 'Z-TAP Robot System', href: '/products/automation/z-tap' },
+      { name: 'Z-TAP Robot System', href: '/products/automation/z-tap', external: false },
       { name: 'Opti Recip ZA01', href: '/products/automation/za01' },
       { name: 'PS Vibratory Sieve Machine', href: '/products/automation/sieve-machine' },
       { name: 'Auto Spray Optimisation', href: '/products/automation/auto-spray-optimisation' },
@@ -98,6 +98,9 @@ const NAV_LINKS = [
 ];
 
 const DARK_PAGES = ['/', '/sandbox/hero-b', '/blog', '/resources/blog'];
+const isDarkPath = (p: string) =>
+  DARK_PAGES.includes(p) ||
+  (p.startsWith('/products/') && p.split('/').filter(Boolean).length > 1);
 
 /* Fluid eased scroll — cubic in-out over ~1.2s */
 function smoothScrollTo(element: Element) {
@@ -132,7 +135,7 @@ export default function Navbar() {
   const closeTimer                      = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pathname                        = usePathname();
   const router                          = useRouter();
-  const isDark = DARK_PAGES.includes(pathname);
+  const isDark = isDarkPath(pathname);
 
   const activeCat = PRODUCTS_MENU.find((c) => c.slug === hoveredCat) ?? PRODUCTS_MENU[0];
 
@@ -383,18 +386,33 @@ export default function Navbar() {
                           {activeCat.label}
                         </p>
                         <div className="grid grid-cols-2 gap-x-1 px-2">
-                          {activeCat.products.map((prod) => (
-                            <Link
-                              key={prod.href}
-                              href={prod.href}
-                              className="group/prod flex items-center gap-2 rounded-[0.5rem] px-3 py-2 transition-all duration-150 hover:bg-white/[0.05]"
-                            >
-                              <span className="h-1 w-1 flex-shrink-0 rounded-full bg-[#FECE00]/50 transition-colors group-hover/prod:bg-[#FECE00]" />
-                              <span className="text-[0.72rem] font-medium leading-snug text-white/70 transition-colors group-hover/prod:text-white">
-                                {prod.name}
-                              </span>
-                            </Link>
-                          ))}
+                          {activeCat.products.map((prod) =>
+                            prod.external ? (
+                              <a
+                                key={prod.href}
+                                href={prod.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group/prod flex items-center gap-2 rounded-[0.5rem] px-3 py-2 transition-all duration-150 hover:bg-white/[0.05]"
+                              >
+                                <span className="h-1 w-1 flex-shrink-0 rounded-full bg-[#FECE00]/50 transition-colors group-hover/prod:bg-[#FECE00]" />
+                                <span className="text-[0.72rem] font-medium leading-snug text-white/70 transition-colors group-hover/prod:text-white">
+                                  {prod.name} ↗
+                                </span>
+                              </a>
+                            ) : (
+                              <Link
+                                key={prod.href}
+                                href={prod.href}
+                                className="group/prod flex items-center gap-2 rounded-[0.5rem] px-3 py-2 transition-all duration-150 hover:bg-white/[0.05]"
+                              >
+                                <span className="h-1 w-1 flex-shrink-0 rounded-full bg-[#FECE00]/50 transition-colors group-hover/prod:bg-[#FECE00]" />
+                                <span className="text-[0.72rem] font-medium leading-snug text-white/70 transition-colors group-hover/prod:text-white">
+                                  {prod.name}
+                                </span>
+                              </Link>
+                            )
+                          )}
                         </div>
 
                         {/* View all in category */}

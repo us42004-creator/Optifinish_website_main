@@ -30,7 +30,7 @@ export default function CategoryHero({
 
   return (
     <section
-      className={`relative overflow-hidden py-20 md:py-28 ${
+      className={`relative overflow-hidden pb-20 pt-[100px] md:pb-28 md:pt-[108px] ${
         isDark ? 'bg-[#070809]' : 'bg-[#f1efea]'
       }`}
     >

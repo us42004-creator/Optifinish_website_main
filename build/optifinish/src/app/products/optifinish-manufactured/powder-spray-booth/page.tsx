@@ -3,7 +3,7 @@ import ProductPageTemplate from '@/components/products/ProductPageTemplate';
 export const metadata = {
   title: 'Powder Spray Booth | OptiFinish Manufactured',
   description:
-    'MS and SS-304 powder spray booths with 98% Venturi cyclone recovery. CPCB-compliant secondary bag filter. 20HP suction motor. Custom dimensions. Manufactured in Greater Noida.',
+    'MS and SS-304 powder spray booths with 92–96% Venturi cyclone recovery. CPCB-compliant secondary bag filter. 20HP suction motor. Custom dimensions. Manufactured in Greater Noida.',
 };
 
 export default function PowderSprayBoothPage() {
@@ -18,11 +18,11 @@ export default function PowderSprayBoothPage() {
       ]}
       badge="In-house Manufactured — Greater Noida"
       eyebrow="MS / SS-304 — Manual & Automatic"
-      headline="98% powder recovery."
+      headline="92–96% powder recovery."
       headlineAccent="Built into the booth."
-      subline="A powder spray enclosure with integrated SS-304 Venturi recovery system and secondary bag filter — recovering 98% of over-sprayed powder and returning it to the hopper, continuously, without manual intervention."
+      subline="A powder spray enclosure with integrated SS-304 Venturi recovery system and secondary bag filter — recovering 92–96% of over-sprayed powder and returning it to the hopper, continuously, without manual intervention."
       heroStats={[
-        { val: '98%', label: 'Powder recovery rate' },
+        { val: '92–96%', label: 'Powder recovery rate' },
         { val: '20HP', label: 'Suction motor' },
         { val: 'CPCB', label: 'Compliant exhaust' },
       ]}
@@ -33,9 +33,9 @@ export default function PowderSprayBoothPage() {
 
       problemHeadline="Powder waste is"
       problemAccent="your most controllable cost."
-      problemBody="Over-sprayed powder that isn't recovered is powder you paid for and threw away. A well-designed booth with an efficient Venturi recovery system and correctly sized cyclone recovers 98% of over-sprayed powder and routes it back to the hopper — dramatically reducing material costs and keeping the booth clean."
+      problemBody="Over-sprayed powder that isn't recovered is powder you paid for and threw away. A well-designed booth with an efficient Venturi recovery system and correctly sized cyclone recovers 92–96% of over-sprayed powder and routes it back to the hopper — dramatically reducing material costs and keeping the booth clean."
       benefits={[
-        'SS-304 Venturi tube array — 98% powder recovery by centrifugal separation without moving parts',
+        'SS-304 Venturi tube array — 92–96% powder recovery by centrifugal separation without moving parts',
         '20HP suction motor with Siemens-class VFD panel — consistent negative pressure throughout the booth',
         'Secondary bag filter captures residual fine particles before exhaust — CPCB compliant',
         'Compatible with GEMA manual/automatic guns, OptiFinish ZA01, Z-TAP, and all standard powder guns',
@@ -46,7 +46,7 @@ export default function PowderSprayBoothPage() {
       specRows={[
         { l: 'Standard internal size', v: '5000 × 1200 × 3050 mm (custom to part and gun layout)' },
         { l: 'Construction', v: 'MS standard; full SS-304 available' },
-        { l: 'Recovery system', v: 'SS-304 Venturi tube array — 98% powder recovery' },
+        { l: 'Recovery system', v: 'SS-304 Venturi tube array — 92–96% powder recovery' },
         { l: 'Suction motor', v: '20HP; Siemens-class VFD electrical panel' },
         { l: 'Airflow', v: '8,000–32,000 CMH depending on booth size' },
         { l: 'Secondary filter', v: 'Bag filter — CPCB particulate emission compliant' },
@@ -107,7 +107,7 @@ export default function PowderSprayBoothPage() {
       ]}
 
       ctaHeadline="Specify your powder spray booth."
-      ctaAccent="98% recovery, built in."
+      ctaAccent="92–96% recovery, built in."
       ctaBody="Give OptiFinish your part dimensions, gun count, and throughput requirements — we'll design the booth with correct airflow, Venturi sizing, and motor specification."
     />
   );

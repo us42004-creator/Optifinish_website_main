@@ -3,7 +3,7 @@ import ProductPageTemplate from '@/components/products/ProductPageTemplate';
 export const metadata = {
   title: 'Cyclone & Dust Collector | OptiFinish Manufactured',
   description:
-    'Modular powder recovery and filtration system. 98% cyclone recovery, 3000–32000 CMH airflow range. Secondary bag filter for CPCB compliance. MS or SS-304 construction.',
+    'Modular powder recovery and filtration system. 92–96% cyclone recovery, 3000–32000 CMH airflow range. Secondary bag filter for CPCB compliance. MS or SS-304 construction.',
 };
 
 export default function CycloneDustCollectorPage() {
@@ -17,12 +17,12 @@ export default function CycloneDustCollectorPage() {
         { label: 'Cyclone & Dust Collector', href: '/products/optifinish-manufactured/cyclone-dust-collector' },
       ]}
       badge="In-house Manufactured — Greater Noida"
-      eyebrow="98% Recovery — 3,000 to 32,000 CMH"
+      eyebrow="92–96% Recovery — 3,000 to 32,000 CMH"
       headline="Recover the powder."
       headlineAccent="Meet the norms."
-      subline="A modular powder recovery and exhaust filtration system — deployed standalone or integrated within any OptiFinish booth — delivering 98% powder reclaim efficiency and CPCB-compliant exhaust across a 3,000–32,000 CMH airflow range."
+      subline="A modular powder recovery and exhaust filtration system — deployed standalone or integrated within any OptiFinish booth — delivering 92–96% powder reclaim efficiency and CPCB-compliant exhaust across a 3,000–32,000 CMH airflow range."
       heroStats={[
-        { val: '98%', label: 'Cyclone recovery rate' },
+        { val: '92–96%', label: 'Cyclone recovery rate' },
         { val: '32,000', label: 'Max CMH airflow' },
         { val: 'CPCB', label: 'Compliant exhaust' },
       ]}
@@ -35,7 +35,7 @@ export default function CycloneDustCollectorPage() {
       problemAccent="is money and a compliance failure."
       problemBody="Over-sprayed powder that isn't captured by the primary recovery system goes one of two places: back into the working environment or out of the exhaust stack. Both are problems — one is a health hazard and waste, the other is a CPCB violation. The cyclone and bag filter system handles both with one modular unit."
       benefits={[
-        'Primary cyclone stage: 98% powder recovery by centrifugal force — no moving parts in the powder stream',
+        'Primary cyclone stage: 92–96% powder recovery by centrifugal force — no moving parts in the powder stream',
         'Recovered powder returns directly to the hopper — continuous, closed-loop recovery without manual intervention',
         'Secondary bag filter polishes exhaust air to CPCB particulate emission compliance',
         'Modular design: bag replacement without production shutdown; accessible panels for maintenance',
@@ -45,7 +45,7 @@ export default function CycloneDustCollectorPage() {
 
       specRows={[
         { l: 'Airflow range', v: '3,000–32,000 CMH (sized to booth dimensions and production load)' },
-        { l: 'Primary stage', v: 'Cyclone separator — 98% powder recovery by centrifugal separation' },
+        { l: 'Primary stage', v: 'Cyclone separator — 92–96% powder recovery by centrifugal separation' },
         { l: 'Secondary stage', v: 'Bag filter — CPCB compliant particulate exhaust' },
         { l: 'Construction', v: 'MS or SS-304' },
         { l: 'Powder compatibility', v: 'Epoxy, polyester, PU, metallic, textured, fine-particle grades' },
@@ -94,7 +94,7 @@ export default function CycloneDustCollectorPage() {
       ]}
 
       ctaHeadline="Size your recovery system."
-      ctaAccent="98% recovery, CPCB compliant."
+      ctaAccent="92–96% recovery, CPCB compliant."
       ctaBody="Talk to OptiFinish about your booth dimensions, powder type, and airflow requirements — we'll specify the right cyclone and bag filter configuration."
     />
   );

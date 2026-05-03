@@ -20,7 +20,7 @@ const PRODUCTS = [
       'Manual and conveyorised configurations; batch or continuous production',
       'Full line design: PT stages → booth → oven → conveyor → electrical control panel',
       'Custom-engineered to part size, throughput, and substrate requirements',
-      '700+ manual plants and 75+ conveyor lines installed across India',
+      '300+ manual plants and 75+ conveyor lines installed across India',
     ],
     enquireSlug: 'powder-coating-plant',
     learnMoreHref: '/products/optifinish-manufactured/powder-coating-plant',
@@ -43,10 +43,10 @@ const PRODUCTS = [
     name: 'Powder Spray Booth',
     subtitle: 'MS / SS-304 — Manual & Automatic',
     description:
-      'A powder spray enclosure designed for 98% powder recovery with an integrated cyclone and bag filter — manufactured in MS or full SS-304 construction to suit production environment and product requirements.',
+      'A powder spray enclosure designed for 92–96% powder recovery with an integrated cyclone and bag filter — manufactured in MS or full SS-304 construction to suit production environment and product requirements.',
     specs: [
       'Standard internal dimensions: 5000 × 1200 × 3050 mm (custom available)',
-      'SS-304 Venturi powder recovery system; 98% recovery rate',
+      'SS-304 Venturi powder recovery system; 92–96% recovery rate',
       '20HP suction motor; Siemens-class electrical panel',
       'Compatible with GEMA OptiFlex, OptiGun, and all major powder guns',
     ],
@@ -74,7 +74,7 @@ const PRODUCTS = [
       'A fully stainless-steel powder coating booth designed for clean environments, food-adjacent industries, and operations requiring easy washdown — zero-rust construction with full powder recovery.',
     specs: [
       'Full SS-304 construction: panels, duct, Venturi, hopper, and frame',
-      'Pollution-free operation: 98% powder recovery, clean exhausts',
+      'Pollution-free operation: 92–96% powder recovery, clean exhausts',
       'Suitable for pharmaceutical, food equipment, medical, and precision engineering',
       'Quick colour change capability with dedicated recovery separation',
     ],
@@ -97,12 +97,12 @@ const PRODUCTS = [
   },
   {
     name: 'Cyclone & Dust Collector',
-    subtitle: '98% Recovery — 3,000 to 32,000 CMH',
+    subtitle: '92–96% Recovery — 3,000 to 32,000 CMH',
     description:
-      'A modular powder recovery and filtration system — deployed as a standalone unit or integrated within an OptiFinish booth — delivering 98% powder reclaim across a wide airflow range.',
+      'A modular powder recovery and filtration system — deployed as a standalone unit or integrated within an OptiFinish booth — delivering 92–96% powder reclaim across a wide airflow range.',
     specs: [
       'Airflow range: 3,000–32,000 CMH (sized to booth and production load)',
-      '98% cyclone powder recovery; secondary bag filter for clean exhaust',
+      '92–96% cyclone powder recovery; secondary bag filter for clean exhaust',
       'Compatible with metallic, textured, and fine-particle powder grades',
       'Modular design for easy maintenance and filter replacement',
     ],
@@ -149,7 +149,7 @@ export default function OptiFinishManufacturedPage() {
         headlineAccent="Designed and built by us."
         subline="Every powder coating plant, oven, booth, and pretreatment line we build comes from our own manufacturing and R&D facility in Greater Noida — engineered to your line requirements and commissioned by our team."
         stats={[
-          { value: '700+', label: 'Manual plants installed' },
+          { value: '300+', label: 'Manual plants installed' },
           { value: '75+', label: 'Conveyor lines delivered' },
           { value: '14+ Yrs', label: 'In production' },
         ]}

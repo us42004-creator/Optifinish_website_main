@@ -3,7 +3,7 @@ import ProductPageTemplate from '@/components/products/ProductPageTemplate';
 export const metadata = {
   title: 'SS Booth System | OptiFinish Manufactured',
   description:
-    'Full SS-304 powder coating booth for pharmaceutical, food, and precision environments. 98% recovery, zero visible exhaust, rounded internal corners for easy cleandown. Pollution-free design.',
+    'Full SS-304 powder coating booth for pharmaceutical, food, and precision environments. 92–96% recovery, zero visible exhaust, rounded internal corners for easy cleandown. Pollution-free design.',
 };
 
 export default function SSBoothSystemPage() {
@@ -23,7 +23,7 @@ export default function SSBoothSystemPage() {
       subline="A fully stainless-steel powder coating booth where every structural panel, duct, Venturi recovery unit, hopper, and frame is fabricated in SS-304 — designed for pharmaceutical, food, medical, and precision engineering environments that cannot tolerate corrosion risk or contamination."
       heroStats={[
         { val: 'SS-304', label: 'Full construction' },
-        { val: '98%', label: 'Powder recovery' },
+        { val: '92–96%', label: 'Powder recovery' },
         { val: '0', label: 'Visible exhaust particulate' },
       ]}
       heroImageLabel="SS Booth System · full SS-304 powder coating booth"
@@ -36,7 +36,7 @@ export default function SSBoothSystemPage() {
       problemBody="Standard mild steel booths rust in humid environments, shed rust particles into recovered powder, and cannot be properly sanitised for food-adjacent or pharmaceutical applications. The SS Booth System eliminates every MS substrate — panels, ducts, frame, hopper — replacing it with 316-quality SS-304 throughout."
       benefits={[
         'Full SS-304: panels, ducts, Venturi recovery array, hopper, and structural frame — no MS substrate anywhere',
-        '98% powder recovery rate via Venturi centrifugal separation — zero visible exhaust particulate',
+        '92–96% powder recovery rate via Venturi centrifugal separation — zero visible exhaust particulate',
         'Rounded internal corners throughout — fast manual cleandown between colour changes',
         'Dedicated powder recovery separation paths for clean colour change without cross-contamination',
         'Available in single or dual-side spray configuration',
@@ -45,7 +45,7 @@ export default function SSBoothSystemPage() {
 
       specRows={[
         { l: 'Construction', v: 'Full SS-304: panels, ducts, Venturi tubes, hopper, structural frame' },
-        { l: 'Recovery rate', v: '98% powder recovery by Venturi centrifugal separation' },
+        { l: 'Recovery rate', v: '92–96% powder recovery by Venturi centrifugal separation' },
         { l: 'Exhaust', v: 'Zero visible particulate — secondary bag filter as standard' },
         { l: 'Internal corners', v: 'Rounded throughout — fast manual cleandown' },
         { l: 'Colour change', v: 'Dedicated recovery separation; quick cleaning between batches' },
