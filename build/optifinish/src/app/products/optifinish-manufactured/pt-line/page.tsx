@@ -1,0 +1,153 @@
+import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+
+export const metadata = {
+  title: 'Pretreatment Line (PT Line) | OptiFinish Manufactured',
+  description:
+    'Multi-stage pretreatment systems from 3-stage basic iron phosphate to 7-stage zinc phosphate. Spray tunnel or dip tank. 500+ hrs salt spray (7-stage). Custom dimensioned.',
+};
+
+export default function PTLinePage() {
+  return (
+    <ProductPageTemplate
+      theme="dark"
+
+      breadcrumb={[
+        { label: 'Products', href: '/products' },
+        { label: 'OptiFinish Manufactured', href: '/products/optifinish-manufactured' },
+        { label: 'Pretreatment Line', href: '/products/optifinish-manufactured/pt-line' },
+      ]}
+      badge="In-house Manufactured — Greater Noida"
+      eyebrow="Iron Phosphating & Multi-Stage Systems"
+      headline="Adhesion starts"
+      headlineAccent="before the powder gun."
+      subline="A multi-stage pretreatment system designed to prepare steel, aluminium, and galvanised substrates for maximum powder coating adhesion and corrosion resistance — from 3-stage basic iron phosphate to full 7-stage zinc phosphate systems."
+      heroStats={[
+        { val: '7-stage', label: 'Max zinc phosphate process' },
+        { val: '500+', label: 'Hrs salt spray (7-stage)' },
+        { val: 'Custom', label: 'Spray tunnel or dip tank' },
+      ]}
+      heroImageLabel="Pretreatment Line · multi-stage spray tunnel"
+      enquireSlug="pt-line"
+      backHref="/products/optifinish-manufactured"
+      backLabel="← Back to Manufactured"
+
+      problemHeadline="Powder coating failure"
+      problemAccent="is almost always a PT failure."
+      problemBody="The most common cause of coating delamination, corrosion creep, and adhesion failure in the field is not the powder — it's inadequate pretreatment. The substrate must be clean, phosphated, and passivated before powder enters the gun. Skipping or underdoing PT removes the foundation the coating needs to last."
+      benefits={[
+        '3-stage basic iron phosphate for standard steel substrates in mild-corrosion environments',
+        '5-stage system adds derusting and passivation for improved corrosion resistance on pre-rusted substrates',
+        '7-stage zinc phosphate delivers 500+ hours salt spray resistance per ISO 9227 — for high-corrosion applications',
+        'Spray tunnel design for conveyorised production or dip tank for larger, complex geometries',
+        'Electric immersion or steam heating; MS or SS-304 tank and tunnel construction',
+        'Integrated drain, pump, and agitation systems as standard',
+      ]}
+
+      variants={[
+        {
+          id: 'stage3',
+          label: '3-Stage',
+          tag: 'Basic Iron Phosphate',
+          headline: 'Degreasing → Iron Phosphate → Water Rinse',
+          body: 'The 3-stage system covers degreasing, iron phosphate application, and water rinse. Suitable for clean steel substrates in controlled environments where corrosion exposure is limited — the most cost-effective starting point for standard industrial powder coating.',
+          specs: [
+            { l: 'Stage 1', v: 'Degreasing (alkali or mild acid)' },
+            { l: 'Stage 2', v: 'Iron phosphate application' },
+            { l: 'Stage 3', v: 'Water rinse' },
+            { l: 'Best for', v: 'Clean steel; indoor or mild environment applications' },
+          ],
+          imageLabel: '3-stage PT line · basic iron phosphate',
+        },
+        {
+          id: 'stage5',
+          label: '5-Stage',
+          tag: 'Enhanced — Derusting + Passivation',
+          headline: 'Degreasing → Derusting → Phosphate → Passivation → DI Rinse',
+          body: 'Adds derusting (acid pickling) and passivation stages to the basic process — covering substrates with surface rust and improving corrosion resistance for parts exposed to moderate humidity and outdoor conditions.',
+          specs: [
+            { l: 'Stage 1', v: 'Degreasing' },
+            { l: 'Stage 2', v: 'Derusting (acid pickling)' },
+            { l: 'Stage 3', v: 'Iron phosphating' },
+            { l: 'Stage 4', v: 'Passivation' },
+            { l: 'Stage 5', v: 'DI water rinse' },
+          ],
+          imageLabel: '5-stage PT line · derusting and passivation',
+        },
+        {
+          id: 'stage7',
+          label: '7-Stage',
+          tag: 'Zinc Phosphate — Maximum Corrosion Resistance',
+          headline: 'Full zinc phosphate for 500+ hrs salt spray performance.',
+          body: 'The 7-stage zinc phosphate process is the industry standard for maximum corrosion protection — used in automotive, infrastructure, and heavy engineering where coating must withstand severe corrosion exposure. Delivers 500+ hours salt spray resistance per ISO 9227.',
+          specs: [
+            { l: 'Stages', v: 'Degreasing ×2 → Derusting → Activation → Zinc phosphate → Passivation → DI rinse' },
+            { l: 'Corrosion performance', v: '500+ hrs salt spray (ISO 9227)' },
+            { l: 'Substrates', v: 'Steel, aluminium, galvanised' },
+            { l: 'Best for', v: 'Automotive, infrastructure, heavy engineering' },
+          ],
+          imageLabel: '7-stage zinc phosphate PT line',
+        },
+      ]}
+      variantsSectionTitle="Select the right PT process for your application"
+
+      specRows={[
+        { l: '3-stage', v: 'Degreasing → Iron phosphate → Water rinse' },
+        { l: '5-stage', v: 'Degreasing → Derusting → Phosphate → Passivation → DI rinse' },
+        { l: '7-stage', v: 'Full zinc phosphate — degreasing ×2 → derusting → activation → zinc phosphate → passivation → DI rinse' },
+        { l: 'Design type', v: 'Spray tunnel or dip tank (based on part geometry and throughput)' },
+        { l: 'Heating', v: 'Electric immersion or steam' },
+        { l: 'Tank construction', v: 'MS or SS-304' },
+        { l: 'Corrosion resistance (7-stage)', v: '500+ hours salt spray per ISO 9227' },
+        { l: 'Integration', v: 'Standalone batch or integrated with conveyorised line' },
+      ]}
+
+      applications={[
+        'Steel fabrications for industrial and architectural applications',
+        'Automotive components requiring high corrosion protection',
+        'Agricultural machinery and outdoor equipment',
+        'Electrical panels and switchgear enclosures',
+        'Architectural aluminium profiles (anodise-quality pretreatment)',
+        'Conveyorised and batch production lines',
+      ]}
+
+      compatibilityTags={[
+        'All OptiFinish powder spray booths',
+        'Conveyorised monorail and chain-on-edge systems',
+        'Batch dip-tank production lines',
+        'Any powder coating gun system',
+      ]}
+
+      references={[
+        {
+          client: 'National Steel Products · Hotage Overseas',
+          desc: 'National Steel Products — 5-stage PT line with spray tunnel, integrated into full conveyorised line. Hotage Overseas — PT line integrated with CED system for automotive body parts.',
+        },
+      ]}
+
+      related={[
+        {
+          name: 'Powder Coating Plant',
+          category: 'OptiFinish Manufactured',
+          href: '/products/optifinish-manufactured/powder-coating-plant',
+          enquireSlug: 'powder-coating-plant',
+        },
+        {
+          name: 'Powder Spray Booth',
+          category: 'OptiFinish Manufactured',
+          href: '/products/optifinish-manufactured/powder-spray-booth',
+          enquireSlug: 'powder-spray-booth',
+        },
+        {
+          name: 'Curing Oven',
+          category: 'OptiFinish Manufactured',
+          href: '/products/optifinish-manufactured/curing-oven',
+          enquireSlug: 'curing-oven',
+        },
+      ]}
+
+      ctaHeadline="Spec the right pretreatment."
+      ctaAccent="Adhesion is the foundation."
+      ctaBody="Tell OptiFinish your substrate, corrosion requirements, and throughput — we'll specify the right number of stages and system type for your application."
+    />
+  );
+}
