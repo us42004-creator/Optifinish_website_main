@@ -239,6 +239,8 @@ export default function ProductPageTemplate({
 
   const secBg = (name: string): string => {
     if (name === 'cta') return '#FECE00';
+    // Force variants section always dark — improves contrast for light-themed products
+    if (name === 'variants') return '#070809';
     const pos = renderedSections.indexOf(name) + 1;
     if (isLight) return pos % 2 === 1 ? '#f1efea' : '#070809';
     return pos % 2 === 1 ? '#070809' : '#f1efea';
@@ -247,6 +249,8 @@ export default function ProductPageTemplate({
   /* Light bg: light-theme on odd positions, dark-theme on even positions */
   const secIsLight = (name: string): boolean => {
     if (name === 'cta') return true;
+    // Force variants section always dark
+    if (name === 'variants') return false;
     const pos = renderedSections.indexOf(name) + 1;
     if (isLight) return pos % 2 === 1;
     return pos % 2 === 0;

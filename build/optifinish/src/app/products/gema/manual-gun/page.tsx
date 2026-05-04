@@ -12,42 +12,52 @@ function ImageViewport({
   label,
   aspect = 'aspect-[16/9]',
   className = '',
+  isDark = false,
 }: {
   label: string;
   aspect?: string;
   className?: string;
+  isDark?: boolean;
 }) {
   return (
     <div
-      className={`relative flex w-full items-center justify-center overflow-hidden rounded-[1.1rem] border border-black/[0.07] bg-black/[0.03] ${aspect} ${className}`}
+      className={`relative flex w-full items-center justify-center overflow-hidden rounded-[1.1rem] border ${
+        isDark
+          ? 'border-white/[0.06] bg-white/[0.025]'
+          : 'border-black/[0.07] bg-black/[0.03]'
+      } ${aspect} ${className}`}
     >
       {/* Subtle grid */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
-          backgroundImage:
-            'linear-gradient(rgba(10,10,10,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(10,10,10,0.08) 1px, transparent 1px)',
+          backgroundImage: isDark
+            ? 'linear-gradient(rgba(254,206,0,1) 1px, transparent 1px), linear-gradient(90deg, rgba(254,206,0,1) 1px, transparent 1px)'
+            : 'linear-gradient(rgba(10,10,10,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(10,10,10,0.08) 1px, transparent 1px)',
           backgroundSize: '32px 32px',
+          opacity: isDark ? 0.04 : 1,
         }}
       />
       {/* Top accent */}
-      <div className="absolute left-0 right-0 top-0 h-[2px] bg-[#C9A500]/25" />
+      <div className="absolute left-0 right-0 top-0 h-[2px] bg-[#FECE00]/25" />
       {/* Corner badge */}
-      <div className="absolute left-4 top-4 rounded-full border border-black/[0.08] bg-white/80 px-2.5 py-1 text-[0.5rem] font-bold uppercase tracking-[0.18em] text-[#0A0A0A]/40">
+      <div className={`absolute left-4 top-4 rounded-full border px-2.5 py-1 text-[0.5rem] font-bold uppercase tracking-[0.18em] ${
+        isDark ? 'border-white/[0.1] bg-white/[0.05] text-white/30' : 'border-black/[0.08] bg-white/80 text-[#0A0A0A]/40'
+      }`}>
         Image viewport
       </div>
-      <span className="relative text-[0.65rem] font-medium uppercase tracking-[0.2em] text-[#0A0A0A]/25">
+      <span className={`relative text-[0.65rem] font-medium uppercase tracking-[0.2em] ${isDark ? 'text-white/20' : 'text-[#0A0A0A]/25'}`}>
         {label}
       </span>
     </div>
   );
 }
 
-function SpecRow({ label, value }: { label: string; value: string }) {
+function SpecRow({ label, value, dark = false }: { label: string; value: string; dark?: boolean }) {
   return (
-    <div className="flex justify-between gap-6 border-b border-black/[0.06] py-3">
-      <span className="text-[0.72rem] text-[#0A0A0A]/45">{label}</span>
-      <span className="text-right text-[0.72rem] font-semibold text-[#0A0A0A]/80">{value}</span>
+    <div className={`flex justify-between gap-6 border-b py-3 ${dark ? 'border-white/[0.07]' : 'border-black/[0.06]'}`}>
+      <span className={`text-[0.72rem] ${dark ? 'text-white/40' : 'text-[#0A0A0A]/45'}`}>{label}</span>
+      <span className={`text-right text-[0.72rem] font-semibold ${dark ? 'text-white/80' : 'text-[#0A0A0A]/80'}`}>{value}</span>
     </div>
   );
 }
@@ -334,14 +344,23 @@ export default function GemaManualGunPage() {
       {/* ══════════════════════════════════════════════════════
           S3 — MODEL SELECTOR
       ══════════════════════════════════════════════════════ */}
-      <section className="bg-[#f1efea] py-20 md:py-24">
-        <div className="mx-auto max-w-7xl px-5 md:px-8">
+      <section className="relative overflow-hidden bg-[#070809] py-20 md:py-24">
+        {/* Grid texture */}
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            backgroundImage: 'linear-gradient(rgba(254,206,0,1) 1px, transparent 1px), linear-gradient(90deg, rgba(254,206,0,1) 1px, transparent 1px)',
+            backgroundSize: '72px 72px',
+            opacity: 0.028,
+          }}
+        />
+        <div className="relative z-10 mx-auto max-w-7xl px-5 md:px-8">
 
           <div className="mb-10">
-            <p className="mb-2 text-[0.56rem] font-bold uppercase tracking-[0.22em] text-[#0A0A0A]/35">
+            <p className="mb-2 text-[0.56rem] font-bold uppercase tracking-[0.22em] text-[#FECE00]/55">
               Three models — one system
             </p>
-            <h2 className="font-display text-[clamp(1.6rem,3.5vw,2.6rem)] font-black leading-tight tracking-[-0.04em] text-[#0A0A0A]">
+            <h2 className="font-display text-[clamp(1.6rem,3.5vw,2.6rem)] font-black leading-tight tracking-[-0.04em] text-white">
               Choose your OptiFlex Pro
             </h2>
           </div>
@@ -354,8 +373,8 @@ export default function GemaManualGunPage() {
                 onClick={() => setActiveModel(i)}
                 className={`rounded-full px-5 py-2 text-[0.63rem] font-bold uppercase tracking-[0.14em] transition-all duration-200 ${
                   activeModel === i
-                    ? 'bg-[#0A0A0A] text-white'
-                    : 'border border-[#0A0A0A]/[0.12] text-[#0A0A0A]/40 hover:border-[#0A0A0A]/25 hover:text-[#0A0A0A]/65'
+                    ? 'border border-[#FECE00] bg-[#FECE00] text-[#0A0A0A]'
+                    : 'border border-white/[0.14] text-white/35 hover:border-white/[0.3] hover:text-white/60'
                 }`}
               >
                 {m.label}
@@ -370,30 +389,31 @@ export default function GemaManualGunPage() {
             <ImageViewport
               label={MODELS[activeModel].imageLabel}
               aspect="aspect-[4/3]"
+              isDark
             />
 
             {/* Content */}
             <div className="flex flex-col justify-center">
-              <span className="mb-2 self-start rounded-full border border-[#0A0A0A]/12 bg-[#0A0A0A]/[0.05] px-3 py-1 text-[0.55rem] font-bold uppercase tracking-[0.15em] text-[#0A0A0A]/50">
+              <span className="mb-2 self-start rounded-full border border-[#FECE00]/20 bg-[#FECE00]/10 px-3 py-1 text-[0.55rem] font-bold uppercase tracking-[0.15em] text-[#FECE00]/80">
                 {MODELS[activeModel].tag}
               </span>
-              <h3 className="font-display text-[clamp(1.3rem,2.5vw,2rem)] font-black leading-tight tracking-[-0.03em] text-[#0A0A0A]">
+              <h3 className="font-display text-[clamp(1.3rem,2.5vw,2rem)] font-black leading-tight tracking-[-0.03em] text-white">
                 {MODELS[activeModel].headline}
               </h3>
-              <p className="mt-3 text-[0.8rem] leading-relaxed text-[#0A0A0A]/55">
+              <p className="mt-3 text-[0.8rem] leading-relaxed text-white/55">
                 {MODELS[activeModel].body}
               </p>
 
               {/* Model specs */}
-              <div className="mt-6 rounded-[1rem] border border-black/[0.06] bg-white/70 p-5">
+              <div className="mt-6 rounded-[1rem] border border-white/[0.08] bg-white/[0.04] p-5">
                 {MODELS[activeModel].specs.map((s) => (
-                  <SpecRow key={s.l} label={s.l} value={s.v} />
+                  <SpecRow key={s.l} label={s.l} value={s.v} dark />
                 ))}
               </div>
 
               <Link
                 href="/contact?product=gema-manual-gun"
-                className="mt-5 self-start rounded-full bg-[#0A0A0A] px-5 py-2 text-[0.63rem] font-bold uppercase tracking-[0.14em] text-white transition-all hover:bg-[#0A0A0A]/80"
+                className="mt-5 self-start rounded-full bg-[#FECE00] px-5 py-2 text-[0.63rem] font-bold uppercase tracking-[0.14em] text-[#0A0A0A] transition-all hover:bg-[#FECE00]/85"
               >
                 Enquire about {MODELS[activeModel].label} →
               </Link>
