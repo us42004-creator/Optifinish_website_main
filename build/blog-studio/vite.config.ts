@@ -3,9 +3,18 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', '');
-  const FLUX_KEY = env.NVIDIA_FLUX_KEY || '';
-  const SD_KEY = env.NVIDIA_SD_KEY || '';
-  const LLM_KEY = env.NVIDIA_LLM_KEY || '';
+  // Single NVIDIA Build API key powers all three proxies. Get one at
+  // build.nvidia.com → API Catalog → your key. Legacy var names kept
+  // as fallbacks so existing local .env.local files keep working.
+  const NVIDIA_KEY =
+    env.NVIDIA_API_KEY ||
+    env.NVIDIA_LLM_KEY ||
+    env.NVIDIA_FLUX_KEY ||
+    env.NVIDIA_SD_KEY ||
+    '';
+  const FLUX_KEY = NVIDIA_KEY;
+  const SD_KEY = NVIDIA_KEY;
+  const LLM_KEY = NVIDIA_KEY;
 
   return {
     server: {
