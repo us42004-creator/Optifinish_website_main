@@ -132,17 +132,9 @@ export default function AutomationPage() {
                     </a>
                     <a
                       href="/products/automation/z-tap"
-                      className="rounded-full border border-white/[0.1] px-5 py-2 text-[0.63rem] font-bold uppercase tracking-[0.14em] text-white/35 transition-all hover:border-white/[0.22] hover:text-white/55"
-                    >
-                      Learn more
-                    </a>
-                    <a
-                      href="https://ztap.optifinish.in"
-                      target="_blank"
-                      rel="noopener noreferrer"
                       className="rounded-full border border-[#FECE00]/20 px-5 py-2 text-[0.63rem] font-bold uppercase tracking-[0.14em] text-[#FECE00]/50 transition-all hover:border-[#FECE00]/40 hover:text-[#FECE00]/80"
                     >
-                      Z-TAP site ↗
+                      View Z-TAP site →
                     </a>
                   </div>
                 </div>
