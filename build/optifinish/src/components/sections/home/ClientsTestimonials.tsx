@@ -123,15 +123,19 @@ export default function ClientsTestimonials() {
           {CLIENT_LOGOS.map((logo) => (
             <div
               key={logo.name}
-              className="relative flex h-24 items-center justify-center rounded-[0.8rem] border border-ink/[0.07] bg-white"
+              className="relative flex h-24 items-center justify-center rounded-[0.8rem] border border-ink/[0.07] bg-white overflow-hidden"
             >
-              <Image
-                src={logo.src}
-                alt={logo.name}
-                fill
-                className={`object-contain ${logo.pad ?? 'p-6'}`}
-                unoptimized
-              />
+              <div className={`absolute inset-0 ${logo.pad ?? 'p-6'}`}>
+                <div className="relative h-full w-full">
+                  <Image
+                    src={logo.src}
+                    alt={logo.name}
+                    fill
+                    className="object-contain"
+                    unoptimized
+                  />
+                </div>
+              </div>
             </div>
           ))}
         </div>

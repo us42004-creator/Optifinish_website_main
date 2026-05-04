@@ -85,7 +85,7 @@ export default function ProprietaryAutomation() {
     <section ref={containerRef} className="relative h-[300vh]">
 
       {/* ── Sticky viewport ── */}
-      <div className="sticky top-0 h-screen overflow-hidden bg-[#f1efea]">
+      <div className="sticky top-0 h-screen overflow-y-auto lg:overflow-hidden bg-[#f1efea]">
 
         {/* Grid drift layers */}
         <div

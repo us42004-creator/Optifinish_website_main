@@ -128,10 +128,10 @@ export default function BlogListingPage() {
     <div className="overflow-hidden bg-[#f1efea] text-ink">
 
       {/* ── Dark hero ── */}
-      <section className="relative isolate overflow-hidden bg-[#080808] px-4 pb-10 pt-24 text-white sm:px-6 md:px-10 lg:px-12 lg:pt-28">
+      <section className="relative isolate overflow-hidden bg-[#080808] px-5 pb-10 pt-24 text-white md:px-8 lg:pt-28">
         <div className="absolute inset-0 -z-30 bg-[radial-gradient(circle_at_16%_18%,rgba(254,206,0,0.18),transparent_27%),linear-gradient(145deg,#151515_0%,#050505_58%,#111_100%)]" />
         <div className="absolute inset-0 -z-20 opacity-[0.16] [background-image:linear-gradient(rgba(255,255,255,0.28)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.22)_1px,transparent_1px)] [background-size:72px_72px]" />
-        <div className="mx-auto max-w-[1440px]">
+        <div className="mx-auto max-w-7xl">
           <div className="mb-6 border-b border-white/10 pb-5">
             <p className="text-[10px] font-black uppercase tracking-[0.26em] text-white/44">OptiFinish Resources / Blog</p>
           </div>
@@ -180,12 +180,12 @@ export default function BlogListingPage() {
       </section>
 
       {/* ── Browse section — client grid with working filter ── */}
-      <section className="relative overflow-hidden bg-[#f1efea] px-4 py-12 sm:px-6 md:px-10 lg:px-12 lg:py-20">
+      <section className="relative overflow-hidden bg-[#f1efea] px-5 py-12 md:px-8 lg:py-20">
         <div className="pointer-events-none absolute inset-0 grid-drift opacity-[0.62] mix-blend-multiply"
           style={{ backgroundImage: `linear-gradient(rgba(201,165,0,0.22) 1px, transparent 1px), linear-gradient(90deg, rgba(201,165,0,0.22) 1px, transparent 1px)`, backgroundSize: '88px 88px' }} />
         <div className="pointer-events-none absolute inset-0 grid-drift opacity-[0.32] mix-blend-multiply"
           style={{ backgroundImage: `linear-gradient(rgba(255,243,163,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,243,163,0.5) 1px, transparent 1px)`, backgroundSize: '264px 264px' }} />
-        <div className="relative mx-auto max-w-[1440px]">
+        <div className="relative mx-auto max-w-7xl">
           <BlogGrid posts={allPosts} lead={lead} />
         </div>
       </section>

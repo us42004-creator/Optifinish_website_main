@@ -55,7 +55,7 @@ export default function HeroDark() {
       <div className="pointer-events-none absolute bottom-0 right-0 h-[300px] w-[300px] rounded-full bg-[#FECE00]/[0.01] blur-[100px]" />
 
       {/* Centring shell */}
-      <div className="relative mx-auto flex min-h-screen max-w-[1440px] flex-col items-center justify-center px-5 pb-44 pt-24 md:px-10 lg:px-12">
+      <div className="relative mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-center px-5 pb-44 pt-24 md:px-8">
 
         {/* ── Hero content — no card wrapper, text directly on dark bg ── */}
         <motion.div

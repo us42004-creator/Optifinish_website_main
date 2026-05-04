@@ -269,7 +269,7 @@ export default function ContactPage() {
 
         {/* ── Hero strip ── */}
         <section className="border-b border-white/[0.06] pb-12 pt-[100px] md:pt-[108px]">
-          <div className="mx-auto max-w-7xl px-6 lg:px-16">
+          <div className="mx-auto max-w-7xl px-5 md:px-8">
             <p className="mb-3 text-[0.58rem] font-bold uppercase tracking-[0.22em] text-[#FECE00]/55">
               Get in touch
             </p>
@@ -284,7 +284,7 @@ export default function ContactPage() {
 
         {/* ── Main content: form + contacts ── */}
         <section className="py-16 md:py-20">
-          <div className="mx-auto max-w-7xl px-6 lg:px-16">
+          <div className="mx-auto max-w-7xl px-5 md:px-8">
             <div className="grid gap-16 lg:grid-cols-[1.4fr_1fr] lg:gap-24">
 
               {/* LEFT — form */}
@@ -382,7 +382,7 @@ export default function ContactPage() {
 
         {/* ── Facility visit strip ── */}
         <section className="border-t border-white/[0.06] py-10">
-          <div className="mx-auto max-w-7xl px-6 lg:px-16">
+          <div className="mx-auto max-w-7xl px-5 md:px-8">
             <p className="text-[0.78rem] text-white/30">
               Prefer to visit?{' '}
               <span className="text-white/50">

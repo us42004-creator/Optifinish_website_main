@@ -71,7 +71,7 @@ export default function FacilityTeaserFilmstrip() {
         }}
       />
 
-      <div className="relative mx-auto max-w-[85rem] px-4 md:px-6">
+      <div className="relative mx-auto max-w-7xl px-5 md:px-8">
         <div className="overflow-hidden rounded-[1.75rem] bg-ink">
 
           {/* ── Top row: text + exterior photo grid ── */}
@@ -142,7 +142,7 @@ export default function FacilityTeaserFilmstrip() {
               {EXTERIOR_SLOTS.map((slot, i) => (
                 <div
                   key={i}
-                  className="relative overflow-hidden rounded-xl border border-white/[0.06] bg-white/[0.03]"
+                  className="relative overflow-hidden rounded-xl border border-white/[0.06] bg-white/[0.03] min-h-[140px]"
                 >
                   <div className="flex h-full items-center justify-center p-3 text-center">
                     <span className="text-[8px] font-semibold uppercase leading-relaxed tracking-[0.18em] text-white/20">

@@ -175,7 +175,7 @@ export default function GemaManualGunPage() {
       {/* ══════════════════════════════════════════════════════
           S1 — PRODUCT HERO
       ══════════════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden bg-[#f1efea] pb-16 pt-10 md:pb-20 md:pt-12">
+      <section className="relative overflow-hidden bg-[#f1efea] pb-16 pt-[80px] md:pb-20 md:pt-[88px]">
         {/* Grid texture */}
         <div
           className="pointer-events-none absolute inset-0"

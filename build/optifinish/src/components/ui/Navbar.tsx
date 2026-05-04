@@ -321,7 +321,7 @@ export default function Navbar() {
                   onMouseEnter={openProducts}
                   onMouseLeave={closeProducts}
                   className="absolute left-1/2 top-full z-50 mt-4 -translate-x-1/2"
-                  style={{ width: 720 }}
+                  style={{ width: 'min(720px, calc(100vw - 2rem))' }}
                 >
                   {/* Arrow pointer */}
                   <div className="absolute -top-[6px] left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 border-l border-t border-white/[0.08] bg-[#0f0f0f]" />
@@ -462,7 +462,7 @@ export default function Navbar() {
 
             <div ref={menuLinksRef} className="flex flex-1 flex-col justify-center px-6">
               {NAV_LINKS.map((link) => (
-                <Link key={link.href} href={link.href} className="mobile-nav-link" style={{ opacity: 0 }}>
+                <Link key={link.href} href={link.href} className="mobile-nav-link block py-3 font-display text-[2.2rem] font-black tracking-[-0.03em] text-white/70 transition-colors hover:text-white" style={{ opacity: 0 }}>
                   {link.label}
                 </Link>
               ))}

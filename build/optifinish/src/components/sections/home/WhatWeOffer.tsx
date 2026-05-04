@@ -179,7 +179,7 @@ export default function WhatWeOffer() {
         </div>
 
         {/* Bottom row */}
-        <div className="grid gap-4 sm:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-3">
           {BOTTOM_GROUPS.map((g) => (
             <Link
               key={g.href}

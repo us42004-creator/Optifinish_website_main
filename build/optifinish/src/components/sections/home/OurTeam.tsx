@@ -191,14 +191,14 @@ export default function OurTeam() {
             <div className="absolute inset-0 bg-gradient-to-t from-[#070809] via-[#070809]/40 to-transparent" />
 
             {/* Name — bottom-left */}
-            <div className="absolute bottom-10 left-8 z-10">
+            <div className="absolute bottom-10 left-8 z-10 max-w-[min(18rem,42vw)]">
               <p className="font-display text-[1.35rem] font-black tracking-tight text-white drop-shadow-md">
                 {FOUNDERS[0].name}
               </p>
               <p className="mt-0.5 text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-[#FECE00]/80">
                 {FOUNDERS[0].role}
               </p>
-              <p className="mt-2 max-w-[18rem] text-[0.72rem] leading-relaxed text-white/45">
+              <p className="mt-2 text-[0.72rem] leading-relaxed text-white/45">
                 {FOUNDERS[0].bio}
               </p>
             </div>
@@ -238,14 +238,14 @@ export default function OurTeam() {
             <div className="absolute inset-0 bg-gradient-to-t from-[#070809] via-[#070809]/40 to-transparent" />
 
             {/* Name — bottom-right */}
-            <div className="absolute bottom-10 right-8 z-10 text-right">
+            <div className="absolute bottom-10 right-8 z-10 text-right max-w-[min(18rem,42vw)]">
               <p className="font-display text-[1.35rem] font-black tracking-tight text-white drop-shadow-md">
                 {FOUNDERS[1].name}
               </p>
               <p className="mt-0.5 text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-[#FECE00]/80">
                 {FOUNDERS[1].role}
               </p>
-              <p className="mt-2 max-w-[18rem] text-[0.72rem] leading-relaxed text-white/45">
+              <p className="mt-2 text-[0.72rem] leading-relaxed text-white/45">
                 {FOUNDERS[1].bio}
               </p>
             </div>

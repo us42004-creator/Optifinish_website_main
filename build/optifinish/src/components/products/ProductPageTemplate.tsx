@@ -297,7 +297,7 @@ export default function ProductPageTemplate({
 
         {/* Breadcrumb bar */}
         <div className={`relative z-10 border-b pt-[60px] md:pt-[68px] ${isLight ? 'border-black/[0.07]' : 'border-white/[0.06]'}`}>
-          <div className="mx-auto max-w-7xl px-6 py-3 lg:px-16">
+          <div className="mx-auto max-w-7xl px-5 py-3 md:px-8">
             <nav className={`flex flex-wrap items-center gap-1.5 text-[0.58rem] font-bold uppercase tracking-[0.2em] ${isLight ? 'text-[#0A0A0A]/35' : 'text-white/30'}`}>
               {breadcrumb.map((crumb, i) => (
                 <span key={crumb.href} className="flex items-center gap-1.5">
@@ -317,7 +317,7 @@ export default function ProductPageTemplate({
 
         {/* Hero content */}
         <section className="relative">
-        <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 md:py-28 lg:px-16">
+        <div className="relative z-10 mx-auto max-w-7xl px-5 py-20 md:py-28 md:px-8">
 
           <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-20">
             {/* Left — Text */}
@@ -391,7 +391,7 @@ export default function ProductPageTemplate({
       ══════════════════════════════════════════════════════ */}
       <section style={{ background: secBg('problem') }} className="relative overflow-hidden">
         {prob ? <LightGridTexture /> : <GridTexture />}
-        <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-16">
+        <div className="relative z-10 mx-auto max-w-7xl px-5 py-20 md:px-8">
           <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-20">
             <div>
               <p className={`mb-3 text-[0.6rem] font-bold uppercase tracking-[0.26em] ${cEye(prob)}`}>
@@ -405,7 +405,7 @@ export default function ProductPageTemplate({
               </h2>
               <p className={`mt-5 text-[0.86rem] leading-relaxed ${cBody(prob)}`}>{problemBody}</p>
             </div>
-            <div className={`border-l pl-10 ${cBdr(prob)}`}>
+            <div className={`lg:border-l lg:pl-10 ${cBdr(prob)}`}>
               <ul className="flex flex-col gap-4">
                 {benefits.map((b, i) => (
                   <li key={i} className="flex items-start gap-3">
@@ -425,7 +425,7 @@ export default function ProductPageTemplate({
       {hasVariants && (
         <section style={{ background: secBg('variants') }} className="relative overflow-hidden">
           {vars ? <LightGridTexture /> : <GridTexture />}
-          <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-16">
+          <div className="relative z-10 mx-auto max-w-7xl px-5 py-20 md:px-8">
             <p className={`mb-2 text-[0.6rem] font-bold uppercase tracking-[0.26em] ${cEye(vars)}`}>
               Models & Configurations
             </p>
@@ -515,7 +515,7 @@ export default function ProductPageTemplate({
       {hasSteps && (
         <section style={{ background: secBg('steps') }} className="relative overflow-hidden">
           {stps ? <LightGridTexture /> : <GridTexture />}
-          <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-16">
+          <div className="relative z-10 mx-auto max-w-7xl px-5 py-20 md:px-8">
             <p className={`mb-2 text-[0.6rem] font-bold uppercase tracking-[0.26em] ${cEye(stps)}`}>
               How it works
             </p>
@@ -585,7 +585,7 @@ export default function ProductPageTemplate({
       ══════════════════════════════════════════════════════ */}
       <section style={{ background: secBg('specs') }} className="relative overflow-hidden">
         {spec ? <LightGridTexture /> : <GridTexture />}
-        <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-16">
+        <div className="relative z-10 mx-auto max-w-7xl px-5 py-20 md:px-8">
           <p className={`mb-2 text-[0.6rem] font-bold uppercase tracking-[0.26em] ${cEye(spec)}`}>
             Technical data
           </p>
@@ -602,10 +602,10 @@ export default function ProductPageTemplate({
                   i < specRows.length - 1 ? 'border-b border-[#FECE00]/[0.1]' : ''
                 }`}
               >
-                <span className="min-w-[160px] text-[0.72rem] font-medium text-white/50">
+                <span className="min-w-[130px] shrink-0 text-[0.72rem] font-medium text-white/50">
                   {row.l}
                 </span>
-                <span className="text-right text-[0.72rem] font-semibold text-white/85">
+                <span className="min-w-0 text-right text-[0.72rem] font-semibold text-white/85 break-words">
                   {row.v}
                 </span>
               </div>
@@ -619,7 +619,7 @@ export default function ProductPageTemplate({
       ══════════════════════════════════════════════════════ */}
       <section style={{ background: secBg('applications') }} className="relative overflow-hidden">
         {appl ? <LightGridTexture /> : <GridTexture />}
-        <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-16">
+        <div className="relative z-10 mx-auto max-w-7xl px-5 py-20 md:px-8">
           <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-20">
             <div>
               <p className={`mb-2 text-[0.6rem] font-bold uppercase tracking-[0.26em] ${cEye(appl)}`}>
@@ -654,7 +654,7 @@ export default function ProductPageTemplate({
       ══════════════════════════════════════════════════════ */}
       <section style={{ background: secBg('compatibility') }} className="relative overflow-hidden">
         {comp ? <LightGridTexture /> : <GridTexture />}
-        <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-16">
+        <div className="relative z-10 mx-auto max-w-7xl px-5 py-20 md:px-8">
           <p className={`mb-2 text-[0.6rem] font-bold uppercase tracking-[0.26em] ${cEye(comp)}`}>
             Works with
           </p>
@@ -687,7 +687,7 @@ export default function ProductPageTemplate({
       {references.length > 0 && (
         <section style={{ background: secBg('references') }} className="relative overflow-hidden">
           {refs ? <LightGridTexture /> : <GridTexture />}
-          <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-16">
+          <div className="relative z-10 mx-auto max-w-7xl px-5 py-20 md:px-8">
             <p className={`mb-2 text-[0.6rem] font-bold uppercase tracking-[0.26em] ${cEye(refs)}`}>
               In the field
             </p>
@@ -726,7 +726,7 @@ export default function ProductPageTemplate({
       ══════════════════════════════════════════════════════ */}
       <section style={{ background: secBg('related') }} className="relative overflow-hidden">
         {rltd ? <LightGridTexture /> : <GridTexture />}
-        <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-16">
+        <div className="relative z-10 mx-auto max-w-7xl px-5 py-20 md:px-8">
           <p className={`mb-2 text-[0.6rem] font-bold uppercase tracking-[0.26em] ${cEye(rltd)}`}>
             You may also need
           </p>
@@ -735,7 +735,7 @@ export default function ProductPageTemplate({
           >
             Related products
           </h2>
-          <div className="grid gap-5 md:grid-cols-3">
+          <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3">
             {related.map((item) => (
               <div
                 key={item.href}
@@ -807,7 +807,7 @@ export default function ProductPageTemplate({
       ══════════════════════════════════════════════════════ */}
       <section style={{ background: '#FECE00' }} className="relative overflow-hidden">
         <GridTexture forYellow />
-        <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 text-center lg:px-16">
+        <div className="relative z-10 mx-auto max-w-7xl px-5 py-20 md:px-8 text-center">
           <p className="mb-3 text-[0.6rem] font-bold uppercase tracking-[0.26em] text-[#0A0A0A]/45">
             Ready to specify?
           </p>
