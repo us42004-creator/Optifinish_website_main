@@ -42,7 +42,11 @@ const PRODUCTS: { slug: string; label: string; group: string }[] = [
 function labelForSlug(slug: string | null): string {
   if (!slug) return '';
   const match = PRODUCTS.find(
-    (p) => p.slug === slug || p.slug.endsWith('/' + slug) || slug.endsWith(p.slug)
+    (p) =>
+      p.slug === slug ||
+      p.slug.endsWith('/' + slug) ||        // 'curing-oven' matches 'optifinish-manufactured/curing-oven'
+      slug.endsWith(p.slug) ||
+      p.slug.replace('/', '-') === slug      // 'gema-manual-gun' matches 'gema/manual-gun'
   );
   return match?.label ?? '';
 }

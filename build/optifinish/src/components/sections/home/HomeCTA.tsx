@@ -82,10 +82,6 @@ export default function HomeCTA() {
                 <span>Get in Touch</span>
                 <div className="dynamic-button-glow" />
               </Link>
-              <Link href="/products" className="panel-button dynamic-button dynamic-button-light text-ink">
-                <span>Explore Products</span>
-                <div className="dynamic-button-glow" />
-              </Link>
             </div>
           </div>
 
