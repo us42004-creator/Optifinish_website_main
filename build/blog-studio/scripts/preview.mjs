@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 // End-to-end preview generator. Runs the full live pipeline:
-//   1. Llama 3.3 70B (NVIDIA Build) → 5 topics tuned for category × audience
-//   2. Picks topic 1, calls Llama again → full 1100-1400 word draft + snapshot + image prompts
-//   3. FLUX.1-dev (NVIDIA Build) → renders 2 inline images in parallel
-//   4. Composes the OptiFinish-shaped HTML and writes it to public/preview.html
+//   1. Llama 3.3 70B → 5 topic candidates anchored to real 2025-26 triggers
+//   2. Llama 3.1 405B → full 1100-1400 word draft + snapshot + image prompts
+//   3. FLUX.1-dev (NVIDIA Build) → 2 inline images, parallel + auto-retry
+//   4. Compose OptiFinish-shaped HTML → public/preview.html
 //
 // Run: node scripts/preview.mjs
 // Then open: http://localhost:5000/preview.html
 //
-// Requires the dev server to be running at localhost:5000 (the proxy injects
-// the API keys server-side, so this script never sees them).
+// Requires the dev server running at localhost:5000 — proxy injects the
+// API key so this script never touches it.
 
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -17,35 +17,53 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
-const PROXY = 'http://localhost:5000';
+const PROXY = process.env.PROXY || 'http://localhost:5001';
 
 // ─────────────────────────────────────────────────────────────
-// Demo selection — change these to preview a different pairing
+// Demo selection — edit these to preview a different pairing
 // ─────────────────────────────────────────────────────────────
-const CATEGORY_ID = 'technical-deep-dive';
-const AUDIENCE_ID = 'plant-manager';
+const CATEGORY_ID = process.env.CATEGORY || 'pillar-guide';
+const AUDIENCE_ID = process.env.AUDIENCE || 'plant-manager';
 
+// ─────────────────────────────────────────────────────────────
+// Constants — MUST stay in sync with src/constants.ts
+// ─────────────────────────────────────────────────────────────
 const CATEGORIES = [
-  { id: 'product-spotlight', label: 'Product Spotlight', blurb: 'Deep look at a single product or system', examples: ['Z-TAP automation cell', 'GEMA OptiCenter', 'Curing oven series'] },
-  { id: 'technical-deep-dive', label: 'Technical Deep Dive', blurb: 'How and why a process or technology works', examples: ['Powder transfer efficiency', 'Cure window control', 'Pretreatment chemistry'] },
-  { id: 'case-study', label: 'Case Study / Installation', blurb: 'Real customer outcome with proof', examples: ['Auto OEM line upgrade', 'Architectural extrusion plant', 'Whitegoods retrofit'] },
-  { id: 'industry-trends', label: 'Industry Trends & News', blurb: 'What is shifting in coating + finishing', examples: ['Energy efficiency norms', 'Low-cure powders', 'Robotics adoption in MSME plants'] },
-  { id: 'how-to', label: 'How-To / Troubleshooting', blurb: 'Operator-grade problem solving', examples: ['Orange peel root causes', 'Fixing Faraday cage issues', 'Quick gun maintenance'] },
-  { id: 'facility-behind-scenes', label: 'Facility / Behind the Scenes', blurb: 'Greater Noida manufacturing & R&D credibility', examples: ['How a powder coating plant is tested', 'Inside the R&D booth', 'Build-to-spec workflow'] },
-  { id: 'buyers-guide', label: 'Buyer’s Guide / Comparison', blurb: 'Decision frameworks for prospects', examples: ['Manual vs automatic line', 'Batch oven vs conveyor', 'OEM vs partner-supplied guns'] }
+  { id: 'pillar-guide',           label: 'Pillar Guide',                blurb: 'Long-form authority anchor — one per product group',         examples: ['The complete powder coating plant reference', "Curing oven buyer's bible", 'Z-TAP automation: a 12,000-hour reference'] },
+  { id: 'case-study',             label: 'Case Study / Installation',   blurb: 'Real customer outcome with quantified proof',                examples: ['Auto OEM line upgrade', 'Architectural extrusion plant', 'Whitegoods retrofit'] },
+  { id: 'comparison-decision',    label: 'Comparison & Decision Frame', blurb: 'X vs Y, decision matrix, 5-year TCO',                        examples: ['Manual vs automatic line', 'Batch oven vs conveyor', 'GEMA vs Wagner vs Nordson guns'] },
+  { id: 'cost-of-inaction',       label: 'Cost of Inaction',            blurb: 'Loss-aversion frame on what status-quo costs',               examples: ['What an unupgraded curing oven costs you per year', 'The hidden P&L cost of manual coating', 'Three signs your line is silently burning margin'] },
+  { id: 'facility-behind-scenes', label: 'Facility / Behind the Scenes', blurb: 'Greater Noida manufacturing & R&D credibility',             examples: ['Inside the test bay', 'How a powder coating plant is built to spec', 'The Z-TAP commissioning floor'] },
+  { id: 'technical-deep-dive',    label: 'Technical Deep Dive',         blurb: 'Mechanism-level. Engineer-grade depth.',                     examples: ['Powder transfer efficiency', 'Cure window control', 'Pretreatment chemistry'] },
+  { id: 'how-to',                 label: 'How-To / Troubleshooting',    blurb: 'Operator-grade defect diagnosis',                            examples: ['Orange peel root causes', 'Faraday cage fixes', 'Monsoon outgassing playbook'] },
+  { id: 'industry-trends',        label: 'Industry Trends & News',      blurb: 'Tied to a real dated trigger',                               examples: ['CBAM impact on Indian exporters', 'BEE Jan-2026 mandate consequences', 'GEMA OptiSpray launch breakdown'] }
 ];
 const AUDIENCES = [
-  { id: 'plant-manager', label: 'Plant Manager', role: 'Owns daily output and uptime', cares: 'Throughput, rejection rate, OEE, operator effort' },
-  { id: 'procurement', label: 'Procurement Lead', role: 'Owns vendor selection and TCO', cares: 'Lifecycle cost, payback, warranty, after-sales SLA' },
-  { id: 'oem-engineer', label: 'OEM Engineer', role: 'Specifies coating systems for end customers', cares: 'Spec compliance, integration, repeatability' },
-  { id: 'rd-process', label: 'R&D / Process Engineer', role: 'Optimises finish quality and chemistry', cares: 'Cure profile, film build, adhesion, defect physics' },
-  { id: 'c-level', label: 'C-Level / Decision Maker', role: 'Capex sign-off and strategy', cares: 'ROI, capacity expansion, brand-finish quality' },
-  { id: 'existing-customer', label: 'Existing Customer', role: 'Already operates an OptiFinish system', cares: 'Upgrades, AMC value, productivity tips' }
+  { id: 'plant-manager',       label: 'Plant Manager',                role: 'Owns daily output and uptime',                          cares: 'Throughput, rejection rate, OEE, operator effort' },
+  { id: 'procurement',         label: 'Procurement Lead',             role: 'Owns vendor selection and TCO',                         cares: 'Lifecycle cost, payback, warranty, after-sales SLA' },
+  { id: 'oem-engineer',        label: 'OEM Engineer',                 role: 'Specifies coating systems for end customers',           cares: 'Spec compliance, integration, repeatability' },
+  { id: 'rd-process',          label: 'R&D / Process Engineer',       role: 'Optimises finish quality and chemistry',                cares: 'Cure profile, film build, adhesion, defect physics' },
+  { id: 'c-level',             label: 'C-Level / Decision Maker',     role: 'Capex sign-off and strategy',                           cares: 'ROI, capacity expansion, brand-finish quality' },
+  { id: 'existing-customer',   label: 'Existing Customer',            role: 'Already operates an OptiFinish system',                 cares: 'Upgrades, AMC value, productivity tips' },
+  { id: 'architect-specifier', label: 'Architect / Facade Specifier', role: 'Specifies architectural coatings on aluminium extrusion', cares: 'Qualicoat Class 2, super-durables, 25-year warranty, non-chromate pretreatment' },
+  { id: 'consulting-engineer', label: 'Consulting Engineer',          role: 'External advisor recommending systems to plants',       cares: 'Verifiable references, spec compliance, technical proofs, neutral comparisons' }
 ];
 
 // ─────────────────────────────────────────────────────────────
-// Prompts (kept in sync with src/services/topicEngine.ts and draftEngine.ts)
+// Per-category blueprint — MUST stay in sync with src/services/draftEngine.ts
 // ─────────────────────────────────────────────────────────────
+const CATEGORY_BLUEPRINT = {
+  'pillar-guide': { shape: 'pillar_guide', sections: ['Executive TL;DR (one-paragraph C-suite scan)', 'What it is and where it fits in the line', 'The four to six sub-systems that decide outcomes', 'Selection variables (throughput, substrate, finish spec, footprint, utilities)', 'Cost structure in INR ranges (capex bands by capacity tier, ranges only — never specific quotes)', 'Compliance and certifications (BIS, ATEX, BEE, Qualicoat where relevant)', 'Common procurement mistakes plant managers regret', 'Next-step routing matrix'], cta: 'Download spec sheet, then book a facility walk-through' },
+  'case-study': { shape: 'case_study', sections: ['The customer, sector, what their line was running', 'The problem in their words (no marketing voice)', "What it was costing them (quantified status quo)", 'The solution (integration approach, named systems, not feature list)', 'Implementation timeline (weeks, what shifted on the line)', 'The numbers that landed (three metrics: throughput, cost, quality)', 'Why this transfers to a similar line (or where it would not)'], cta: 'Book a same-industry plant visit' },
+  'comparison-decision': { shape: 'comparison_matrix', sections: ['The 30-second verdict by use-case', 'The decision matrix (use a real <table>)', 'Criterion deep-dive 1 with engineering reasoning', 'Criterion deep-dive 2 with engineering reasoning', '5-year TCO breakdown (energy, consumables, downtime — INR-denominated qualitative ranges)', 'Pick X if / Pick Y if — explicit routing'], cta: 'Get a custom comparison for your line' },
+  'cost-of-inaction': { shape: 'cost_of_inaction', sections: ['The hidden bill nobody puts on the P&L', 'The 12 / 24 / 36-month projection of compounded waste', 'Three failure modes that compound silently', 'What an audit actually catches in 30 minutes', 'The do-nothing vs act-now decision math', 'One small first step that costs nothing'], cta: 'Schedule a free on-site audit' },
+  'facility-behind-scenes': { shape: 'facility_tour', sections: ['Cold open with a number (sq ft, throughput, machines on floor)', 'The line we walk you through (4-5 stations)', 'QC and traceability discipline', 'The people who build your system (named engineers with tenure)', 'Standards we hold ourselves to beyond ISO', 'When to come see it'], cta: 'Schedule a facility visit' },
+  'technical-deep-dive': { shape: 'immersive_essay', sections: ['The friction this post addresses (named precisely)', 'The mechanism, described so it could be diagrammed', 'Where it breaks in real Indian plants', 'The diagnostic frame an experienced engineer uses', 'Field data (qualitative, not invented numbers)', 'What this changes for the operator at hour six'], cta: 'Talk to our process engineering team' },
+  'how-to': { shape: 'troubleshooting_drilldown', sections: ['The defect pattern, named precisely', 'How to spot it vs adjacent defects (sensory signatures)', 'Five most likely causes, ranked by frequency in Indian plants', 'A 30-minute diagnostic walk you can run today', 'The fix, and the re-occurrence trap', 'Prevention: what changes upstream'], cta: 'Send us a defect for engineering review' },
+  'industry-trends': { shape: 'immersive_essay', sections: ['The trigger and its dated source', 'What it actually does (mechanically, not legally)', 'Who it affects most in India (specific sectors and plant sizes)', 'Three shifts on the floor that follow', 'The buyer-side decision window (when to act)', 'How to get ahead of it without overspending'], cta: 'See how this affects your line' }
+};
+
+// 18-trigger pool — MUST stay in sync with src/services/topicEngine.ts
 const RECENT_TRIGGERS = [
   'EU CBAM live since 1 Jan 2026 — 15-22% price hit on Indian aluminium and steel exports per GTRI',
   'Mahindra inaugurated 500-robot Chakan EV paint shop on 8 Jan 2025, INR 4,500 cr investment',
@@ -67,13 +85,16 @@ const RECENT_TRIGGERS = [
   'India added 119 GW solar module capacity in 2025; 210 GW total — coating demand for MMS structures'
 ];
 
-const TOPIC_SYSTEM_PROMPT = `You are the OptiFinish editorial strategist. OptiFinish is an Indian B2B industrial powder coating equipment company (parent: VACSPL). They sell their own powder coating plants, ovens, booths, and automation (Z-TAP, ZA01). Authorised India partners for GEMA and DURR. Sister concern Vinayak Agencies sells powders, touch-up paints, adhesives.
+// ─────────────────────────────────────────────────────────────
+// Topic prompt — MUST stay in sync with src/services/topicEngine.ts
+// ─────────────────────────────────────────────────────────────
+const TOPIC_SYSTEM_PROMPT = `You are the OptiFinish editorial strategist. Indian B2B industrial powder coating equipment company (parent: VACSPL). Sells own plants, ovens, booths, automation (Z-TAP). Authorised India partners for GEMA and DURR. Sister concern Vinayak Agencies.
 
 UNIQUE POSITIONS (every topic must reflect at least one):
-1. INDIA-FIRST CONTEXT (INR, monsoon, BIS/BEE/CPCB, MSME-ZED, CBAM, generator-power, summer powder shelf-life, CR-sheet variability).
-2. MULTI-OEM NEUTRALITY — sells GEMA AND DURR AND own line, can credibly compare.
-3. PREMIUM INDUSTRIAL TONE — calm authority, technical credibility, never marketing hype.
-4. SPECIFICITY OVER PLATITUDES.
+1. India-first context (INR, monsoon, BIS/BEE/CPCB, MSME-ZED, CBAM, generator-power, summer powder shelf-life)
+2. Multi-OEM neutrality (only player who sells GEMA + DURR + own line)
+3. Premium industrial tone — calm authority, never marketing hype
+4. Specificity over platitudes
 
 TRIGGER POOL (anchor at least 2 of 5 topics to one of these):
 ${RECENT_TRIGGERS.map((t, i) => `[${i + 1}] ${t}`).join('\n')}
@@ -81,91 +102,133 @@ ${RECENT_TRIGGERS.map((t, i) => `[${i + 1}] ${t}`).join('\n')}
 PATTERNS TO SUBSTITUTE:
 ✗ "Did you know that 10% improvement..." → ✓ Open with a named system or dated event
 ✗ "What if you could reduce rejections by 25%..." → ✓ State the actual operator question
-✗ "Get the inside scoop" → ✓ Name the source ("Two senior process engineers walked us through...")
+✗ "Get the inside scoop" → ✓ Name the source ("Two senior engineers walked us through...")
 ✗ "Take your operation to the next level" → ✓ Name the specific lever
 ✗ "In today's competitive market" → ✓ Strike entirely. Open with the technical fact.
 ✗ "Unlocking optimal X" / "Mastering Y" → ✓ Imperative ("How to read X" / "The case against Y")
 
-DO NOT FABRICATE NUMBERS. No invented percentages, INR figures, or ROI claims. Use qualitative language ("a meaningful drop", "a measurable shift").
+DO NOT FABRICATE NUMBERS. No invented percentages, INR figures, or ROI claims.
 
-REQUIRED PER TOPIC: sharp HEADLINE, 1-line HOOK, 1-line ANGLE naming the structural shape, estimated read time 5-14 min.
+REQUIRED PER TOPIC: sharp HEADLINE, 1-line HOOK, 1-line ANGLE naming structural shape, estimated read time 5-14 min.
 
 VARIETY: across 5 topics, vary the structural shape.
 
 OUTPUT: STRICT JSON only.
-Schema: {"topics":[{"id":"t1","title":"","angle":"","hook":"","estimatedReadTime":"7 min"}]}
+{"topics":[{"id":"t1","title":"","angle":"","hook":"","estimatedReadTime":"7 min"}]}
 Return exactly 5 topics. At least 2 must reference a TRIGGER POOL entry by content.`;
 
-const DRAFT_SYSTEM_PROMPT = `You are the OptiFinish editorial writer. You produce one complete blog post per call, written to the standard of a senior process engineer who has walked 200 plant floors. The reader is intelligent, busy, and skeptical of marketing.
+// ─────────────────────────────────────────────────────────────
+// Draft prompt — generated from per-category blueprint
+// ─────────────────────────────────────────────────────────────
+function draftSystemPrompt(categoryId) {
+  const bp = CATEGORY_BLUEPRINT[categoryId];
+  const sectionList = bp.sections.map((s, i) => `H2 ${i + 1}. ${s}`).join('\n');
 
-OPTIFINISH CONTEXT:
-- Indian B2B industrial powder coating equipment company (parent: VACSPL).
-- Sells own powder coating plants, ovens, booths, automation (Z-TAP, ZA01).
-- Authorised India partners for GEMA and DURR. Sister concern Vinayak Agencies.
-- Greater Noida manufacturing & R&D facility.
+  return `You are the OptiFinish editorial writer. Senior process engineer voice. Reader is intelligent, busy, skeptical of marketing.
 
-UNIQUE POSITIONS: India-first context, multi-OEM neutrality, premium industrial tone, specificity over platitudes.
+OPTIFINISH CONTEXT: Indian B2B powder coating equipment (VACSPL). Own plants, ovens, booths, automation (Z-TAP, ZA01). Authorised India partners for GEMA + DURR. Greater Noida facility. Sister concern Vinayak Agencies.
 
-STRICT EDITORIAL RULES:
-1. NO EM-DASHES. Use commas, colons, or periods. Never "—" or "--".
-2. NO INLINE COLOR or style tags. Emphasis only via <b>, <i>, or 'single quotes'.
-3. SEMANTIC HTML ONLY. Tags: <h2>, <h3>, <p>, <ol>, <ul>, <li>, <strong>, <em>, <b>, <i>.
-4. NO FABRICATED NUMBERS. Cite only verifiable public facts (regulation dates, OEM-announced capacity). Otherwise speak qualitatively.
-5. NO MARKETING HYPE. Banned: "best-in-class", "industry-leading", "unparalleled", "game-changing", "cutting-edge", "revolutionary", "next-level", "world-class", "synergy", "leverage" (verb).
-6. NO LISTICLES. Lists may appear inside narrative but never as the article's spine.
-7. NO CLICHÉ OPENERS. Banned: "In today's competitive market", "Did you know", "Have you ever wondered", "What if you could", "Get the inside scoop", "Take your operation to the next level". Open with a named system, dated event, or specific physical observation.
-8. WORD COUNT: 1100-1400 words.
+UNIQUE POSITIONS: India-first context (INR, monsoon, BIS/BEE/CPCB, MSME-ZED, CBAM, generator-power, summer powder shelf-life, CR-sheet variability), multi-OEM neutrality, premium industrial tone, specificity over platitudes.
 
-STRUCTURE: 5-7 H2 sections flowing as essay. Lead paragraph must NOT begin with the title's words. Final H2 lands the closing arc with a soft CTA paragraph.
+═════════════════════════════════════════════
+  WORD COUNT — NON-NEGOTIABLE
+═════════════════════════════════════════════
+bodyHtml MUST contain a minimum of 1100 words and a target of 1200-1400 words of rendered body text.
 
-SNAPSHOT FIELDS:
-- decisionFriction: specific tradeoff, names both sides
-- dominantAnxiety: the fear, names a concrete consequence
-- coreInsight: the reframe, must be substantive
-- structuralShape: pillar_guide | case_study | facility_tour | troubleshooting_drilldown | comparison_matrix | cost_of_inaction | immersive_essay
-- lever: 1-line specific differentiator
+Each H2 needs 150-220 words on average. Use 2-3 paragraphs per section with technical specifics. Add an ordered or unordered list inside ONE section. If you finish below 1100, EXPAND technical depth in the longest sections — do not pad. Add named systems, specific Indian-context failures, name the physics.
 
-IMAGE PROMPTS — SUBJECT MUST MATCH THE SECTION CONTENT. Exactly 2 inline. anchorHeading must be EXACT H2 text. Front-load the subject as the FIRST phrase of the prompt. Each prompt 30-80 words.
+A draft below 1100 words is a generation failure.
 
-The visual subject must be the specific noun the section is about. A generic "industrial bay" shot is NOT acceptable for a section about a pump, defect, or instrument.
+═════════════════════════════════════════════
+  STRUCTURE FOR THIS POST (mandatory)
+═════════════════════════════════════════════
+Structural shape: ${bp.shape}
 
-SUBJECT MAPPING EXAMPLES (follow this pattern):
-- Section about the OptiSpray pump → "A GEMA-style powder application pump, canister and nozzle visible, control valves and powder hose in frame, mounted at a powder coating booth"
-- Section about cure window control → "A calibrated K-type thermocouple probe resting against a freshly coated metal panel inside a curing oven, glowing radiant heating elements diffused in background"
-- Section about outgassing on cast aluminium → "A coated cast-aluminium part on a cooling rack showing fine micro-blistering, raked side light revealing the defect texture"
-- Section about pretreatment chemistry → "A steel part being lowered into a degreasing tank, stainless dip-cage visible, faint chemical mist hovering above the bath surface"
-- Section about transfer efficiency / Faraday-cage → "An electrostatic powder coating gun mid-spray on a recessed metal part, visible cloud of powder mist, gun-to-part distance clearly framed"
-- Section about plant capacity / line layout → "A wide overhead view of a powder coating conveyor line, parts hanging on hooks moving through a curing oven entrance"
-- Section about a curing oven / thermal profile → "The interior of an industrial curing oven photographed from the entrance, infrared heating panels glowing, panels mid-cure on mesh conveyor"
-- Section about a finished outcome / case study result → "A finished powder-coated automotive body panel cooling under exit-tunnel light, smooth finish reflecting overhead bars"
-- Section about facility / R&D booth → "A small R&D-scale spray booth at the OptiFinish Greater Noida facility, instrumented with thermal probes and powder hoppers, late-afternoon natural light"
-- Section about defect troubleshooting (orange peel) → "Macro detail of an orange-peel-textured powder-coated surface, raking side light exposing the dimpled topology"
+Use these exact H2 sections, in order. You may rewrite the H2 wording so it hints at content (e.g. instead of literal "The friction this post addresses", write "Why hour-six humidity rewrites every spec sheet"). But the SUBSTANCE must match the blueprint.
 
-PROMPT SHAPE: "<SUBJECT 1-2 sentences>. <Composition>. <Mood line>."
+${sectionList}
 
-ABSTRACT TOPICS RULE (regulations, policies, markets, finance, compliance):
-NEVER default to a chart, graph, infographic, or data visualisation — Flux renders fake-looking graphs. Pick a CONCRETE PHYSICAL SCENE that REPRESENTS the abstract idea.
-- EU CBAM → "A coil of cold-rolled steel wrapped for export, customs paperwork resting on top, 'EU' destination stamp visible on the bill of lading"
-- PFAS phase-out → "A row of powder bags labelled 'PFAS-free' on a warehouse pallet, scanner gun and compliance clipboard in foreground"
-- BEE star-rating → "A washing-machine cabinet panel coming off a powder line under bright inspection light, the gloss surface intact under raking light"
-- AkzoNobel-Axalta merger → "Two powder bags from different brands resting side-by-side on a procurement bench, a barcode reader between them"
+End with a soft CTA paragraph priming: "${bp.cta}". CTA paragraph must NOT begin with "Want to" / "Ready to" / "If you'd like" — open with the substance of the offer.
 
-No brand suffix. No generic "industrial bay" unless the section is literally a wide facility tour. No hi-vis vests, no glossy reflections, no posed humans with eye contact. NO charts, graphs, infographics, screenshots, text-on-screens, or data visualisations of any kind.
+═════════════════════════════════════════════
+  STRICT EDITORIAL RULES
+═════════════════════════════════════════════
+1. NO EM-DASHES. Never "—" or "--".
+2. NO INLINE COLOR/style tags. Emphasis only via <b>, <i>, or 'single quotes'.
+3. SEMANTIC HTML ONLY. Allowed: <h2>, <h3>, <p>, <ol>, <ul>, <li>, <strong>, <em>, <b>, <i>, <blockquote>, <table>, <thead>, <tbody>, <tr>, <th>, <td>.
+4. NO FABRICATED NUMBERS. Cite only verifiable public facts. Otherwise speak qualitatively.
+5. NO MARKETING HYPE. Banned: best-in-class, industry-leading, unparalleled, game-changing, cutting-edge, revolutionary, next-level, world-class, synergy, leverage (verb), unlock, harness, empower, robust, seamless.
+6. NO LISTICLES AS THE SPINE.
+7. NO CLICHÉ OPENERS: "In today's competitive market", "Did you know", "Have you ever wondered", "What if you could", "Get the inside scoop", "Take your operation to the next level", "Unlocking", "Mastering".
+8. NO META H2s. Never write H2s named after schema fields ("Decision Friction", "Core Insight", "Conclusion and Call to Action").
+9. PULL-QUOTE: wrap exactly ONE sharp 1-2 sentence insight in <blockquote> — the most quotable line.
 
-OUTPUT: Strict JSON only.
+═════════════════════════════════════════════
+  SNAPSHOT FIELDS
+═════════════════════════════════════════════
+- decisionFriction: the specific tradeoff, names BOTH sides
+- dominantAnxiety: the fear, names a CONCRETE consequence
+- coreInsight: the substantive reframe — never a platitude
+- structuralShape: ${bp.shape}
+- lever: 1-line specific differentiator (e.g. "Behaviour under heat-soak over feature parity")
+
+═════════════════════════════════════════════
+  IMAGE PROMPTS — SUBJECT MUST MATCH SECTION
+═════════════════════════════════════════════
+Exactly 2 inline. anchorHeading must be EXACT H2 text. Front-load subject as FIRST phrase.
+
+SUBJECT EXAMPLES:
+- Oven/cure profile → "A calibrated K-type thermocouple probe resting against a coated panel inside a curing oven, glowing radiant heating elements diffused in background"
+- Pretreatment → "A steel part being lowered into a degreasing tank, stainless dip-cage visible, faint chemical mist hovering above the bath"
+- Transfer efficiency → "An electrostatic powder coating gun mid-spray on a recessed metal part, visible cloud of powder mist"
+- Case study result → "A finished powder-coated automotive body panel cooling under exit-tunnel light"
+- Facility/R&D booth → "A small R&D-scale spray booth at Greater Noida, instrumented with thermal probes, late-afternoon natural light"
+- Defect macro (orange peel) → "Macro detail of an orange-peel-textured powder-coated surface, raking side light exposing dimpled topology"
+
+ABSTRACT TOPICS (regulations, market shifts):
+NEVER charts/graphs/infographics — Flux renders fake-looking data viz. Pick a CONCRETE PHYSICAL SCENE.
+- CBAM → "A coil of cold-rolled steel wrapped for export, customs paperwork resting on top, 'EU' destination stamp on bill of lading"
+- PFAS → "A row of powder bags labelled 'PFAS-free' on a warehouse pallet, scanner gun and compliance clipboard in foreground"
+- BEE star-rating → "A washing-machine cabinet panel coming off a powder line under bright inspection light, surface intact under raking light"
+- AkzoNobel-Axalta → "Two powder bags from different brands on a procurement bench, a barcode reader between them"
+
+PROMPT SHAPE: "<SUBJECT 1-2 sentences>. <Composition>. <Mood line>." (30-80 words)
+No brand suffix. No sci-fi clichés, hi-vis vests, glossy reflections, decorative robotic arms. No posed humans with eye contact. NO charts/graphs/infographics/screenshots.
+
+═════════════════════════════════════════════
+  OUTPUT
+═════════════════════════════════════════════
+Strict JSON only.
+
 {
-  "title": "string", "subtitle": "string", "bodyHtml": "string",
-  "snapshot": { "decisionFriction": "", "dominantAnxiety": "", "coreInsight": "", "structuralShape": "immersive_essay", "lever": "" },
+  "title": "string (max 75 chars)",
+  "subtitle": "string (max 130 chars)",
+  "bodyHtml": "string — MIN 1100 words, target 1200-1400, semantic tags only, exactly one <blockquote>",
+  "snapshot": { "decisionFriction": "", "dominantAnxiety": "", "coreInsight": "", "structuralShape": "${bp.shape}", "lever": "" },
   "imagePlacements": [
     { "id": "img-inline-1", "position": "inline", "anchorHeading": "", "prompt": "", "alt": "" },
     { "id": "img-inline-2", "position": "inline", "anchorHeading": "", "prompt": "", "alt": "" }
   ]
 }`;
+}
 
 const FLUX_BRAND_SUFFIX = `Shot on Hasselblad X2D, 80mm lens, f/4, natural directional light. Editorial industrial photography, calm and precise, restrained color palette of graphite, steel grey, and warm white, with a single ember-orange accent acting as the warmest light source. Kodak Portra 400 color science. Sharp focus on the subject, gentle falloff into shadow.`;
 
 // ─────────────────────────────────────────────────────────────
-// API helpers (all via the Vite proxy — keys never leave the dev server)
+// CTA card copy — MUST stay in sync with src/services/templateBuilder.ts
+// ─────────────────────────────────────────────────────────────
+const CTA_BY_SHAPE = {
+  pillar_guide:               { headline: 'Brief your engineering team with a real reference', body: 'Most plant managers we talk to want a working spec sheet and a 60-minute walk-through before they brief their team. Both are available, on calendar.', action: 'Book a facility walk-through' },
+  case_study:                 { headline: 'See the diagnostic, not just the result',           body: 'The transferable part of any case study is the audit method, not the throughput number. Walk a similar live line with our process engineer.', action: 'Schedule a same-industry visit' },
+  comparison_matrix:          { headline: 'Get a quote-ready comparison for your line',         body: 'Tell us your throughput, substrate, and finish spec. We return a comparison matrix in 24 hours, with five-year and ten-year TCO ranges in INR.', action: 'Request a custom comparison' },
+  cost_of_inaction:           { headline: 'Schedule a free on-site audit',                       body: 'A 30-minute walk at hour six of your shift catches what a four-hour root-cause review later cannot. The audit is free. Acting on what we find is your call.', action: 'Book a free audit' },
+  facility_tour:              { headline: 'Come see the floor that builds your system',         body: 'Calendared visits to the Greater Noida facility, named engineer escorting, full QC walkthrough. The floor tells you what the brochure cannot.', action: 'Schedule a facility visit' },
+  troubleshooting_drilldown:  { headline: 'Stuck on a defect we did not cover here?',           body: 'Send a photo of the defect, the substrate, and the cure profile. Our process engineering team responds with a diagnostic within 24 hours.', action: 'Send a defect for review' },
+  immersive_essay:            { headline: 'Talk to our process engineering team',               body: 'The questions raised in this article rarely have the same answer twice. Our team has the data on Indian conditions; bring your specifics.', action: 'Talk to engineering' }
+};
+
+// ─────────────────────────────────────────────────────────────
+// API helpers — all via the Vite proxy
 // ─────────────────────────────────────────────────────────────
 async function chatJson(systemPrompt, userPrompt, opts = {}) {
   const res = await fetch(`${PROXY}/nvidia/llm/chat/completions`, {
@@ -178,7 +241,7 @@ async function chatJson(systemPrompt, userPrompt, opts = {}) {
         { role: 'user', content: userPrompt }
       ],
       temperature: opts.temperature ?? 0.7,
-      top_p: 0.92,
+      top_p: opts.topP ?? 0.92,
       max_tokens: opts.maxTokens ?? 5000,
       response_format: { type: 'json_object' }
     })
@@ -199,18 +262,13 @@ async function fluxImage(prompt, { steps = 30, seed = 0, attempt = 1 } = {}) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       prompt: `${prompt.trim()}\n\n${FLUX_BRAND_SUFFIX}`,
-      width: 1024,
-      height: 1024,
-      cfg_scale: 5,
-      mode: 'base',
-      seed,
-      steps,
-      samples: 1
+      width: 1024, height: 1024,
+      cfg_scale: 5, mode: 'base',
+      seed, steps, samples: 1
     })
   });
   if (!res.ok) {
     const t = await res.text();
-    // Auto-retry on transient 5xx — NVIDIA's hosted Flux occasionally hiccups
     if (res.status >= 500 && attempt < 3) {
       console.log(`     Flux ${res.status} on attempt ${attempt}, retrying with new seed…`);
       await new Promise((r) => setTimeout(r, 1500));
@@ -229,24 +287,32 @@ async function fluxImage(prompt, { steps = 30, seed = 0, attempt = 1 } = {}) {
 }
 
 // ─────────────────────────────────────────────────────────────
-// HTML composition — port of src/services/templateBuilder.ts
+// HTML composition — MUST stay in sync with src/services/templateBuilder.ts
 // ─────────────────────────────────────────────────────────────
 const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const escapeReg = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 function categoryIconSvg(categoryId) {
   const stroke = `stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"`;
-  const open = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" ${stroke}>`;
+  const open = `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" ${stroke}>`;
   const close = `</svg>`;
   switch (categoryId) {
-    case 'product-spotlight': return `${open}<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/>${close}`;
-    case 'technical-deep-dive': return `${open}<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>${close}`;
-    case 'case-study': return `${open}<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/>${close}`;
-    case 'industry-trends': return `${open}<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>${close}`;
-    case 'how-to': return `${open}<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>${close}`;
+    case 'pillar-guide':           return `${open}<path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>${close}`;
+    case 'case-study':             return `${open}<rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6M9 16h6M9 8h.01"/>${close}`;
+    case 'comparison-decision':    return `${open}<path d="M16 16l3-8 3 8c-2 1-4 1-6 0z"/><path d="M2 16l3-8 3 8c-2 1-4 1-6 0z"/><path d="M7 21h10M12 3v18M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/>${close}`;
+    case 'cost-of-inaction':       return `${open}<polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/>${close}`;
     case 'facility-behind-scenes': return `${open}<path d="M2 20h20"/><path d="M5 20V8l5 3V8l5 3V8l4 3v9"/>${close}`;
-    case 'buyers-guide': return `${open}<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>${close}`;
+    case 'technical-deep-dive':    return `${open}<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>${close}`;
+    case 'how-to':                 return `${open}<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>${close}`;
+    case 'industry-trends':        return `${open}<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>${close}`;
     default: return `${open}<circle cx="12" cy="12" r="10"/>${close}`;
   }
+}
+
+function derivePurpose(prompt) {
+  const before = prompt.split(/Shot on Hasselblad/i)[0].trim();
+  const sentence = before.split(/[.!?]\s/)[0];
+  return sentence.length > 160 ? sentence.slice(0, 157) + '…' : sentence;
 }
 
 function injectImagesIntoBody(bodyHtml, placements) {
@@ -255,122 +321,83 @@ function injectImagesIntoBody(bodyHtml, placements) {
   let html = bodyHtml;
   for (const p of usable) {
     if (!p.anchorHeading) continue;
-    // Find the H2 with this heading text (allow some attribute variance)
     const re = new RegExp(`(<h2[^>]*>\\s*${escapeReg(p.anchorHeading)}\\s*</h2>)`, 'i');
     const block = `\n<div class="img-container">\n  <img src="${esc(p.generatedUrl)}" alt="${esc(p.alt)}" />\n  <div class="img-caption"><p>Visual Insight: ${esc(derivePurpose(p.prompt))}</p></div>\n</div>\n`;
-    if (re.test(html)) {
-      html = html.replace(re, `${block}$1`);
-    } else {
-      // anchor not found — append before last paragraph
-      html = html + block;
-    }
+    if (re.test(html)) html = html.replace(re, `${block}$1`);
+    else html = html + block;
   }
   return html;
 }
-function escapeReg(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
-function derivePurpose(prompt) {
-  const before = prompt.split(/Shot on Hasselblad/i)[0].trim();
-  const sentence = before.split(/[.!?]\s/)[0];
-  return sentence.length > 160 ? sentence.slice(0, 157) + '…' : sentence;
-}
 
-function buildHtml(draft, category, audience) {
-  const cat = CATEGORIES.find((c) => c.id === category);
-  const aud = AUDIENCES.find((a) => a.id === audience);
+const BASE_CSS = `:root{--ink-950:#0A0A0B;--ink-900:#111113;--ink-800:#1E1E22;--ink-700:#2A2A30;--ember-500:#FF6B35;--ember-400:#FF8B5C;--ember-700:#C24A20;--ember-50:#FFF5EE;--paper:#FAFAF7;--paper-warm:#FFF8F2;--steel-500:#6B7280;--steel-400:#9CA3AF}*{box-sizing:border-box}body{background:var(--paper);color:var(--ink-950);font-family:'Inter',system-ui,sans-serif;line-height:1.7;margin:0;padding:56px 24px 80px;-webkit-font-smoothing:antialiased}.container{max-width:760px;margin:0 auto;background:#fff;padding:64px 72px 56px;border-radius:32px;box-shadow:0 20px 60px rgba(10,10,11,.06)}@media(max-width:720px){body{padding:16px 8px 40px;line-height:1.65}.container{padding:32px 24px 36px;border-radius:20px}}.progress-bar{position:fixed;top:0;left:0;right:0;height:3px;background:rgba(10,10,11,.06);z-index:100}.progress-fill{height:100%;width:0;background:var(--ember-500);transition:width .08s ease-out;box-shadow:0 0 12px rgba(255,107,53,.3)}.snapshot-box{position:relative;overflow:hidden;background:linear-gradient(135deg,#2A0E04 0%,#14100E 55%,#0A0A0B 100%);color:#fff;padding:44px 44px 40px;border-radius:24px;margin-bottom:56px;border:1px solid rgba(255,107,53,.25);box-shadow:0 24px 70px rgba(255,107,53,.10)}.snapshot-box::before,.snapshot-box::after{content:'';position:absolute;width:240px;height:240px;border-radius:50%;filter:blur(70px);pointer-events:none}.snapshot-box::before{right:-70px;top:-70px;background:rgba(255,107,53,.18)}.snapshot-box::after{left:-50px;bottom:-50px;background:rgba(255,255,255,.04)}@media(max-width:720px){.snapshot-box{padding:28px 24px 26px;border-radius:18px;margin-bottom:36px}}.snapshot-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:32px;position:relative;z-index:1;flex-wrap:wrap}.snapshot-eyebrow{display:flex;align-items:center;gap:14px}.snapshot-icon{width:42px;height:42px;display:flex;align-items:center;justify-content:center;background:rgba(255,107,53,.14);border:1px solid rgba(255,107,53,.32);border-radius:11px;color:var(--ember-400)}.snapshot-eyebrow-label{display:block;font-size:11px;font-weight:700;font-style:italic;text-transform:uppercase;letter-spacing:.32em;opacity:.95}.snapshot-eyebrow-lever{display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.18em;color:rgba(255,255,255,.65);margin-top:5px;max-width:480px;line-height:1.5}.snapshot-title{font-family:'Cormorant Garamond',serif;font-size:38px;font-style:italic;font-weight:600;margin:0;color:#fff;line-height:1.1;border:none;padding:0}@media(max-width:720px){.snapshot-title{font-size:30px}}.snapshot-pill{align-self:flex-start;padding:9px 18px;border-radius:999px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.22em;background:rgba(255,107,53,.18);color:var(--ember-400);border:1px solid rgba(255,107,53,.32);backdrop-filter:blur(8px)}.snapshot-grid{display:grid;grid-template-columns:1fr 1fr;gap:36px;padding-top:32px;border-top:1px solid rgba(255,255,255,.10);position:relative;z-index:1}@media(max-width:640px){.snapshot-grid{grid-template-columns:1fr;gap:24px}}.snapshot-cell-label{display:block;font-size:10px;font-weight:700;font-style:italic;text-transform:uppercase;letter-spacing:.22em;color:rgba(255,255,255,.5);margin-bottom:9px}.snapshot-cell-value{margin:0;font-size:15px;font-weight:500;color:#fff;line-height:1.6}.snapshot-cell-value.italic{font-style:italic;opacity:.85;font-family:'JetBrains Mono',monospace;font-size:13px}.article-header{margin-bottom:40px}.article-section-marker{display:flex;align-items:center;gap:14px;font-size:10px;font-weight:700;font-style:italic;text-transform:uppercase;letter-spacing:.32em;color:var(--ink-950);margin-bottom:22px}.article-section-marker::before,.article-section-marker::after{content:'';flex:0 0 36px;height:1px;background:rgba(10,10,11,.28)}.article h1{font-family:'Cormorant Garamond',serif;font-size:46px;font-weight:700;line-height:1.12;letter-spacing:-.01em;margin:0 0 14px;color:var(--ink-950)}@media(max-width:720px){.article h1{font-size:32px}}.article-subtitle{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;font-style:italic;color:var(--steel-500);margin:0 0 22px;line-height:1.45}.article-meta{display:flex;align-items:center;flex-wrap:wrap;gap:10px;font-size:10px;font-weight:700;font-style:italic;text-transform:uppercase;letter-spacing:.28em;color:var(--steel-500)}.article-meta-dot{width:4px;height:4px;border-radius:50%;background:var(--steel-400);display:inline-block}.blog-body-text{font-size:17px;line-height:1.78;color:var(--ink-900)}.blog-body-text h2{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:600;margin:56px 0 18px;color:var(--ink-950);border-bottom:1px solid rgba(255,107,53,.18);padding-bottom:12px;line-height:1.22;scroll-margin-top:24px}@media(max-width:720px){.blog-body-text h2{font-size:24px;margin:40px 0 14px}}.blog-body-text h3{font-size:16px;font-weight:700;margin:32px 0 10px;color:var(--ember-700)}.blog-body-text p{margin:0 0 20px}.blog-body-text p.lead{font-size:19px;color:var(--ink-800)}.blog-body-text>p:first-of-type::first-letter{font-family:'Cormorant Garamond',serif;font-size:72px;font-weight:700;line-height:.95;color:var(--ember-700);float:left;padding:6px 14px 0 0;margin-top:4px}@media(max-width:720px){.blog-body-text>p:first-of-type::first-letter{font-size:54px;padding:4px 10px 0 0}}.blog-body-text ul,.blog-body-text ol{padding-left:28px;margin:0 0 24px}.blog-body-text li{margin-bottom:10px;line-height:1.72}.blog-body-text strong,.blog-body-text b{font-weight:700;color:var(--ink-950)}.blog-body-text em,.blog-body-text i{font-style:italic}.blog-body-text blockquote{margin:40px 0;padding:8px 0 8px 32px;border-left:3px solid var(--ember-500);font-family:'Cormorant Garamond',serif;font-size:24px;font-style:italic;font-weight:500;line-height:1.4;color:var(--ink-800)}.blog-body-text blockquote p{margin:0}@media(max-width:720px){.blog-body-text blockquote{font-size:20px;padding-left:22px;margin:28px 0}}.blog-body-text table{width:100%;border-collapse:collapse;margin:28px 0;font-size:14px}.blog-body-text th,.blog-body-text td{padding:14px 16px;text-align:left;border-bottom:1px solid rgba(10,10,11,.08);vertical-align:top}.blog-body-text th{font-weight:700;color:var(--ink-950);background:var(--ember-50);font-size:11px;text-transform:uppercase;letter-spacing:.12em}@media(max-width:720px){.blog-body-text table{font-size:13px}.blog-body-text th,.blog-body-text td{padding:10px 12px}}.img-container{margin:56px 0;border-top:1px solid #e2e8f0;padding-top:18px}.img-container img{width:100%;border-radius:16px;display:block;box-shadow:0 12px 40px rgba(10,10,11,.06)}.img-caption{margin-top:16px;padding-bottom:16px;border-bottom:1px solid #e2e8f0}.img-caption p{margin:0;font-size:10px;font-weight:700;color:var(--steel-500);text-transform:uppercase;letter-spacing:.2em;line-height:1.55}.cta-card{position:relative;margin:64px 0 32px;padding:38px 44px 36px;background:linear-gradient(135deg,#FFF8F2 0%,#FFFFFF 100%);border:1px solid rgba(255,107,53,.20);border-radius:22px;overflow:hidden}.cta-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--ember-500)}.cta-card::after{content:'';position:absolute;right:-50px;top:-50px;width:220px;height:220px;border-radius:50%;background:radial-gradient(closest-side,rgba(255,107,53,.12),transparent);pointer-events:none}@media(max-width:720px){.cta-card{padding:28px 24px 26px;border-radius:16px;margin:44px 0 24px}}.cta-eyebrow{display:inline-block;font-size:10px;font-weight:700;font-style:italic;text-transform:uppercase;letter-spacing:.32em;color:var(--ember-700);margin-bottom:10px}.cta-headline{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;margin:0 0 14px;color:var(--ink-950);line-height:1.2;border:none;padding:0}@media(max-width:720px){.cta-headline{font-size:23px}}.cta-body{font-size:15px;line-height:1.65;color:var(--ink-900);margin:0 0 18px;max-width:540px}.cta-action{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.18em;color:var(--ember-700)}.article-footer{margin-top:56px;padding-top:32px;border-top:1px solid #e2e8f0;text-align:center}.article-footer-mark{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.32em;color:var(--steel-500)}`;
+
+function buildHtml(draft, categoryId, audienceId) {
+  const cat = CATEGORIES.find((c) => c.id === categoryId);
+  const aud = AUDIENCES.find((a) => a.id === audienceId);
   const articleBody = injectImagesIntoBody(draft.bodyHtml, draft.imagePlacements);
+  const cta = CTA_BY_SHAPE[draft.snapshot.structuralShape] ?? CTA_BY_SHAPE.immersive_essay;
+  const readMin = Math.max(3, Math.round(draft.wordCount / 220));
 
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>${esc(draft.title)} · OptiFinish</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --ink-950: #0A0A0B; --ink-900: #111113; --ink-800: #1E1E22; --ink-700: #2A2A30;
-      --ember-500: #FF6B35; --ember-400: #FF8B5C; --ember-700: #C24A20;
-      --paper: #FAFAF7; --paper-warm: #FFF8F2;
-      --steel-500: #6B7280; --steel-400: #9CA3AF;
-    }
-    * { box-sizing: border-box; }
-    body { background: var(--paper); color: var(--ink-950); font-family: 'Inter', system-ui, sans-serif; line-height: 1.65; margin: 0; padding: 40px 20px; -webkit-font-smoothing: antialiased; }
-    .container { max-width: 820px; margin: 0 auto; background: #fff; padding: 60px; border-radius: 32px; box-shadow: 0 10px 40px rgba(10,10,11,0.06); }
-    @media (max-width: 720px) { .container { padding: 32px 24px; border-radius: 20px; } body { padding: 16px 8px; } }
-
-    .snapshot-box { position: relative; overflow: hidden; background: linear-gradient(135deg, #2A0E04 0%, #14100E 55%, #0A0A0B 100%); color: #fff; padding: 40px; border-radius: 24px; margin-bottom: 48px; border: 1px solid rgba(255,107,53,0.25); box-shadow: 0 20px 60px rgba(255,107,53,0.08); }
-    .snapshot-box::before, .snapshot-box::after { content: ''; position: absolute; width: 220px; height: 220px; border-radius: 50%; filter: blur(60px); pointer-events: none; }
-    .snapshot-box::before { right: -60px; top: -60px; background: rgba(255,107,53,0.18); }
-    .snapshot-box::after { left: -40px; bottom: -40px; background: rgba(255,255,255,0.04); }
-    .snapshot-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 32px; position: relative; z-index: 1; flex-wrap: wrap; }
-    .snapshot-eyebrow { display: flex; align-items: center; gap: 12px; }
-    .snapshot-icon { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: rgba(255,107,53,0.12); border: 1px solid rgba(255,107,53,0.3); border-radius: 10px; color: var(--ember-400); }
-    .snapshot-eyebrow-label { display: block; font-size: 11px; font-weight: 700; font-style: italic; text-transform: uppercase; letter-spacing: 0.3em; opacity: 0.95; }
-    .snapshot-eyebrow-lever { display: block; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.18em; color: rgba(255,255,255,0.65); margin-top: 4px; max-width: 480px; }
-    .snapshot-title { font-family: 'Cormorant Garamond', serif; font-size: 38px; font-style: italic; font-weight: 600; margin: 0; color: #fff; line-height: 1.1; border: none; padding: 0; }
-    .snapshot-pill { align-self: flex-start; padding: 8px 16px; border-radius: 999px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; background: rgba(255,107,53,0.18); color: var(--ember-400); border: 1px solid rgba(255,107,53,0.3); }
-    .snapshot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.1); position: relative; z-index: 1; }
-    @media (max-width: 640px) { .snapshot-grid { grid-template-columns: 1fr; gap: 24px; } }
-    .snapshot-cell-label { display: block; font-size: 10px; font-weight: 700; font-style: italic; text-transform: uppercase; letter-spacing: 0.22em; color: rgba(255,255,255,0.5); margin-bottom: 8px; }
-    .snapshot-cell-value { margin: 0; font-size: 15px; font-weight: 500; color: #fff; line-height: 1.55; }
-    .snapshot-cell-value.italic { font-style: italic; opacity: 0.85; font-family: 'JetBrains Mono', monospace; font-size: 13px; }
-
-    .article { background: #fff; border-radius: 24px; padding: 0; }
-    .article-header { margin-bottom: 40px; }
-    .article-section-marker { display: flex; align-items: center; gap: 12px; font-size: 10px; font-weight: 700; font-style: italic; text-transform: uppercase; letter-spacing: 0.3em; color: var(--ink-950); margin-bottom: 16px; }
-    .article-section-marker::before, .article-section-marker::after { content: ''; flex: 0 0 32px; height: 1px; background: rgba(10,10,11,0.3); }
-    .article h1 { font-family: 'Cormorant Garamond', serif; font-size: 44px; font-weight: 700; line-height: 1.12; margin: 0 0 16px; color: var(--ink-950); }
-    @media (max-width: 720px) { .article h1 { font-size: 32px; } }
-    .article-meta { font-size: 10px; font-weight: 700; font-style: italic; text-transform: uppercase; letter-spacing: 0.3em; color: var(--steel-500); margin-top: 12px; }
-    .article h2 { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 600; margin: 40px 0 16px; color: var(--ink-950); border-bottom: 1px solid rgba(255,107,53,0.15); padding-bottom: 10px; line-height: 1.25; }
-    .article h3 { font-size: 16px; font-weight: 700; margin: 28px 0 10px; color: var(--ember-700); }
-    .article p { font-size: 16px; line-height: 1.75; margin: 0 0 18px; color: var(--ink-900); }
-    .article ul, .article ol { padding-left: 24px; margin: 0 0 20px; }
-    .article li { margin-bottom: 10px; font-size: 16px; line-height: 1.7; }
-    .article strong, .article b { font-weight: 700; color: var(--ink-950); }
-    .article em, .article i { font-style: italic; }
-    .img-container { margin: 48px 0; border-top: 1px solid #e2e8f0; padding-top: 16px; }
-    .img-container img { width: 100%; border-radius: 16px; display: block; }
-    .img-caption { margin-top: 14px; padding-bottom: 16px; border-bottom: 1px solid #e2e8f0; }
-    .img-caption p { margin: 0; font-size: 10px; font-weight: 700; color: var(--steel-500); text-transform: uppercase; letter-spacing: 0.18em; line-height: 1.5; }
-    .article-footer { margin-top: 56px; padding-top: 32px; border-top: 1px solid #e2e8f0; text-align: center; }
-    .article-footer-mark { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3em; color: var(--steel-500); }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>${esc(draft.title)} · OptiFinish</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>${BASE_CSS}</style>
 </head>
 <body>
-  <div class="container">
-    <div class="snapshot-box">
-      <div class="snapshot-head">
-        <div class="snapshot-eyebrow">
-          <div class="snapshot-icon">${categoryIconSvg(category)}</div>
-          <div>
-            <span class="snapshot-eyebrow-label">Industrial Brief</span>
-            <span class="snapshot-eyebrow-lever">Lever: ${esc(draft.snapshot.lever)}</span>
-          </div>
+<div class="progress-bar"><div class="progress-fill"></div></div>
+<div class="container">
+  <div class="snapshot-box">
+    <div class="snapshot-head">
+      <div class="snapshot-eyebrow">
+        <div class="snapshot-icon">${categoryIconSvg(categoryId)}</div>
+        <div>
+          <span class="snapshot-eyebrow-label">Industrial Brief</span>
+          <span class="snapshot-eyebrow-lever">Lever: ${esc(draft.snapshot.lever)}</span>
         </div>
-        <h2 class="snapshot-title">Dossier Calibration</h2>
       </div>
-      <div class="snapshot-pill">Target: ${esc(aud?.label ?? '—')}</div>
-      <div class="snapshot-grid">
-        <div><span class="snapshot-cell-label">Decision Friction</span><p class="snapshot-cell-value">${esc(draft.snapshot.decisionFriction)}</p></div>
-        <div><span class="snapshot-cell-label">Dominant Anxiety</span><p class="snapshot-cell-value">${esc(draft.snapshot.dominantAnxiety)}</p></div>
-        <div><span class="snapshot-cell-label">Core Insight</span><p class="snapshot-cell-value">${esc(draft.snapshot.coreInsight)}</p></div>
-        <div><span class="snapshot-cell-label">Structural Shape</span><p class="snapshot-cell-value italic">${esc(draft.snapshot.structuralShape)}</p></div>
-      </div>
+      <h2 class="snapshot-title">Dossier Calibration</h2>
     </div>
-
-    <article class="article">
-      <header class="article-header">
-        <div class="article-section-marker">Section 1: Research Analysis</div>
-        <h1>${esc(draft.title)}</h1>
-        <div class="article-meta">${draft.wordCount} words · ${cat?.label ?? '—'} · ${aud?.label ?? '—'}</div>
-      </header>
-      <div class="blog-body-text">${articleBody}</div>
-      <footer class="article-footer">
-        <div class="article-footer-mark">OptiFinish · VACSPL · Greater Noida</div>
-      </footer>
-    </article>
+    <div class="snapshot-pill">Target: ${esc(aud?.label ?? '—')}</div>
+    <div class="snapshot-grid">
+      <div><span class="snapshot-cell-label">Decision Friction</span><p class="snapshot-cell-value">${esc(draft.snapshot.decisionFriction)}</p></div>
+      <div><span class="snapshot-cell-label">Dominant Anxiety</span><p class="snapshot-cell-value">${esc(draft.snapshot.dominantAnxiety)}</p></div>
+      <div><span class="snapshot-cell-label">Core Insight</span><p class="snapshot-cell-value">${esc(draft.snapshot.coreInsight)}</p></div>
+      <div><span class="snapshot-cell-label">Structural Shape</span><p class="snapshot-cell-value italic">${esc(draft.snapshot.structuralShape)}</p></div>
+    </div>
   </div>
+  <article class="article">
+    <header class="article-header">
+      <div class="article-section-marker">Section 1: Research Analysis</div>
+      <h1>${esc(draft.title)}</h1>
+      <p class="article-subtitle">${esc(draft.subtitle)}</p>
+      <div class="article-meta">
+        <span>${draft.wordCount} words</span><span class="article-meta-dot"></span>
+        <span>${readMin} min read</span><span class="article-meta-dot"></span>
+        <span>${esc(cat?.label ?? '—')}</span><span class="article-meta-dot"></span>
+        <span>${esc(aud?.label ?? '—')}</span>
+      </div>
+    </header>
+    <div class="blog-body-text">${articleBody}</div>
+    <aside class="cta-card">
+      <span class="cta-eyebrow">Next step</span>
+      <h3 class="cta-headline">${esc(cta.headline)}</h3>
+      <p class="cta-body">${esc(cta.body)}</p>
+      <span class="cta-action">→ ${esc(cta.action)}</span>
+    </aside>
+    <footer class="article-footer">
+      <div class="article-footer-mark">OptiFinish · VACSPL · Greater Noida</div>
+    </footer>
+  </article>
+</div>
+<script>
+(function(){var f=document.querySelector('.progress-fill');if(!f)return;var u=function(){var h=document.documentElement;var m=h.scrollHeight-h.clientHeight;f.style.width=(m>0?(h.scrollTop/m)*100:0)+'%';};addEventListener('scroll',u,{passive:true});addEventListener('resize',u);u();})();
+</script>
 </body>
 </html>`;
 }
@@ -383,6 +410,11 @@ function log(stage, msg) { console.log(`[${stage}] ${msg}`); }
 async function main() {
   const cat = CATEGORIES.find((c) => c.id === CATEGORY_ID);
   const aud = AUDIENCES.find((a) => a.id === AUDIENCE_ID);
+  if (!cat || !aud) {
+    console.error(`Unknown category or audience. Valid categories: ${CATEGORIES.map(c => c.id).join(', ')}`);
+    console.error(`Valid audiences: ${AUDIENCES.map(a => a.id).join(', ')}`);
+    process.exit(1);
+  }
 
   log('1/4', `Generating topics — ${cat.label} × ${aud.label}…`);
   const t0 = Date.now();
@@ -394,20 +426,23 @@ async function main() {
   log('1/4', `${topics.length} topics in ${((Date.now() - t0) / 1000).toFixed(1)}s`);
   topics.forEach((t, i) => console.log(`     ${i + 1}. ${t.title}`));
 
-  // Pick the FIRST topic that anchors a trigger if any (heuristic: contains a year or named OEM)
-  const anchored = topics.find((t) => /\b(2026|2025|Mahindra|Tata|JSW|Ather|Haier|GEMA|D[üu]rr|Jindal|Hindalco|BEE|CBAM|PFAS|PaintIndia|FABTECH|WEG)\b/i.test(t.title + ' ' + t.hook));
+  // Pick first topic that anchors a real trigger
+  const anchored = topics.find((t) => /\b(2026|2025|Mahindra|Tata|JSW|Ather|Haier|GEMA|D[üu]rr|Jindal|Hindalco|BEE|CBAM|PFAS|PaintIndia|FABTECH|WEG|Akzo|Axalta|Ola)\b/i.test(t.title + ' ' + t.hook));
   const chosen = anchored ?? topics[0];
   log('1/4', `Picked: "${chosen.title}"`);
 
-  log('2/4', `Generating full draft (1100-1400 words)…`);
+  log('2/4', `Generating full draft via Llama 3.3 70B (target 1100-1400 words)…`);
   const t1 = Date.now();
   const draft = await chatJson(
-    DRAFT_SYSTEM_PROMPT,
-    `Write the post for this topic.\n\nTITLE: "${chosen.title}"\nHOOK: "${chosen.hook}"\nANGLE: ${chosen.angle}\n\nCategory: ${cat.label} — ${cat.blurb}\nAudience: ${aud.label} (${aud.role})\nCares: ${aud.cares}\n\nWrite the full post per the rules.`,
-    { temperature: 0.7, maxTokens: 5000 }
+    draftSystemPrompt(CATEGORY_ID),
+    `Write the post for this topic.\n\nTITLE: "${chosen.title}"\nHOOK: "${chosen.hook}"\nANGLE: ${chosen.angle}\n\nCategory: ${cat.label} — ${cat.blurb}\nAudience: ${aud.label} (${aud.role})\nCares: ${aud.cares}\n\nWrite the full post per the rules. Hit at least 1100 words — non-negotiable. Include exactly one <blockquote>.`,
+    { model: 'meta/llama-3.3-70b-instruct', temperature: 0.65, maxTokens: 6000 }
   );
   draft.wordCount = String(draft.bodyHtml).replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
   log('2/4', `Draft ready in ${((Date.now() - t1) / 1000).toFixed(1)}s — ${draft.wordCount} words, shape: ${draft.snapshot.structuralShape}`);
+  if (draft.wordCount < 1100) {
+    log('2/4', `⚠️  Below 1100-word floor (got ${draft.wordCount}). Considering re-roll…`);
+  }
 
   log('3/4', `Rendering 2 Flux images in parallel…`);
   const t2 = Date.now();

@@ -1,132 +1,247 @@
-import { CategoryId, AudienceId, TopicIdea, BlogDraft, ImagePlacement, DossierSnapshot } from '../types';
+import {
+  CategoryId,
+  AudienceId,
+  TopicIdea,
+  BlogDraft,
+  ImagePlacement,
+  DossierSnapshot,
+  StructuralShape
+} from '../types';
 import { CATEGORIES, AUDIENCES } from '../constants';
 import { chatJSON } from './nvidiaLlmService';
 
-// Full LLM-driven blog draft. Returns the complete BlogDraft including
-// title, body HTML (1100-1400 words, semantic-only), the 5 snapshot fields,
-// and 2 inline image prompts anchored to specific H2 headings.
+// ─────────────────────────────────────────────────────────────
+// Per-category structural blueprint. The model MUST follow the
+// blueprint for the chosen category. This is what makes a Pillar
+// Guide read like a Pillar Guide and a Case Study land its arc.
+// ─────────────────────────────────────────────────────────────
+export const CATEGORY_BLUEPRINT: Record<
+  CategoryId,
+  { shape: StructuralShape; sections: string[]; cta: string }
+> = {
+  'pillar-guide': {
+    shape: 'pillar_guide',
+    sections: [
+      'Executive TL;DR (a one-paragraph answer the C-suite can scan)',
+      'What it is and where it fits in the line',
+      'The four to six sub-systems that decide outcomes',
+      'Selection variables (throughput, substrate, finish spec, footprint, utilities)',
+      'Cost structure in INR ranges (capex bands by capacity tier; only state ranges, never specific quotes)',
+      'Compliance and certifications (BIS, ATEX, BEE, Qualicoat where relevant)',
+      'Common procurement mistakes plant managers regret',
+      'Next-step routing matrix (who should read what next)'
+    ],
+    cta: 'Download spec sheet, then book a facility walk-through'
+  },
+  'case-study': {
+    shape: 'case_study',
+    sections: [
+      'The customer, their sector, what their line was running',
+      'The problem in their words (no marketing voice)',
+      'What it was costing them (downtime hours, rejection rate, energy waste — quantified status quo)',
+      'The solution (integration approach and named systems, not feature lists)',
+      'Implementation timeline (weeks, what shifted on the line)',
+      'The numbers that landed (three metrics: throughput, cost, quality)',
+      'Why this transfers to a similar line (or honestly, where it would not)'
+    ],
+    cta: 'Book a same-industry plant visit'
+  },
+  'comparison-decision': {
+    shape: 'comparison_matrix',
+    sections: [
+      'The 30-second verdict, by use-case',
+      'The decision matrix (use a real comparison table inside the section)',
+      'Criterion deep-dive 1 with engineering reasoning',
+      'Criterion deep-dive 2 with engineering reasoning',
+      '5-year TCO breakdown (energy, consumables, downtime — INR-denominated qualitative ranges)',
+      'Pick X if / Pick Y if — explicit routing'
+    ],
+    cta: 'Get a custom comparison for your line'
+  },
+  'cost-of-inaction': {
+    shape: 'cost_of_inaction',
+    sections: [
+      'The hidden bill nobody puts on the P&L',
+      'The 12 / 24 / 36-month projection of compounded waste',
+      'Three failure modes that compound silently',
+      'What an audit actually catches in 30 minutes',
+      'The do-nothing vs act-now decision math',
+      'One small first step that costs nothing (the audit invitation)'
+    ],
+    cta: 'Schedule a free on-site audit'
+  },
+  'facility-behind-scenes': {
+    shape: 'facility_tour',
+    sections: [
+      'Cold open with a number (square footage, throughput, machines on floor)',
+      'The line we walk you through (4-5 stations)',
+      'QC and traceability discipline (torque tests, batch logs, inspection checkpoints)',
+      'The people who build your system (named engineers with tenure, not stock)',
+      'Standards we hold ourselves to beyond ISO',
+      'When to come see it (calendared invite)'
+    ],
+    cta: 'Schedule a facility visit'
+  },
+  'technical-deep-dive': {
+    shape: 'immersive_essay',
+    sections: [
+      'The friction this post addresses (named precisely)',
+      'The mechanism, described so it could be diagrammed',
+      'Where it breaks in real Indian plants',
+      'The diagnostic frame an experienced engineer uses',
+      'Field data (qualitative, not invented numbers)',
+      'What this changes for the operator at hour six'
+    ],
+    cta: 'Talk to our process engineering team'
+  },
+  'how-to': {
+    shape: 'troubleshooting_drilldown',
+    sections: [
+      'The defect pattern, named precisely',
+      'How to spot it vs adjacent defects (with sensory signatures)',
+      'Five most likely causes, ranked by frequency in Indian plants',
+      'A 30-minute diagnostic walk you can run today',
+      'The fix, and the re-occurrence trap',
+      'Prevention: what changes upstream'
+    ],
+    cta: 'Send us a defect for engineering review'
+  },
+  'industry-trends': {
+    shape: 'immersive_essay',
+    sections: [
+      'The trigger and its dated source',
+      'What it actually does (mechanically, not legally)',
+      'Who it affects most in India (specific sectors and plant sizes)',
+      'Three shifts on the floor that follow',
+      'The buyer-side decision window (when to act)',
+      'How to get ahead of it without overspending'
+    ],
+    cta: 'See how this affects your line'
+  }
+};
 
-const SYSTEM_PROMPT = `You are the OptiFinish editorial writer. You produce one complete blog post per call, written to the standard of a senior process engineer who has walked 200 plant floors. The reader is intelligent, busy, and skeptical of marketing.
+// ─────────────────────────────────────────────────────────────
+// System prompt — strict editorial guardrails + per-archetype
+// blueprint injected dynamically below.
+// ─────────────────────────────────────────────────────────────
+export const buildDraftSystemPrompt = (categoryId: CategoryId): string => {
+  const bp = CATEGORY_BLUEPRINT[categoryId];
+  const sectionList = bp.sections.map((s, i) => `H2 ${i + 1}. ${s}`).join('\n');
+
+  return `You are the OptiFinish editorial writer. You produce one complete blog post per call, written to the standard of a senior process engineer who has walked 200 plant floors. The reader is intelligent, busy, and skeptical of marketing.
 
 OPTIFINISH CONTEXT:
 - Indian B2B industrial powder coating equipment company (parent: VACSPL).
 - Sells own powder coating plants, ovens, booths, automation (Z-TAP, ZA01).
 - Authorised India partners for GEMA and DURR. Sister concern Vinayak Agencies.
-- Greater Noida manufacturing & R&D facility.
+- Greater Noida manufacturing and R&D facility.
 
-UNIQUE POSITIONS TO REFLECT:
-1. India-first context (INR, monsoon, BIS/BEE/CPCB, MSME-ZED, CBAM, generator-power oven ramp, summer powder shelf-life, CR-sheet variability).
+UNIQUE POSITIONS THE COPY MUST REFLECT:
+1. India-first context (INR, monsoon, BIS / BEE / CPCB, MSME-ZED, CBAM, generator-power oven ramp, summer powder shelf-life, CR-sheet variability).
 2. Multi-OEM neutrality — only player who sells GEMA AND DURR AND own line. Can credibly compare without bias.
-3. Premium industrial tone — calm authority, technical credibility.
+3. Premium industrial tone — calm authority, technical credibility, never marketing hype.
 4. Specificity over platitudes — name systems, name physics, name failure modes.
+
+═════════════════════════════════════════════
+  WORD COUNT — NON-NEGOTIABLE
+═════════════════════════════════════════════
+bodyHtml MUST contain a minimum of 1100 words and a target of 1200-1400 words of rendered body text (counting words a reader sees, NOT HTML tags).
+
+This is the most-failed rule in past generations. To hit it:
+- Each H2 section needs 150-220 words on average
+- Use 2-3 paragraphs per section with technical specifics
+- Add an ordered or unordered list inside ONE section to enumerate failure modes, decision criteria, or first-week steps
+- If you finish below 1100, EXPAND technical depth in the longest sections — do not pad with filler. Add named systems, specific Indian-context failures, name the physics.
+
+A draft below 1100 words is a generation failure that will be rejected and re-rolled.
+
+═════════════════════════════════════════════
+  STRUCTURE FOR THIS POST (mandatory)
+═════════════════════════════════════════════
+Structural shape: ${bp.shape}
+
+Use these exact H2 sections, in order. You may rewrite the H2 wording so it hints at the content of the section (e.g. instead of literally "The friction this post addresses", write "Why hour-six humidity rewrites every spec sheet"). But the SUBSTANCE of each H2 must match the blueprint.
+
+${sectionList}
+
+End with a soft CTA paragraph that primes: "${bp.cta}". The CTA paragraph must NOT begin with "Want to" / "Ready to" / "If you'd like" — those are marketing clichés. Open it with the substance of the offer.
 
 ═════════════════════════════════════════════
   STRICT EDITORIAL RULES
 ═════════════════════════════════════════════
 1. NO EM-DASHES. Use commas, colons, or periods. Never "—" or "--".
 2. NO INLINE COLOR or style tags. Emphasis only via <b>, <i>, or 'single quotes'.
-3. SEMANTIC HTML ONLY. Tags allowed: <h2>, <h3>, <p>, <ol>, <ul>, <li>, <strong>, <em>, <b>, <i>. Nothing else.
-4. NO FABRICATED NUMBERS. Never invent percentages, INR figures, or ROI claims. If you cite a number, it must be a publicly known fact (regulation date, OEM-announced capacity figure). Otherwise speak qualitatively: "a meaningful drop", "a measurable shift", "the kind of difference that shows up on the third-shift report".
-5. NO MARKETING HYPE. Banned phrases: "best-in-class", "industry-leading", "unparalleled", "game-changing", "cutting-edge", "revolutionary", "next-level", "world-class", "synergy", "leverage" (as verb).
-6. NO LISTICLES. The post must read as a flowing essay. Lists may appear inside narrative sections but never as the spine of the article.
-7. NO CLICHÉ OPENERS. Banned: "In today's competitive market", "Did you know", "Have you ever wondered", "What if you could", "Get the inside scoop", "Take your operation to the next level". Open with a named system, dated event, or specific physical observation.
-8. WORD COUNT: 1100-1400 words in the bodyHtml.
-
-═════════════════════════════════════════════
-  STRUCTURE
-═════════════════════════════════════════════
-Default shape is 'immersive_essay'. Adapt for archetype:
-- pillar_guide: 6-8 H2s, broader scope, ends with a routing matrix
-- case_study: 5-6 H2s following PAS + outcome arc
-- facility_tour: 5-6 H2s walking through the facility, named engineers
-- troubleshooting_drilldown: 5-6 H2s, problem → diagnosis → fix → prevention
-- comparison_matrix: 4-6 H2s, criterion-by-criterion, ends with use-case routing
-- cost_of_inaction: 5-6 H2s, framing → projection → failure modes → first step
-- immersive_essay: 5-6 H2s flowing as essay (Avacasa shape)
-
-Within sections: 1-3 paragraphs each. An ordered list may appear inside ONE section to enumerate failure modes, decision criteria, or first-week steps. Final H2 lands the closing arc with a soft CTA paragraph.
-
-The lead paragraph must NOT begin with the same words as the title. Open with a concrete physical observation, named event, or stated friction.
+3. SEMANTIC HTML ONLY. Allowed tags: <h2>, <h3>, <p>, <ol>, <ul>, <li>, <strong>, <em>, <b>, <i>, <blockquote>, <table>, <thead>, <tbody>, <tr>, <th>, <td>. Nothing else.
+4. NO FABRICATED NUMBERS. Cite only verifiable public facts (regulation dates, OEM-announced capacity figures from press releases). For everything else, speak qualitatively: "a meaningful drop", "a measurable shift".
+5. NO MARKETING HYPE. Banned: "best-in-class", "industry-leading", "unparalleled", "game-changing", "cutting-edge", "revolutionary", "next-level", "world-class", "synergy", "leverage" (verb), "unlock", "harness", "empower", "robust", "seamless".
+6. NO LISTICLES AS THE SPINE. Lists may appear inside narrative sections but never as the article's structure.
+7. NO CLICHÉ OPENERS. Banned anywhere in body: "In today's competitive market", "Did you know", "Have you ever wondered", "What if you could", "Get the inside scoop", "Take your operation to the next level", "Unlocking", "Mastering". Open with a named system, dated event, or specific physical observation.
+8. NO META H2s. Do NOT write H2s named after schema fields ("Decision Friction", "Core Insight", "Conclusion and Call to Action"). Those are reserved for the snapshot block.
+9. PULL-QUOTE OPPORTUNITY. Wrap exactly ONE sharp 1-2 sentence insight from the body in <blockquote> — the most quotable line of the post. The template renders these as editorial pull-quotes.
 
 ═════════════════════════════════════════════
   SNAPSHOT FIELDS
 ═════════════════════════════════════════════
-Produce 5 specific, useful snapshot lines:
-- decisionFriction: the specific tradeoff the reader is wrestling with (1 sentence, names both sides of the tradeoff)
-- dominantAnxiety: the fear that drives them to read this post (1 sentence, names a concrete consequence)
-- coreInsight: the reframe the post lands (1 sentence, must be substantive — not a platitude)
-- structuralShape: one of the seven archetypes
-- lever: 1-line specific differentiator the post earns (e.g. "Behaviour under heat-soak over feature parity", "Operating cost over acquisition cost")
+Produce 5 specific, substantive snapshot lines:
+- decisionFriction: the specific tradeoff the reader is wrestling with (1 sentence, names BOTH sides of the tradeoff)
+- dominantAnxiety: the fear that drives them to read this post (1 sentence, names a CONCRETE consequence)
+- coreInsight: the reframe the post lands (1 sentence, must be SUBSTANTIVE — not a platitude)
+- structuralShape: ${bp.shape}
+- lever: 1-line specific differentiator the post earns (e.g. "Behaviour under heat-soak over feature parity", "Operating cost over acquisition cost", "Diagnostic transferability over headline metric envy")
 
 ═════════════════════════════════════════════
-  IMAGE PROMPTS — SUBJECT MUST MATCH SECTION CONTENT
+  IMAGE PROMPTS — SUBJECT MUST MATCH THE SECTION
 ═════════════════════════════════════════════
-Produce exactly 2 image placements. Both have position: "inline". Each anchorHeading must be the EXACT text of an H2 you wrote in bodyHtml — not a paraphrase.
+Produce exactly 2 image placements. Both have position: "inline". Each anchorHeading must be the EXACT text of an H2 you wrote in bodyHtml.
 
-CRITICAL RULE: The visual SUBJECT of each image must be the specific noun the section is about. A generic "industrial bay" shot is not acceptable for a section about a specific pump, defect, or instrument. Front-load the subject as the FIRST phrase of the prompt.
+The visual SUBJECT of each image must be the named noun from the section it anchors to. Front-load the subject as the FIRST phrase of the prompt.
 
-SUBJECT MAPPING EXAMPLES (study these — your prompt must follow this pattern):
-- Section about the OptiSpray pump → SUBJECT: "A GEMA-style powder application pump, canister and nozzle visible, control valves and powder hose in frame, mounted at a powder coating booth"
-- Section about cure window control → SUBJECT: "A calibrated K-type thermocouple probe resting against a freshly coated metal panel inside a curing oven, glowing radiant heating elements diffused in the background"
-- Section about outgassing on cast aluminium → SUBJECT: "A coated cast-aluminium part on a cooling rack, surface showing fine micro-blistering across one face, raked side light revealing the defect texture"
-- Section about pretreatment chemistry → SUBJECT: "A steel part being lowered into a degreasing tank, stainless dip-cage visible, faint chemical mist hovering above the bath surface"
-- Section about transfer efficiency / Faraday-cage geometry → SUBJECT: "An electrostatic powder coating gun mid-spray on a recessed metal part, visible cloud of powder mist, gun-to-part distance clearly framed"
-- Section about plant capacity / line layout → SUBJECT: "A wide overhead view of a powder coating conveyor line, parts hanging on hooks moving through a curing oven entrance"
-- Section about an oven / thermal profile → SUBJECT: "The interior of an industrial curing oven photographed from the entrance, infrared heating panels glowing, panels mid-cure on a mesh conveyor"
-- Section about a finished outcome / case study result → SUBJECT: "A finished powder-coated automotive body panel cooling under exit-tunnel light, smooth finish reflecting the tunnel's overhead bars"
-- Section about a facility tour / R&D booth → SUBJECT: "A small R&D-scale spray booth at the OptiFinish Greater Noida facility, instrumented with thermal probes and powder hoppers, late-afternoon natural light"
-- Section about defect troubleshooting (orange peel) → SUBJECT: "Macro detail of an orange-peel-textured powder-coated surface, raking side light exposing the dimpled topology"
+SUBJECT MAPPING EXAMPLES:
+- Section about an oven / cure profile → "A calibrated K-type thermocouple probe resting against a freshly coated metal panel inside a curing oven, glowing radiant heating elements diffused in background"
+- Section about pretreatment → "A steel part being lowered into a degreasing tank, stainless dip-cage visible, faint chemical mist hovering above the bath"
+- Section about transfer efficiency → "An electrostatic powder coating gun mid-spray on a recessed metal part, visible cloud of powder mist, gun-to-part distance clearly framed"
+- Section about a finished outcome / case study result → "A finished powder-coated automotive body panel cooling under exit-tunnel light, smooth finish reflecting overhead bars"
+- Section about facility / R&D booth → "A small R&D-scale spray booth at the OptiFinish Greater Noida facility, instrumented with thermal probes and powder hoppers, late-afternoon natural light"
+- Section about defect troubleshooting (orange peel) → "Macro detail of an orange-peel-textured powder-coated surface, raking side light exposing the dimpled topology"
 
-PROMPT SHAPE (30-80 words):
-"<SUBJECT 1-2 sentences>. <Composition: framing, focal point, negative space>. <Mood: 1 line>."
+ABSTRACT TOPICS (regulations, market shifts, compliance):
+NEVER produce charts, graphs, infographics, screenshots, or text-on-screens — Flux renders fake-looking data viz. Pick a CONCRETE PHYSICAL SCENE that REPRESENTS the abstract idea.
+- EU CBAM regulation → "A coil of cold-rolled steel wrapped for export, customs paperwork resting on top, 'EU' destination stamp visible on the bill of lading"
+- PFAS phase-out → "A row of powder bags labelled 'PFAS-free' on a warehouse pallet, scanner gun and compliance clipboard in foreground"
+- BEE star-rating mandate → "A washing-machine cabinet panel coming off a powder line under bright inspection light, surface intact under raking light"
+- AkzoNobel-Axalta merger → "Two powder bags from different brands resting side-by-side on a procurement bench, a barcode reader between them"
 
-ABSTRACT TOPICS RULE (regulations, policies, markets, finance, compliance):
-NEVER default to a chart, graph, infographic, or data visualisation — Flux renders fake-looking graphs. Instead pick a CONCRETE PHYSICAL SCENE that REPRESENTS the abstract idea.
-- Topic: EU CBAM regulation → SUBJECT: "A coil of cold-rolled steel sheet wrapped for export, customs paperwork resting on top, 'EU' destination stamp visible on the bill of lading"
-- Topic: PFAS phase-out compliance → SUBJECT: "A row of powder bags labelled 'PFAS-free' on a warehouse pallet, scanner gun and compliance clipboard in foreground"
-- Topic: BEE star-rating mandate → SUBJECT: "A washing-machine cabinet panel coming off a powder line under bright inspection light, the gloss surface intact under raking light"
-- Topic: PLI scheme growth → SUBJECT: "A new line under installation in a freshly painted factory bay, framework girders against a polished concrete floor"
-- Topic: AkzoNobel-Axalta merger market shift → SUBJECT: "Two large powder bags from different brands resting side-by-side on a procurement bench, a barcode reader between them"
-
+PROMPT SHAPE (30-80 words): "<SUBJECT 1-2 sentences>. <Composition: framing, focal point, negative space>. <Mood: 1 line>."
 NO brand-style suffix (the system appends that).
-NO generic "Indian industrial bay during normal operation" unless the section is literally a wide facility tour shot.
-NO sci-fi clichés, no hi-vis vests, no glossy-floor reflections, no decorative robotic arms unless the topic is about robots.
+NO sci-fi clichés, hi-vis vests, glossy-floor reflections, decorative robotic arms.
 NO posed humans with eye contact. Hands-at-work or absent-from-frame only.
-NO charts, graphs, infographics, screenshots, text-on-screens, or data visualisations of any kind.
 
 ═════════════════════════════════════════════
   OUTPUT
 ═════════════════════════════════════════════
-Strict JSON, no prose, no markdown, no code fences. Schema:
+Strict JSON only, no prose, no markdown, no code fences.
 
 {
-  "title": "string — sharp publishable headline (max 70 chars preferred)",
-  "subtitle": "string — 1-line dek under the title",
-  "bodyHtml": "string — full HTML body, 1100-1400 words, semantic tags only",
+  "title": "string — sharp publishable headline (max 75 chars)",
+  "subtitle": "string — 1-line dek under the title (max 130 chars)",
+  "bodyHtml": "string — full HTML body, MINIMUM 1100 words, target 1200-1400, semantic tags only, with exactly one <blockquote> for the pull-quote",
   "snapshot": {
     "decisionFriction": "string",
     "dominantAnxiety": "string",
     "coreInsight": "string",
-    "structuralShape": "pillar_guide" | "case_study" | "facility_tour" | "troubleshooting_drilldown" | "comparison_matrix" | "cost_of_inaction" | "immersive_essay",
+    "structuralShape": "${bp.shape}",
     "lever": "string"
   },
   "imagePlacements": [
-    {
-      "id": "img-inline-1",
-      "position": "inline",
-      "anchorHeading": "string — exact H2 text from bodyHtml",
-      "prompt": "string — Flux-ready, 30-80 words, no brand suffix",
-      "alt": "string"
-    },
-    {
-      "id": "img-inline-2",
-      "position": "inline",
-      "anchorHeading": "string — different H2 from img-inline-1",
-      "prompt": "string",
-      "alt": "string"
-    }
+    { "id": "img-inline-1", "position": "inline", "anchorHeading": "exact H2 text from bodyHtml", "prompt": "Flux-ready, 30-80 words, no brand suffix", "alt": "concise alt text" },
+    { "id": "img-inline-2", "position": "inline", "anchorHeading": "different H2 from img-inline-1", "prompt": "string", "alt": "string" }
   ]
 }`;
+};
+
+// Backwards-compat alias for any code that imports DRAFT_SYSTEM_PROMPT.
+// New code should call buildDraftSystemPrompt(category).
+export const DRAFT_SYSTEM_PROMPT = buildDraftSystemPrompt;
 
 export async function generateBlogDraftLLM(
   topic: TopicIdea,
@@ -147,7 +262,7 @@ Category: ${cat.label} — ${cat.blurb}
 Audience: ${aud.label} (${aud.role})
 This reader cares about: ${aud.cares}
 
-Write the full post per the rules. Land the structural shape that fits this topic best. Anchor the 2 inline images to actual H2 headings you write.`;
+Write the full post per the rules. Hit at least 1100 words of body text — this is non-negotiable. Land the structural shape that fits this category. Anchor the 2 inline images to actual H2 headings you write. Include exactly one <blockquote> for the pull-quote.`;
 
   type DraftJson = {
     title: string;
@@ -163,20 +278,24 @@ Write the full post per the rules. Land the structural shape that fits this topi
     }>;
   };
 
+  // Llama 3.3 70B Instruct: reliable and fast (~15-30s). Hits length cap
+  // around 500-700 words in single-pass JSON mode — the 1100-word target
+  // is enforced by the 2-pass expander below. 405B was tried but hits
+  // socket timeouts on NVIDIA Build queueing (1-2 min responses regularly
+  // exceed Vite proxy + Node fetch defaults).
   const json = await chatJSON<DraftJson>({
+    model: 'meta/llama-3.3-70b-instruct',
     messages: [
-      { role: 'system', content: SYSTEM_PROMPT },
+      { role: 'system', content: buildDraftSystemPrompt(category) },
       { role: 'user', content: userPrompt }
     ],
-    temperature: 0.7, // tighter than topics — we want craft, not surprise
+    temperature: 0.65,
     topP: 0.92,
-    maxTokens: 5000
+    maxTokens: 6000
   });
 
-  // Compute word count from rendered text
   const wordCount = json.bodyHtml.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
 
-  // Coerce image placements into ImagePlacement shape (no generatedUrl yet)
   const imagePlacements: ImagePlacement[] = (json.imagePlacements ?? [])
     .slice(0, 2)
     .map((p, idx) => ({
@@ -196,6 +315,3 @@ Write the full post per the rules. Land the structural shape that fits this topi
     imagePlacements
   };
 }
-
-// Exported for the preview script
-export { SYSTEM_PROMPT as DRAFT_SYSTEM_PROMPT };

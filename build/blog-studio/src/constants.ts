@@ -6,48 +6,89 @@ export const BRAND = {
   parent: 'Value Added Coating Solutions Pvt. Ltd.'
 };
 
+// 8 categories, ordered roughly by conversion priority for an early-stage
+// content programme. Pillar Guide / Case Study / Facility ship first;
+// Cost of Inaction and Comparison layer in once authority compounds.
 export const CATEGORIES: Category[] = [
   {
-    id: 'product-spotlight',
-    label: 'Product Spotlight',
-    blurb: 'Deep look at a single product or system',
-    examples: ['Z-TAP automation cell', 'GEMA OptiCenter', 'Curing oven series']
-  },
-  {
-    id: 'technical-deep-dive',
-    label: 'Technical Deep Dive',
-    blurb: 'How and why a process or technology works',
-    examples: ['Powder transfer efficiency', 'Cure window control', 'Pretreatment chemistry']
+    id: 'pillar-guide',
+    label: 'Pillar Guide',
+    blurb: 'Long-form authority anchor — one per product group',
+    examples: [
+      'The complete powder coating plant reference',
+      'Curing oven buyer\'s bible',
+      'Z-TAP automation: a 12,000-hour reference'
+    ]
   },
   {
     id: 'case-study',
     label: 'Case Study / Installation',
-    blurb: 'Real customer outcome with proof',
-    examples: ['Auto OEM line upgrade', 'Architectural extrusion plant', 'Whitegoods retrofit']
+    blurb: 'Real customer outcome with quantified proof',
+    examples: [
+      'Auto OEM line upgrade',
+      'Architectural extrusion plant',
+      'Whitegoods retrofit'
+    ]
   },
   {
-    id: 'industry-trends',
-    label: 'Industry Trends & News',
-    blurb: 'What is shifting in coating + finishing',
-    examples: ['Energy efficiency norms', 'Low-cure powders', 'Robotics adoption in MSME plants']
+    id: 'comparison-decision',
+    label: 'Comparison & Decision Frame',
+    blurb: 'X vs Y, decision matrix, 5-year TCO',
+    examples: [
+      'Manual vs automatic line',
+      'Batch oven vs conveyor',
+      'GEMA vs Wagner vs Nordson guns'
+    ]
   },
   {
-    id: 'how-to',
-    label: 'How-To / Troubleshooting',
-    blurb: 'Operator-grade problem solving',
-    examples: ['Orange peel root causes', 'Fixing Faraday cage issues', 'Quick gun maintenance']
+    id: 'cost-of-inaction',
+    label: 'Cost of Inaction',
+    blurb: 'Loss-aversion frame on what status-quo costs',
+    examples: [
+      'What an unupgraded curing oven costs you per year',
+      'The hidden P&L cost of manual coating',
+      'Three signs your line is silently burning margin'
+    ]
   },
   {
     id: 'facility-behind-scenes',
     label: 'Facility / Behind the Scenes',
     blurb: 'Greater Noida manufacturing & R&D credibility',
-    examples: ['How a powder coating plant is tested', 'Inside the R&D booth', 'Build-to-spec workflow']
+    examples: [
+      'Inside the test bay',
+      'How a powder coating plant is built to spec',
+      'The Z-TAP commissioning floor'
+    ]
   },
   {
-    id: 'buyers-guide',
-    label: 'Buyer’s Guide / Comparison',
-    blurb: 'Decision frameworks for prospects',
-    examples: ['Manual vs automatic line', 'Batch oven vs conveyor', 'OEM vs partner-supplied guns']
+    id: 'technical-deep-dive',
+    label: 'Technical Deep Dive',
+    blurb: 'Mechanism-level. Engineer-grade depth.',
+    examples: [
+      'Powder transfer efficiency',
+      'Cure window control',
+      'Pretreatment chemistry'
+    ]
+  },
+  {
+    id: 'how-to',
+    label: 'How-To / Troubleshooting',
+    blurb: 'Operator-grade defect diagnosis',
+    examples: [
+      'Orange peel root causes',
+      'Faraday cage fixes',
+      'Monsoon outgassing playbook'
+    ]
+  },
+  {
+    id: 'industry-trends',
+    label: 'Industry Trends & News',
+    blurb: 'Tied to a real dated trigger',
+    examples: [
+      'CBAM impact on Indian exporters',
+      'BEE Jan-2026 mandate consequences',
+      'GEMA OptiSpray launch breakdown'
+    ]
   }
 ];
 
@@ -87,6 +128,18 @@ export const AUDIENCES: Audience[] = [
     label: 'Existing Customer',
     role: 'Already operates an OptiFinish system',
     cares: 'Upgrades, AMC value, productivity tips'
+  },
+  {
+    id: 'architect-specifier',
+    label: 'Architect / Facade Specifier',
+    role: 'Specifies architectural coatings on aluminium extrusion',
+    cares: 'Qualicoat Class 2, super-durables, 25-year warranty, non-chromate pretreatment'
+  },
+  {
+    id: 'consulting-engineer',
+    label: 'Consulting Engineer',
+    role: 'External advisor recommending systems to plants',
+    cares: 'Verifiable references, spec compliance, technical proofs, neutral comparisons'
   }
 ];
 

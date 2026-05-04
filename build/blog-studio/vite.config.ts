@@ -29,8 +29,8 @@ export default defineConfig(({ mode }) => {
           target: 'https://ai.api.nvidia.com',
           changeOrigin: true,
           secure: true,
-          timeout: 120_000,
-          proxyTimeout: 120_000,
+          timeout: 300_000,
+          proxyTimeout: 300_000,
           rewrite: (p) => p.replace(/^\/nvidia\/flux/, '/v1/genai/black-forest-labs'),
           configure: (proxy) => {
             proxy.on('proxyReq', (proxyReq) => {
@@ -46,8 +46,8 @@ export default defineConfig(({ mode }) => {
           target: 'https://ai.api.nvidia.com',
           changeOrigin: true,
           secure: true,
-          timeout: 120_000,
-          proxyTimeout: 120_000,
+          timeout: 300_000,
+          proxyTimeout: 300_000,
           rewrite: (p) => p.replace(/^\/nvidia\/sd/, '/v1/genai/stabilityai'),
           configure: (proxy) => {
             proxy.on('proxyReq', (proxyReq) => {
@@ -66,8 +66,8 @@ export default defineConfig(({ mode }) => {
           target: 'https://integrate.api.nvidia.com',
           changeOrigin: true,
           secure: true,
-          timeout: 120_000,
-          proxyTimeout: 120_000,
+          timeout: 300_000,
+          proxyTimeout: 300_000,
           rewrite: (p) => p.replace(/^\/nvidia\/llm/, '/v1'),
           configure: (proxy) => {
             proxy.on('proxyReq', (proxyReq) => {

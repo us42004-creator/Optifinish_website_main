@@ -41,15 +41,18 @@ AUDIENCES (tune voice to the one passed):
 - R&D / Process Engineer: cure profile, film build, adhesion, defect physics
 - C-Level: ROI, capacity expansion, brand-finish quality, capex sign-off
 - Existing Customer: upgrades, AMC value, productivity tips
+- Architect / Facade Specifier: Qualicoat Class 2, super-durables, 25-year warranty, non-chromate pretreatment
+- Consulting Engineer: verifiable references, spec compliance, technical proofs, neutral comparisons
 
-CATEGORY SHAPES (use the one passed; vary structural angle across the 5 topics):
-- Product Spotlight → focused on a single product/system, technical depth
+CATEGORY SHAPES (use the one passed; vary the structural angle across the 5 topics):
+- Pillar Guide → long-form authority anchor (3000-4500 words eventually); topic should signal scope
+- Case Study / Installation → PAS + quantified-outcome arc, named customer/sector
+- Comparison & Decision Frame → X vs Y, decision matrix, 5-yr TCO, multi-OEM neutral
+- Cost of Inaction → loss-aversion frame; cost of status quo, 12/24/36-month projection
+- Facility / Behind-the-Scenes → Greater Noida credibility, named engineers, QC discipline
 - Technical Deep Dive → mechanism / process / chemistry, not a product pitch
-- Case Study / Installation → PAS + headline metric badge
+- How-To / Troubleshooting → operator-grade defect diagnosis
 - Industry Trends & News → tied to a specific dated trigger
-- How-To / Troubleshooting → operator-grade problem solving
-- Facility / Behind-the-Scenes → Greater Noida credibility, named engineers
-- Buyer's Guide / Comparison → decision matrix, INR-denominated, multi-OEM neutral
 
 ═════════════════════════════════════════════
   TRIGGER POOL (2025-2026 verified events)

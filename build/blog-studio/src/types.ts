@@ -1,11 +1,12 @@
 export type CategoryId =
-  | 'product-spotlight'
-  | 'technical-deep-dive'
+  | 'pillar-guide'
   | 'case-study'
-  | 'industry-trends'
-  | 'how-to'
+  | 'comparison-decision'
+  | 'cost-of-inaction'
   | 'facility-behind-scenes'
-  | 'buyers-guide';
+  | 'technical-deep-dive'
+  | 'how-to'
+  | 'industry-trends';
 
 export type AudienceId =
   | 'plant-manager'
@@ -13,7 +14,9 @@ export type AudienceId =
   | 'oem-engineer'
   | 'rd-process'
   | 'c-level'
-  | 'existing-customer';
+  | 'existing-customer'
+  | 'architect-specifier'
+  | 'consulting-engineer';
 
 export interface Category {
   id: CategoryId;
