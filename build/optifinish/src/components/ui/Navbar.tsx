@@ -594,66 +594,67 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* Full-screen mobile menu */}
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.28, ease: 'easeOut' }}
-            className="fixed inset-0 z-40 flex flex-col bg-[#080808]/97 backdrop-blur-2xl lg:hidden"
-            style={{ paddingBottom: 'env(safe-area-inset-bottom, 1.5rem)' }}
-          >
-            <div className="flex items-center justify-between px-5 pt-4">
-              <Link href="/" className="flex items-center gap-2.5">
-                <Image src="/logo.png" alt="OptiFinish" width={192} height={192} priority className="h-9 w-auto object-contain" />
-                <span className="font-display text-[0.9rem] font-black tracking-[-0.03em] text-white">OptiFinish</span>
-              </Link>
-              <button
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-white/[0.04] text-white/60"
-                onClick={() => setMenuOpen(false)}
-                aria-label="Close menu"
-                style={{ touchAction: 'manipulation' }}
-              >
-                <X size={16} />
-              </button>
-            </div>
+      {/* Full-screen mobile menu — z-[60] sits ABOVE the navbar (z-50) */}
+      {menuOpen && (
+        <div
+          className="fixed inset-0 z-[60] flex flex-col bg-[#080808] lg:hidden"
+          style={{
+            animation: 'mobile-menu-enter 0.22s cubic-bezier(0.22,1,0.36,1) both',
+            paddingBottom: 'env(safe-area-inset-bottom, 1.5rem)',
+          }}
+        >
+          {/* Header row — sits below the physical nav bar area */}
+          <div className="flex items-center justify-between px-5 pt-4 pb-2 border-b border-white/[0.06]">
+            <Link href="/" onClick={() => setMenuOpen(false)} className="flex items-center gap-2.5">
+              <Image src="/logo.png" alt="OptiFinish" width={192} height={192} priority className="h-9 w-auto object-contain" />
+              <span className="font-display text-[0.9rem] font-black tracking-[-0.03em] text-white">OptiFinish</span>
+            </Link>
+            <button
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-white/[0.06] text-white"
+              onClick={() => setMenuOpen(false)}
+              aria-label="Close menu"
+              style={{ touchAction: 'manipulation' }}
+            >
+              <X size={18} />
+            </button>
+          </div>
 
-            <div ref={menuLinksRef} className="flex flex-1 flex-col justify-center px-6">
-              {NAV_LINKS.map((link, i) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="mobile-nav-link block py-3 font-display text-[2.2rem] font-black tracking-[-0.03em] text-white/70 transition-colors hover:text-white"
-                  style={{
-                    animation: 'mobile-link-in 0.45s cubic-bezier(0.22,1,0.36,1) both',
-                    animationDelay: `${0.06 + i * 0.06}s`,
-                  }}
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-
-            <div className="px-6 pb-8">
+          {/* Nav links — centred in remaining space */}
+          <div ref={menuLinksRef} className="flex flex-1 flex-col justify-center px-6">
+            {NAV_LINKS.map((link, i) => (
               <Link
-                ref={menuCtaRef}
-                href="/contact"
-                className="block w-full rounded-full bg-yellow py-4 text-center text-[11px] font-black uppercase tracking-widest text-ink"
+                key={link.href}
+                href={link.href}
+                className="mobile-nav-link block py-3.5 font-display text-[2rem] font-black tracking-[-0.03em] text-white/70 transition-colors active:text-yellow"
                 style={{
-                  animation: 'mobile-link-in 0.45s cubic-bezier(0.22,1,0.36,1) 0.46s both',
+                  animation: 'mobile-link-in 0.4s cubic-bezier(0.22,1,0.36,1) both',
+                  animationDelay: `${0.05 + i * 0.05}s`,
                 }}
               >
-                Get in Touch
+                {link.label}
               </Link>
-              <p className="mt-4 text-center text-[9px] font-semibold uppercase tracking-[0.24em] text-white/22">
-                Value Added Coating Solutions Pvt. Ltd.
-              </p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            ))}
+          </div>
+
+          {/* CTA */}
+          <div className="px-6 pb-6">
+            <Link
+              ref={menuCtaRef}
+              href="/contact"
+              className="block w-full rounded-full bg-yellow py-4 text-center text-[11px] font-black uppercase tracking-widest text-ink"
+              style={{
+                animation: 'mobile-link-in 0.4s cubic-bezier(0.22,1,0.36,1) 0.38s both',
+              }}
+              onClick={() => setMenuOpen(false)}
+            >
+              Get in Touch
+            </Link>
+            <p className="mt-4 text-center text-[9px] font-semibold uppercase tracking-[0.24em] text-white/22">
+              Value Added Coating Solutions Pvt. Ltd.
+            </p>
+          </div>
+        </div>
+      )}
     </>
   );
 }
