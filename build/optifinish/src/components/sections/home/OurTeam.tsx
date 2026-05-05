@@ -73,11 +73,22 @@ export default function OurTeam() {
         />
 
         {/* ────────────────────────────────────────────────
-            LAYER 0 — Full-page "Our Family" bento
-            Heading lives inside the first tile.
-            Each cell animates in with stagger on scroll trigger.
+            LAYER 0 — Full-page "Our Family" bento (desktop only)
+            Hidden on mobile — 10-col grid is unusable at 390px.
+            Mobile shows simple dark bg with heading overlay instead.
         ──────────────────────────────────────────────── */}
-        <div className="absolute inset-0 p-2 pt-16">
+
+        {/* Mobile fallback — simple heading shown behind founders */}
+        <div className="absolute inset-0 flex items-center justify-center md:hidden">
+          <div className="text-center">
+            <span className="mb-2 block text-[0.5rem] font-bold uppercase tracking-[0.26em] text-[#FECE00]/40">Our Family</span>
+            <h2 className="font-display text-[2.2rem] font-black leading-[0.88] tracking-[-0.06em] text-white">
+              Faces behind<br />the finish.
+            </h2>
+          </div>
+        </div>
+
+        <div className="absolute inset-0 hidden p-2 pt-16 md:block">
           <AnimatePresence>
             {bentoVisible && (
               <motion.div

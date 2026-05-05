@@ -18,8 +18,8 @@ export default function Footer() {
         {/* Top row */}
         <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
           {/* Brand */}
-          <div className="flex items-center gap-4">
-            <Image src="/logo.png" alt="OptiFinish" width={192} height={192} className="h-12 w-auto object-contain" />
+          <div className="flex items-center gap-3 sm:gap-4">
+            <Image src="/logo.png" alt="OptiFinish" width={192} height={192} className="h-9 w-auto object-contain sm:h-12" />
             <div>
               <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-white/38">Industrial Coating Solutions</span>
               <span className="mt-1 block text-[8px] font-semibold uppercase tracking-[0.22em] text-white/22">
@@ -29,7 +29,7 @@ export default function Footer() {
           </div>
 
           {/* Nav */}
-          <nav className="flex flex-wrap gap-x-6 gap-y-2">
+          <nav className="flex flex-wrap gap-x-4 gap-y-2 sm:gap-x-6">
             {FOOTER_LINKS.map((link) => (
               <Link
                 key={link.href}

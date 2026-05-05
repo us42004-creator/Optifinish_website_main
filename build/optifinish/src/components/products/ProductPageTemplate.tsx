@@ -317,7 +317,7 @@ export default function ProductPageTemplate({
 
         {/* Hero content */}
         <section className="relative">
-        <div className="relative z-10 mx-auto max-w-7xl px-5 py-20 md:py-28 md:px-8">
+        <div className="relative z-10 mx-auto max-w-7xl px-5 py-12 md:py-20 md:px-8 lg:py-28">
 
           <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-20">
             {/* Left — Text */}
@@ -331,7 +331,7 @@ export default function ProductPageTemplate({
                 {eyebrow}
               </p>
               <h1
-                className={`font-display text-[2.4rem] font-black leading-[0.92] tracking-tight md:text-[3.2rem] lg:text-[3.5rem] ${cTx(hero)}`}
+                className={`font-display text-[clamp(1.7rem,4.5vw,2.4rem)] font-black leading-[0.92] tracking-tight md:text-[3.2rem] lg:text-[3.5rem] ${cTx(hero)}`}
               >
                 {headline}{' '}
                 <span className="text-[#FECE00]">{headlineAccent}</span>
@@ -398,7 +398,7 @@ export default function ProductPageTemplate({
                 Why this product
               </p>
               <h2
-                className={`font-display text-[2rem] font-black leading-[0.94] tracking-tight md:text-[2.6rem] ${cTx(prob)}`}
+                className={`font-display text-[clamp(1.5rem,4vw,2rem)] font-black leading-[0.94] tracking-tight md:text-[2.6rem] ${cTx(prob)}`}
               >
                 {problemHeadline}{' '}
                 <span className="text-[#FECE00]">{problemAccent}</span>
@@ -554,7 +554,7 @@ export default function ProductPageTemplate({
               >
                 <div>
                   <div
-                    className={`mb-3 font-display text-[3rem] font-black leading-none ${
+                    className={`mb-3 font-display text-[2rem] font-black leading-none md:text-[3rem] ${
                       stps ? 'text-[#0A0A0A]/10' : 'text-white/10'
                     }`}
                   >
@@ -598,14 +598,14 @@ export default function ProductPageTemplate({
             {specRows.map((row, i) => (
               <div
                 key={row.l}
-                className={`flex items-start justify-between gap-8 px-6 py-4 ${
+                className={`flex items-start justify-between gap-4 px-4 py-3.5 md:gap-8 md:px-6 md:py-4 ${
                   i < specRows.length - 1 ? 'border-b border-[#FECE00]/[0.1]' : ''
                 }`}
               >
-                <span className="min-w-[130px] shrink-0 text-[0.72rem] font-medium text-white/50">
+                <span className="min-w-[90px] shrink-0 text-[0.68rem] font-medium text-white/50 md:min-w-[130px] md:text-[0.72rem]">
                   {row.l}
                 </span>
-                <span className="min-w-0 text-right text-[0.72rem] font-semibold text-white/85 break-words">
+                <span className="min-w-0 break-words text-right text-[0.68rem] font-semibold text-white/85 md:text-[0.72rem]">
                   {row.v}
                 </span>
               </div>
@@ -811,7 +811,7 @@ export default function ProductPageTemplate({
           <p className="mb-3 text-[0.6rem] font-bold uppercase tracking-[0.26em] text-[#0A0A0A]/45">
             Ready to specify?
           </p>
-          <h2 className="font-display text-[2.2rem] font-black leading-[0.94] tracking-tight text-[#0A0A0A] md:text-[3rem]">
+          <h2 className="font-display text-[clamp(1.6rem,4.5vw,2.2rem)] font-black leading-[0.94] tracking-tight text-[#0A0A0A] md:text-[3rem]">
             {ctaHeadline}{' '}
             <span className="text-[#0A0A0A]/50">{ctaAccent}</span>
           </h2>

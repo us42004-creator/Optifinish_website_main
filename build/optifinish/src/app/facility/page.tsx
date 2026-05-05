@@ -154,14 +154,14 @@ export default function FacilityPage() {
             </div>
 
             {/* Headline */}
-            <h1 className="font-display max-w-3xl text-[clamp(2.8rem,6vw,5rem)] font-black leading-[0.88] tracking-[-0.04em] text-white">
+            <h1 className="font-display max-w-3xl text-[clamp(1.8rem,6vw,5rem)] font-black leading-[0.88] tracking-[-0.04em] text-white">
               Where OptiFinish
               <br />
               <span className="text-[#FECE00]">products are built.</span>
             </h1>
 
             {/* Subline */}
-            <p className="mt-5 max-w-lg text-[0.92rem] leading-relaxed text-white/50">
+            <p className="mt-4 max-w-lg text-[0.82rem] leading-relaxed text-white/50 md:mt-5 md:text-[0.92rem]">
               Our manufacturing and R&amp;D facility in Greater Noida is where every OptiFinish
               product is designed, fabricated, tested, and dispatched — backed by 14 years of
               hands-on production experience.
@@ -187,13 +187,13 @@ export default function FacilityPage() {
           {/* ── Stats bar ── */}
           <div className="relative border-t border-white/[0.1] bg-[#070809]/75 backdrop-blur-md">
             <div className="mx-auto max-w-7xl px-5 md:px-8">
-              <div className="flex flex-wrap divide-x divide-white/[0.08]">
+              <div className="grid grid-cols-2 divide-x divide-y divide-white/[0.08] md:flex md:divide-y-0">
                 {STATS.map((s) => (
-                  <div key={s.label} className="flex flex-col justify-center gap-0.5 px-6 py-4 md:px-8">
-                    <span className="font-display text-[1.35rem] font-black leading-none tracking-[-0.03em] text-[#FECE00]">
+                  <div key={s.label} className="flex flex-col justify-center gap-0.5 px-4 py-3 md:px-6 md:py-4 lg:px-8">
+                    <span className="font-display text-[1.1rem] font-black leading-none tracking-[-0.03em] text-[#FECE00] md:text-[1.35rem]">
                       {s.value}
                     </span>
-                    <span className="text-[0.55rem] font-semibold uppercase tracking-[0.18em] text-white/38">
+                    <span className="text-[0.5rem] font-semibold uppercase tracking-[0.16em] text-white/38 md:text-[0.55rem]">
                       {s.label}
                     </span>
                   </div>
@@ -253,7 +253,7 @@ export default function FacilityPage() {
             </div>
 
             {/* 2×2 photo grid */}
-            <div className="grid h-[480px] grid-cols-2 grid-rows-2 gap-2">
+            <div className="grid h-[260px] grid-cols-2 grid-rows-2 gap-2 md:h-[400px] lg:h-[480px]">
               {OFFICE_GRID.map((src, i) => (
                 <div key={i} className="relative overflow-hidden rounded-[1rem]">
                   <Image
@@ -296,10 +296,9 @@ export default function FacilityPage() {
             </p>
           </div>
 
-          {/* Editorial photo layout */}
-          {/* Row 1: large left (2/3) + tall right (1/3) */}
-          <div className="grid h-[420px] grid-cols-3 gap-2">
-            <div className="relative col-span-2 overflow-hidden rounded-[1.1rem]">
+          {/* Row 1: large hero (full width mobile, 2/3 desktop) + side (full width mobile, 1/3 desktop) */}
+          <div className="grid grid-cols-1 gap-2 md:grid-cols-3 md:h-[420px]">
+            <div className="relative col-span-1 h-[240px] overflow-hidden rounded-[1.1rem] md:col-span-2 md:h-full">
               <Image
                 src={MFG_HERO}
                 alt="OptiFinish manufacturing — factory floor"
@@ -307,32 +306,31 @@ export default function FacilityPage() {
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 66vw"
               />
-              {/* Subtle label */}
               <div className="absolute bottom-4 left-4 rounded-full border border-white/20 bg-[#070809]/60 px-3 py-1 text-[0.5rem] font-bold uppercase tracking-[0.2em] text-white/60 backdrop-blur-sm">
                 Production floor
               </div>
             </div>
-            <div className="relative overflow-hidden rounded-[1.1rem]">
+            <div className="relative h-[180px] overflow-hidden rounded-[1.1rem] md:h-full">
               <Image
                 src={MFG_SIDE}
                 alt="OptiFinish manufacturing"
                 fill
                 className="object-cover"
-                sizes="33vw"
+                sizes="(max-width: 768px) 100vw, 33vw"
               />
             </div>
           </div>
 
-          {/* Row 2: 4 equal tiles */}
-          <div className="mt-2 grid h-[220px] grid-cols-4 gap-2">
+          {/* Row 2: 4 equal tiles — 2-col on mobile, 4-col on desktop */}
+          <div className="mt-2 grid grid-cols-2 gap-2 md:grid-cols-4 md:h-[220px]">
             {MFG_ROW.map((src, i) => (
-              <div key={i} className="relative overflow-hidden rounded-[1.1rem]">
+              <div key={i} className="relative h-[140px] overflow-hidden rounded-[1.1rem] md:h-full">
                 <Image
                   src={src}
                   alt="OptiFinish facility"
                   fill
                   className="object-cover transition-transform duration-500 hover:scale-105"
-                  sizes="25vw"
+                  sizes="(max-width: 768px) 50vw, 25vw"
                 />
               </div>
             ))}
@@ -383,7 +381,7 @@ export default function FacilityPage() {
           </div>
 
           {/* Text half — right */}
-          <div className="flex items-center px-8 py-16 md:px-16 lg:px-20">
+          <div className="flex items-center px-5 py-10 md:px-12 lg:px-20">
             <div className="max-w-md">
               <p className="mb-3 text-[0.56rem] font-bold uppercase tracking-[0.22em] text-[#0A0A0A]/40">
                 R&amp;D &amp; Trials
@@ -477,7 +475,7 @@ export default function FacilityPage() {
             {[...OFFICE_STRIP, ...OFFICE_STRIP].map((src, i) => (
               <div
                 key={i}
-                className="relative h-64 w-96 shrink-0 overflow-hidden rounded-[1rem] md:h-72 md:w-[28rem]"
+                className="relative h-40 w-56 shrink-0 overflow-hidden rounded-[1rem] sm:h-52 sm:w-72 md:h-64 md:w-96 lg:h-72 lg:w-[28rem]"
               >
                 <Image
                   src={src}
@@ -510,14 +508,8 @@ export default function FacilityPage() {
             </h2>
           </div>
 
-          {/* CSS Masonry — columns layout */}
-          <div
-            className="gap-2"
-            style={{
-              columnCount: 3,
-              columnGap: '0.5rem',
-            }}
-          >
+          {/* CSS Masonry — columns layout, 2 cols mobile → 3 cols desktop */}
+          <div className="columns-2 gap-2 md:columns-3">
             {GALLERY.map((src, i) => (
               <div
                 key={i}

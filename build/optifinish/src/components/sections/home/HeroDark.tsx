@@ -84,7 +84,7 @@ export default function HeroDark() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease, delay: 0.22 }}
-            className="font-display text-[clamp(2.4rem,5.5vw,5rem)] font-black leading-[0.9] tracking-[-0.045em] text-white"
+            className="font-display text-[clamp(1.75rem,5.5vw,5rem)] font-black leading-[0.9] tracking-[-0.045em] text-white"
           >
             Manufactured systems.{' '}
             <br className="hidden sm:block" />
@@ -98,7 +98,7 @@ export default function HeroDark() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease, delay: 0.32 }}
-            className="mx-auto mt-8 max-w-[640px] text-[0.95rem] leading-[1.9] tracking-[0.01em] text-white/35"
+            className="mx-auto mt-6 max-w-[640px] text-[0.82rem] leading-relaxed tracking-[0.01em] text-white/35 md:mt-8 md:text-[0.95rem] md:leading-[1.9]"
           >
             OptiFinish designs and manufactures complete powder coating lines,
             develops proprietary automation products, and is an authorised
@@ -135,46 +135,47 @@ export default function HeroDark() {
             {/* top yellow accent line */}
             <div className="h-[1.5px] bg-gradient-to-r from-transparent via-[#FECE00]/50 to-transparent" />
 
-            <div className="flex items-stretch divide-x divide-[#FECE00]/[0.06]">
+            {/* Mobile: 2×2 grid · Desktop: horizontal flex */}
+            <div className="grid grid-cols-2 divide-x divide-y divide-[#FECE00]/[0.06] md:flex md:divide-y-0 md:items-stretch md:divide-x">
 
               {STATS.map(({ value, label, sub }) => (
-                <div key={value} className="flex flex-1 flex-col justify-center gap-0.5 px-6 py-5 md:px-8">
+                <div key={value} className="flex flex-1 flex-col justify-center gap-0.5 px-4 py-3.5 md:px-6 md:py-5 lg:px-8">
                   <div className="flex items-baseline gap-1.5">
-                    <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 900, fontSize: '1.25rem', color: '#fff', letterSpacing: '-0.03em', lineHeight: 1 }}>
+                    <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 900, fontSize: '1.1rem', color: '#fff', letterSpacing: '-0.03em', lineHeight: 1 }}>
                       {value}
                     </span>
-                    <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: '0.72rem', color: 'rgba(255,255,255,0.4)', letterSpacing: '-0.01em' }}>
+                    <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: '0.68rem', color: 'rgba(255,255,255,0.4)', letterSpacing: '-0.01em' }}>
                       {label}
                     </span>
                   </div>
-                  <span className="text-[0.55rem] font-semibold uppercase tracking-[0.16em] text-[#FECE00]/50">
+                  <span className="text-[0.5rem] font-semibold uppercase tracking-[0.14em] text-[#FECE00]/50">
                     {sub}
                   </span>
                 </div>
               ))}
 
               {/* GEMA */}
-              <div className="flex flex-1 items-center gap-3.5 px-6 py-5 md:px-8">
+              <div className="flex flex-1 items-center gap-2.5 px-4 py-3.5 md:gap-3.5 md:px-6 md:py-5 lg:px-8">
                 <Image
                   src="/images/logos/logo.png"
                   alt="GEMA"
                   width={80}
                   height={40}
-                  className="h-16 w-auto shrink-0 object-contain"
+                  className="h-10 w-auto shrink-0 object-contain md:h-14"
                 />
-                <span className="whitespace-nowrap text-[0.53rem] font-semibold uppercase tracking-[0.15em] text-[#FECE00]/50">Authorised partner</span>
+                <span className="text-[0.48rem] font-semibold uppercase leading-tight tracking-[0.13em] text-[#FECE00]/50 md:whitespace-nowrap md:text-[0.53rem]">Authorised<br className="md:hidden" /> partner</span>
               </div>
 
               {/* DÜRR */}
-              <div className="flex flex-1 items-center gap-3.5 px-6 py-5 md:px-8">
+              <div className="flex flex-1 items-center gap-2.5 px-4 py-3.5 md:gap-3.5 md:px-6 md:py-5 lg:px-8">
                 <Image
                   src="/images/logos/duerr-logo-RGB.png"
                   alt="DÜRR"
                   width={64}
                   height={32}
-                  className="h-7 w-auto shrink-0 object-contain brightness-0 invert"
+                  className="h-6 w-auto shrink-0 object-contain brightness-0 invert md:h-7"
                 />
-                <span className="whitespace-nowrap text-[0.53rem] font-semibold uppercase tracking-[0.15em] text-[#FECE00]/50">Authorised distributor</span>
+                <span className="text-[0.48rem] font-semibold uppercase leading-tight tracking-[0.13em] text-[#FECE00]/50 md:whitespace-nowrap md:text-[0.53rem]">Authorised<br className="md:hidden" /> distributor</span>
               </div>
 
               <div className="hidden items-center px-7 md:flex">

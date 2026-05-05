@@ -117,7 +117,7 @@ export default function WhatWeOffer() {
               Products
             </span>
           </div>
-          <h2 className="font-display text-[clamp(2rem,4vw,3.5rem)] font-black leading-[0.92] tracking-[-0.04em] text-white">
+          <h2 className="font-display text-[clamp(1.65rem,4vw,3.5rem)] font-black leading-[0.92] tracking-[-0.04em] text-white">
             <div className="overflow-hidden pb-[0.15em]">
               <span ref={line1Ref} className="block" style={{ willChange: 'transform, opacity' }}>
                 What we offer,

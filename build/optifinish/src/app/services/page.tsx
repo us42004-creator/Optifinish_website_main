@@ -99,7 +99,7 @@ export default function ServicesPage() {
           </p>
 
           {/* Headline */}
-          <h1 className="font-display max-w-3xl text-[clamp(2.4rem,5.5vw,4.5rem)] font-black leading-[0.9] tracking-[-0.04em]">
+          <h1 className="font-display max-w-3xl text-[clamp(1.8rem,5.5vw,4.5rem)] font-black leading-[0.9] tracking-[-0.04em]">
             <span className="block text-white">Services that keep</span>
             <span className="block text-[#FECE00]">your line running.</span>
           </h1>
@@ -118,7 +118,7 @@ export default function ServicesPage() {
                 key={s.label}
                 className="rounded-xl border border-[#FECE00]/12 bg-[#FECE00]/[0.05] px-5 py-3"
               >
-                <div className="font-display text-[1.5rem] font-black leading-none text-[#FECE00]">
+                <div className="font-display text-[1.2rem] font-black leading-none text-[#FECE00] md:text-[1.5rem]">
                   {s.value}
                 </div>
                 <div className="mt-1 text-[0.58rem] font-medium uppercase tracking-[0.12em] text-white/35">

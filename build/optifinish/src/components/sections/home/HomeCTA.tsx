@@ -41,7 +41,7 @@ export default function HomeCTA() {
         }}
       />
       <div className="relative mx-auto max-w-7xl px-5 md:px-8">
-        <div className="noise relative overflow-hidden rounded-[1.75rem] bg-ink px-8 py-14 text-center md:px-16 md:py-20">
+        <div className="noise relative overflow-hidden rounded-[1.75rem] bg-ink px-5 py-10 text-center sm:px-8 sm:py-14 md:px-16 md:py-20">
 
           {/* Yellow glow */}
           <div className="pointer-events-none absolute left-1/2 top-0 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-yellow/20 blur-[80px]" />
@@ -59,7 +59,7 @@ export default function HomeCTA() {
             </div>
 
             {/* Heading — split into two lines for animation */}
-            <h2 className="font-display mx-auto max-w-2xl text-[clamp(1.8rem,4.5vw,3.2rem)] font-black leading-[0.93] tracking-[-0.04em] text-white">
+            <h2 className="font-display mx-auto max-w-2xl text-[clamp(1.45rem,4.5vw,3.2rem)] font-black leading-[0.93] tracking-[-0.04em] text-white">
               <div className="overflow-hidden pb-[0.15em]">
                 <span ref={line1Ref} className="block" style={{ willChange: 'transform, opacity' }}>
                   Let&apos;s find the right coating

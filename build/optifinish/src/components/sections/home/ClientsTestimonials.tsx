@@ -94,7 +94,7 @@ export default function ClientsTestimonials() {
               Our Clients
             </span>
           </div>
-          <h2 className="font-display text-[clamp(2rem,4vw,3.5rem)] font-black leading-[0.92] tracking-[-0.04em] text-ink">
+          <h2 className="font-display text-[clamp(1.65rem,4vw,3.5rem)] font-black leading-[0.92] tracking-[-0.04em] text-ink">
             <div className="overflow-hidden pb-[0.15em]">
               <span ref={line1Ref} className="block" style={{ willChange: 'transform, opacity' }}>
                 Trusted by India&apos;s
@@ -111,9 +111,9 @@ export default function ClientsTestimonials() {
         {/* Stat bar */}
         <div className="mb-8 grid grid-cols-3 divide-x divide-ink/[0.07] overflow-hidden rounded-[0.8rem] border border-ink/[0.08] bg-white/60 backdrop-blur-sm">
           {STATS.map(({ value, label }) => (
-            <div key={label} className="flex flex-col gap-0.5 px-5 py-3.5 md:px-8">
-              <span className="font-display text-[1.2rem] font-black tracking-[-0.03em] text-ink">{value}</span>
-              <span className="text-[0.55rem] font-semibold uppercase tracking-[0.2em] text-ink/40">{label}</span>
+            <div key={label} className="flex flex-col gap-0.5 px-3 py-2.5 sm:px-5 sm:py-3.5 md:px-8">
+              <span className="font-display text-[1rem] font-black tracking-[-0.03em] text-ink sm:text-[1.2rem]">{value}</span>
+              <span className="text-[0.48rem] font-semibold uppercase tracking-[0.16em] text-ink/40 sm:text-[0.55rem]">{label}</span>
             </div>
           ))}
         </div>
@@ -151,7 +151,7 @@ export default function ClientsTestimonials() {
                 key={i}
                 className="flex flex-col gap-4 rounded-[1.2rem] border border-white/[0.06] bg-[#0a0a0a] p-6"
               >
-                <span className="text-[2.5rem] leading-none text-[#FECE00]/25">&ldquo;</span>
+                <span className="text-[2rem] leading-none text-[#FECE00]/25 md:text-[2.5rem]">&ldquo;</span>
                 <p className="text-[0.8rem] italic leading-relaxed text-white/40">{t.quote}</p>
                 <div className="mt-auto border-t border-white/[0.07] pt-4">
                   <p className="text-[0.72rem] font-bold text-white/55">{t.name}</p>

@@ -113,7 +113,7 @@ export default function ServicePageTemplate({
           </p>
 
           {/* Headline */}
-          <h1 className="font-display max-w-3xl text-[clamp(2.2rem,5vw,4rem)] font-black leading-[0.92] tracking-[-0.04em]">
+          <h1 className="font-display max-w-3xl text-[clamp(1.7rem,5vw,4rem)] font-black leading-[0.92] tracking-[-0.04em]">
             <span className="block text-white">{headline}</span>
             <span className="block text-[#FECE00]">{headlineAccent}</span>
           </h1>
@@ -242,7 +242,7 @@ export default function ServicePageTemplate({
                 {i < steps.length - 1 && (
                   <div className="absolute right-0 top-8 hidden h-px w-5 translate-x-full bg-white/[0.08] lg:block" />
                 )}
-                <span className="font-display text-[2rem] font-black leading-none tracking-[-0.04em] text-[#FECE00]/25">
+                <span className="font-display text-[1.5rem] font-black leading-none tracking-[-0.04em] text-[#FECE00]/25 md:text-[2rem]">
                   {step.number}
                 </span>
                 <h3 className="font-display text-[0.95rem] font-black leading-snug tracking-tight text-white">
