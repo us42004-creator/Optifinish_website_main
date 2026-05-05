@@ -6,7 +6,6 @@ import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ChevronRight } from 'lucide-react';
-import { gsap } from 'gsap';
 
 /* ─── Services mega-menu data ─── */
 const SERVICES_MENU = [
@@ -248,13 +247,7 @@ export default function Navbar() {
 
   useEffect(() => { setMenuOpen(false); setProductsOpen(false); setServicesOpen(false); }, [pathname]);
 
-  useEffect(() => {
-    if (!menuOpen || !menuLinksRef.current) return;
-    const links = menuLinksRef.current.querySelectorAll('.mobile-nav-link');
-    const cta   = menuCtaRef.current;
-    gsap.fromTo(links, { x: -48, opacity: 0 }, { x: 0, opacity: 1, stagger: 0.055, duration: 0.5, ease: 'power3.out', delay: 0.1 });
-    if (cta) gsap.fromTo(cta, { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: 'power3.out', delay: 0.42 });
-  }, [menuOpen]);
+  // Mobile menu links now use CSS animation (no GSAP needed — avoids opacity:0 flash)
 
   return (
     <>
@@ -625,8 +618,16 @@ export default function Navbar() {
             </div>
 
             <div ref={menuLinksRef} className="flex flex-1 flex-col justify-center px-6">
-              {NAV_LINKS.map((link) => (
-                <Link key={link.href} href={link.href} className="mobile-nav-link block py-3 font-display text-[2.2rem] font-black tracking-[-0.03em] text-white/70 transition-colors hover:text-white" style={{ opacity: 0 }}>
+              {NAV_LINKS.map((link, i) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="mobile-nav-link block py-3 font-display text-[2.2rem] font-black tracking-[-0.03em] text-white/70 transition-colors hover:text-white"
+                  style={{
+                    animation: 'mobile-link-in 0.45s cubic-bezier(0.22,1,0.36,1) both',
+                    animationDelay: `${0.06 + i * 0.06}s`,
+                  }}
+                >
                   {link.label}
                 </Link>
               ))}
@@ -637,7 +638,9 @@ export default function Navbar() {
                 ref={menuCtaRef}
                 href="/contact"
                 className="block w-full rounded-full bg-yellow py-4 text-center text-[11px] font-black uppercase tracking-widest text-ink"
-                style={{ opacity: 0 }}
+                style={{
+                  animation: 'mobile-link-in 0.45s cubic-bezier(0.22,1,0.36,1) 0.46s both',
+                }}
               >
                 Get in Touch
               </Link>
