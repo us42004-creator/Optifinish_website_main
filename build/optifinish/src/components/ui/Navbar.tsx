@@ -8,6 +8,59 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ChevronRight } from 'lucide-react';
 import { gsap } from 'gsap';
 
+/* ─── Services mega-menu data ─── */
+const SERVICES_MENU = [
+  {
+    href: '/services/plant-amc',
+    label: 'Plant AMC',
+    tag: 'Maintenance',
+    desc: 'Annual maintenance contracts for installed coating lines.',
+    comingSoon: false,
+  },
+  {
+    href: '/services/testing-commissioning',
+    label: 'Testing & Commissioning',
+    tag: 'Commissioning',
+    desc: 'From installation to first production run — fully validated.',
+    comingSoon: false,
+  },
+  {
+    href: '/services/troubleshooting-support',
+    label: 'Troubleshooting & Support',
+    tag: 'Support',
+    desc: 'Remote and on-site diagnosis for coating defects and faults.',
+    comingSoon: false,
+  },
+  {
+    href: '/services/upgrades-retrofits',
+    label: 'Upgrades & Retrofits',
+    tag: 'Modernisation',
+    desc: 'Extend line life with targeted upgrades and automation.',
+    comingSoon: false,
+  },
+  {
+    href: '/services/ttr',
+    label: 'Trials, Testing & Review',
+    tag: 'Coating Trials',
+    desc: 'Sample part trials at our Greater Noida facility.',
+    comingSoon: false,
+  },
+  {
+    href: '/services/gema-spare-parts',
+    label: 'GEMA Spare Parts',
+    tag: 'Parts Supply',
+    desc: 'Genuine OEM spare parts for all GEMA equipment models.',
+    comingSoon: false,
+  },
+  {
+    href: '/services/dcp-server-based-maintenance',
+    label: 'DCP Server Maintenance',
+    tag: 'Coming Soon',
+    desc: 'Remote diagnostics and predictive maintenance for connected lines.',
+    comingSoon: true,
+  },
+];
+
 /* ─── Products mega-menu data ─── */
 const PRODUCTS_MENU = [
   {
@@ -89,8 +142,8 @@ const PRODUCTS_MENU = [
 ];
 
 const NAV_LINKS = [
-  { href: '/products',  label: 'Products', hasDropdown: true  },
-  { href: '/services',  label: 'Services'  },
+  { href: '/products',  label: 'Products', hasDropdown: true          },
+  { href: '/services',  label: 'Services', hasServicesDropdown: true  },
   { href: '/facility',  label: 'Facility'  },
   { href: '/our-work',  label: 'Our Work'  },
   { href: '/resources', label: 'Resources' },
@@ -127,14 +180,16 @@ function smoothScrollTo(element: Element) {
 }
 
 export default function Navbar() {
-  const [scrolled, setScrolled]         = useState(false);
-  const [expanded, setExpanded]         = useState(false);
-  const [menuOpen, setMenuOpen]         = useState(false);
-  const [productsOpen, setProductsOpen] = useState(false);
-  const [hoveredCat, setHoveredCat]     = useState(PRODUCTS_MENU[0].slug);
-  const menuLinksRef                    = useRef<HTMLDivElement>(null);
-  const menuCtaRef                      = useRef<HTMLAnchorElement>(null);
-  const closeTimer                      = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [scrolled, setScrolled]           = useState(false);
+  const [expanded, setExpanded]           = useState(false);
+  const [menuOpen, setMenuOpen]           = useState(false);
+  const [productsOpen, setProductsOpen]   = useState(false);
+  const [servicesOpen, setServicesOpen]   = useState(false);
+  const [hoveredCat, setHoveredCat]       = useState(PRODUCTS_MENU[0].slug);
+  const menuLinksRef                      = useRef<HTMLDivElement>(null);
+  const menuCtaRef                        = useRef<HTMLAnchorElement>(null);
+  const closeTimer                        = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const closeServicesTimer                = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pathname                        = usePathname();
   const router                          = useRouter();
   const isDark = isDarkPath(pathname);
@@ -143,13 +198,30 @@ export default function Navbar() {
 
   const openProducts = () => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
+    if (closeServicesTimer.current) clearTimeout(closeServicesTimer.current);
     setProductsOpen(true);
+    setServicesOpen(false);
     setExpanded(true);
   };
 
   const closeProducts = () => {
     closeTimer.current = setTimeout(() => {
       setProductsOpen(false);
+      setExpanded(false);
+    }, 150);
+  };
+
+  const openServices = () => {
+    if (closeServicesTimer.current) clearTimeout(closeServicesTimer.current);
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setServicesOpen(true);
+    setProductsOpen(false);
+    setExpanded(true);
+  };
+
+  const closeServices = () => {
+    closeServicesTimer.current = setTimeout(() => {
+      setServicesOpen(false);
       setExpanded(false);
     }, 150);
   };
@@ -174,7 +246,7 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  useEffect(() => { setMenuOpen(false); setProductsOpen(false); }, [pathname]);
+  useEffect(() => { setMenuOpen(false); setProductsOpen(false); setServicesOpen(false); }, [pathname]);
 
   useEffect(() => {
     if (!menuOpen || !menuLinksRef.current) return;
@@ -270,6 +342,30 @@ export default function Navbar() {
                         />
                       </button>
                     </div>
+                  ) : link.hasServicesDropdown ? (
+                    <div
+                      key={link.href}
+                      className="relative"
+                      onMouseEnter={openServices}
+                      onMouseLeave={closeServices}
+                    >
+                      <button
+                        onClick={() => { setServicesOpen(false); setExpanded(false); router.push('/services'); }}
+                        className={`flex shrink-0 items-center gap-1 whitespace-nowrap font-semibold uppercase tracking-[0.16em] transition-colors duration-200 hover:text-yellow cursor-pointer ${
+                          scrolled && !expanded ? 'text-[9px]' : 'text-[10px]'
+                        } ${
+                          pathname.startsWith('/services')
+                            ? 'text-yellow'
+                            : (scrolled || isDark) ? 'text-white/48' : 'text-black/45'
+                        }`}
+                      >
+                        {link.label}
+                        <ChevronRight
+                          size={10}
+                          className={`rotate-90 transition-transform duration-200 ${servicesOpen ? 'rotate-[270deg]' : ''}`}
+                        />
+                      </button>
+                    </div>
                   ) : (
                     <Link
                       key={link.href}
@@ -312,7 +408,87 @@ export default function Navbar() {
               </div>
             </motion.div>
 
-            {/* ── Mega-menu dropdown — outside overflow:hidden so it's not clipped ── */}
+            {/* ── Services dropdown ── */}
+            <AnimatePresence>
+              {servicesOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 8 }}
+                  transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                  onMouseEnter={openServices}
+                  onMouseLeave={closeServices}
+                  className="absolute left-1/2 top-full z-50 mt-4 -translate-x-1/2"
+                  style={{ width: 'min(560px, calc(100vw - 2rem))' }}
+                >
+                  {/* Arrow */}
+                  <div className="absolute -top-[6px] left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 border-l border-t border-white/[0.08] bg-[#0f0f0f]" />
+
+                  <div
+                    className="overflow-hidden rounded-[1.1rem] border border-white/[0.1]"
+                    style={{
+                      background: '#0f0f0f',
+                      boxShadow: '0 24px 64px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.07)',
+                    }}
+                  >
+                    {/* Header */}
+                    <div className="flex items-center justify-between border-b border-white/[0.07] px-4 py-3">
+                      <p className="text-[0.5rem] font-bold uppercase tracking-[0.22em] text-white/35">
+                        After-Sales &amp; Support
+                      </p>
+                      <Link
+                        href="/services"
+                        className="flex items-center gap-1 text-[0.52rem] font-bold uppercase tracking-[0.14em] text-[#FECE00]/65 transition-colors hover:text-[#FECE00]"
+                      >
+                        All services <ChevronRight size={9} />
+                      </Link>
+                    </div>
+
+                    {/* Service grid */}
+                    <div className="grid grid-cols-2 gap-px bg-white/[0.05] p-3">
+                      {SERVICES_MENU.map((svc) =>
+                        svc.comingSoon ? (
+                          <div
+                            key={svc.href}
+                            className="flex flex-col gap-1 rounded-[0.65rem] bg-[#0f0f0f] px-3 py-2.5 opacity-40"
+                          >
+                            <div className="flex items-center gap-2">
+                              <span className="rounded-full border border-white/[0.12] px-1.5 py-0.5 text-[0.44rem] font-bold uppercase tracking-[0.14em] text-white/40">
+                                {svc.tag}
+                              </span>
+                            </div>
+                            <span className="font-display text-[0.75rem] font-black leading-snug tracking-tight text-white/60">
+                              {svc.label}
+                            </span>
+                            <span className="text-[0.62rem] leading-snug text-white/30">{svc.desc}</span>
+                          </div>
+                        ) : (
+                          <Link
+                            key={svc.href}
+                            href={svc.href}
+                            className="group/svc flex flex-col gap-1 rounded-[0.65rem] bg-[#0f0f0f] px-3 py-2.5 transition-all duration-150 hover:bg-white/[0.06]"
+                          >
+                            <div className="flex items-center gap-2">
+                              <span className="rounded-full bg-[#FECE00]/15 px-1.5 py-0.5 text-[0.44rem] font-bold uppercase tracking-[0.14em] text-[#FECE00]">
+                                {svc.tag}
+                              </span>
+                            </div>
+                            <span className="font-display text-[0.75rem] font-black leading-snug tracking-tight text-white/80 transition-colors group-hover/svc:text-white">
+                              {svc.label}
+                            </span>
+                            <span className="text-[0.62rem] leading-snug text-white/35 transition-colors group-hover/svc:text-white/50">
+                              {svc.desc}
+                            </span>
+                          </Link>
+                        )
+                      )}
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* ── Products mega-menu dropdown — outside overflow:hidden so it's not clipped ── */}
             <AnimatePresence>
               {productsOpen && (
                 <motion.div
