@@ -25,24 +25,26 @@ export function useHeadingAnimation(refs: HeadingAnimationRefs) {
       if (line2?.current)  gsap.set(line2.current,  { x: '90%',   opacity: 0 });
       if (body?.current)   gsap.set(body.current,   { y: 20,      opacity: 0 });
 
+      // One-shot play (no scrub) — fires instantly when element scrolls into view.
+      // scrub was removed: it tied animation to scroll position and kept content
+      // invisible until the user had scrolled far enough — broken on mobile.
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: refs.trigger.current,
-          start: 'top 80%',
-          end: 'top 20%',
-          scrub: 0.5,
+          start: 'top 90%',
+          once: true,       // kill after first trigger, never reverses
         },
       });
 
       if (eyebrow?.current) {
-        tl.to(eyebrow.current, { x: '0%', opacity: 1, ease: 'power2.out', duration: 0.35 }, 0);
+        tl.to(eyebrow.current, { x: '0%', opacity: 1, ease: 'power2.out', duration: 0.55 }, 0);
       }
-      tl.to(line1.current!, { x: '0%', opacity: 1, ease: 'power2.out', duration: 0.5 }, 0.08);
+      tl.to(line1.current!, { x: '0%', opacity: 1, ease: 'power2.out', duration: 0.65 }, 0.06);
       if (line2?.current) {
-        tl.to(line2.current, { x: '0%', opacity: 1, ease: 'power2.out', duration: 0.5 }, 0.16);
+        tl.to(line2.current, { x: '0%', opacity: 1, ease: 'power2.out', duration: 0.65 }, 0.14);
       }
       if (body?.current) {
-        tl.to(body.current, { y: 0, opacity: 1, ease: 'power3.out', duration: 0.35 }, 0.22);
+        tl.to(body.current, { y: 0, opacity: 1, ease: 'power3.out', duration: 0.45 }, 0.22);
       }
     }, refs.trigger);
 

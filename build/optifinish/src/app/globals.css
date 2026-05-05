@@ -390,3 +390,12 @@
   /* ── Mobile safe-area ── */
   .pb-safe { padding-bottom: env(safe-area-inset-bottom, 1.5rem); }
 }
+
+/* ── Navbar entrance — CSS animation so it's visible before JS hydration ── */
+@keyframes navbar-enter {
+  from { transform: translateY(-100%); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}
+.navbar-enter {
+  animation: navbar-enter 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}

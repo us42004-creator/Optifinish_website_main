@@ -258,12 +258,7 @@ export default function Navbar() {
 
   return (
     <>
-      <motion.header
-        initial={{ y: -80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed top-0 left-0 right-0 z-50"
-      >
+      <header className="fixed top-0 left-0 right-0 z-50 navbar-enter">
         <div className="flex justify-center px-3 pt-2.5 md:px-4 md:pt-4">
           <motion.div
             onMouseEnter={() => setExpanded(true)}
@@ -602,7 +597,7 @@ export default function Navbar() {
             </AnimatePresence>
           </motion.div>
         </div>
-      </motion.header>
+      </header>
 
       {/* Full-screen mobile menu */}
       <AnimatePresence>
