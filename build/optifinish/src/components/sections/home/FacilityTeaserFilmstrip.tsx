@@ -5,23 +5,38 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useHeadingAnimation } from '@/hooks/useHeadingAnimation';
 
-// Available facility photos — update this list as new images are added
+// Filmstrip — old beautiful office photos first, then specific factory floor shots, then rest
 const FACILITY_PHOTOS = [
-  '/images/facility/facility-14.jpg',  // yellow main floor — opener
-  '/images/facility/facility-11.jpg',  // yellow geometric wall
-  '/images/facility/facility-16.jpg',  // yellow with glass partitions
-  '/images/facility/facility-17.jpg',  // yellow long perspective
-  '/images/facility/facility-05.jpg',  // white conference room — middle
-  '/images/facility/facility-07.jpg',  // white conference room — middle
-  '/images/facility/facility-08.jpg',  // warm yellow lights — closer
+  '/images/facility/facility-78.jpg',   // old — yellow office
+  '/images/facility/facility-74.jpg',   // old — office
+  '/images/facility/facility-79.jpg',   // old — yellow office
+  '/images/facility/facility-75.jpg',   // old — office
+  '/images/facility/facility-80.jpg',   // old — yellow office
+  '/images/facility/facility-76.jpg',   // old — office
+  '/images/facility/facility-77.jpg',   // old — office
+  '/images/facility/facility-68.jpg',   // new — factory
+  '/images/facility/facility-67.jpg',   // new — factory
+  '/images/facility/facility-44.jpg',   // new — factory
+  '/images/facility/facility-45.jpg',   // new — factory
+  '/images/facility/facility-51.jpg',   // new — factory
+  '/images/facility/facility-52.jpg',   // new — factory
+  '/images/facility/facility-72.jpg',   // new — factory
+  '/images/facility/facility-73.jpg',   // new — factory
+  '/images/facility/facility-26.jpg',   // rest
+  '/images/facility/facility-30.jpg',   // rest
+  '/images/facility/facility-33.jpg',   // rest
+  '/images/facility/facility-37.jpg',   // rest
+  '/images/facility/facility-40.jpg',   // rest
+  '/images/facility/facility-57.jpg',   // rest
+  '/images/facility/facility-63.jpg',   // rest
 ];
 
-// Placeholder slots for exterior photos — replace src once images are provided
-const EXTERIOR_SLOTS = [
-  { label: 'Exterior — front elevation' },
-  { label: 'Exterior — side view' },
-  { label: 'Exterior — entrance' },
-  { label: 'Exterior — aerial / overview' },
+// Exterior 2×2 grid
+const EXTERIOR_PHOTOS = [
+  { src: '/images/facility/facility-47.jpg', label: 'Facility interior' },
+  { src: '/images/facility/facility-67.jpg', label: 'Facility interior' },
+  { src: '/images/facility/facility-19.jpg', label: 'Facility interior' },
+  { src: '/images/facility/facility-78.jpg', label: 'Facility interior' },
 ];
 
 export default function FacilityTeaserFilmstrip() {
@@ -40,7 +55,7 @@ export default function FacilityTeaserFilmstrip() {
   });
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden bg-[#f1efea] py-20 md:py-28">
+    <section ref={sectionRef} className="relative overflow-hidden bg-[#f1efea] py-6 md:py-8">
 
       {/* Hover-pause CSS (server-safe) */}
       <style>{`
@@ -75,7 +90,7 @@ export default function FacilityTeaserFilmstrip() {
         <div className="overflow-hidden rounded-[1.75rem] bg-ink">
 
           {/* ── Top row: text + exterior photo grid ── */}
-          <div className="flex flex-col gap-10 p-8 md:flex-row md:items-stretch md:gap-10 md:p-14">
+          <div className="flex flex-col gap-6 p-6 md:flex-row md:items-stretch md:gap-8 md:p-10">
 
             {/* Text */}
             <div className="flex-1">
@@ -104,7 +119,7 @@ export default function FacilityTeaserFilmstrip() {
 
               <p
                 ref={bodyRef}
-                className="mt-5 max-w-md text-[0.88rem] leading-relaxed text-white/48"
+                className="mt-4 max-w-md text-[0.85rem] leading-relaxed text-white/48"
                 style={{ willChange: 'transform, opacity' }}
               >
                 Our Greater Noida manufacturing and R&amp;D facility is where OptiFinish products are
@@ -112,7 +127,7 @@ export default function FacilityTeaserFilmstrip() {
                 automation systems — everything is engineered here.
               </p>
 
-              <ul className="mt-8 flex flex-col gap-3">
+              <ul className="mt-5 flex flex-col gap-2.5">
                 {[
                   'Complete plant manufacturing capability',
                   'In-house R&D for automation products',
@@ -130,7 +145,7 @@ export default function FacilityTeaserFilmstrip() {
 
               <Link
                 href="/facility"
-                className="panel-button dynamic-button dynamic-button-yellow mt-8 inline-flex"
+                className="panel-button dynamic-button dynamic-button-yellow mt-6 inline-flex"
               >
                 <span>See the Facility</span>
                 <div className="dynamic-button-glow" />
@@ -138,17 +153,19 @@ export default function FacilityTeaserFilmstrip() {
             </div>
 
             {/* ── Exterior photo grid — 2×2 ── */}
-            <div className="grid grid-cols-2 grid-rows-2 gap-2 md:w-[38rem] md:flex-shrink-0">
-              {EXTERIOR_SLOTS.map((slot, i) => (
+            <div className="grid grid-cols-2 grid-rows-2 gap-2 md:w-[40rem] md:flex-shrink-0">
+              {EXTERIOR_PHOTOS.map((photo, i) => (
                 <div
                   key={i}
-                  className="relative overflow-hidden rounded-xl border border-white/[0.06] bg-white/[0.03] min-h-[140px]"
+                  className="relative overflow-hidden rounded-xl min-h-[120px]"
                 >
-                  <div className="flex h-full items-center justify-center p-3 text-center">
-                    <span className="text-[8px] font-semibold uppercase leading-relaxed tracking-[0.18em] text-white/20">
-                      {slot.label}
-                    </span>
-                  </div>
+                  <Image
+                    src={photo.src}
+                    alt={photo.label}
+                    fill
+                    className="object-cover"
+                    sizes="320px"
+                  />
                 </div>
               ))}
             </div>
@@ -158,14 +175,14 @@ export default function FacilityTeaserFilmstrip() {
           {/* ── Interior photo filmstrip ── */}
           <div className="border-t border-white/[0.06]">
 
-            <div className="px-8 pb-3 pt-5 md:px-14">
+            <div className="px-6 pb-2 pt-4 md:px-10">
               <span className="text-[0.52rem] font-bold uppercase tracking-[0.26em] text-white/25">
                 From the facility floor
               </span>
             </div>
 
             <div
-              className="facility-strip overflow-hidden pb-8"
+              className="facility-strip overflow-hidden pb-5"
               style={{
                 maskImage:
                   'linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)',
@@ -180,7 +197,7 @@ export default function FacilityTeaserFilmstrip() {
                 {[...FACILITY_PHOTOS, ...FACILITY_PHOTOS].map((src, i) => (
                   <div
                     key={i}
-                    className="relative h-40 w-64 flex-shrink-0 overflow-hidden rounded-xl md:h-44 md:w-72"
+                    className="relative h-28 w-52 flex-shrink-0 overflow-hidden rounded-xl md:h-32 md:w-60"
                   >
                     <Image
                       src={src}
