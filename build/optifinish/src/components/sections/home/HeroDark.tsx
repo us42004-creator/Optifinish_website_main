@@ -57,60 +57,50 @@ export default function HeroDark() {
       {/* Centring shell */}
       <div className="relative mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-center px-5 pb-44 pt-24 md:px-8">
 
-        {/* ── Hero content — no card wrapper, text directly on dark bg ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 28 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease }}
+        {/* ── Hero content — CSS animations so visible before JS hydration ── */}
+        <div
           className="relative w-full text-center"
+          style={{ animation: 'hero-item-in 0.7s cubic-bezier(0.22,1,0.36,1) both' }}
         >
           {/* yellow glow behind copy */}
           <div className="pointer-events-none absolute left-1/2 top-1/2 h-[480px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#FECE00]/[0.025] blur-[100px]" />
           {/* Kicker */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease, delay: 0.15 }}
+          <div
             className="mb-8 flex items-center justify-center gap-2.5"
+            style={{ animation: 'hero-item-in 0.5s cubic-bezier(0.22,1,0.36,1) 0.1s both' }}
           >
             <PulseBullet />
             <span style={{ fontSize: '0.56rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)' }}>
               Value Added Coating Solutions Pvt. Ltd.
             </span>
-          </motion.div>
+          </div>
 
           {/* Headline */}
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease, delay: 0.22 }}
+          <h1
             className="font-display text-[clamp(1.75rem,5.5vw,5rem)] font-black leading-[0.9] tracking-[-0.045em] text-white"
+            style={{ animation: 'hero-item-in 0.7s cubic-bezier(0.22,1,0.36,1) 0.18s both' }}
           >
             Manufactured systems.{' '}
             <br className="hidden sm:block" />
             <span style={{ color: '#FECE00' }}>Proprietary automation.</span>
             <br className="hidden sm:block" />
             Expert <span style={{ color: '#FECE00' }}>coating</span> solutions.
-          </motion.h1>
+          </h1>
 
           {/* Subtext */}
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease, delay: 0.32 }}
+          <p
             className="mx-auto mt-6 max-w-[640px] text-[0.82rem] leading-relaxed tracking-[0.01em] text-white/35 md:mt-8 md:text-[0.95rem] md:leading-[1.9]"
+            style={{ animation: 'hero-item-in 0.6s cubic-bezier(0.22,1,0.36,1) 0.28s both' }}
           >
             OptiFinish designs and manufactures complete powder coating lines,
             develops proprietary automation products, and is an authorised
             partner for GEMA and DURR — backed by 14+ years of industrial experience.
-          </motion.p>
+          </p>
 
           {/* CTAs */}
-          <motion.div
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, ease, delay: 0.42 }}
+          <div
             className="mt-10 flex flex-wrap items-center justify-center gap-3"
+            style={{ animation: 'hero-item-in 0.55s cubic-bezier(0.22,1,0.36,1) 0.38s both' }}
           >
             <Link href="/products" className="panel-button dynamic-button dynamic-button-yellow">
               <span>Explore Products</span>
@@ -120,15 +110,13 @@ export default function HeroDark() {
               <span>Get in Touch</span>
               <div className="dynamic-button-glow" />
             </Link>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
         {/* ── Floating authority stripe ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.65, ease, delay: 0.55 }}
+        <div
           className="absolute inset-x-5 bottom-12 md:inset-x-10 md:bottom-14 lg:inset-x-12"
+          style={{ animation: 'hero-item-in 0.65s cubic-bezier(0.22,1,0.36,1) 0.48s both' }}
         >
           <div className="overflow-hidden rounded-[1rem] border border-[#FECE00]/[0.08] bg-[#FECE00]/[0.04] shadow-[0_-6px_40px_rgba(0,0,0,0.4),0_16px_48px_rgba(0,0,0,0.3)] backdrop-blur-md">
 
@@ -187,7 +175,7 @@ export default function HeroDark() {
             </div>
 
           </div>
-        </motion.div>
+        </div>
 
       </div>
     </section>

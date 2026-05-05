@@ -399,3 +399,9 @@
 .navbar-enter {
   animation: navbar-enter 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
+
+/* ── Hero content entrance — CSS so it's visible before JS hydration ── */
+@keyframes hero-item-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

@@ -20,10 +20,18 @@ export function useHeadingAnimation(refs: HeadingAnimationRefs) {
     const ctx = gsap.context(() => {
       const { eyebrow, line1, line2, body } = refs;
 
-      if (eyebrow?.current) gsap.set(eyebrow.current, { x: '-120%', opacity: 0 });
-      gsap.set(line1.current!, { x: '-110%', opacity: 0 });
-      if (line2?.current)  gsap.set(line2.current,  { x: '90%',   opacity: 0 });
-      if (body?.current)   gsap.set(body.current,   { y: 20,      opacity: 0 });
+      // Only hide elements that are NOT already in the viewport.
+      // If the section is already visible on load (e.g. refreshed mid-page),
+      // skip the gsap.set() so content stays visible and animate from current state.
+      const rect = refs.trigger.current!.getBoundingClientRect();
+      const alreadyInView = rect.top < window.innerHeight * 0.92;
+
+      if (!alreadyInView) {
+        if (eyebrow?.current) gsap.set(eyebrow.current, { x: '-120%', opacity: 0 });
+        gsap.set(line1.current!, { x: '-110%', opacity: 0 });
+        if (line2?.current)  gsap.set(line2.current,  { x: '90%',   opacity: 0 });
+        if (body?.current)   gsap.set(body.current,   { y: 20,      opacity: 0 });
+      }
 
       // One-shot play (no scrub) — fires instantly when element scrolls into view.
       // scrub was removed: it tied animation to scroll position and kept content
