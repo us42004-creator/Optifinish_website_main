@@ -274,13 +274,14 @@ export default function Navbar() {
           >
             {/* ── Pill inner content ── */}
             <motion.div
+              initial={{ height: 50, paddingLeft: 18, paddingRight: 18 }}
               animate={{
                 height: scrolled && !expanded ? 44 : 50,
                 paddingLeft: scrolled && !expanded ? 16 : 18,
                 paddingRight: scrolled && !expanded ? 16 : 18,
               }}
               transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
-              className="flex items-center justify-between overflow-hidden"
+              className="flex items-center justify-between"
             >
               {/* Logo + Brand name */}
               <Link href="/" className="flex min-w-0 items-center gap-2.5 self-center group">
@@ -383,13 +384,14 @@ export default function Navbar() {
                   Get in Touch
                 </Link>
                 <button
-                  className={`flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:border-yellow/40 hover:text-yellow lg:hidden ${
+                  className={`flex h-11 w-11 items-center justify-center rounded-full transition-colors hover:border-yellow/40 hover:text-yellow lg:hidden ${
                     (scrolled || isDark)
                       ? 'border border-white/18 bg-white/[0.06] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]'
                       : 'border border-black/12 bg-white/[0.42] text-black shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]'
                   }`}
                   onClick={() => setMenuOpen(!menuOpen)}
                   aria-label="Toggle menu"
+                  style={{ touchAction: 'manipulation' }}
                 >
                   {menuOpen ? <X size={15} /> : <Menu size={15} />}
                 </button>
@@ -609,9 +611,10 @@ export default function Navbar() {
                 <span className="font-display text-[0.9rem] font-black tracking-[-0.03em] text-white">OptiFinish</span>
               </Link>
               <button
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-white/12 bg-white/[0.04] text-white/60"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-white/[0.04] text-white/60"
                 onClick={() => setMenuOpen(false)}
                 aria-label="Close menu"
+                style={{ touchAction: 'manipulation' }}
               >
                 <X size={16} />
               </button>
