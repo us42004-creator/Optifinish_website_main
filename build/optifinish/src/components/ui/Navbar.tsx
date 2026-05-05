@@ -541,15 +541,6 @@ export default function Navbar() {
                                   {cat.label}
                                 </Link>
                               </div>
-                              <div className="flex items-center gap-2 pl-3.5">
-                                <span className={`text-[0.55rem] font-bold uppercase tracking-[0.1em] ${
-                                  hoveredCat === cat.slug ? 'text-[#FECE00]' : 'text-white/40'
-                                }`}>
-                                  {cat.tag}
-                                </span>
-                                <span className="text-white/25 text-[0.52rem]">·</span>
-                                <span className="text-white/38 text-[0.52rem]">{cat.count} products</span>
-                              </div>
                             </div>
                             <ChevronRight size={12} className={`flex-shrink-0 transition-colors ${
                               hoveredCat === cat.slug ? 'text-[#FECE00]/70' : 'text-white/30'
