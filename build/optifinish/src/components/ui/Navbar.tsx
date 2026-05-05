@@ -252,7 +252,8 @@ export default function Navbar() {
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-50 navbar-enter">
-        <div className="flex justify-center px-3 pt-2.5 md:px-4 md:pt-4">
+        {/* Outer row — pill centred, hamburger sits outside pill as absolute sibling */}
+        <div className="relative flex justify-center px-3 pt-2.5 md:px-4 md:pt-4">
           <motion.div
             onMouseEnter={() => setExpanded(true)}
             onMouseLeave={() => { setExpanded(false); }}
@@ -373,28 +374,16 @@ export default function Navbar() {
                 )}
               </nav>
 
-              {/* CTA + hamburger */}
-              <div className="flex shrink-0 items-center gap-2.5">
+              {/* Desktop CTA only — hamburger is now OUTSIDE the pill */}
+              <div className="hidden lg:flex shrink-0 items-center">
                 <Link
                   href="/contact"
-                  className={`hidden rounded-full border border-yellow/20 bg-yellow font-bold uppercase tracking-[0.2em] text-ink lg:flex ${
+                  className={`rounded-full border border-yellow/20 bg-yellow font-bold uppercase tracking-[0.2em] text-ink ${
                     scrolled && !expanded ? 'px-4 py-1.5 text-[8px]' : 'px-5 py-2 text-[9px]'
                   } transition-all duration-300`}
                 >
                   Get in Touch
                 </Link>
-                <button
-                  className={`flex h-11 w-11 items-center justify-center rounded-full transition-colors hover:border-yellow/40 hover:text-yellow lg:hidden ${
-                    (scrolled || isDark)
-                      ? 'border border-white/18 bg-white/[0.06] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]'
-                      : 'border border-black/12 bg-white/[0.42] text-black shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]'
-                  }`}
-                  onClick={() => setMenuOpen(!menuOpen)}
-                  aria-label="Toggle menu"
-                  style={{ touchAction: 'manipulation' }}
-                >
-                  {menuOpen ? <X size={15} /> : <Menu size={15} />}
-                </button>
               </div>
             </motion.div>
 
@@ -591,6 +580,21 @@ export default function Navbar() {
               )}
             </AnimatePresence>
           </motion.div>
+
+          {/* ── Hamburger — lives OUTSIDE the pill, no Framer Motion wrapping ── */}
+          {/* absolute right-3 keeps it visually at pill's right edge on mobile */}
+          <button
+            className={`absolute right-3 top-1/2 -translate-y-1/2 z-10 flex h-11 w-11 items-center justify-center rounded-full lg:hidden ${
+              (scrolled || isDark)
+                ? 'border border-white/20 bg-white/10 text-white'
+                : 'border border-black/15 bg-black/8 text-black'
+            }`}
+            onPointerDown={() => setMenuOpen((v) => !v)}
+            aria-label="Toggle menu"
+            style={{ touchAction: 'manipulation' }}
+          >
+            {menuOpen ? <X size={18} /> : <Menu size={18} />}
+          </button>
         </div>
       </header>
 
