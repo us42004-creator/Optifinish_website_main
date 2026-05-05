@@ -101,7 +101,8 @@ const DARK_PAGES = ['/', '/sandbox/hero-b', '/blog', '/resources/blog'];
 const isDarkPath = (p: string) =>
   DARK_PAGES.includes(p) ||
   (p.startsWith('/products/') && p.split('/').filter(Boolean).length > 1) ||
-  p.startsWith('/services');
+  p.startsWith('/services') ||
+  p.startsWith('/facility');
 
 /* Fluid eased scroll — cubic in-out over ~1.2s */
 function smoothScrollTo(element: Element) {
