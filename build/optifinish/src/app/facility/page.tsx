@@ -14,65 +14,50 @@ export const metadata: Metadata = {
 // S1 hero — factory floor, dramatic
 const HERO_BG = '/images/facility/facility-44.jpg';
 
-// S2 capabilities — yellow office interior
+// S2 capabilities — office & meeting rooms (4 distinct shots, no duplicates)
 const OFFICE_GRID = [
-  '/images/facility/facility-78.jpg',
-  '/images/facility/facility-74.jpg',
-  '/images/facility/facility-79.jpg',
-  '/images/facility/facility-75.jpg',
+  '/images/facility/facility-78.jpg',  // office floor with active computers
+  '/images/facility/facility-74.jpg',  // U-shape conference room
+  '/images/facility/facility-06.jpg',  // office with glass partitions + yellow dividers
+  '/images/facility/facility-79.jpg',  // wide office from glass-wall side
 ];
 
 // S3 manufacturing floor
-const MFG_HERO       = '/images/facility/facility-68.jpg';   // large left
-const MFG_SIDE       = '/images/facility/facility-73.jpg';   // tall right
+const MFG_HERO       = '/images/facility/facility-62.jpg';   // large left — 2 workers between spray booth panels
+const MFG_SIDE       = '/images/facility/facility-35.jpg';   // tall right — workers fabricating cyclone/hopper
 const MFG_ROW = [
-  '/images/facility/facility-45.jpg',
-  '/images/facility/facility-51.jpg',
-  '/images/facility/facility-52.jpg',
-  '/images/facility/facility-72.jpg',
+  '/images/facility/facility-63.jpg',  // booth panel assembly, workers
+  '/images/facility/facility-67.jpg',  // overhead conveyor rail — coating line component
+  '/images/facility/facility-60.jpg',  // worker handling panels
+  '/images/facility/facility-64.jpg',  // equipment assembly, yellow insulation
 ];
 
 // S4 R&D split
-const RD_PHOTO_L = '/images/facility/facility-47.jpg';
-const RD_PHOTO_R = '/images/facility/facility-19.jpg';
+const RD_PHOTO_L = '/images/facility/facility-31.jpg';  // manufacturing floor — workers actively building (replaces wrong exterior shot)
+const RD_PHOTO_R = '/images/facility/facility-19.jpg';  // modern pendant-lit conference room
 
-// S5 office filmstrip
+// S5 office filmstrip — 7 unique images, no repeats, no missing files
 const OFFICE_STRIP = [
-  '/images/facility/facility-76.jpg',
-  '/images/facility/facility-77.jpg',
-  '/images/facility/facility-80.jpg',
-  '/images/facility/facility-67.jpg',
-  '/images/facility/facility-76.jpg',
-  '/images/facility/facility-74.jpg',
-  '/images/facility/facility-79.jpg',
+  '/images/facility/facility-76.jpg',  // warm pendant-lit meeting room
+  '/images/facility/facility-09.jpg',  // small pendant meeting room (side angle)
+  '/images/facility/facility-21.jpg',  // warm meeting room (wider view through glass)
+  '/images/facility/facility-43.jpg',  // conference room with certifications on wall
+  '/images/facility/facility-61.jpg',  // worker fabricating booth panels — people at work
+  '/images/facility/facility-33.jpg',  // wide manufacturing floor, multiple workers
+  '/images/facility/facility-66.jpg',  // equipment assembly with yellow insulation
 ];
 
-// S6 full gallery — mix of remaining photos
+// S6 full gallery — curated clean set, no repeats, no competitor branding, no under-construction shots
 const GALLERY = [
-  '/images/facility/facility-01.jpg',
-  '/images/facility/facility-05.jpg',
-  '/images/facility/facility-07.jpg',
-  '/images/facility/facility-08.jpg',
-  '/images/facility/facility-11.jpg',
-  '/images/facility/facility-14.jpg',
-  '/images/facility/facility-16.jpg',
-  '/images/facility/facility-17.jpg',
-  '/images/facility/facility-26.jpg',
-  '/images/facility/facility-30.jpg',
-  '/images/facility/facility-33.jpg',
-  '/images/facility/facility-37.jpg',
-  '/images/facility/facility-40.jpg',
-  '/images/facility/facility-46.jpg',
-  '/images/facility/facility-48.jpg',
-  '/images/facility/facility-53.jpg',
-  '/images/facility/facility-57.jpg',
-  '/images/facility/facility-58.jpg',
-  '/images/facility/facility-60.jpg',
-  '/images/facility/facility-63.jpg',
-  '/images/facility/facility-65.jpg',
-  '/images/facility/facility-69.jpg',
-  '/images/facility/facility-70.jpg',
-  '/images/facility/facility-71.jpg',
+  '/images/facility/facility-01.jpg',  // office interior
+  '/images/facility/facility-05.jpg',  // office with glass partitions
+  '/images/facility/facility-07.jpg',  // office floor with computers
+  '/images/facility/facility-11.jpg',  // conference room
+  '/images/facility/facility-26.jpg',  // GEMA testing/demo booth — relevant proof
+  '/images/facility/facility-30.jpg',  // manufacturing floor with workers
+  '/images/facility/facility-65.jpg',  // equipment assembly close-up
+  '/images/facility/facility-68.jpg',  // overhead conveyor rail (different angle from MFG_ROW/67)
+  '/images/facility/facility-71.jpg',  // building entrance / stairwell
 ];
 
 const STATS = [

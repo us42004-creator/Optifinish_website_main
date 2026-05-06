@@ -144,7 +144,6 @@ const NAV_LINKS = [
   { href: '/products',  label: 'Products', hasDropdown: true          },
   { href: '/services',  label: 'Services', hasServicesDropdown: true  },
   { href: '/facility',  label: 'Facility'  },
-  { href: '/our-work',  label: 'Our Work'  },
   { href: '/resources', label: 'Resources' },
   { href: '/about',     label: 'About'     },
 ];
@@ -185,6 +184,7 @@ export default function Navbar() {
   const [productsOpen, setProductsOpen]   = useState(false);
   const [servicesOpen, setServicesOpen]   = useState(false);
   const [hoveredCat, setHoveredCat]       = useState(PRODUCTS_MENU[0].slug);
+  const [hoveredSvc, setHoveredSvc]       = useState(SERVICES_MENU[0].href);
   const menuLinksRef                      = useRef<HTMLDivElement>(null);
   const menuCtaRef                        = useRef<HTMLAnchorElement>(null);
   const closeTimer                        = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -194,6 +194,7 @@ export default function Navbar() {
   const isDark = isDarkPath(pathname);
 
   const activeCat = PRODUCTS_MENU.find((c) => c.slug === hoveredCat) ?? PRODUCTS_MENU[0];
+  const activeSvc = SERVICES_MENU.find((s) => s.href === hoveredSvc) ?? SERVICES_MENU[0];
 
   const openProducts = () => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
@@ -387,7 +388,7 @@ export default function Navbar() {
               </div>
             </motion.div>
 
-            {/* ── Services dropdown ── */}
+            {/* ── Services mega-menu — mirrors Products layout exactly ── */}
             <AnimatePresence>
               {servicesOpen && (
                 <motion.div
@@ -398,9 +399,9 @@ export default function Navbar() {
                   onMouseEnter={openServices}
                   onMouseLeave={closeServices}
                   className="absolute left-1/2 top-full z-50 mt-4 -translate-x-1/2"
-                  style={{ width: 'min(560px, calc(100vw - 2rem))' }}
+                  style={{ width: 'min(660px, calc(100vw - 2rem))' }}
                 >
-                  {/* Arrow */}
+                  {/* Arrow pointer */}
                   <div className="absolute -top-[6px] left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 border-l border-t border-white/[0.08] bg-[#0f0f0f]" />
 
                   <div
@@ -410,57 +411,97 @@ export default function Navbar() {
                       boxShadow: '0 24px 64px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.07)',
                     }}
                   >
-                    {/* Header */}
-                    <div className="flex items-center justify-between border-b border-white/[0.07] px-4 py-3">
-                      <p className="text-[0.5rem] font-bold uppercase tracking-[0.22em] text-white/35">
-                        After-Sales &amp; Support
-                      </p>
-                      <Link
-                        href="/services"
-                        className="flex items-center gap-1 text-[0.52rem] font-bold uppercase tracking-[0.14em] text-[#FECE00]/65 transition-colors hover:text-[#FECE00]"
-                      >
-                        All services <ChevronRight size={9} />
-                      </Link>
-                    </div>
+                    <div className="grid grid-cols-[230px_1fr]">
 
-                    {/* Service grid */}
-                    <div className="grid grid-cols-2 gap-px bg-white/[0.05] p-3">
-                      {SERVICES_MENU.map((svc) =>
-                        svc.comingSoon ? (
+                      {/* LEFT — service list */}
+                      <div className="border-r border-white/[0.07] py-3">
+                        <p className="mb-1 px-4 text-[0.5rem] font-bold uppercase tracking-[0.22em] text-white/35">
+                          After-Sales &amp; Support
+                        </p>
+                        {SERVICES_MENU.map((svc) => (
                           <div
                             key={svc.href}
-                            className="flex flex-col gap-1 rounded-[0.65rem] bg-[#0f0f0f] px-3 py-2.5 opacity-40"
+                            onMouseEnter={() => setHoveredSvc(svc.href)}
+                            className={`group/svc mx-2 flex cursor-pointer items-center justify-between gap-2 rounded-[0.55rem] px-3 py-2.5 transition-all duration-150 ${
+                              hoveredSvc === svc.href
+                                ? 'bg-white/[0.08]'
+                                : 'hover:bg-white/[0.05]'
+                            } ${svc.comingSoon ? 'opacity-40' : ''}`}
                           >
-                            <div className="flex items-center gap-2">
-                              <span className="rounded-full border border-white/[0.12] px-1.5 py-0.5 text-[0.44rem] font-bold uppercase tracking-[0.14em] text-white/40">
-                                {svc.tag}
-                              </span>
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-center gap-2">
+                                {hoveredSvc === svc.href && (
+                                  <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[#FECE00]" />
+                                )}
+                                <span
+                                  className={`font-display block truncate text-[0.78rem] font-black leading-tight tracking-tight transition-colors ${
+                                    hoveredSvc === svc.href
+                                      ? 'text-white'
+                                      : 'text-white/75 group-hover/svc:text-white/90'
+                                  }`}
+                                >
+                                  {svc.label}
+                                </span>
+                              </div>
                             </div>
-                            <span className="font-display text-[0.75rem] font-black leading-snug tracking-tight text-white/60">
-                              {svc.label}
-                            </span>
-                            <span className="text-[0.62rem] leading-snug text-white/30">{svc.desc}</span>
+                            <ChevronRight
+                              size={12}
+                              className={`flex-shrink-0 transition-colors ${
+                                hoveredSvc === svc.href ? 'text-[#FECE00]/70' : 'text-white/30'
+                              }`}
+                            />
                           </div>
-                        ) : (
+                        ))}
+                      </div>
+
+                      {/* RIGHT — detail panel for hovered service */}
+                      <div className="flex flex-col justify-between py-4 px-5">
+                        <div>
+                          {/* Tag */}
+                          {activeSvc.comingSoon ? (
+                            <span className="mb-3 inline-block rounded-full border border-white/[0.12] px-2 py-0.5 text-[0.44rem] font-bold uppercase tracking-[0.14em] text-white/40">
+                              {activeSvc.tag}
+                            </span>
+                          ) : (
+                            <span className="mb-3 inline-block rounded-full bg-[#FECE00]/15 px-2 py-0.5 text-[0.44rem] font-bold uppercase tracking-[0.14em] text-[#FECE00]">
+                              {activeSvc.tag}
+                            </span>
+                          )}
+
+                          {/* Title */}
+                          <h3 className="font-display text-[1rem] font-black leading-snug tracking-tight text-white">
+                            {activeSvc.label}
+                          </h3>
+
+                          {/* Description */}
+                          <p className="mt-2 text-[0.72rem] leading-relaxed text-white/40">
+                            {activeSvc.desc}
+                          </p>
+                        </div>
+
+                        {/* Footer */}
+                        <div className="mt-4 border-t border-white/[0.08] pt-3 flex items-center justify-between">
+                          {!activeSvc.comingSoon ? (
+                            <Link
+                              href={activeSvc.href}
+                              className="flex items-center gap-1.5 text-[0.62rem] font-bold uppercase tracking-[0.14em] text-[#FECE00]/75 transition-colors hover:text-[#FECE00]"
+                            >
+                              Learn more <ChevronRight size={10} />
+                            </Link>
+                          ) : (
+                            <span className="text-[0.62rem] font-bold uppercase tracking-[0.14em] text-white/25">
+                              Coming soon
+                            </span>
+                          )}
                           <Link
-                            key={svc.href}
-                            href={svc.href}
-                            className="group/svc flex flex-col gap-1 rounded-[0.65rem] bg-[#0f0f0f] px-3 py-2.5 transition-all duration-150 hover:bg-white/[0.06]"
+                            href="/services"
+                            className="flex items-center gap-1 text-[0.5rem] font-bold uppercase tracking-[0.22em] text-white/30 transition-colors hover:text-white/55"
                           >
-                            <div className="flex items-center gap-2">
-                              <span className="rounded-full bg-[#FECE00]/15 px-1.5 py-0.5 text-[0.44rem] font-bold uppercase tracking-[0.14em] text-[#FECE00]">
-                                {svc.tag}
-                              </span>
-                            </div>
-                            <span className="font-display text-[0.75rem] font-black leading-snug tracking-tight text-white/80 transition-colors group-hover/svc:text-white">
-                              {svc.label}
-                            </span>
-                            <span className="text-[0.62rem] leading-snug text-white/35 transition-colors group-hover/svc:text-white/50">
-                              {svc.desc}
-                            </span>
+                            All services <ChevronRight size={9} />
                           </Link>
-                        )
-                      )}
+                        </div>
+                      </div>
+
                     </div>
                   </div>
                 </motion.div>
@@ -581,22 +622,23 @@ export default function Navbar() {
             </AnimatePresence>
           </motion.div>
 
-          {/* ── Hamburger — lives OUTSIDE the pill, no Framer Motion wrapping ── */}
-          {/* absolute right-3 keeps it visually at pill's right edge on mobile */}
-          <button
-            className={`absolute right-3 top-1/2 -translate-y-1/2 z-10 flex h-11 w-11 items-center justify-center rounded-full lg:hidden ${
-              (scrolled || isDark)
-                ? 'border border-white/20 bg-white/10 text-white'
-                : 'border border-black/15 bg-black/8 text-black'
-            }`}
-            onPointerDown={() => setMenuOpen((v) => !v)}
-            aria-label="Toggle menu"
-            style={{ touchAction: 'manipulation' }}
-          >
-            {menuOpen ? <X size={18} /> : <Menu size={18} />}
-          </button>
         </div>
       </header>
+
+      {/* ── Hamburger — FIXED position, completely outside all stacking contexts ── */}
+      {/* fixed keeps it above every motion.div transform layer; z-[55] = above navbar(50) below menu(60) */}
+      <button
+        className={`fixed z-[55] flex h-12 w-12 items-center justify-center rounded-full lg:hidden ${
+          (scrolled || isDark || menuOpen)
+            ? 'border border-white/25 bg-white/12 text-white'
+            : 'border border-black/15 bg-black/[0.07] text-black'
+        }`}
+        style={{ top: '10px', right: '12px', touchAction: 'manipulation' }}
+        onPointerDown={(e) => { e.preventDefault(); setMenuOpen((v) => !v); }}
+        aria-label="Toggle menu"
+      >
+        {menuOpen ? <X size={20} /> : <Menu size={20} />}
+      </button>
 
       {/* Full-screen mobile menu — z-[60] sits ABOVE the navbar (z-50) */}
       {menuOpen && (

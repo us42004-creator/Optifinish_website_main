@@ -161,7 +161,7 @@ export default function WhatWeOffer() {
             <Link
               key={g.href}
               href={g.href}
-              className="group flex flex-col overflow-hidden rounded-[1.2rem] border border-[#FECE00]/[0.08] bg-[#FECE00]/[0.03] transition-all duration-300 hover:-translate-y-1 hover:border-[#FECE00]/[0.14]"
+              className="group flex flex-col overflow-hidden rounded-[1.2rem] border border-[#FECE00]/[0.22] bg-[#FECE00]/[0.06] transition-all duration-300 hover:-translate-y-1 hover:border-[#FECE00]/[0.35] hover:bg-[#FECE00]/[0.09]"
             >
               <div className="flex flex-col gap-3 p-5">
                 <span className="self-start rounded-full bg-[#FECE00] px-2.5 py-0.5 text-[0.55rem] font-bold uppercase tracking-[0.18em] text-ink">
@@ -184,8 +184,8 @@ export default function WhatWeOffer() {
                 </div>
               </div>
               <div className="relative mt-auto overflow-hidden">
-                <div className="flex aspect-[16/9] w-full items-center justify-center bg-white/[0.03]">
-                  <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-white/20">
+                <div className="flex aspect-[16/9] w-full items-center justify-center bg-[#FECE00]/[0.04] border-t border-[#FECE00]/[0.1]">
+                  <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-white/40">
                     {g.mediaLabel}
                   </span>
                 </div>
@@ -200,10 +200,10 @@ export default function WhatWeOffer() {
             <Link
               key={g.href}
               href={g.href}
-              className="group flex flex-col overflow-hidden rounded-[1.2rem] border border-white/[0.06] bg-white/[0.02] transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.1]"
+              className="group flex flex-col overflow-hidden rounded-[1.2rem] border border-white/[0.14] bg-white/[0.06] transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.22] hover:bg-white/[0.09]"
             >
               <div className="flex flex-col gap-3 p-5">
-                <span className="self-start rounded-full border border-white/[0.1] bg-white/[0.05] px-2.5 py-0.5 text-[0.52rem] font-bold uppercase tracking-[0.18em] text-white/45">
+                <span className="self-start rounded-full border border-white/[0.18] bg-white/[0.1] px-2.5 py-0.5 text-[0.52rem] font-bold uppercase tracking-[0.18em] text-white/65">
                   {g.tag}
                 </span>
                 <h3 className="font-display text-[1.1rem] font-black leading-tight tracking-tight text-white">
@@ -263,8 +263,8 @@ export default function WhatWeOffer() {
                     </div>
                   </div>
                 ) : (
-                  <div className="flex aspect-[16/9] w-full items-center justify-center bg-white/[0.03]">
-                    <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-white/20">
+                  <div className="flex aspect-[16/9] w-full items-center justify-center bg-white/[0.05] border-t border-white/[0.08]">
+                    <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-white/40">
                       {g.mediaLabel}
                     </span>
                   </div>

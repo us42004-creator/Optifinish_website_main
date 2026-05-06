@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import HeroDark                  from '@/components/sections/home/HeroDark';
 import ProprietaryAutomation     from '@/components/sections/home/ProprietaryAutomation';
 import WhatWeOffer               from '@/components/sections/home/WhatWeOffer';
+import HomeServices              from '@/components/sections/home/HomeServices';
 import FacilityTeaserFilmstrip   from '@/components/sections/home/FacilityTeaserFilmstrip';
 import OurTeam               from '@/components/sections/home/OurTeam';
 import ClientsTestimonials   from '@/components/sections/home/ClientsTestimonials';
@@ -20,14 +21,16 @@ export default function Home() {
         <WhatWeOffer />
       </Suspense>
       {/* S4 — Light */}
+      <HomeServices />
+      {/* S5 — Light/warm */}
       <FacilityTeaserFilmstrip />
-      {/* S5 — Dark */}
+      {/* S6 — Dark */}
       <OurWorkPreview />
-      {/* S6 — Light */}
+      {/* S7 — Light */}
       <ClientsTestimonials />
-      {/* S7 — Dark */}
+      {/* S8 — Dark */}
       <OurTeam />
-      {/* S8 — Light */}
+      {/* S9 — Light */}
       <HomeCTA />
     </>
   );
