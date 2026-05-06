@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 /* ─────────────────────────────────────────────────────────────
    EXPORTED TYPES  (used by every product page)
@@ -50,6 +51,7 @@ export interface ProductPageTemplateProps {
   subline: string;
   heroStats?: { val: string; label: string }[];
   heroImageLabel: string;
+  heroImageSrc?: string;
   enquireSlug: string;
   backHref: string;
   backLabel: string;
@@ -96,15 +98,36 @@ export interface ProductPageTemplateProps {
 
 function ImageViewport({
   label,
+  src,
   isDark = false,
   aspect = 'aspect-[16/9]',
   className = '',
 }: {
   label: string;
+  src?: string;
   isDark?: boolean;
   aspect?: string;
   className?: string;
 }) {
+  if (src) {
+    return (
+      <div
+        className={`overflow-hidden rounded-[1.1rem] ${className} ${
+          isDark ? 'bg-white/[0.03]' : 'bg-white shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
+        }`}
+      >
+        <Image
+          src={src}
+          alt={label}
+          width={0}
+          height={0}
+          sizes="(max-width: 768px) 100vw, 50vw"
+          className="h-auto w-full"
+        />
+      </div>
+    );
+  }
+
   return (
     <div
       className={`relative flex w-full items-center justify-center overflow-hidden rounded-[1.1rem] ${
@@ -195,6 +218,7 @@ export default function ProductPageTemplate({
   subline,
   heroStats,
   heroImageLabel,
+  heroImageSrc,
   enquireSlug,
   backHref,
   backLabel,
@@ -379,7 +403,7 @@ export default function ProductPageTemplate({
 
             {/* Right — Hero image */}
             <div className="flex items-center">
-              <ImageViewport label={heroImageLabel} isDark={!hero} className="w-full" />
+              <ImageViewport label={heroImageLabel} src={heroImageSrc} isDark={!hero} className="w-full" />
             </div>
           </div>
         </div>

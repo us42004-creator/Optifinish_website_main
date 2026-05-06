@@ -27,6 +27,7 @@ export default function DurrBellAtomiserPage() {
         { val: 'Premium', label: 'Automotive-grade finish' },
       ]}
       heroImageLabel="Dürr Bell Atomiser · rotary electrostatic applicator"
+      heroImageSrc="/images/products/durr/bell-atomiser/durr-ecobell-slider-01.webp"
       enquireSlug="durr-bell-atomiser"
       backHref="/products/durr"
       backLabel="← Back to Dürr"

@@ -27,6 +27,7 @@ export default function DurrEcoDose3KPage() {
         { val: 'Auto', label: 'Colour change & flush' },
       ]}
       heroImageLabel="Dürr EcoDose 3K · three-component electronic dosing"
+      heroImageSrc="/images/products/durr/ecodose-3k/durr-ecodose2k-01.webp"
       enquireSlug="durr-ecodose-3k"
       backHref="/products/durr"
       backLabel="← Back to Dürr"

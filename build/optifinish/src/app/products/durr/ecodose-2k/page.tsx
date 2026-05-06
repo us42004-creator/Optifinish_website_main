@@ -27,6 +27,7 @@ export default function DurrEcoDose2KPage() {
         { val: 'Real-time', label: 'Pot life monitoring' },
       ]}
       heroImageLabel="Dürr EcoDose 2K · two-component electronic dosing"
+      heroImageSrc="/images/products/durr/ecodose-2k/durr-ecodose2k-01.webp"
       enquireSlug="durr-ecodose-2k"
       backHref="/products/durr"
       backLabel="← Back to Dürr"
