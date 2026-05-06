@@ -22,7 +22,8 @@ export default function SieveMachinePage() {
       headline="Recovered powder."
       headlineAccent="Ready to reuse."
       subline="A vibratory sieve unit developed in-house by OptiFinish — processing recovered powder from the cyclone to remove agglomerates, lumps, and foreign particles before it re-enters the hopper. Clean powder. Consistent quality. No manual sieve operation."
-      heroImageLabel="PS Vibratory Sieve Machine · image"
+      heroImageLabel="PS Vibratory Sieve Machine"
+      heroImageSrc="/images/products/sieve-machine/sieve-machine-01.jpg"
       enquireSlug="sieve-machine"
       backHref="/products/automation"
       backLabel="← Back to Automation"
@@ -47,18 +48,21 @@ export default function SieveMachinePage() {
           title: 'Recovered powder entry',
           body: 'Powder recovered from the cyclone separator is directed into the PS Vibratory Sieve Machine. The unit sits inline between the cyclone output and the hopper return — processing every batch of recovered powder before it re-enters the gun supply.',
           imageLabel: 'Step 01 · recovered powder entering sieve from cyclone',
+          imageSrc: '/images/products/sieve-machine/sieve-machine-02.jpg',
         },
         {
           num: '02',
           title: 'Vibratory sieving',
           body: 'An eccentric motor drive causes the sieve basket to vibrate continuously — passing individual powder particles through the mesh while retaining agglomerates, lumps, and foreign particles on the sieve surface. The gentle vibratory action does not break down or degrade individual powder particles.',
           imageLabel: 'Step 02 · vibratory sieving separating clean powder',
+          imageSrc: '/images/products/sieve-machine/sieve-machine-03.jpg',
         },
         {
           num: '03',
           title: 'Clean powder return',
           body: 'Sieved, clean powder exits the unit and is returned to the gun hopper for immediate reuse. Retained agglomerates and contamination are collected and discarded. For colour changes, the sieve basket is quickly removed and cleaned — the unit is designed for fast changeover with no specialist tools.',
           imageLabel: 'Step 03 · clean powder returning to hopper',
+          imageSrc: '/images/products/sieve-machine/sieve-machine-04.jpg',
         },
       ]}
       howItWorksTitle="Recover, sieve, reuse"

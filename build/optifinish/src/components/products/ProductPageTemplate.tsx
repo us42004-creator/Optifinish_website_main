@@ -25,6 +25,7 @@ export interface Step {
   title: string;
   body: string;
   imageLabel?: string;
+  imageSrc?: string;
 }
 
 export interface Reference {
@@ -595,6 +596,7 @@ export default function ProductPageTemplate({
                 </div>
                 <ImageViewport
                   label={currStep.imageLabel ?? `Step ${currStep.num} · ${currStep.title}`}
+                  src={currStep.imageSrc}
                   isDark={!stps}
                   aspect="aspect-[4/3]"
                 />
