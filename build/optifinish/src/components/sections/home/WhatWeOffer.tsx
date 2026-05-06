@@ -1,9 +1,19 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { useHeadingAnimation } from '@/hooks/useHeadingAnimation';
+
+const DURR_SLIDES = [
+  { src: '/images/products/durr/bell-atomiser/durr-ecobell-slider-01.webp',        label: 'EcoBell Rotary Atomiser' },
+  { src: '/images/products/durr/general/durr-spray-booth-interior-01.webp',   label: 'Liquid Coating Booth' },
+  { src: '/images/products/durr/general/durr-paint-robot-automotive-01.webp', label: 'Paint Robot — Automotive' },
+  { src: '/images/products/durr/air-assist-gun/durr-ecogun-aa-auto-01.jpg',          label: 'EcoGun AA Auto' },
+  { src: '/images/products/durr/ecopump/durr-ecopump9-dosing-01.webp',        label: 'EcoPump9 Dosing System' },
+  { src: '/images/products/durr/general/durr-ready2spray-01.webp',            label: 'Ready2Spray Robot Cell' },
+];
 
 const TOP_GROUPS = [
   {
@@ -58,6 +68,12 @@ export default function WhatWeOffer() {
   const line2Ref   = useRef<HTMLSpanElement>(null);
   const bodyRef    = useRef<HTMLParagraphElement>(null);
   const searchParams = useSearchParams();
+
+  const [durrSlide, setDurrSlide] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setDurrSlide((s) => (s + 1) % DURR_SLIDES.length), 3200);
+    return () => clearInterval(t);
+  }, []);
 
   useHeadingAnimation({
     trigger: sectionRef,
@@ -206,12 +222,53 @@ export default function WhatWeOffer() {
                   View range <span className="transition-transform group-hover:translate-x-1">→</span>
                 </div>
               </div>
+
+              {/* Media slot — carousel for DÜRR, placeholder for others */}
               <div className="relative mt-auto overflow-hidden">
-                <div className="flex aspect-[16/9] w-full items-center justify-center bg-white/[0.03]">
-                  <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-white/20">
-                    {g.mediaLabel}
-                  </span>
-                </div>
+                {g.href === '/products/durr' ? (
+                  <div className="relative aspect-[16/9] w-full overflow-hidden">
+                    {DURR_SLIDES.map((slide, i) => (
+                      <div
+                        key={i}
+                        className="absolute inset-0 transition-opacity duration-700"
+                        style={{ opacity: i === durrSlide ? 1 : 0 }}
+                      >
+                        <Image
+                          src={slide.src}
+                          alt={slide.label}
+                          fill
+                          className="object-cover object-center"
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                          priority={i === 0}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                      </div>
+                    ))}
+                    {/* Label */}
+                    <div className="absolute bottom-2 left-3 z-10">
+                      <span className="rounded-full bg-black/35 px-2 py-0.5 text-[0.48rem] font-bold uppercase tracking-[0.16em] text-white/80 backdrop-blur-sm">
+                        {DURR_SLIDES[durrSlide].label}
+                      </span>
+                    </div>
+                    {/* Dot indicators */}
+                    <div className="absolute bottom-2 right-3 z-10 flex gap-1">
+                      {DURR_SLIDES.map((_, i) => (
+                        <span
+                          key={i}
+                          className={`block h-1 rounded-full transition-all duration-300 ${
+                            i === durrSlide ? 'w-3 bg-white' : 'w-1 bg-white/35'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex aspect-[16/9] w-full items-center justify-center bg-white/[0.03]">
+                    <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-white/20">
+                      {g.mediaLabel}
+                    </span>
+                  </div>
+                )}
               </div>
             </Link>
           ))}

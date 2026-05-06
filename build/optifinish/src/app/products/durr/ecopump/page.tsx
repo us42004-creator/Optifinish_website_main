@@ -27,6 +27,7 @@ export default function DurrEcoPumpPage() {
         { val: 'Package', label: 'Pre-assembled modules' },
       ]}
       heroImageLabel="Dürr EcoPump Systems · HP / VP / AD fluid pumps"
+      heroImageSrc="/images/products/durr/ecopump/durr-ecopump9-dosing-01.webp"
       enquireSlug="durr-ecopump"
       backHref="/products/durr"
       backLabel="← Back to Dürr"

@@ -22,6 +22,7 @@ export default function DurrElectrostaticGunPage() {
       headlineAccent="Wrap-around coverage."
       subline="Electrostatic manual spray guns that charge atomised paint particles — wrapping them around the part surface electrostatically and significantly reducing overspray through electrostatic attraction. DC for solvent-based, EC for water-based formulations."
       heroImageLabel="Dürr EcoGun AS MAN DC/EC · electrostatic spray gun"
+      heroImageSrc="/images/products/durr/electrostatic-gun/durr-ecogun-as-auto-01.jpg"
       enquireSlug="durr-electrostatic-gun"
       backHref="/products/durr"
       backLabel="← Back to Dürr"

@@ -22,6 +22,7 @@ export default function DurrAirAssistGunPage() {
       headlineAccent="Air spray finish quality."
       subline="The EcoGun AA combines the material throughput capacity of airless with secondary air atomisation — delivering a finer, more controlled finish on high-viscosity paints, lacquers, adhesives, and sealants without thinning."
       heroImageLabel="Dürr EcoGun AA · air assist spray gun"
+      heroImageSrc="/images/products/durr/air-assist-gun/durr-ecogun-aa-auto-01.jpg"
       enquireSlug="durr-air-assist-gun"
       backHref="/products/durr"
       backLabel="← Back to Dürr"

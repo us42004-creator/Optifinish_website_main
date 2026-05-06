@@ -22,6 +22,7 @@ export default function DurrAirlessGunPage() {
       headlineAccent="No carrier air."
       subline="High-pressure airless spray guns for anti-corrosion work on structural steel, heavy machinery, and heavy-duty coating — atomising paint by forcing it at high pressure through a precision tip orifice, with no air carrier required."
       heroImageLabel="Dürr EcoGun 246 / 249 · airless spray gun"
+      heroImageSrc="/images/products/durr/airless-gun/durr-ecogun-al-auto-01.jpg"
       enquireSlug="durr-airless-gun"
       backHref="/products/durr"
       backLabel="← Back to Dürr"
