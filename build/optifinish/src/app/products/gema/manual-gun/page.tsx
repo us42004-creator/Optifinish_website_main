@@ -156,6 +156,7 @@ const RELATED = [
     cat: 'GEMA · Authorised Partner',
     href: '/products/gema/automatic-gun',
     imageLabel: 'GEMA OptiGun automatic gun',
+    imageSrc: '/images/products/gema/automatic-gun/gema-optigun-ga03-01.png',
   },
   {
     name: 'Reciprocators & Automation Axes',
@@ -163,6 +164,7 @@ const RELATED = [
     cat: 'GEMA · Authorised Partner',
     href: '/products/gema/reciprocators',
     imageLabel: 'GEMA ZA reciprocator',
+    imageSrc: '/images/products/gema/reciprocators/gema-reciprocator-01.jpg',
   },
   {
     name: 'OptiCentre Powder Management',
@@ -170,6 +172,7 @@ const RELATED = [
     cat: 'GEMA · Authorised Partner',
     href: '/products/gema/opticentre',
     imageLabel: 'GEMA OC08 OptiCentre',
+    imageSrc: '/images/products/gema/opticentre/gema-opticenter-oc01-01.jpg',
   },
 ];
 
@@ -731,6 +734,7 @@ export default function GemaManualGunPage() {
               >
                 <ImageViewport
                   label={rel.imageLabel}
+                  src={rel.imageSrc}
                   aspect="aspect-[4/3]"
                   className="rounded-none rounded-t-[1.1rem] border-0 border-b border-[#FECE00]/[0.07]"
                 />

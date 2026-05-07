@@ -103,18 +103,21 @@ export default function DurrBellAtomiserPage() {
           category: 'Dürr',
           href: '/products/durr/electrostatic-gun',
           enquireSlug: 'durr-electrostatic-gun',
+          imageSrc: '/images/products/durr/electrostatic-gun/durr-ecogun-as-auto-01.jpg',
         },
         {
           name: 'EcoPump Systems',
           category: 'Dürr',
           href: '/products/durr/ecopump',
           enquireSlug: 'durr-ecopump',
+          imageSrc: '/images/products/durr/ecopump/durr-ecopump9-dosing-01.webp',
         },
         {
           name: '2K Dosing System',
           category: 'Dürr',
           href: '/products/durr/ecodose-2k',
           enquireSlug: 'durr-ecodose-2k',
+          imageSrc: '/images/products/durr/ecodose-2k/durr-ecodose2k-01.webp',
         },
       ]}
 

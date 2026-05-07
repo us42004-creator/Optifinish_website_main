@@ -123,18 +123,21 @@ export default function GEMAOptiCentrePage() {
           category: 'GEMA',
           href: '/products/gema/automatic-gun',
           enquireSlug: 'gema-automatic-gun',
+          imageSrc: '/images/products/gema/automatic-gun/gema-optigun-ga03-01.png',
         },
         {
           name: 'Reciprocators & Automation Axes',
           category: 'GEMA',
           href: '/products/gema/reciprocators',
           enquireSlug: 'gema-reciprocators',
+          imageSrc: '/images/products/gema/reciprocators/gema-reciprocator-01.jpg',
         },
         {
           name: 'PS Vibratory Sieve Machine',
           category: 'OptiFinish Automation',
           href: '/products/automation/sieve-machine',
           enquireSlug: 'sieve-machine',
+          imageSrc: '/images/products/sieve-machine/sieve-machine-01.jpg',
         },
       ]}
 

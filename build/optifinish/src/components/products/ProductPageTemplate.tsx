@@ -39,6 +39,7 @@ export interface RelatedItem {
   category: string;
   href: string;
   enquireSlug: string;
+  imageSrc?: string;
 }
 
 export interface ProductPageTemplateProps {
@@ -779,17 +780,22 @@ export default function ProductPageTemplate({
                 }`}
               >
                 <div
-                  className={`flex aspect-[16/9] items-center justify-center ${
+                  className={`flex aspect-[16/9] items-center justify-center overflow-hidden ${
                     rltd ? 'bg-black/[0.03]' : 'bg-white/[0.02]'
                   }`}
                 >
-                  <span
-                    className={`text-[0.58rem] font-bold uppercase tracking-[0.2em] ${
-                      rltd ? 'text-[#0A0A0A]/18' : 'text-white/14'
-                    }`}
-                  >
-                    {item.name} · image
-                  </span>
+                  {item.imageSrc ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={item.imageSrc} alt={item.name} className="h-full w-full object-cover" />
+                  ) : (
+                    <span
+                      className={`text-[0.58rem] font-bold uppercase tracking-[0.2em] ${
+                        rltd ? 'text-[#0A0A0A]/18' : 'text-white/14'
+                      }`}
+                    >
+                      {item.name} · image
+                    </span>
+                  )}
                 </div>
                 <div className="flex flex-1 flex-col gap-3 p-5">
                   <div>

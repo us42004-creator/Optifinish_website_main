@@ -107,12 +107,14 @@ export default function DurrAirlessGunPage() {
           category: 'Dürr',
           href: '/products/durr/ecopump',
           enquireSlug: 'durr-ecopump',
+          imageSrc: '/images/products/durr/ecopump/durr-ecopump9-dosing-01.webp',
         },
         {
           name: 'Air Assist Spray Gun',
           category: 'Dürr',
           href: '/products/durr/air-assist-gun',
           enquireSlug: 'durr-air-assist-gun',
+          imageSrc: '/images/products/durr/air-assist-gun/durr-ecogun-aa-auto-01.jpg',
         },
         {
           name: 'Liquid Spray Booth',

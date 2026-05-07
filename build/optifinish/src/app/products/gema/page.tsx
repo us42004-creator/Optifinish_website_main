@@ -23,6 +23,7 @@ const PRODUCTS = [
     ],
     enquireSlug: 'gema-manual-gun',
     learnMoreHref: '/products/gema/manual-gun',
+    imageSrc: '/images/products/gema/manual-gun/gema-optiflex2-01.jpg',
   },
   {
     name: 'Automatic Powder Coating Gun',
@@ -36,6 +37,7 @@ const PRODUCTS = [
     ],
     enquireSlug: 'gema-automatic-gun',
     learnMoreHref: '/products/gema/automatic-gun',
+    imageSrc: '/images/products/gema/automatic-gun/gema-optigun-ga03-01.png',
   },
   {
     name: 'Reciprocators & Automation Axes',
@@ -49,6 +51,7 @@ const PRODUCTS = [
     ],
     enquireSlug: 'gema-reciprocators',
     learnMoreHref: '/products/gema/reciprocators',
+    imageSrc: '/images/products/gema/reciprocators/gema-reciprocator-01.jpg',
   },
   {
     name: 'OptiCentre Powder Management',
@@ -62,6 +65,7 @@ const PRODUCTS = [
     ],
     enquireSlug: 'gema-opticentre',
     learnMoreHref: '/products/gema/opticentre',
+    imageSrc: '/images/products/gema/opticentre/gema-opticenter-oc01-01.jpg',
   },
 ];
 

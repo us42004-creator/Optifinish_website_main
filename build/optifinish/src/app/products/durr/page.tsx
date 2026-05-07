@@ -23,6 +23,7 @@ const GUNS = [
     ],
     enquireSlug: 'durr-cup-gun',
     learnMoreHref: '/products/durr/cup-gun',
+    imageSrc: '/images/products/durr/cup-gun/durr-ecogun-auto-01.webp',
   },
   {
     name: 'HVLP Spray Gun',
@@ -36,6 +37,7 @@ const GUNS = [
     ],
     enquireSlug: 'durr-hvlp-gun',
     learnMoreHref: '/products/durr/hvlp-gun',
+    imageSrc: '/images/products/durr/hvlp-gun/durr-ecogun-as-man-01.jpg',
   },
   {
     name: 'Airless Spray Gun',
@@ -49,6 +51,7 @@ const GUNS = [
     ],
     enquireSlug: 'durr-airless-gun',
     learnMoreHref: '/products/durr/airless-gun',
+    imageSrc: '/images/products/durr/airless-gun/durr-ecogun-al-auto-01.jpg',
   },
   {
     name: 'Air Assist Spray Gun',
@@ -62,6 +65,7 @@ const GUNS = [
     ],
     enquireSlug: 'durr-air-assist-gun',
     learnMoreHref: '/products/durr/air-assist-gun',
+    imageSrc: '/images/products/durr/air-assist-gun/durr-ecogun-aa-auto-01.jpg',
   },
   {
     name: 'Electrostatic Spray Gun',
@@ -75,6 +79,7 @@ const GUNS = [
     ],
     enquireSlug: 'durr-electrostatic-gun',
     learnMoreHref: '/products/durr/electrostatic-gun',
+    imageSrc: '/images/products/durr/electrostatic-gun/durr-ecogun-as-auto-01.jpg',
   },
   {
     name: 'Bell Atomiser',
@@ -88,6 +93,7 @@ const GUNS = [
     ],
     enquireSlug: 'durr-bell-atomiser',
     learnMoreHref: '/products/durr/bell-atomiser',
+    imageSrc: '/images/products/durr/bell-atomiser/durr-ecobell-slider-01.webp',
   },
 ];
 
@@ -105,6 +111,7 @@ const PUMPS_DOSING = [
     ],
     enquireSlug: 'durr-ecopump',
     learnMoreHref: '/products/durr/ecopump',
+    imageSrc: '/images/products/durr/ecopump/durr-ecopump9-dosing-01.webp',
   },
   {
     name: '2K Dosing System',
@@ -119,6 +126,7 @@ const PUMPS_DOSING = [
     ],
     enquireSlug: 'durr-ecodose-2k',
     learnMoreHref: '/products/durr/ecodose-2k',
+    imageSrc: '/images/products/durr/ecodose-2k/durr-ecodose2k-01.webp',
   },
   {
     name: '3K Dosing System',
@@ -133,6 +141,7 @@ const PUMPS_DOSING = [
     ],
     enquireSlug: 'durr-ecodose-3k',
     learnMoreHref: '/products/durr/ecodose-3k',
+    imageSrc: '/images/products/durr/ecodose-3k/durr-ecodose2k-01.webp',
   },
 ];
 

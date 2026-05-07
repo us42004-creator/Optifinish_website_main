@@ -131,18 +131,21 @@ export default function DurrEcoPumpPage() {
           category: 'Dürr',
           href: '/products/durr/cup-gun',
           enquireSlug: 'durr-cup-gun',
+          imageSrc: '/images/products/durr/cup-gun/durr-ecogun-auto-01.webp',
         },
         {
           name: 'Airless Spray Gun',
           category: 'Dürr',
           href: '/products/durr/airless-gun',
           enquireSlug: 'durr-airless-gun',
+          imageSrc: '/images/products/durr/airless-gun/durr-ecogun-al-auto-01.jpg',
         },
         {
           name: '2K Dosing System',
           category: 'Dürr',
           href: '/products/durr/ecodose-2k',
           enquireSlug: 'durr-ecodose-2k',
+          imageSrc: '/images/products/durr/ecodose-2k/durr-ecodose2k-01.webp',
         },
       ]}
 

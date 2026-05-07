@@ -106,18 +106,21 @@ export default function DurrEcoDose2KPage() {
           category: 'Dürr',
           href: '/products/durr/ecodose-3k',
           enquireSlug: 'durr-ecodose-3k',
+          imageSrc: '/images/products/durr/ecodose-3k/durr-ecodose2k-01.webp',
         },
         {
           name: 'EcoPump Systems',
           category: 'Dürr',
           href: '/products/durr/ecopump',
           enquireSlug: 'durr-ecopump',
+          imageSrc: '/images/products/durr/ecopump/durr-ecopump9-dosing-01.webp',
         },
         {
           name: 'Electrostatic Spray Gun',
           category: 'Dürr',
           href: '/products/durr/electrostatic-gun',
           enquireSlug: 'durr-electrostatic-gun',
+          imageSrc: '/images/products/durr/electrostatic-gun/durr-ecogun-as-auto-01.jpg',
         },
       ]}
 

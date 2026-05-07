@@ -107,18 +107,21 @@ export default function DurrEcoDose3KPage() {
           category: 'Dürr',
           href: '/products/durr/ecodose-2k',
           enquireSlug: 'durr-ecodose-2k',
+          imageSrc: '/images/products/durr/ecodose-2k/durr-ecodose2k-01.webp',
         },
         {
           name: 'EcoPump Systems',
           category: 'Dürr',
           href: '/products/durr/ecopump',
           enquireSlug: 'durr-ecopump',
+          imageSrc: '/images/products/durr/ecopump/durr-ecopump9-dosing-01.webp',
         },
         {
           name: 'Bell Atomiser',
           category: 'Dürr',
           href: '/products/durr/bell-atomiser',
           enquireSlug: 'durr-bell-atomiser',
+          imageSrc: '/images/products/durr/bell-atomiser/durr-ecobell-slider-01.webp',
         },
       ]}
 

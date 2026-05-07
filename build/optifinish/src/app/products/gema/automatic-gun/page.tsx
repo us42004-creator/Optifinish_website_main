@@ -161,12 +161,14 @@ export default function GEMAAutomaticGunPage() {
           category: 'GEMA',
           href: '/products/gema/reciprocators',
           enquireSlug: 'gema-reciprocators',
+          imageSrc: '/images/products/gema/reciprocators/gema-reciprocator-01.jpg',
         },
         {
           name: 'OptiCentre Powder Management',
           category: 'GEMA',
           href: '/products/gema/opticentre',
           enquireSlug: 'gema-opticentre',
+          imageSrc: '/images/products/gema/opticentre/gema-opticenter-oc01-01.jpg',
         },
         {
           name: 'Opti Recip ZA01',
