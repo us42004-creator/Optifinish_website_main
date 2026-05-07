@@ -34,10 +34,10 @@ const PILLARS = [
 export default function GlobalNarrative() {
   return (
     <section
-      className="relative overflow-hidden bg-[#070809] py-12 md:py-16"
+      className="relative overflow-hidden bg-[#070809] py-10 md:py-14"
       aria-label="Global technology, Indian delivery"
     >
-      {/* Subtle dark grid */}
+      {/* Subtle yellow grid */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.028]"
         style={{
@@ -50,17 +50,28 @@ export default function GlobalNarrative() {
       <div className="relative mx-auto max-w-7xl px-5 md:px-8">
 
         {/* Header row */}
-        <div className="mb-8 flex flex-col gap-2 md:flex-row md:items-end md:justify-between md:gap-8">
+        <div className="mb-7 flex flex-col gap-2 md:flex-row md:items-end md:justify-between md:gap-8">
           <div>
-            <p className="mb-2 text-[0.52rem] font-bold uppercase tracking-[0.22em] text-[#FECE00]/50">
+            <p className="mb-2 text-[0.5rem] font-bold uppercase tracking-[0.22em] text-[#FECE00]/45">
               Global technology · Indian delivery
             </p>
             <h2 className="font-display text-[clamp(1.3rem,2.8vw,2rem)] font-black leading-[0.92] tracking-[-0.035em] text-white">
-              Designed in India.{' '}
-              <span style={{ color: '#FECE00' }}>Powered by Swiss and German engineering.</span>
+              Designed in{' '}
+              <span style={{
+                background: 'linear-gradient(to bottom, #FF9933 33%, #ffffff 33%, #ffffff 66%, #138808 66%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}>India</span>
+              {'.'}{' '}
+              <span style={{ color: '#FECE00' }}>Powered by </span>
+              <span style={{ color: '#D52B1E' }}>Swiss</span>
+              <span style={{ color: '#FECE00' }}> and </span>
+              <span style={{ color: '#D52B1E' }}>German</span>
+              <span style={{ color: '#FECE00' }}> engineering.</span>
             </h2>
           </div>
-          <p className="max-w-sm text-[0.75rem] leading-relaxed text-white/32 md:text-right">
+          <p className="max-w-sm text-[0.7rem] leading-relaxed text-white/28 md:text-right">
             OptiFinish integrates world-class European coating technology into systems manufactured entirely in India — giving Indian industry access to global-standard equipment through a local source.
           </p>
         </div>
@@ -70,16 +81,16 @@ export default function GlobalNarrative() {
           {PILLARS.map((p) => (
             <article
               key={p.country}
-              className="flex flex-col gap-3 rounded-[1rem] border border-white/[0.07] bg-white/[0.03] px-5 py-5"
+              className="flex flex-col gap-2.5 rounded-[0.875rem] border border-white/[0.06] bg-white/[0.02] px-4 py-4"
               itemScope
               itemType="https://schema.org/Organization"
             >
               {/* Flag + headline */}
-              <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-2">
                 <span
                   className="leading-none"
                   style={{
-                    fontSize: p.flagScale ? '1.35rem' : '1.1rem',
+                    fontSize: p.flagScale ? '1.2rem' : '1rem',
                     display: 'inline-block',
                     transform: p.flagScale ? 'scaleX(1.2)' : undefined,
                   }}
@@ -88,7 +99,7 @@ export default function GlobalNarrative() {
                   {p.flag}
                 </span>
                 <h3
-                  className="font-display text-[0.9rem] font-black leading-tight tracking-[-0.02em] text-white"
+                  className="font-display text-[0.82rem] font-black leading-tight tracking-[-0.02em] text-white"
                   itemProp="name"
                 >
                   {p.headline}
@@ -96,12 +107,12 @@ export default function GlobalNarrative() {
               </div>
 
               {/* Body */}
-              <p className="text-[0.72rem] leading-relaxed text-white/38" itemProp="description">
+              <p className="text-[0.68rem] leading-relaxed text-white/32" itemProp="description">
                 {p.body}
               </p>
 
               {/* Detail chip */}
-              <p className="mt-auto text-[0.52rem] font-semibold uppercase tracking-[0.16em] text-[#FECE00]/40">
+              <p className="mt-auto text-[0.48rem] font-semibold uppercase tracking-[0.16em] text-[#FECE00]/35">
                 {p.detail}
               </p>
             </article>
