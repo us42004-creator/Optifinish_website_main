@@ -39,6 +39,8 @@ export default function DurrAirAssistGunPage() {
         'Designed for solid wood furniture finishing, high-build coatings, and premium topcoat applications',
       ]}
 
+      applicationImageSrc="/images/products/durr/air-assist-gun/durr-airassist-inuse-01.jpg"
+
       specRows={[
         { l: 'Atomisation type', v: 'Air assist — hydraulic material delivery + secondary air atomisation at tip' },
         { l: 'Material range', v: 'High-viscosity paints, lacquers, adhesives, sealants' },

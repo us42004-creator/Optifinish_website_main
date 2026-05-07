@@ -53,6 +53,7 @@ export default function DurrElectrostaticGunPage() {
             { l: 'Wrap-around', v: 'Maximum electrostatic attraction on grounded parts' },
           ],
           imageLabel: 'Dürr EcoGun AS MAN DC · direct charge electrostatic gun',
+          imageSrc: '/images/products/durr/electrostatic-gun/durr-ecogun-dc-01.webp',
         },
         {
           id: 'ec',
@@ -67,9 +68,12 @@ export default function DurrElectrostaticGunPage() {
             { l: 'Wrap-around', v: 'Effective electrostatic attraction without current leakage issues' },
           ],
           imageLabel: 'Dürr EcoGun AS MAN EC · external charge electrostatic gun',
+          imageSrc: '/images/products/durr/electrostatic-gun/durr-ecogun-ec-01.webp',
         },
       ]}
       variantsSectionTitle="DC for solvent-based, EC for water-based"
+
+      applicationImageSrc="/images/products/durr/general/durr-spray-booth-interior-01.webp"
 
       specRows={[
         { l: 'DC variant', v: 'EcoGun AS MAN DC — internal direct charge electrode for solvent-based paints' },

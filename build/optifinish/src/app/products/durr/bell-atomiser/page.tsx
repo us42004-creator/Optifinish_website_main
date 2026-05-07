@@ -57,15 +57,19 @@ export default function DurrBellAtomiserPage() {
           title: 'Atomisation at the cup edge',
           body: 'At the bell cup edge, the thin paint film breaks into an extremely fine, uniform mist of droplets. The rotational speed controls droplet size — faster rotation produces finer droplets for premium finish; slower rotation produces larger droplets for faster coverage.',
           imageLabel: 'Step 02 · paint atomised at bell cup edge — ultra-fine mist',
+          imageSrc: '/images/products/durr/bell-atomiser/durr-ecobell3-atomising-01.webp',
         },
         {
           num: '03',
           title: 'Electrostatic attraction to part',
           body: 'The atomised droplets are electrostatically charged as they leave the bell — charged particles are attracted uniformly to the grounded part surface, wrapping around edges and delivering consistent film build across the full part. The result: automotive-grade finish uniformity with high transfer efficiency.',
           imageLabel: 'Step 03 · electrostatically charged mist attracted uniformly to part surface',
+          imageSrc: '/images/products/durr/bell-atomiser/durr-ecobell-automotive-01.webp',
         },
       ]}
       howItWorksTitle="Spin, atomise, adhere"
+
+      applicationImageSrc="/images/products/durr/bell-atomiser/durr-ecobell-automotive-01.webp"
 
       specRows={[
         { l: 'Atomisation type', v: 'Rotary bell cup — centrifugal atomisation' },

@@ -18,6 +18,7 @@ export interface Variant {
   body: string;
   specs: SpecRow[];
   imageLabel: string;
+  imageSrc?: string;
 }
 
 export interface Step {
@@ -76,6 +77,9 @@ export interface ProductPageTemplateProps {
 
   /* S6 — Applications */
   applications: string[];
+
+  /* S6 — Applications */
+  applicationImageSrc?: string;
 
   /* S7 — Compatibility */
   compatibilityTags: string[];
@@ -233,6 +237,7 @@ export default function ProductPageTemplate({
   howItWorksTitle,
   specRows,
   applications,
+  applicationImageSrc,
   compatibilityTags,
   partnerNote,
   references,
@@ -525,6 +530,7 @@ export default function ProductPageTemplate({
                 </div>
                 <ImageViewport
                   label={currVariant.imageLabel}
+                  src={currVariant.imageSrc}
                   isDark={!vars}
                   aspect="aspect-[4/3]"
                 />
@@ -666,7 +672,8 @@ export default function ProductPageTemplate({
               </ul>
             </div>
             <ImageViewport
-              label="Application context · image"
+              label="Application context"
+              src={applicationImageSrc}
               isDark={!appl}
               aspect="aspect-[4/3]"
               className="self-center"

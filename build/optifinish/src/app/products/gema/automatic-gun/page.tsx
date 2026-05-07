@@ -61,6 +61,7 @@ export default function GEMAAutomaticGunPage() {
             { l: 'Best for', v: 'High-volume flat and simple profile parts' },
           ],
           imageLabel: 'GEMA OptiGun GA02 · standard automatic gun',
+          imageSrc: '/images/products/gema/automatic-gun/gema-optigun-ga03-02.jpg',
         },
         {
           id: 'ga03',
@@ -75,6 +76,7 @@ export default function GEMAAutomaticGunPage() {
             { l: 'Best for', v: 'Automotive components, complex fabrications, recessed geometries' },
           ],
           imageLabel: 'GEMA OptiGun GA03 · PCC + SuperCorona automatic gun',
+          imageSrc: '/images/products/gema/automatic-gun/gema-optigun-ga03-product-01.jpg',
         },
       ]}
       variantsSectionTitle="GA02 or GA03 — choose your specification"
@@ -93,12 +95,14 @@ export default function GEMAAutomaticGunPage() {
           title: 'Electrostatic charging',
           body: 'As powder exits the gun tip, the 110 kV PowerBoost® generator and corona electrode electrostatically charge every particle. PCC Technology (GA03) adjusts the corona field dynamically to maximise penetration into Faraday cage areas without causing back-ionisation on flat sections.',
           imageLabel: 'Step 02 · electrostatic charging at gun tip',
+          imageSrc: '/images/products/gema/automatic-gun/gema-optigun-ga03-charged-01.jpg',
         },
         {
           num: '03',
           title: 'Wrap-around and adhesion',
           body: 'Charged particles follow electric field lines around the part — wrapping into recesses, onto reverse faces, and into internal corners. The SuperCorona electrode (GA03) extends the field reach for deep geometric penetration. Powder adheres electrostatically and is held until it enters the curing oven.',
           imageLabel: 'Step 03 · wrap-around adhesion on part',
+          imageSrc: '/images/products/gema/automatic-gun/gema-optigun-ga04-01.jpg',
         },
       ]}
       howItWorksTitle="Charge, penetrate, adhere"
@@ -115,6 +119,8 @@ export default function GEMAAutomaticGunPage() {
         { l: 'Compatible powder centre', v: 'GEMA OC08 OptiCentre (all models)' },
         { l: 'Supplied by', v: 'OptiFinish — authorised GEMA partner, India' },
       ]}
+
+      applicationImageSrc="/images/products/gema/opticentre/gema-opticenter-app-01.jpg"
 
       /* S6 — Applications */
       applications={[

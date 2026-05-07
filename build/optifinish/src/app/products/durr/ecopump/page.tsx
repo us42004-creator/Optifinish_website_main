@@ -73,6 +73,7 @@ export default function DurrEcoPumpPage() {
             { l: 'Compatible gun', v: 'Dürr EcoGun 246 / 249 airless guns' },
           ],
           imageLabel: 'Dürr EcoPump VP Series · high-pressure vertical piston',
+          imageSrc: '/images/products/durr/ecopump/durr-ecopump-vp-01.webp',
         },
         {
           id: 'ad',
@@ -87,9 +88,12 @@ export default function DurrEcoPumpPage() {
             { l: 'Advantage', v: 'No particle damage from piston shear forces' },
           ],
           imageLabel: 'Dürr EcoPump AD · diaphragm pump for sensitive formulations',
+          imageSrc: '/images/products/durr/ecopump/durr-ecopump-ad-01.webp',
         },
       ]}
       variantsSectionTitle="Select the EcoPump for your pressure and flow requirement"
+
+      applicationImageSrc="/images/products/durr/ecopump/durr-ecopump-inuse-01.webp"
 
       specRows={[
         { l: 'HP 400', v: '4.2 kg, 8 L/min, air-operated horizontal piston' },

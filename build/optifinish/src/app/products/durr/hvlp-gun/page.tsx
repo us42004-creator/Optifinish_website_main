@@ -39,6 +39,8 @@ export default function DurrHVLPGunPage() {
         'Part of the Dürr EcoGun AS MAN platform — consistent ergonomics across the gun range',
       ]}
 
+      applicationImageSrc="/images/products/durr/hvlp-gun/durr-hvlp-inuse-01.jpg"
+
       specRows={[
         { l: 'Atomisation type', v: 'HVLP — High Volume Low Pressure' },
         { l: 'Transfer efficiency', v: 'High — significantly reduced overspray vs conventional spray' },

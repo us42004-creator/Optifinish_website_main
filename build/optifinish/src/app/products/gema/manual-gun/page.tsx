@@ -94,6 +94,7 @@ const MODELS = [
       { l: 'Best for', v: 'Job coaters, custom colour shops' },
     ],
     imageLabel: 'OptiFlex Pro Q · quick colour change gun',
+    imageSrc: '/images/products/gema/manual-gun/gema-optiflex-proq-01.jpg',
   },
   {
     id: 'pro-f',
@@ -108,6 +109,7 @@ const MODELS = [
       { l: 'Best for', v: 'High-volume production lines' },
     ],
     imageLabel: 'OptiFlex Pro F Spray · high-output gun',
+    imageSrc: '/images/products/gema/manual-gun/gema-optiflex-prof-01.jpg',
   },
   {
     id: 'pro-c',
@@ -122,6 +124,7 @@ const MODELS = [
       { l: 'Best for', v: 'Batch shops, mixed-product environments' },
     ],
     imageLabel: 'OptiFlex Pro C · all-round manual gun',
+    imageSrc: '/images/products/gema/manual-gun/gema-optiflex-proc-01.jpg',
   },
 ];
 
@@ -130,16 +133,19 @@ const HOW_IT_WORKS = [
     n: '01',
     title: 'Powder fed via Venturi',
     body: 'Powder coating material is drawn from the hopper or box feed through a Venturi system — pressurised air creates suction that pulls the powder into the gun barrel at a consistent, controlled rate.',
+    imageSrc: '/images/products/gema/manual-gun/gema-manual-gun-inuse-01.jpg',
   },
   {
     n: '02',
     title: 'MagicControl 4.0 charges the powder',
     body: 'As the powder passes the electrode tip inside the gun barrel, the MagicControl 4.0 generator applies a programmable electrostatic charge. The kV and µA output is set to match the powder type and part geometry.',
+    imageSrc: '/images/products/gema/manual-gun/gema-manual-gun-charging-01.jpg',
   },
   {
     n: '03',
     title: 'Charged particles adhere to the part',
     body: 'Electrostatically charged powder particles are attracted to the grounded part. The charge forces the particles toward the surface — wrapping around edges and into recesses — where they adhere electrostatically until the part enters the curing oven.',
+    imageSrc: '/images/products/gema/manual-gun/gema-optiflex2-02.png',
   },
 ];
 
@@ -395,7 +401,7 @@ export default function GemaManualGunPage() {
             {/* Image viewport */}
             <ImageViewport
               label={MODELS[activeModel].imageLabel}
-              src="/images/products/gema/manual-gun/gema-optiflex2-01.jpg"
+              src={MODELS[activeModel].imageSrc}
               aspect="aspect-[4/3]"
               isDark
             />
@@ -490,6 +496,7 @@ export default function GemaManualGunPage() {
             <div className="flex flex-col gap-4">
               <ImageViewport
                 label={`Step ${HOW_IT_WORKS[activeStep].n} · ${HOW_IT_WORKS[activeStep].title} · diagram`}
+                src={HOW_IT_WORKS[activeStep].imageSrc}
                 aspect="aspect-[4/3]"
                 className="border-[#FECE00]/[0.07] bg-white/[0.025]"
               />

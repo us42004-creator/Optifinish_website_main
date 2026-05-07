@@ -76,6 +76,7 @@ export default function GEMAReciproactorsPage() {
             { l: 'Motor', v: 'Advanced synchronized drive' },
           ],
           imageLabel: 'GEMA ZA10 · slim column reciprocator',
+          imageSrc: '/images/products/gema/reciprocators/gema-za10-01.jpg',
         },
         {
           id: 'za-high',
@@ -90,6 +91,7 @@ export default function GEMAReciproactorsPage() {
             { l: 'Best for', v: 'High-volume conveyorised lines, tall part profiles' },
           ],
           imageLabel: 'GEMA ZA15-17 · high-performance reciprocator',
+          imageSrc: '/images/products/gema/reciprocators/gema-za15-01.jpg',
         },
       ]}
       variantsSectionTitle="ZA07 through ZA17 — match the reciprocator to your line"
@@ -105,6 +107,8 @@ export default function GEMAReciproactorsPage() {
         { l: 'Deployment', v: 'Standalone or fully integrated into OptiCenter automatic line' },
         { l: 'Supplied by', v: 'OptiFinish — authorised GEMA partner, India' },
       ]}
+
+      applicationImageSrc="/images/products/gema/reciprocators/gema-reciprocator-inuse-01.jpg"
 
       /* S6 — Applications */
       applications={[

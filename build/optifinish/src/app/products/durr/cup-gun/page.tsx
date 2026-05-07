@@ -53,6 +53,7 @@ export default function DurrCupGunPage() {
             { l: 'Best for', v: 'General industrial finishes, enamels, primers, lacquers' },
           ],
           imageLabel: 'Dürr EcoGun 116 · general purpose gravity feed',
+          imageSrc: '/images/products/durr/cup-gun/durr-ecogun116-01.jpg',
         },
         {
           id: 'ecogun-910',
@@ -67,9 +68,12 @@ export default function DurrCupGunPage() {
             { l: 'Best for', v: 'Furniture lacquering, premium topcoats, clear coats' },
           ],
           imageLabel: 'Dürr EcoGun 910 · fine finish gravity feed',
+          imageSrc: '/images/products/durr/cup-gun/durr-ecogun910-01.jpg',
         },
       ]}
       variantsSectionTitle="EcoGun 116 or 910 — match the gun to the finish"
+
+      applicationImageSrc="/images/products/durr/cup-gun/durr-cupgun-inuse-01.webp"
 
       specRows={[
         { l: 'EcoGun 116 max pressure', v: '6 bar' },
