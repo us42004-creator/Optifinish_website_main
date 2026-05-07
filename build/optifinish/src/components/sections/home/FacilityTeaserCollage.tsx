@@ -23,7 +23,7 @@ export default function FacilityTeaserCollage() {
 
       {/* Grid drift layers */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.62] mix-blend-multiply"
+        className="pointer-events-none absolute inset-0 grid-drift opacity-[0.62] mix-blend-multiply"
         style={{
           backgroundImage: `
             linear-gradient(rgba(201,165,0,0.22) 1px, transparent 1px),
@@ -33,7 +33,7 @@ export default function FacilityTeaserCollage() {
         }}
       />
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.32] mix-blend-multiply"
+        className="pointer-events-none absolute inset-0 grid-drift opacity-[0.32] mix-blend-multiply"
         style={{
           backgroundImage: `
             linear-gradient(rgba(255,243,163,0.5) 1px, transparent 1px),

@@ -8,6 +8,7 @@ interface Stat {
 interface CategoryHeroProps {
   eyebrow: string;
   tag: string;
+  flag?: string;
   headline: string;
   headlineAccent: string;
   subline: string;
@@ -19,6 +20,7 @@ interface CategoryHeroProps {
 export default function CategoryHero({
   eyebrow,
   tag,
+  flag,
   headline,
   headlineAccent,
   subline,
@@ -72,7 +74,7 @@ export default function CategoryHero({
         </div>
 
         {/* Tag pill */}
-        <div className="mb-5">
+        <div className="mb-5 flex items-center gap-2">
           <span
             className={`inline-block rounded-full px-3 py-1 text-[0.55rem] font-bold uppercase tracking-[0.18em] ${
               isDark
@@ -82,6 +84,18 @@ export default function CategoryHero({
           >
             {tag}
           </span>
+          {flag && (
+            <span
+              className={`leading-none ${isDark ? 'opacity-60' : 'opacity-50'}`}
+              style={{
+                fontSize: flag === '🇨🇭' ? '1.25rem' : '1rem',
+                display: 'inline-block',
+                transform: flag === '🇨🇭' ? 'scaleX(1.2)' : undefined,
+              }}
+            >
+              {flag}
+            </span>
+          )}
         </div>
 
         {/* Eyebrow */}

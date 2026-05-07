@@ -133,16 +133,9 @@ export default function ServicesPage() {
       {/* ── Service Cards Grid (light) ── */}
       <section className="relative overflow-hidden bg-[#f1efea] py-16 md:py-20">
 
-        {/* Grid drift */}
-        <div
-          className="pointer-events-none absolute inset-0 mix-blend-multiply"
-          style={{
-            backgroundImage:
-              'linear-gradient(rgba(201,165,0,0.22) 1px, transparent 1px), linear-gradient(90deg, rgba(201,165,0,0.22) 1px, transparent 1px)',
-            backgroundSize: '88px 88px',
-            opacity: 0.55,
-          }}
-        />
+        {/* Grid drift — dual layer */}
+        <div className="pointer-events-none absolute inset-0 grid-drift opacity-[0.62] mix-blend-multiply" style={{ backgroundImage: 'linear-gradient(rgba(201,165,0,0.22) 1px, transparent 1px), linear-gradient(90deg, rgba(201,165,0,0.22) 1px, transparent 1px)', backgroundSize: '88px 88px' }} />
+        <div className="pointer-events-none absolute inset-0 grid-drift opacity-[0.32] mix-blend-multiply" style={{ backgroundImage: 'linear-gradient(rgba(255,243,163,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,243,163,0.5) 1px, transparent 1px)', backgroundSize: '264px 264px' }} />
 
         <div className="relative mx-auto max-w-7xl px-5 md:px-8">
           <div className="mb-10">

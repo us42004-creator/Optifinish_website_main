@@ -176,16 +176,9 @@ export default function GemaManualGunPage() {
           S1 — PRODUCT HERO
       ══════════════════════════════════════════════════════ */}
       <section className="relative overflow-hidden bg-[#f1efea] pb-16 pt-[80px] md:pb-20 md:pt-[88px]">
-        {/* Grid texture */}
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            backgroundImage:
-              'linear-gradient(rgba(201,165,0,0.18) 1px, transparent 1px), linear-gradient(90deg, rgba(201,165,0,0.18) 1px, transparent 1px)',
-            backgroundSize: '72px 72px',
-            opacity: 0.45,
-          }}
-        />
+        {/* Grid drift — dual layer */}
+        <div className="pointer-events-none absolute inset-0 grid-drift opacity-[0.62] mix-blend-multiply" style={{ backgroundImage: 'linear-gradient(rgba(201,165,0,0.22) 1px, transparent 1px), linear-gradient(90deg, rgba(201,165,0,0.22) 1px, transparent 1px)', backgroundSize: '88px 88px' }} />
+        <div className="pointer-events-none absolute inset-0 grid-drift opacity-[0.32] mix-blend-multiply" style={{ backgroundImage: 'linear-gradient(rgba(255,243,163,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,243,163,0.5) 1px, transparent 1px)', backgroundSize: '264px 264px' }} />
 
         <div className="relative mx-auto max-w-7xl px-5 md:px-8">
 
@@ -501,8 +494,10 @@ export default function GemaManualGunPage() {
       {/* ══════════════════════════════════════════════════════
           S5 — LINE INTEGRATION
       ══════════════════════════════════════════════════════ */}
-      <section className="bg-[#f1efea] py-20 md:py-24">
-        <div className="mx-auto max-w-7xl px-5 md:px-8">
+      <section className="relative overflow-hidden bg-[#f1efea] py-20 md:py-24">
+        <div className="pointer-events-none absolute inset-0 grid-drift opacity-[0.62] mix-blend-multiply" style={{ backgroundImage: 'linear-gradient(rgba(201,165,0,0.22) 1px, transparent 1px), linear-gradient(90deg, rgba(201,165,0,0.22) 1px, transparent 1px)', backgroundSize: '88px 88px' }} />
+        <div className="pointer-events-none absolute inset-0 grid-drift opacity-[0.32] mix-blend-multiply" style={{ backgroundImage: 'linear-gradient(rgba(255,243,163,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,243,163,0.5) 1px, transparent 1px)', backgroundSize: '264px 264px' }} />
+        <div className="relative mx-auto max-w-7xl px-5 md:px-8">
 
           <div className="mb-10">
             <p className="mb-2 text-[0.56rem] font-bold uppercase tracking-[0.22em] text-[#0A0A0A]/35">
@@ -626,8 +621,10 @@ export default function GemaManualGunPage() {
       {/* ══════════════════════════════════════════════════════
           S7 — COMPATIBILITY + REFERENCE
       ══════════════════════════════════════════════════════ */}
-      <section className="bg-[#f1efea] py-20 md:py-24">
-        <div className="mx-auto max-w-7xl px-5 md:px-8">
+      <section className="relative overflow-hidden bg-[#f1efea] py-20 md:py-24">
+        <div className="pointer-events-none absolute inset-0 grid-drift opacity-[0.62] mix-blend-multiply" style={{ backgroundImage: 'linear-gradient(rgba(201,165,0,0.22) 1px, transparent 1px), linear-gradient(90deg, rgba(201,165,0,0.22) 1px, transparent 1px)', backgroundSize: '88px 88px' }} />
+        <div className="pointer-events-none absolute inset-0 grid-drift opacity-[0.32] mix-blend-multiply" style={{ backgroundImage: 'linear-gradient(rgba(255,243,163,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,243,163,0.5) 1px, transparent 1px)', backgroundSize: '264px 264px' }} />
+        <div className="relative mx-auto max-w-7xl px-5 md:px-8">
 
           <div className="grid gap-12 md:grid-cols-2">
 
@@ -740,8 +737,10 @@ export default function GemaManualGunPage() {
       {/* ══════════════════════════════════════════════════════
           S9 — DOWNLOADS
       ══════════════════════════════════════════════════════ */}
-      <section className="bg-[#f1efea] py-20 md:py-24">
-        <div className="mx-auto max-w-7xl px-5 md:px-8">
+      <section className="relative overflow-hidden bg-[#f1efea] py-20 md:py-24">
+        <div className="pointer-events-none absolute inset-0 grid-drift opacity-[0.62] mix-blend-multiply" style={{ backgroundImage: 'linear-gradient(rgba(201,165,0,0.22) 1px, transparent 1px), linear-gradient(90deg, rgba(201,165,0,0.22) 1px, transparent 1px)', backgroundSize: '88px 88px' }} />
+        <div className="pointer-events-none absolute inset-0 grid-drift opacity-[0.32] mix-blend-multiply" style={{ backgroundImage: 'linear-gradient(rgba(255,243,163,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,243,163,0.5) 1px, transparent 1px)', backgroundSize: '264px 264px' }} />
+        <div className="relative mx-auto max-w-7xl px-5 md:px-8">
 
           <div className="mb-8">
             <p className="mb-2 text-[0.56rem] font-bold uppercase tracking-[0.22em] text-[#0A0A0A]/35">

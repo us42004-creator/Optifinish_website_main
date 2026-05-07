@@ -59,14 +59,14 @@ export default function HeroDark() {
 
         {/* ── Hero content — CSS animations so visible before JS hydration ── */}
         <div
-          className="relative w-full text-center"
+          className="relative w-full text-center mt-8"
           style={{ animation: 'hero-item-in 0.7s cubic-bezier(0.22,1,0.36,1) both' }}
         >
           {/* yellow glow behind copy */}
           <div className="pointer-events-none absolute left-1/2 top-1/2 h-[480px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#FECE00]/[0.025] blur-[100px]" />
           {/* Kicker */}
           <div
-            className="mb-8 flex items-center justify-center gap-2.5"
+            className="mb-5 flex items-center justify-center gap-2.5"
             style={{ animation: 'hero-item-in 0.5s cubic-bezier(0.22,1,0.36,1) 0.1s both' }}
           >
             <PulseBullet />
@@ -77,7 +77,7 @@ export default function HeroDark() {
 
           {/* Headline */}
           <h1
-            className="font-display text-[clamp(1.75rem,5.5vw,5rem)] font-black leading-[0.9] tracking-[-0.045em] text-white"
+            className="font-display text-[clamp(1.5rem,4.6vw,4.6rem)] font-black leading-[0.92] tracking-[-0.04em] text-white"
             style={{ animation: 'hero-item-in 0.7s cubic-bezier(0.22,1,0.36,1) 0.18s both' }}
           >
             Manufactured systems.{' '}
@@ -89,7 +89,7 @@ export default function HeroDark() {
 
           {/* Subtext */}
           <p
-            className="mx-auto mt-6 max-w-[640px] text-[0.82rem] leading-relaxed tracking-[0.01em] text-white/35 md:mt-8 md:text-[0.95rem] md:leading-[1.9]"
+            className="mx-auto mt-5 max-w-[560px] text-[0.78rem] leading-relaxed tracking-[0.01em] text-white/50 md:mt-6 md:text-[0.85rem] md:leading-[1.8]"
             style={{ animation: 'hero-item-in 0.6s cubic-bezier(0.22,1,0.36,1) 0.28s both' }}
           >
             OptiFinish designs and manufactures complete powder coating lines,
@@ -99,17 +99,28 @@ export default function HeroDark() {
 
           {/* CTAs */}
           <div
-            className="mt-10 flex flex-wrap items-center justify-center gap-3"
+            className="mt-16 flex justify-center"
             style={{ animation: 'hero-item-in 0.55s cubic-bezier(0.22,1,0.36,1) 0.38s both' }}
           >
             <Link href="/products" className="panel-button dynamic-button dynamic-button-yellow">
               <span>Explore Products</span>
               <div className="dynamic-button-glow" />
             </Link>
-            <Link href="/contact" className="panel-button dynamic-button dynamic-button-light text-ink">
-              <span>Get in Touch</span>
-              <div className="dynamic-button-glow" />
-            </Link>
+          </div>
+
+          {/* Global provenance — muted flag strip */}
+          <div
+            className="mt-8 flex items-center justify-center gap-3"
+            style={{ animation: 'hero-item-in 0.5s cubic-bezier(0.22,1,0.36,1) 0.44s both' }}
+          >
+            <span className="text-[1.2rem] leading-none">🇮🇳</span>
+            <span className="text-[0.5rem] font-semibold uppercase tracking-[0.16em] text-white/52">Indian manufacturing</span>
+            <span className="text-[0.5rem] text-white/18">·</span>
+            <span className="text-[1.5rem] leading-none" style={{ display: 'inline-block', transform: 'scaleX(1.25)' }}>🇨🇭</span>
+            <span className="text-[0.5rem] font-semibold uppercase tracking-[0.16em] text-white/52">Swiss powder tech</span>
+            <span className="text-[0.5rem] text-white/18">·</span>
+            <span className="text-[1.2rem] leading-none">🇩🇪</span>
+            <span className="text-[0.5rem] font-semibold uppercase tracking-[0.16em] text-white/52">German liquid coating</span>
           </div>
         </div>
 
@@ -118,7 +129,7 @@ export default function HeroDark() {
           className="absolute inset-x-5 bottom-12 md:inset-x-10 md:bottom-14 lg:inset-x-12"
           style={{ animation: 'hero-item-in 0.65s cubic-bezier(0.22,1,0.36,1) 0.48s both' }}
         >
-          <div className="overflow-hidden rounded-[1rem] border border-[#FECE00]/[0.08] bg-[#FECE00]/[0.04] shadow-[0_-6px_40px_rgba(0,0,0,0.4),0_16px_48px_rgba(0,0,0,0.3)] backdrop-blur-md">
+          <div className="overflow-hidden rounded-[1rem] border border-[#FECE00]/[0.12] bg-[#080a0c] shadow-[0_-6px_40px_rgba(0,0,0,0.6),0_16px_48px_rgba(0,0,0,0.4)]">
 
             {/* top yellow accent line */}
             <div className="h-[1.5px] bg-gradient-to-r from-transparent via-[#FECE00]/50 to-transparent" />
@@ -127,7 +138,7 @@ export default function HeroDark() {
             <div className="grid grid-cols-2 divide-x divide-y divide-[#FECE00]/[0.06] md:flex md:divide-y-0 md:items-stretch md:divide-x">
 
               {STATS.map(({ value, label, sub }) => (
-                <div key={value} className="flex flex-1 flex-col justify-center gap-0.5 px-4 py-3.5 md:px-6 md:py-5 lg:px-8">
+                <div key={value} className="flex flex-1 flex-col justify-center gap-0.5 px-4 py-3.5 md:px-5 md:py-5 lg:px-6">
                   <div className="flex items-baseline gap-1.5">
                     <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 900, fontSize: '1.1rem', color: '#fff', letterSpacing: '-0.03em', lineHeight: 1 }}>
                       {value}
@@ -143,32 +154,42 @@ export default function HeroDark() {
               ))}
 
               {/* GEMA */}
-              <div className="flex flex-1 items-center gap-2.5 px-4 py-3.5 md:gap-3.5 md:px-6 md:py-5 lg:px-8">
-                <Image
-                  src="/images/logos/logo.png"
-                  alt="GEMA"
-                  width={80}
-                  height={40}
-                  className="h-10 w-auto shrink-0 object-contain md:h-14"
-                />
-                <span className="text-[0.48rem] font-semibold uppercase leading-tight tracking-[0.13em] text-[#FECE00]/50 md:whitespace-nowrap md:text-[0.53rem]">Authorised<br className="md:hidden" /> partner</span>
+              <div className="flex min-w-0 flex-1 items-center gap-2.5 px-4 py-3.5 md:px-5 md:py-5 lg:px-6">
+                <div className="shrink-0 overflow-hidden rounded-[6px] bg-white px-2.5 py-1.5">
+                  <Image
+                    src="/images/logos/gema_logo.png"
+                    alt="GEMA"
+                    width={96}
+                    height={36}
+                    className="h-5 w-auto object-contain md:h-6"
+                  />
+                </div>
+                <div className="flex min-w-0 flex-col gap-0.5">
+                  <span className="text-[1.05rem] leading-none" style={{ display: 'inline-block', transform: 'scaleX(1.2)' }}>🇨🇭</span>
+                  <span className="text-[0.5rem] font-semibold uppercase leading-tight tracking-[0.12em] text-[#FECE00]/70">Authorised<br /> partner</span>
+                </div>
               </div>
 
               {/* DÜRR */}
-              <div className="flex flex-1 items-center gap-2.5 px-4 py-3.5 md:gap-3.5 md:px-6 md:py-5 lg:px-8">
-                <Image
-                  src="/images/logos/duerr-logo-RGB.png"
-                  alt="DÜRR"
-                  width={64}
-                  height={32}
-                  className="h-6 w-auto shrink-0 object-contain brightness-0 invert md:h-7"
-                />
-                <span className="text-[0.48rem] font-semibold uppercase leading-tight tracking-[0.13em] text-[#FECE00]/50 md:whitespace-nowrap md:text-[0.53rem]">Authorised<br className="md:hidden" /> distributor</span>
+              <div className="flex min-w-0 flex-1 items-center gap-2.5 px-4 py-3.5 md:px-5 md:py-5 lg:px-6">
+                <div className="shrink-0 overflow-hidden rounded-[6px] bg-white px-2.5 py-1.5">
+                  <Image
+                    src="/images/logos/duerr-logo-RGB.png"
+                    alt="DÜRR"
+                    width={600}
+                    height={285}
+                    className="h-5 w-auto object-contain md:h-6"
+                  />
+                </div>
+                <div className="flex min-w-0 flex-col gap-0.5">
+                  <span className="text-[0.85rem] leading-none">🇩🇪</span>
+                  <span className="text-[0.5rem] font-semibold uppercase leading-tight tracking-[0.12em] text-[#FECE00]/70">Authorised<br /> distributor</span>
+                </div>
               </div>
 
-              <div className="hidden items-center px-7 md:flex">
-                <span className="whitespace-nowrap rounded-full border border-[#FECE00]/20 bg-[#FECE00]/[0.07] px-4 py-1.5 text-[0.56rem] font-bold uppercase tracking-[0.18em] text-[#FECE00]/55">
-                  Est. 2011 · Noida
+              <div className="hidden shrink-0 items-center px-5 md:flex lg:px-6">
+                <span className="whitespace-nowrap rounded-full border border-[#FECE00]/20 bg-[#FECE00]/[0.07] px-4 py-1.5 text-[0.56rem] font-bold uppercase tracking-[0.18em] text-[#FECE00]/65">
+                  🇮🇳 Est. 2011 · Noida
                 </span>
               </div>
 

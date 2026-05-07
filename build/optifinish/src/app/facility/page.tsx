@@ -194,9 +194,10 @@ export default function FacilityPage() {
       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <section className="relative overflow-hidden bg-[#f1efea] py-16 md:py-24">
         <div
-          className="pointer-events-none absolute inset-0 mix-blend-multiply"
-          style={{ ...LIGHT_GRID_STYLE, opacity: 0.55 }}
+          className="pointer-events-none absolute inset-0 grid-drift opacity-[0.62] mix-blend-multiply"
+          style={LIGHT_GRID_STYLE}
         />
+        <div className="pointer-events-none absolute inset-0 grid-drift opacity-[0.32] mix-blend-multiply" style={{ backgroundImage: 'linear-gradient(rgba(255,243,163,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,243,163,0.5) 1px, transparent 1px)', backgroundSize: '264px 264px' }} />
 
         <div className="relative mx-auto max-w-7xl px-5 md:px-8">
           <div className="grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-20">
@@ -348,9 +349,10 @@ export default function FacilityPage() {
       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <section className="relative overflow-hidden bg-[#f1efea]">
         <div
-          className="pointer-events-none absolute inset-0 mix-blend-multiply"
-          style={{ ...LIGHT_GRID_STYLE, opacity: 0.55 }}
+          className="pointer-events-none absolute inset-0 grid-drift opacity-[0.62] mix-blend-multiply"
+          style={LIGHT_GRID_STYLE}
         />
+        <div className="pointer-events-none absolute inset-0 grid-drift opacity-[0.32] mix-blend-multiply" style={{ backgroundImage: 'linear-gradient(rgba(255,243,163,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,243,163,0.5) 1px, transparent 1px)', backgroundSize: '264px 264px' }} />
         <div className="relative grid min-h-[560px] lg:grid-cols-2">
 
           {/* Photo half — left */}
@@ -480,9 +482,10 @@ export default function FacilityPage() {
       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <section className="relative overflow-hidden bg-[#f1efea] py-16 md:py-20">
         <div
-          className="pointer-events-none absolute inset-0 mix-blend-multiply"
-          style={{ ...LIGHT_GRID_STYLE, opacity: 0.55 }}
+          className="pointer-events-none absolute inset-0 grid-drift opacity-[0.62] mix-blend-multiply"
+          style={LIGHT_GRID_STYLE}
         />
+        <div className="pointer-events-none absolute inset-0 grid-drift opacity-[0.32] mix-blend-multiply" style={{ backgroundImage: 'linear-gradient(rgba(255,243,163,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,243,163,0.5) 1px, transparent 1px)', backgroundSize: '264px 264px' }} />
         <div className="relative mx-auto max-w-7xl px-5 md:px-8">
           <div className="mb-10">
             <p className="mb-2 text-[0.56rem] font-bold uppercase tracking-[0.22em] text-[#0A0A0A]/40">

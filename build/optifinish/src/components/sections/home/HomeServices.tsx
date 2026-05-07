@@ -66,17 +66,11 @@ export default function HomeServices() {
   });
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden bg-[#f8f7f4] py-20 md:py-28">
+    <section ref={sectionRef} className="relative overflow-hidden bg-[#f1efea] py-20 md:py-28">
 
-      {/* Subtle warm grid */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.018]"
-        style={{
-          backgroundImage:
-            'linear-gradient(rgba(8,8,8,1) 1px, transparent 1px), linear-gradient(90deg, rgba(8,8,8,1) 1px, transparent 1px)',
-          backgroundSize: '72px 72px',
-        }}
-      />
+      {/* Grid drift layers — matches light-themed template */}
+      <div className="pointer-events-none absolute inset-0 grid-drift opacity-[0.62] mix-blend-multiply" style={{ backgroundImage: 'linear-gradient(rgba(201,165,0,0.22) 1px, transparent 1px), linear-gradient(90deg, rgba(201,165,0,0.22) 1px, transparent 1px)', backgroundSize: '88px 88px' }} />
+      <div className="pointer-events-none absolute inset-0 grid-drift opacity-[0.32] mix-blend-multiply" style={{ backgroundImage: 'linear-gradient(rgba(255,243,163,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,243,163,0.5) 1px, transparent 1px)', backgroundSize: '264px 264px' }} />
 
       <div className="relative mx-auto max-w-7xl px-5 md:px-8">
 

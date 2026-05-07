@@ -20,6 +20,7 @@ const TOP_GROUPS = [
     href: '/products/optifinish-manufactured',
     label: 'OptiFinish Manufactured',
     tag: 'In-house',
+    flag: '🇮🇳',
     desc: 'Complete powder coating lines and equipment designed and manufactured at our Greater Noida facility.',
     items: ['Powder Coating Plants', 'Curing Ovens', 'Spray Booths', 'SS Booth Systems'],
     mediaLabel: 'Manufactured equipment · image',
@@ -28,17 +29,22 @@ const TOP_GROUPS = [
     href: '/products/automation',
     label: 'OptiFinish Automation',
     tag: 'Proprietary',
+    flag: '🇮🇳',
     desc: 'Proprietary automation products developed entirely in-house — Z-TAP, ZA01, and the Automatic Sieve Machine.',
     items: ['Z-TAP Robot System', 'ZA01 Reciprocator', 'Automatic Sieve Machine'],
     mediaLabel: 'Automation products · image',
   },
 ];
 
+const OPTIFINISH_LOGO = '/images/logos/optifinish-logo.png';
+
 const BOTTOM_GROUPS = [
   {
     href: '/products/gema',
     label: 'GEMA',
     tag: 'Authorised Partner',
+    flag: '🇨🇭',
+    logo: '/images/logos/gema_logo.png',
     subheading: 'World-leading powder coating equipment — guns, booths, reciprocators, and OptiCenter systems.',
     items: ['Manual Powder Guns', 'Automatic Guns', 'OptiCenter Systems', 'Reciprocators'],
     mediaLabel: 'GEMA equipment · image',
@@ -47,6 +53,8 @@ const BOTTOM_GROUPS = [
     href: '/products/durr',
     label: 'DÜRR',
     tag: 'Authorised Distributor',
+    flag: '🇩🇪',
+    logo: '/images/logos/duerr-logo-RGB.png',
     subheading: 'High-precision liquid coating systems for demanding industrial paint applications.',
     items: ['Liquid Coating Guns', 'EcoPump Systems', 'Liquid Coating Plants'],
     mediaLabel: 'DÜRR systems · image',
@@ -55,6 +63,8 @@ const BOTTOM_GROUPS = [
     href: '/products/vinayak',
     label: 'Vinayak Agencies',
     tag: 'Sister Concern',
+    flag: '🇮🇳',
+    logo: null,
     subheading: 'Catalogue supply of coating powders, consumables, and finishing materials.',
     items: ['Coating Powders', 'Touch-Up Paints', 'Adhesives'],
     mediaLabel: 'Products · image',
@@ -164,9 +174,28 @@ export default function WhatWeOffer() {
               className="group flex flex-col overflow-hidden rounded-[1.2rem] border border-[#FECE00]/[0.22] bg-[#FECE00]/[0.06] transition-all duration-300 hover:-translate-y-1 hover:border-[#FECE00]/[0.35] hover:bg-[#FECE00]/[0.09]"
             >
               <div className="flex flex-col gap-3 p-5">
-                <span className="self-start rounded-full bg-[#FECE00] px-2.5 py-0.5 text-[0.55rem] font-bold uppercase tracking-[0.18em] text-ink">
-                  {g.tag}
-                </span>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5">
+                    <span className="self-start rounded-full bg-[#FECE00] px-2.5 py-0.5 text-[0.55rem] font-bold uppercase tracking-[0.18em] text-ink">
+                      {g.tag}
+                    </span>
+                    {g.flag && (
+                      <span
+                        className="leading-none opacity-55"
+                        style={{
+                          fontSize: g.flag === '🇨🇭' ? '1.05rem' : '0.85rem',
+                          display: 'inline-block',
+                          transform: g.flag === '🇨🇭' ? 'scaleX(1.2)' : undefined,
+                        }}
+                      >
+                        {g.flag}
+                      </span>
+                    )}
+                  </div>
+                  <div className="relative h-8 w-8 overflow-hidden rounded-full border border-[#FECE00]/20">
+                    <Image src={OPTIFINISH_LOGO} alt="OptiFinish" fill className="object-cover" />
+                  </div>
+                </div>
                 <h3 className="font-display text-[1.15rem] font-black leading-tight tracking-tight text-white">
                   {g.label}
                 </h3>
@@ -203,9 +232,30 @@ export default function WhatWeOffer() {
               className="group flex flex-col overflow-hidden rounded-[1.2rem] border border-white/[0.14] bg-white/[0.06] transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.22] hover:bg-white/[0.09]"
             >
               <div className="flex flex-col gap-3 p-5">
-                <span className="self-start rounded-full border border-white/[0.18] bg-white/[0.1] px-2.5 py-0.5 text-[0.52rem] font-bold uppercase tracking-[0.18em] text-white/65">
-                  {g.tag}
-                </span>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5">
+                    <span className="self-start rounded-full border border-white/[0.18] bg-white/[0.1] px-2.5 py-0.5 text-[0.52rem] font-bold uppercase tracking-[0.18em] text-white/65">
+                      {g.tag}
+                    </span>
+                    {g.flag && (
+                      <span
+                        className="leading-none opacity-50"
+                        style={{
+                          fontSize: g.flag === '🇨🇭' ? '1.05rem' : '0.85rem',
+                          display: 'inline-block',
+                          transform: g.flag === '🇨🇭' ? 'scaleX(1.2)' : undefined,
+                        }}
+                      >
+                        {g.flag}
+                      </span>
+                    )}
+                  </div>
+                  {g.logo && (
+                    <div className="flex h-7 items-center rounded-md bg-white px-2">
+                      <Image src={g.logo} alt={g.label} width={56} height={18} className="h-[14px] w-auto object-contain" />
+                    </div>
+                  )}
+                </div>
                 <h3 className="font-display text-[1.1rem] font-black leading-tight tracking-tight text-white">
                   {g.label}
                 </h3>
