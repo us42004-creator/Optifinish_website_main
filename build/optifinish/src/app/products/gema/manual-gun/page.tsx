@@ -7,18 +7,27 @@ import Link from 'next/link';
    REUSABLE PRIMITIVES
 ───────────────────────────────────────────────────────────── */
 
-/** Full-bleed viewport image box — drop a real <img> here later */
 function ImageViewport({
   label,
+  src,
   aspect = 'aspect-[16/9]',
   className = '',
   isDark = false,
 }: {
   label: string;
+  src?: string;
   aspect?: string;
   className?: string;
   isDark?: boolean;
 }) {
+  if (src) {
+    return (
+      <div className={`overflow-hidden rounded-[1.1rem] ${className} ${isDark ? 'bg-white/[0.03]' : 'bg-white shadow-[0_8px_24px_rgba(0,0,0,0.06)]'}`}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={src} alt={label} className="h-auto w-full" />
+      </div>
+    );
+  }
   return (
     <div
       className={`relative flex w-full items-center justify-center overflow-hidden rounded-[1.1rem] border ${
@@ -27,7 +36,6 @@ function ImageViewport({
           : 'border-black/[0.07] bg-black/[0.03]'
       } ${aspect} ${className}`}
     >
-      {/* Subtle grid */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
@@ -38,9 +46,7 @@ function ImageViewport({
           opacity: isDark ? 0.04 : 1,
         }}
       />
-      {/* Top accent */}
       <div className="absolute left-0 right-0 top-0 h-[2px] bg-[#FECE00]/25" />
-      {/* Corner badge */}
       <div className={`absolute left-4 top-4 rounded-full border px-2.5 py-1 text-[0.5rem] font-bold uppercase tracking-[0.18em] ${
         isDark ? 'border-white/[0.1] bg-white/[0.05] text-white/30' : 'border-black/[0.08] bg-white/80 text-[#0A0A0A]/40'
       }`}>
@@ -281,7 +287,8 @@ export default function GemaManualGunPage() {
 
             {/* Right — hero image viewport */}
             <ImageViewport
-              label="Manual Powder Coating Gun · hero shot"
+              label="GEMA OptiFlex Pro manual powder coating gun"
+              src="/images/products/gema/manual-gun/gema-optiflex2-02.png"
               aspect="aspect-[4/3]"
             />
           </div>
@@ -388,6 +395,7 @@ export default function GemaManualGunPage() {
             {/* Image viewport */}
             <ImageViewport
               label={MODELS[activeModel].imageLabel}
+              src="/images/products/gema/manual-gun/gema-optiflex2-01.jpg"
               aspect="aspect-[4/3]"
               isDark
             />

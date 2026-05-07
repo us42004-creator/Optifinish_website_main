@@ -27,7 +27,8 @@ export default function GEMAReciproactorsPage() {
         { val: 'DCD', label: 'Dynamic contour detection' },
         { val: '6 guns', label: 'Max mounting (ZA10)' },
       ]}
-      heroImageLabel="GEMA ZA Series Reciprocator · image"
+      heroImageLabel="GEMA ZA Series Reciprocator"
+      heroImageSrc="/images/products/gema/reciprocators/gema-reciprocator-01.jpg"
       enquireSlug="gema-reciprocators"
       backHref="/products/gema"
       backLabel="← Back to GEMA"
@@ -60,6 +61,7 @@ export default function GEMAReciproactorsPage() {
             { l: 'Control', v: 'MagicControl 4.0 compatible' },
           ],
           imageLabel: 'GEMA ZA07/ZA08 · entry reciprocator',
+          imageSrc: '/images/products/gema/reciprocators/gema-reciprocator-02.jpg',
         },
         {
           id: 'za-mid',

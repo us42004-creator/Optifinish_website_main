@@ -58,6 +58,7 @@ export default function DurrEcoPumpPage() {
             { l: 'Drive', v: 'Air-operated piston' },
           ],
           imageLabel: 'Dürr EcoPump HP Series · horizontal piston pumps',
+          imageSrc: '/images/products/durr/ecopump/durr-ecopump-app-01.webp',
         },
         {
           id: 'vp',

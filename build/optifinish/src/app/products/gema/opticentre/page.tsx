@@ -27,7 +27,8 @@ export default function GEMAOptiCentrePage() {
         { val: 'Load cell', label: 'Per-batch tracking' },
         { val: 'Auto clean', label: 'Full cleaning cycle' },
       ]}
-      heroImageLabel="GEMA OptiCentre OC08 · powder management system"
+      heroImageLabel="GEMA OptiCenter powder management system"
+      heroImageSrc="/images/products/gema/opticentre/gema-opticenter-oc01-01.jpg"
       enquireSlug="gema-opticentre"
       backHref="/products/gema"
       backLabel="← Back to GEMA"
@@ -52,6 +53,7 @@ export default function GEMAOptiCentrePage() {
           title: 'Automatic hopper supply',
           body: 'Fresh powder is automatically transported from the storage container to the gun hopper under control of the OC08 — maintaining the correct level at all times without manual filling. The precision load cell records the exact quantity of fresh powder consumed in real time.',
           imageLabel: 'Step 01 · automatic hopper supply and level monitoring',
+          imageSrc: '/images/products/gema/opticentre/gema-opticenter-oc01-02.jpg',
         },
         {
           num: '02',

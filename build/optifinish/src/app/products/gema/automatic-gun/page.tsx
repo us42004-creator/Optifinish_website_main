@@ -27,7 +27,8 @@ export default function GEMAAutomaticGunPage() {
         { val: 'PCC', label: 'Faraday penetration' },
         { val: 'DVC', label: 'Digital volume control' },
       ]}
-      heroImageLabel="GEMA OptiGun GA02/GA03 · automatic gun"
+      heroImageLabel="GEMA OptiGun GA03 automatic powder gun"
+      heroImageSrc="/images/products/gema/automatic-gun/gema-optigun-ga03-01.png"
       enquireSlug="gema-automatic-gun"
       backHref="/products/gema"
       backLabel="← Back to GEMA"
@@ -85,6 +86,7 @@ export default function GEMAAutomaticGunPage() {
           title: 'Powder delivery',
           body: 'Powder is transported from the OptiCenter or hopper to the gun via a controlled Venturi system. DVC (Digital Volume Control) regulates the precise volume reaching each gun independently — ensuring every gun on a multi-gun line applies the same film build.',
           imageLabel: 'Step 01 · powder delivery to gun',
+          imageSrc: '/images/products/gema/automatic-gun/gema-optigun-ga03-02.jpg',
         },
         {
           num: '02',

@@ -50,6 +50,7 @@ export default function DurrBellAtomiserPage() {
           title: 'Bell cup spinning at high speed',
           body: 'Paint is fed to the centre of a rotating bell cup spinning at high speed (typically 15,000–70,000 RPM depending on viscosity and required droplet size). Centrifugal force spreads the paint in a thin film to the cup edge.',
           imageLabel: 'Step 01 · bell cup spinning at high speed — centrifugal atomisation',
+          imageSrc: '/images/products/durr/bell-atomiser/durr-ecobell-app-01.webp',
         },
         {
           num: '02',
