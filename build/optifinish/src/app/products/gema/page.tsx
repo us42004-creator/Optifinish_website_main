@@ -103,6 +103,8 @@ export default function GemaPage() {
         ]}
         theme="light"
         breadcrumbLabel="GEMA"
+        imageSrc="/images/products/gema/gema office.gif"
+        imageAlt="GEMA powder coating equipment — OptiFinish authorised partner India"
       />
 
       {/* Partner note */}
