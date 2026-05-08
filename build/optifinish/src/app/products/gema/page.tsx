@@ -23,7 +23,11 @@ const PRODUCTS = [
     ],
     enquireSlug: 'gema-manual-gun',
     learnMoreHref: '/products/gema/manual-gun',
-    imageSrc: '/images/products/gema/manual-gun/gema-optiflex2-01.jpg',
+    imageSrcs: [
+      { src: '/images/products/gema/manual-gun/optiflex_pro_manual_gun.jpg', label: 'OptiFlex Pro Series' },
+      { src: '/images/products/gema/manual-gun/homepage-img.jpg', label: 'In-booth application' },
+      { src: '/images/products/gema/manual-gun/optiflex-gun.jpeg', label: 'Full system setup' },
+    ],
   },
   {
     name: 'Automatic Powder Coating Gun',
@@ -37,7 +41,11 @@ const PRODUCTS = [
     ],
     enquireSlug: 'gema-automatic-gun',
     learnMoreHref: '/products/gema/automatic-gun',
-    imageSrc: '/images/products/gema/automatic-gun/gema-optigun-ga03-01.png',
+    imageBgDark: true,
+    imageSrcs: [
+      { src: '/images/products/gema/automatic-gun/optigun ga04.png', label: 'OptiGun GA04 automatic gun', fit: 'contain' },
+      { src: '/images/products/gema/automatic-gun/gema automatic gun.jpg', label: 'GEMA automatic gun in use' },
+    ],
   },
   {
     name: 'Reciprocators & Automation Axes',
@@ -51,7 +59,12 @@ const PRODUCTS = [
     ],
     enquireSlug: 'gema-reciprocators',
     learnMoreHref: '/products/gema/reciprocators',
-    imageSrc: '/images/products/gema/reciprocators/gema-reciprocator-01.jpg',
+    imageSrcs: [
+      { src: '/images/products/gema/reciprocators/recip1.jpg', label: 'ZA Series reciprocator', fit: 'contain' },
+      { src: '/images/products/gema/reciprocators/recip4.webp', label: 'Aluminium profile coating' },
+      { src: '/images/products/gema/reciprocators/gema-reciprocator-01.jpg', label: 'GEMA reciprocator system' },
+      { src: '/images/products/gema/reciprocators/gema-za15-01.jpg', label: 'ZA15 reciprocator' },
+    ],
   },
   {
     name: 'OptiCentre Powder Management',
@@ -65,7 +78,11 @@ const PRODUCTS = [
     ],
     enquireSlug: 'gema-opticentre',
     learnMoreHref: '/products/gema/opticentre',
-    imageSrc: '/images/products/gema/opticentre/gema-opticenter-oc01-01.jpg',
+    imageSrcs: [
+      { src: '/images/products/gema/opticentre/powder mangement new.jpg', label: 'OptiCentre OC08 system' },
+      { src: '/images/products/gema/opticentre/powder management new 1.jpg', label: 'OptiCentre in production' },
+      { src: '/images/products/gema/opticentre/powder management new 2.jpg', label: 'Powder management system' },
+    ],
   },
 ];
 

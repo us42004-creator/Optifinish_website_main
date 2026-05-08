@@ -23,7 +23,11 @@ const GUNS = [
     ],
     enquireSlug: 'durr-cup-gun',
     learnMoreHref: '/products/durr/cup-gun',
-    imageSrc: '/images/products/durr/cup-gun/ecogun_910_durr.jpg',
+    variantTags: ['116 — General Purpose', '910 — Fine Finish'],
+    imageSrcs: [
+      { src: '/images/products/durr/cup-gun/ecogun_116.png',      label: 'EcoGun 116 — General Purpose' },
+      { src: '/images/products/durr/cup-gun/ecogun_910_durr.jpg', label: 'EcoGun 910 — Fine Finish' },
+    ],
   },
   {
     name: 'HVLP Spray Gun',
@@ -37,23 +41,31 @@ const GUNS = [
     ],
     enquireSlug: 'durr-hvlp-gun',
     learnMoreHref: '/products/durr/hvlp-gun',
+    imageSrc: '/images/products/durr/hvlp-gun/hvlp.png',
+    imageContain: true,
   },
   {
     name: 'Airless Spray Gun',
-    subtitle: 'EcoGun 246 / EcoGun 249 — High-Pressure',
+    subtitle: 'EcoGun AL MAN / EcoGun AL AUTO — High-Pressure',
     description:
-      'A high-pressure airless spray gun built for anti-corrosion work on steel structures and heavy-duty wood coating — with modular, reversible nozzles for different output requirements.',
+      'A high-pressure airless spray gun built for anti-corrosion work on steel structures and heavy-duty industrial coating — with modular, reversible nozzles for different output requirements.',
     specs: [
-      'EcoGun 246 / 249: hydraulic atomisation — no carrier air needed',
+      'EcoGun AL MAN (manual) & AL AUTO (automatic) — hydraulic atomisation, no carrier air',
       'Modular reversible nozzles in multiple tip sizes for different spray patterns',
       'Designed for anti-corrosion coatings on structural steel and industrial substrates',
     ],
     enquireSlug: 'durr-airless-gun',
     learnMoreHref: '/products/durr/airless-gun',
+    variantTags: ['AL MAN — Manual', 'AL AUTO — Automatic'],
+    imageSrcs: [
+      { src: '/images/products/durr/airless-gun/Airless manual.jpg',       label: 'EcoGun AL MAN — Manual' },
+      { src: '/images/products/durr/airless-gun/durr-ecogun-al-auto-01.jpg', label: 'EcoGun AL AUTO — Automatic' },
+    ],
   },
   {
     name: 'Air Assist Spray Gun',
-    subtitle: 'EcoGun AA — High-Viscosity Application',
+    subtitle: 'EcoGun 2100 / EcoGun AA — Air Assist',
+    variantTags: ['2100 — Manual', 'AA — Automatic'],
     description:
       'Designed for high-viscosity materials under demanding surface quality requirements — the preferred choice for solid wood furniture finishing and applications requiring a fine, controlled finish.',
     specs: [
@@ -63,6 +75,10 @@ const GUNS = [
     ],
     enquireSlug: 'durr-air-assist-gun',
     learnMoreHref: '/products/durr/air-assist-gun',
+    imageSrcs: [
+      { src: '/images/products/durr/air-assist-gun/durr-ecogun-aa-man-01.jpg',  label: 'EcoGun 2100 — Manual' },
+      { src: '/images/products/durr/air-assist-gun/durr-ecogun-aa-auto-01.jpg', label: 'EcoGun AA — Automatic' },
+    ],
   },
   {
     name: 'Electrostatic Spray Gun',
@@ -76,6 +92,12 @@ const GUNS = [
     ],
     enquireSlug: 'durr-electrostatic-gun',
     learnMoreHref: '/products/durr/electrostatic-gun',
+    variantTags: ['DC — Direct Charge', 'EC — External Charge'],
+    imageSrcs: [
+      { src: '/images/products/durr/electrostatic-gun/durr-ecogun-dc-01.webp', label: 'EcoGun AS MAN DC — Direct Charge' },
+      { src: '/images/products/durr/electrostatic-gun/durr-ecogun-ec-01.webp', label: 'EcoGun AS MAN EC — External Charge' },
+    ],
+    imageContain: true,
   },
   {
     name: 'Bell Atomiser',
@@ -89,6 +111,7 @@ const GUNS = [
     ],
     enquireSlug: 'durr-bell-atomiser',
     learnMoreHref: '/products/durr/bell-atomiser',
+    imageSrc: '/images/products/durr/bell-atomiser/durr-ecobell-app-01.webp',
   },
 ];
 
@@ -106,6 +129,12 @@ const PUMPS_DOSING = [
     ],
     enquireSlug: 'durr-ecopump',
     learnMoreHref: '/products/durr/ecopump',
+    imageSrcs: [
+      { src: '/images/products/durr/ecopump/csm_duerr-pumps-ecopump-hp.webp',  label: 'EcoPump HP — Horizontal Piston' },
+      { src: '/images/products/durr/ecopump/csm_duerr-pumps-ecopump-vp.webp',  label: 'EcoPump VP — High Pressure' },
+      { src: '/images/products/durr/ecopump/csm_duerr-pumps-ecopump-ad.webp',  label: 'EcoPump AD — Diaphragm' },
+      { src: '/images/products/durr/ecopump/csm_duerr-pumps-ecopump-vp-package.webp', label: 'EcoPump Package — Pre-Assembled' },
+    ],
   },
   {
     name: '2K Dosing System',
@@ -120,6 +149,7 @@ const PUMPS_DOSING = [
     ],
     enquireSlug: 'durr-ecodose-2k',
     learnMoreHref: '/products/durr/ecodose-2k',
+    imageSrc: '/images/products/durr/ecodose-2k/ecodoze_2k.jpg',
   },
   {
     name: '3K Dosing System',
@@ -134,6 +164,7 @@ const PUMPS_DOSING = [
     ],
     enquireSlug: 'durr-ecodose-3k',
     learnMoreHref: '/products/durr/ecodose-3k',
+    imageSrc: '/images/products/durr/ecodose-2k/csm_duerr-ecodose2k.webp',
   },
 ];
 
@@ -154,6 +185,8 @@ export default function DurrPage() {
         ]}
         theme="light"
         breadcrumbLabel="Dürr"
+        imageSrc="/images/products/durr/dURR HOMEPAGE.jpeg"
+        imageAlt="Dürr liquid coating equipment in operation"
       />
 
       {/* Partner note */}

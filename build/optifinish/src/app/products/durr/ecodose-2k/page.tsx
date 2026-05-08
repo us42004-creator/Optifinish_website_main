@@ -27,7 +27,8 @@ export default function DurrEcoDose2KPage() {
         { val: 'Real-time', label: 'Pot life monitoring' },
       ]}
       heroImageLabel="Dürr EcoDose 2K · two-component electronic dosing"
-      heroImageSrc="/images/products/durr/ecodose-2k/durr-ecodose2k-01.webp"
+      heroImageAspect="aspect-[4/3]"
+      heroVideoId="_pYiT0MfKmM"
       enquireSlug="durr-ecodose-2k"
       backHref="/products/durr"
       backLabel="← Back to Dürr"
@@ -57,19 +58,24 @@ export default function DurrEcoDose2KPage() {
           title: 'Precision ratio control',
           body: 'The EcoDose 2K controls the output of each component to maintain the programmed mix ratio — compensating for any viscosity or pressure variations in the supply lines. The system continuously monitors actual vs programmed ratio and alerts if deviation exceeds set limits. Pot life is tracked in real time.',
           imageLabel: 'Step 02 · precision ratio control and real-time monitoring',
-          imageSrc: '/images/products/durr/ecodose-2k/durr-ecodose2k-ratio-01.webp',
+          imageSrc: '/images/products/durr/ecodose-2k/durr-2acu.jpg',
         },
         {
           num: '03',
           title: 'Colour change and flushing',
           body: 'When a colour change is required, the EcoDose 2K flushes each component circuit independently — no premixing chamber means no mixed paint to purge. Component A flushes without contaminating component B\'s circuit. Fast, low-waste colour change is built into the system design.',
           imageLabel: 'Step 03 · independent flushing circuits — fast colour change without waste',
-          imageSrc: '/images/products/durr/ecodose-2k/durr-ecodose2k-flush-01.webp',
+          imageSrc: '/images/products/durr/ecodose-2k/durr-step3.webp',
         },
       ]}
       howItWorksTitle="Measure, ratio, flush"
 
-      applicationImageSrc="/images/products/durr/ecodose-2k/durr-ecodose2k-app-01.webp"
+      applicationImages={[
+        { src: '/images/products/durr/bell-atomiser/application/car spray.jpeg', label: 'Automated production paint line' },
+        { src: '/images/products/durr/ecodose-2k/application/automotive-spray-booth.jpg', label: 'Automotive 2K topcoat — spray booth' },
+        { src: '/images/products/durr/ecodose-2k/application/industrial-2k-coating.jpg', label: 'Industrial 2K structural coating' },
+        { src: '/images/products/durr/ecodose-2k/application/industrial-spray-metal.jpg', label: '2K epoxy & primer on structural steel' },
+      ]}
 
       specRows={[
         { l: 'Flow rate range', v: '40–4,000 cc/min — covers touch-up to full production' },

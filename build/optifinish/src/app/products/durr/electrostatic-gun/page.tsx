@@ -22,7 +22,7 @@ export default function DurrElectrostaticGunPage() {
       headlineAccent="Wrap-around coverage."
       subline="Electrostatic manual spray guns that charge atomised paint particles — wrapping them around the part surface electrostatically and significantly reducing overspray through electrostatic attraction. DC for solvent-based, EC for water-based formulations."
       heroImageLabel="Dürr EcoGun AS MAN DC/EC · electrostatic spray gun"
-      heroImageSrc="/images/products/durr/electrostatic-gun/durr-ecogun-as-auto-01.jpg"
+      heroImageSrc="/images/products/durr/electrostatic-gun/csm_duerr-ecogun-as-man-dc-ec_7a041a900b.webp"
       enquireSlug="durr-electrostatic-gun"
       backHref="/products/durr"
       backLabel="← Back to Dürr"
@@ -73,7 +73,14 @@ export default function DurrElectrostaticGunPage() {
       ]}
       variantsSectionTitle="DC for solvent-based, EC for water-based"
 
-      applicationImageSrc="/images/products/durr/general/durr-spray-booth-interior-01.webp"
+      applicationImages={[
+        { src: '/images/products/durr/electrostatic-gun/appication/car spray.jpeg', label: 'Automotive body & component painting' },
+        { src: '/images/products/durr/electrostatic-gun/appication/consumer goods and applicances.jpg', label: 'Consumer goods & appliance painting' },
+        { src: '/images/products/durr/electrostatic-gun/appication/industrial-metal-parts-coating.jpg', label: 'General industrial manufacturing' },
+        { src: '/images/products/durr/electrostatic-gun/appication/metal-fabrication-spray.jpg', label: 'Metal fabrication coating' },
+        { src: '/images/products/durr/electrostatic-gun/appication/automated-spray-line.jpg', label: 'Automated industrial spray line' },
+        { src: '/images/products/durr/electrostatic-gun/appication/appliance-coating-line.jpg', label: 'Appliance & furniture coating line' },
+      ]}
 
       specRows={[
         { l: 'DC variant', v: 'EcoGun AS MAN DC — internal direct charge electrode for solvent-based paints' },

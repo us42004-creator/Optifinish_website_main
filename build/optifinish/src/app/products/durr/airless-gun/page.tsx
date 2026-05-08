@@ -1,9 +1,9 @@
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
 
 export const metadata = {
-  title: 'Dürr Airless Spray Gun | EcoGun 246/249 | OptiFinish',
+  title: 'Dürr Airless Spray Gun | EcoGun AL MAN / AL AUTO | OptiFinish',
   description:
-    'Dürr EcoGun 246 and 249 airless spray guns for anti-corrosion primers, epoxies, and structural steel coating. High-pressure hydraulic atomisation. Reversible tip system.',
+    'Dürr EcoGun AL MAN and EcoGun AL AUTO airless spray guns for anti-corrosion primers, epoxies, and structural steel coating. High-pressure hydraulic atomisation. Reversible tip system.',
 };
 
 export default function DurrAirlessGunPage() {
@@ -17,12 +17,14 @@ export default function DurrAirlessGunPage() {
         { label: 'Airless Spray Gun', href: '/products/durr/airless-gun' },
       ]}
       badge="Dürr — Liquid Coating Gun"
-      eyebrow="EcoGun 246 / EcoGun 249"
+      eyebrow="EcoGun AL MAN / EcoGun AL AUTO"
       headline="High pressure."
       headlineAccent="No carrier air."
       subline="High-pressure airless spray guns for anti-corrosion work on structural steel, heavy machinery, and heavy-duty coating — atomising paint by forcing it at high pressure through a precision tip orifice, with no air carrier required."
-      heroImageLabel="Dürr EcoGun 246 / 249 · airless spray gun"
-      heroImageSrc="/images/products/durr/airless-gun/durr-ecogun-al-auto-01.jpg"
+      heroImageLabel="Dürr EcoGun AL MAN / AL AUTO · airless spray gun"
+      heroImageAspect="aspect-[4/3]"
+      heroVideoId="uxASgFWWxpg"
+      heroVideoStart={9}
       enquireSlug="durr-airless-gun"
       backHref="/products/durr"
       backLabel="← Back to Dürr"
@@ -35,48 +37,58 @@ export default function DurrAirlessGunPage() {
         'Modular reversible tip system: multiple tip sizes for different spray patterns and output rates, field-changeable',
         'Designed for anti-corrosion primers, epoxies, zinc-rich primers, and bituminous coatings on structural steel',
         'High material flow rate — suited for large-area coverage at high production speeds',
-        'EcoGun 246 and 249 cover different output and pattern width requirements',
+        'EcoGun AL MAN for manual operation, EcoGun AL AUTO for automated line integration',
         'Compatible with EcoPump VP high-pressure pump packages for high-viscosity material delivery',
       ]}
 
       variants={[
         {
-          id: 'ecogun-246',
-          label: 'EcoGun 246',
-          tag: 'Standard Airless',
-          headline: 'Standard high-pressure airless for anti-corrosion work.',
-          body: 'The EcoGun 246 is the standard airless model for structural steel anti-corrosion coating — reliable, field-serviceable, with reversible tip system for pattern adjustment without stopping production.',
+          id: 'ecogun-al-man',
+          label: 'EcoGun AL MAN',
+          tag: 'Manual Airless',
+          headline: 'Manual high-pressure airless for anti-corrosion work.',
+          body: 'The EcoGun AL MAN is the manual airless variant for structural steel anti-corrosion coating — reliable, field-serviceable, with reversible tip system for pattern adjustment without stopping production. Operated by hand for flexible, targeted application.',
           specs: [
             { l: 'Atomisation', v: 'High-pressure hydraulic — no air carrier' },
+            { l: 'Operation', v: 'Manual — hand-held application' },
             { l: 'Tip system', v: 'Reversible — multiple sizes for pattern and output control' },
-            { l: 'Best for', v: 'Structural steel anti-corrosion coating, epoxies' },
+            { l: 'Best for', v: 'Structural steel anti-corrosion coating, epoxies, site work' },
             { l: 'Compatible pump', v: 'Dürr EcoPump VP series' },
           ],
-          imageLabel: 'Dürr EcoGun 246 · standard airless gun',
+          imageLabel: 'Dürr EcoGun AL MAN · manual airless gun',
           imageSrc: '/images/products/durr/airless-gun/durr-ecogun-al246-01.jpg',
         },
         {
-          id: 'ecogun-249',
-          label: 'EcoGun 249',
-          tag: 'Heavy Duty',
-          headline: 'Higher output for demanding industrial coating.',
-          body: 'The EcoGun 249 is a heavier-duty variant with higher material throughput — suited for larger areas, faster coverage targets, and high-build coating applications where the 246 output rate is a constraint.',
+          id: 'ecogun-al-auto',
+          label: 'EcoGun AL AUTO',
+          tag: 'Automatic Airless',
+          headline: 'Automatic airless for integrated coating lines.',
+          body: 'The EcoGun AL AUTO is designed for integration into automated coating systems — reciprocators, gantries, and conveyorised lines. Higher throughput, consistent trigger timing, and remote fluid control make it the choice for production-volume anti-corrosion and industrial coating operations.',
           specs: [
-            { l: 'Output', v: 'Higher material flow rate vs EcoGun 246' },
-            { l: 'Tip system', v: 'Reversible — compatible with standard 246/249 tips' },
-            { l: 'Best for', v: 'Large structural steel areas, high-build coatings, fast coverage' },
+            { l: 'Atomisation', v: 'High-pressure hydraulic — no air carrier' },
+            { l: 'Operation', v: 'Automatic — reciprocator and line integration' },
+            { l: 'Tip system', v: 'Reversible — compatible with standard AL series tips' },
+            { l: 'Best for', v: 'Automated lines, large structural steel areas, high-build coatings' },
             { l: 'Compatible pump', v: 'Dürr EcoPump VP series (high-pressure)' },
           ],
-          imageLabel: 'Dürr EcoGun 249 · heavy duty airless gun',
-          imageSrc: '/images/products/durr/airless-gun/durr-ecogun-al249-01.jpg',
+          imageLabel: 'Dürr EcoGun AL AUTO · automatic airless gun',
+          imageSrc: '/images/products/durr/airless-gun/durr-ecogun-al-auto-01.jpg',
         },
       ]}
-      variantsSectionTitle="EcoGun 246 or 249 — match output to area"
+      variantsSectionTitle="EcoGun AL MAN or AL AUTO — manual or automated"
 
-      applicationImageSrc="/images/products/durr/airless-gun/durr-airless-inuse-01.webp"
+      applicationImages={[
+        { src: '/images/products/durr/airless-gun/Application/structural_steel_corrosion.webp', label: 'Structural steel anti-corrosion coating' },
+        { src: '/images/products/durr/airless-gun/Application/zinc rich primer.jpeg', label: 'Zinc-rich primer coating' },
+        { src: '/images/products/durr/airless-gun/Application/bitumen coating.jpg', label: 'Bitumen & rubberised coating' },
+        { src: '/images/products/durr/airless-gun/Application/heavy machinery.JPG', label: 'Heavy machinery painting' },
+        { src: '/images/products/durr/airless-gun/Application/steel fabrication.avif', label: 'Steel fabrication coating' },
+        { src: '/images/products/durr/airless-gun/Application/industrial high build projects.jpeg', label: 'Industrial high-build projects' },
+      ]}
 
       specRows={[
         { l: 'Atomisation type', v: 'High-pressure hydraulic — no carrier air' },
+        { l: 'Models', v: 'EcoGun AL MAN (manual) · EcoGun AL AUTO (automatic)' },
         { l: 'Tip system', v: 'Modular reversible — multiple tip sizes, field-changeable' },
         { l: 'Materials', v: 'Anti-corrosion primers, epoxies, zinc-rich, bituminous coatings' },
         { l: 'Application', v: 'Structural steel, heavy machinery, large-area coating' },
@@ -126,7 +138,7 @@ export default function DurrAirlessGunPage() {
 
       ctaHeadline="Specify your airless system."
       ctaAccent="Gun, pump, and booth together."
-      ctaBody="Talk to OptiFinish about your coating material, substrate, and coverage area — we'll specify the right EcoGun model, tip size, and EcoPump configuration."
+      ctaBody="Talk to OptiFinish about your coating material, substrate, and coverage area — we'll specify the right EcoGun AL model, tip size, and EcoPump configuration."
     />
   );
 }

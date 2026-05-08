@@ -22,8 +22,9 @@ export default function DurrCupGunPage() {
       headlineAccent="Gravity feed. Two models."
       subline="Manual gravity-feed air spray guns for touch-up work, furniture lacquering, and precision area coating — the EcoGun 116 for general-purpose use, the EcoGun 910 for fine-finish applications demanding superior atomisation quality."
       heroImageLabel="Dürr EcoGun 116 / 910 · cup gun"
-      heroImageSrc="/images/products/durr/cup-gun/cup_gun_durr.webp"
       heroImageAspect="aspect-[4/3]"
+      heroVideoId="_ZlqZADtRq4"
+      heroVideoStart={9}
       enquireSlug="durr-cup-gun"
       backHref="/products/durr"
       backLabel="← Back to Dürr"

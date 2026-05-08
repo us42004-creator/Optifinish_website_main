@@ -19,6 +19,7 @@ export interface Variant {
   specs: SpecRow[];
   imageLabel: string;
   imageSrc?: string;
+  videoId?: string;
 }
 
 export interface Step {
@@ -54,6 +55,9 @@ export interface ProductPageTemplateProps {
   heroImageLabel: string;
   heroImageSrc?: string;
   heroImageAspect?: string;
+  heroImageCover?: boolean;
+  heroVideoId?: string;
+  heroVideoStart?: number;
   enquireSlug: string;
   backHref: string;
   backLabel: string;
@@ -64,9 +68,13 @@ export interface ProductPageTemplateProps {
   problemBody: string;
   benefits: string[];
 
+  /* S2b — Tech Videos (optional standalone section) */
+  techVideos?: { eyebrow?: string; headline: string; videos: { id: string; label: string; sub?: string }[] };
+
   /* S3 — Variants (optional) */
   variants?: Variant[];
   variantsSectionTitle?: string;
+  variantImageCover?: boolean;
 
   /* S4 — How It Works (optional) */
   steps?: Step[];
@@ -77,7 +85,7 @@ export interface ProductPageTemplateProps {
 
   /* S6 — Applications */
   applications: string[];
-  applicationImages?: { src: string; label: string }[];
+  applicationImages?: { src: string; label: string; fit?: 'cover' | 'contain' }[];
 
   /* S7 — Compatibility */
   compatibilityTags: string[];
@@ -105,25 +113,30 @@ function ImageViewport({
   isDark = false,
   aspect = 'aspect-[16/9]',
   className = '',
+  cover = false,
+  noBg = false,
 }: {
   label: string;
   src?: string;
   isDark?: boolean;
   aspect?: string;
   className?: string;
+  cover?: boolean;
+  noBg?: boolean;
 }) {
   if (src) {
     return (
       <div
         className={`relative overflow-hidden rounded-[1.1rem] ${aspect} ${className} ${
-          isDark ? 'bg-white/[0.03]' : 'bg-white shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
+          noBg ? '' : isDark ? 'bg-white/[0.03]' : 'bg-white shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
         }`}
       >
         <Image
           src={src}
           alt={label}
           fill
-          className="object-contain"
+          quality={90}
+          className={cover ? 'object-cover' : 'object-contain'}
           sizes="(max-width: 768px) 100vw, 50vw"
         />
       </div>
@@ -222,6 +235,9 @@ export default function ProductPageTemplate({
   heroImageLabel,
   heroImageSrc,
   heroImageAspect,
+  heroImageCover = false,
+  heroVideoId,
+  heroVideoStart = 0,
   enquireSlug,
   backHref,
   backLabel,
@@ -229,8 +245,10 @@ export default function ProductPageTemplate({
   problemAccent,
   problemBody,
   benefits,
+  techVideos,
   variants,
   variantsSectionTitle,
+  variantImageCover = false,
   steps,
   howItWorksTitle,
   specRows,
@@ -246,6 +264,17 @@ export default function ProductPageTemplate({
 }: ProductPageTemplateProps) {
   const [activeVariant, setActiveVariant] = useState(0);
   const [activeStep, setActiveStep] = useState(0);
+  const [videoMuted, setVideoMuted] = useState(true);
+  const [showSoundBtn, setShowSoundBtn] = useState(false);
+  const videoRef = useRef<HTMLIFrameElement>(null);
+
+  const toggleSound = () => {
+    const cmd = videoMuted ? 'unMute' : 'mute';
+    videoRef.current?.contentWindow?.postMessage(
+      JSON.stringify({ event: 'command', func: cmd, args: [] }), '*'
+    );
+    setVideoMuted(!videoMuted);
+  };
 
   const isLight = theme === 'light';
   const hasVariants = !!(variants && variants.length > 0);
@@ -267,8 +296,6 @@ export default function ProductPageTemplate({
 
   const secBg = (name: string): string => {
     if (name === 'cta') return '#FECE00';
-    // Force variants section always dark — improves contrast for light-themed products
-    if (name === 'variants') return '#070809';
     const pos = renderedSections.indexOf(name) + 1;
     if (isLight) return pos % 2 === 1 ? '#f1efea' : '#070809';
     return pos % 2 === 1 ? '#070809' : '#f1efea';
@@ -277,8 +304,6 @@ export default function ProductPageTemplate({
   /* Light bg: light-theme on odd positions, dark-theme on even positions */
   const secIsLight = (name: string): boolean => {
     if (name === 'cta') return true;
-    // Force variants section always dark
-    if (name === 'variants') return false;
     const pos = renderedSections.indexOf(name) + 1;
     if (isLight) return pos % 2 === 1;
     return pos % 2 === 0;
@@ -359,7 +384,7 @@ export default function ProductPageTemplate({
         <section className="relative">
         <div className="relative z-10 mx-auto max-w-7xl px-5 py-12 md:py-20 md:px-8 lg:py-28">
 
-          <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-20">
+          <div className={`grid gap-12 lg:gap-20 ${heroVideoId ? 'items-stretch lg:grid-cols-[1fr_1.3fr]' : 'lg:grid-cols-[1fr_1fr]'}`}>
             {/* Left — Text */}
             <div className="flex flex-col justify-center">
               <span
@@ -417,10 +442,42 @@ export default function ProductPageTemplate({
               </div>
             </div>
 
-            {/* Right — Hero image */}
-            <div className="flex items-center">
-              <ImageViewport label={heroImageLabel} src={heroImageSrc} isDark={!hero} className="w-full" aspect={heroImageAspect} />
-            </div>
+            {/* Right — Hero image or video */}
+            {heroVideoId ? (
+              <div
+                className="relative min-h-[460px] w-full overflow-hidden rounded-[1.1rem] lg:h-full bg-black"
+                onMouseEnter={() => setShowSoundBtn(true)}
+                onMouseLeave={() => setShowSoundBtn(false)}
+              >
+                <iframe
+                  ref={videoRef}
+                  src={`https://www.youtube.com/embed/${heroVideoId}?autoplay=1&mute=1&loop=1&playlist=${heroVideoId}&controls=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&iv_load_policy=3&showinfo=0${heroVideoStart ? `&start=${heroVideoStart}` : ''}`}
+                  title={heroImageLabel}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="border-0"
+                  style={{ position: 'absolute', top: '-16%', left: '0', width: '100%', height: '132%' }}
+                />
+                {/* Transparent overlay — blocks YouTube hover UI from appearing */}
+                <div className="absolute inset-0 z-[5]" />
+                <button
+                  onClick={toggleSound}
+                  className={`absolute bottom-4 right-4 z-10 flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[0.6rem] font-bold uppercase tracking-[0.14em] backdrop-blur-sm transition-all duration-200 ${
+                    showSoundBtn ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                  } ${
+                    videoMuted
+                      ? 'border-white/20 bg-black/50 text-white/60 hover:border-white/40 hover:text-white/90'
+                      : 'border-[#FECE00]/40 bg-black/50 text-[#FECE00] hover:border-[#FECE00]/70'
+                  }`}
+                >
+                  {videoMuted ? (<><span>🔇</span> Sound off</>) : (<><span>🔊</span> Sound on</>)}
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center">
+                <ImageViewport label={heroImageLabel} src={heroImageSrc} isDark={!hero} className="w-full" aspect={heroImageAspect} cover={heroImageCover} />
+              </div>
+            )}
           </div>
         </div>
         </section>
@@ -458,6 +515,52 @@ export default function ProductPageTemplate({
           </div>
         </div>
       </section>
+
+      {/* ══════════════════════════════════════════════════════
+          S2b — TECH VIDEOS (optional)
+      ══════════════════════════════════════════════════════ */}
+      {techVideos && (
+        <section style={{ background: secBg('techVideos') }} className="relative overflow-hidden">
+          {isLight ? <LightGridTexture /> : <GridTexture />}
+          <div className="relative z-10 mx-auto max-w-7xl px-5 py-16 md:py-20 md:px-8">
+            {techVideos.eyebrow && (
+              <p className={`mb-2 text-[0.6rem] font-bold uppercase tracking-[0.26em] ${cEye(isLight)}`}>
+                {techVideos.eyebrow}
+              </p>
+            )}
+            <h2 className={`mb-10 font-display text-[1.8rem] font-black leading-tight tracking-tight ${cTx(isLight)}`}>
+              {techVideos.headline}
+            </h2>
+            <div className={`grid gap-6 ${techVideos.videos.length === 2 ? 'md:grid-cols-2' : 'md:grid-cols-3'}`}>
+              {techVideos.videos.map((v) => (
+                <div key={v.id} className={`overflow-hidden rounded-[1.1rem] border ${isLight ? 'border-black/[0.08] bg-white/60' : 'border-white/[0.07] bg-white/[0.03]'}`}>
+                  <div className="relative aspect-[16/9] w-full overflow-hidden bg-black">
+                    <iframe
+                      src={`https://www.youtube.com/embed/${v.id}?autoplay=1&mute=1&loop=1&playlist=${v.id}&controls=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&iv_load_policy=3&showinfo=0`}
+                      title={v.label}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="border-0"
+                      style={{ position: 'absolute', top: '-16%', left: '0', width: '100%', height: '132%' }}
+                    />
+                    <div className="absolute inset-0 z-[5]" />
+                  </div>
+                  <div className="px-5 py-4">
+                    <p className={`text-[0.82rem] font-bold leading-snug ${isLight ? 'text-[#0A0A0A]' : 'text-white'}`}>
+                      {v.label}
+                    </p>
+                    {v.sub && (
+                      <p className={`mt-1 text-[0.68rem] ${isLight ? 'text-[#0A0A0A]/45' : 'text-white/40'}`}>
+                        {v.sub}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ══════════════════════════════════════════════════════
           S3 — VARIANTS (conditional)
@@ -503,47 +606,53 @@ export default function ProductPageTemplate({
               ))}
             </div>
 
-            {/* Active variant detail */}
+            {/* Active variant detail — card always dark */}
             {currVariant && (
-              <div
-                className={`grid gap-8 rounded-[1.2rem] border p-6 md:p-8 lg:grid-cols-[1fr_1fr] lg:gap-12 ${cBdr(vars)}`}
-              >
+              <div className="grid gap-8 rounded-[1.2rem] border border-white/[0.08] bg-[#070809] p-6 md:p-8 lg:grid-cols-[1fr_1fr] lg:gap-12">
                 <div>
-                  <span
-                    className={`mb-3 inline-block rounded-full px-3 py-1 text-[0.52rem] font-bold uppercase tracking-[0.14em] ${
-                      vars
-                        ? 'bg-[#0A0A0A]/[0.06] text-[#0A0A0A]/55'
-                        : 'bg-[#FECE00]/10 text-[#FECE00]/80'
-                    }`}
-                  >
+                  <span className="mb-3 inline-block rounded-full bg-[#FECE00]/10 px-3 py-1 text-[0.52rem] font-bold uppercase tracking-[0.14em] text-[#FECE00]/80">
                     {currVariant.tag}
                   </span>
-                  <h3
-                    className={`font-display text-[1.5rem] font-black leading-tight tracking-tight ${cTx(vars)}`}
-                  >
+                  <h3 className="font-display text-[1.5rem] font-black leading-tight tracking-tight text-white">
                     {currVariant.headline}
                   </h3>
-                  <p className={`mt-3 text-[0.84rem] leading-relaxed ${cBody(vars)}`}>
+                  <p className="mt-3 text-[0.84rem] leading-relaxed text-white/55">
                     {currVariant.body}
                   </p>
-                  <ul className={`mt-4 flex flex-col gap-2.5 border-t pt-4 ${cBdr(vars)}`}>
+                  <ul className="mt-4 flex flex-col gap-2.5 border-t border-white/[0.08] pt-4">
                     {currVariant.specs.map((sp) => (
                       <li
                         key={sp.l}
-                        className={`flex justify-between gap-6 text-[0.72rem] ${cBody(vars)}`}
+                        className="flex justify-between gap-6 text-[0.72rem] text-white/55"
                       >
                         <span className="opacity-70">{sp.l}</span>
-                        <span className={`text-right font-semibold ${cTx(vars)}`}>{sp.v}</span>
+                        <span className="text-right font-semibold text-white">{sp.v}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
-                <ImageViewport
-                  label={currVariant.imageLabel}
-                  src={currVariant.imageSrc}
-                  isDark={!vars}
-                  aspect="aspect-[4/3]"
-                />
+                {currVariant.videoId ? (
+                  <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[1.1rem] bg-black">
+                    <iframe
+                      src={`https://www.youtube.com/embed/${currVariant.videoId}?autoplay=1&mute=1&loop=1&playlist=${currVariant.videoId}&controls=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&iv_load_policy=3&showinfo=0`}
+                      title={currVariant.imageLabel}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="border-0"
+                      style={{ position: 'absolute', top: '-16%', left: '0', width: '100%', height: '132%' }}
+                    />
+                    <div className="absolute inset-0 z-[5]" />
+                  </div>
+                ) : (
+                  <ImageViewport
+                    label={currVariant.imageLabel}
+                    src={currVariant.imageSrc}
+                    isDark={true}
+                    aspect="aspect-[4/3]"
+                    cover={variantImageCover}
+                    noBg
+                  />
+                )}
               </div>
             )}
           </div>
@@ -588,32 +697,26 @@ export default function ProductPageTemplate({
               ))}
             </div>
 
-            {/* Active step detail */}
+            {/* Active step detail — always dark card */}
             {currStep && (
-              <div
-                className={`grid gap-8 rounded-[1.2rem] border p-6 md:p-8 lg:grid-cols-[1fr_1fr] lg:gap-12 ${cBdr(stps)}`}
-              >
+              <div className="grid gap-8 rounded-[1.2rem] border border-white/[0.08] bg-[#070809] p-6 md:p-8 lg:grid-cols-[1fr_1fr] lg:gap-12">
                 <div>
-                  <div
-                    className={`mb-3 font-display text-[2rem] font-black leading-none md:text-[3rem] ${
-                      stps ? 'text-[#0A0A0A]/10' : 'text-white/10'
-                    }`}
-                  >
+                  <div className="mb-3 font-display text-[2rem] font-black leading-none text-white/10 md:text-[3rem]">
                     {currStep.num}
                   </div>
-                  <h3
-                    className={`font-display text-[1.5rem] font-black leading-tight tracking-tight ${cTx(stps)}`}
-                  >
+                  <h3 className="font-display text-[1.5rem] font-black leading-tight tracking-tight text-white">
                     {currStep.title}
                   </h3>
-                  <p className={`mt-3 text-[0.85rem] leading-relaxed ${cBody(stps)}`}>
+                  <p className="mt-3 text-[0.85rem] leading-relaxed text-white/55">
                     {currStep.body}
                   </p>
                 </div>
                 <ImageViewport
                   label={currStep.imageLabel ?? `Step ${currStep.num} · ${currStep.title}`}
-                  isDark={!stps}
+                  src={currStep.imageSrc}
+                  isDark={true}
                   aspect="aspect-[4/3]"
+                  cover
                 />
               </div>
             )}
@@ -702,7 +805,7 @@ export default function ProductPageTemplate({
                         src={img.src}
                         alt={img.label}
                         fill
-                        className="object-cover"
+                        className={img.fit === 'contain' ? 'object-contain' : 'object-cover'}
                         sizes="(max-width: 768px) 100vw, 700px"
                       />
                     </div>

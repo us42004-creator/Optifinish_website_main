@@ -28,7 +28,8 @@ export default function GEMAOptiCentrePage() {
         { val: 'Auto clean', label: 'Full cleaning cycle' },
       ]}
       heroImageLabel="GEMA OptiCenter powder management system"
-      heroImageSrc="/images/products/gema/opticentre/gema-opticenter-oc01-01.jpg"
+      heroVideoId="GhFFNF4Ls2k"
+      heroVideoStart={9}
       enquireSlug="gema-opticentre"
       backHref="/products/gema"
       backLabel="← Back to GEMA"
@@ -53,7 +54,7 @@ export default function GEMAOptiCentrePage() {
           title: 'Automatic hopper supply',
           body: 'Fresh powder is automatically transported from the storage container to the gun hopper under control of the OC08 — maintaining the correct level at all times without manual filling. The precision load cell records the exact quantity of fresh powder consumed in real time.',
           imageLabel: 'Step 01 · automatic hopper supply and level monitoring',
-          imageSrc: '/images/products/gema/opticentre/gema-opticenter-oc01-02.jpg',
+          imageSrc: '/images/products/gema/opticentre/powder management new 1.jpg',
         },
         {
           num: '02',
@@ -84,7 +85,13 @@ export default function GEMAOptiCentrePage() {
         { l: 'Supplied by', v: 'OptiFinish — authorised GEMA partner, India' },
       ]}
 
-      applicationImageSrc="/images/products/gema/opticentre/gema-opticenter-app-01.jpg"
+      applicationImages={[
+        { src: '/images/products/gema/automatic-gun/application/high volume line.avif', label: 'High-volume multi-colour coating line' },
+        { src: '/images/products/gema/opticentre/powder management new 2.jpg', label: 'Powder consumption tracking & cost control' },
+        { src: '/images/products/gema/automatic-gun/application/automotive components.jpg', label: 'Automotive & white goods manufacturing' },
+        { src: '/images/products/gema/reciprocators/application/recip4.webp', label: 'Aluminium profile lines' },
+        { src: '/images/products/gema/reciprocators/recip2.jpg', label: 'Integrated OptiGun + ZA reciprocator line' },
+      ]}
 
       /* S6 — Applications */
       applications={[
