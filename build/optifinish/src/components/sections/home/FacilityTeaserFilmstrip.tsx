@@ -107,7 +107,7 @@ export default function FacilityTeaserFilmstrip() {
               <h2 className="font-display desktop-section-heading mobile-hero-ratio-title font-black text-white">
                 <div className="overflow-hidden pb-[0.15em]">
                   <span ref={line1Ref} className="block" style={{ willChange: 'transform, opacity' }}>
-                    Manufactured in India.
+                    Manufactured in <span style={{ background: 'linear-gradient(to bottom, #FF9933 33%, #ffffff 33%, #ffffff 66%, #138808 66%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>India</span>.
                   </span>
                 </div>
                 <div className="overflow-hidden pb-[0.15em]">

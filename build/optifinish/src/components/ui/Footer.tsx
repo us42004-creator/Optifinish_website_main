@@ -19,7 +19,7 @@ export default function Footer() {
         <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
           {/* Brand */}
           <div className="flex items-center gap-3 sm:gap-4">
-            <Image src="/logo.png" alt="OptiFinish" width={192} height={192} className="h-9 w-auto object-contain sm:h-12" />
+            <Image src="/images/logos/optifinish-logo.png" alt="OptiFinish" width={192} height={192} className="h-9 w-auto object-contain sm:h-12" />
             <div>
               <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-white/38">Industrial Coating Solutions</span>
               <span className="mt-1 block text-[8px] font-semibold uppercase tracking-[0.22em] text-white/22">
@@ -48,7 +48,7 @@ export default function Footer() {
             © {new Date().getFullYear()} OptiFinish. All rights reserved.
           </p>
           <p className="text-[9px] font-medium uppercase tracking-[0.22em] text-white/25 sm:text-[10px]">
-            Manufactured in India
+            Manufactured in <span style={{ background: 'linear-gradient(to bottom, #FF9933 33%, #ffffff 33%, #ffffff 66%, #138808 66%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>India</span>
           </p>
         </div>
       </div>

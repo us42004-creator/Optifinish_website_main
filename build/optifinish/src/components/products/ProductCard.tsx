@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface ProductCardProps {
   name: string;
@@ -11,6 +12,7 @@ interface ProductCardProps {
   externalLabel?: string;
   theme: 'dark' | 'light';
   imageLabel?: string;
+  imageSrc?: string;
   className?: string;
 }
 
@@ -25,6 +27,7 @@ export default function ProductCard({
   externalLabel = 'Visit site ↗',
   theme,
   imageLabel,
+  imageSrc,
   className = '',
 }: ProductCardProps) {
   const isDark = theme === 'dark';
@@ -37,35 +40,17 @@ export default function ProductCard({
           : 'border-black/[0.08] bg-white/70 hover:border-black/[0.16] hover:bg-white/90'
       } ${className}`}
     >
-      {/* Image placeholder */}
-      <div
-        className={`relative flex aspect-[16/9] w-full items-center justify-center overflow-hidden ${
-          isDark ? 'bg-white/[0.025]' : 'bg-black/[0.03]'
-        }`}
-      >
-        {/* Subtle grid texture */}
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.06]"
-          style={{
-            backgroundImage: isDark
-              ? 'linear-gradient(rgba(254,206,0,1) 1px, transparent 1px), linear-gradient(90deg, rgba(254,206,0,1) 1px, transparent 1px)'
-              : 'linear-gradient(rgba(10,10,10,1) 1px, transparent 1px), linear-gradient(90deg, rgba(10,10,10,1) 1px, transparent 1px)',
-            backgroundSize: '40px 40px',
-          }}
-        />
-        {/* Yellow top accent bar */}
-        <div
-          className={`absolute left-0 right-0 top-0 h-[2px] ${
-            isDark ? 'bg-[#FECE00]/30' : 'bg-[#0A0A0A]/15'
-          }`}
-        />
-        <span
-          className={`relative text-[9px] font-semibold uppercase tracking-[0.24em] ${
-            isDark ? 'text-white/15' : 'text-black/20'
-          }`}
-        >
-          {imageLabel ?? `${name} · image`}
-        </span>
+      {/* Image */}
+      <div className={`relative aspect-[16/9] w-full overflow-hidden ${isDark ? 'bg-white/[0.025]' : 'bg-black/[0.03]'}`}>
+        <div className={`absolute left-0 right-0 top-0 z-10 h-[2px] ${isDark ? 'bg-[#FECE00]/30' : 'bg-[#0A0A0A]/15'}`} />
+        {imageSrc ? (
+          <Image src={imageSrc} alt={imageLabel ?? name} fill className="object-cover" sizes="600px" />
+        ) : (
+          <>
+            <div className="pointer-events-none absolute inset-0 opacity-[0.06]" style={{ backgroundImage: isDark ? 'linear-gradient(rgba(254,206,0,1) 1px, transparent 1px), linear-gradient(90deg, rgba(254,206,0,1) 1px, transparent 1px)' : 'linear-gradient(rgba(10,10,10,1) 1px, transparent 1px), linear-gradient(90deg, rgba(10,10,10,1) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+            <span className={`absolute inset-0 flex items-center justify-center text-[9px] font-semibold uppercase tracking-[0.24em] ${isDark ? 'text-white/15' : 'text-black/20'}`}>{imageLabel ?? `${name} · image`}</span>
+          </>
+        )}
       </div>
 
       {/* Content */}

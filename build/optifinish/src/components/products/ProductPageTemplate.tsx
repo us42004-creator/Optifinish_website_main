@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -18,6 +18,7 @@ export interface Variant {
   body: string;
   specs: SpecRow[];
   imageLabel: string;
+  imageSrc?: string;
 }
 
 export interface Step {
@@ -52,6 +53,7 @@ export interface ProductPageTemplateProps {
   heroStats?: { val: string; label: string }[];
   heroImageLabel: string;
   heroImageSrc?: string;
+  heroImageAspect?: string;
   enquireSlug: string;
   backHref: string;
   backLabel: string;
@@ -75,6 +77,7 @@ export interface ProductPageTemplateProps {
 
   /* S6 — Applications */
   applications: string[];
+  applicationImages?: { src: string; label: string }[];
 
   /* S7 — Compatibility */
   compatibilityTags: string[];
@@ -112,17 +115,16 @@ function ImageViewport({
   if (src) {
     return (
       <div
-        className={`overflow-hidden rounded-[1.1rem] ${className} ${
+        className={`relative overflow-hidden rounded-[1.1rem] ${aspect} ${className} ${
           isDark ? 'bg-white/[0.03]' : 'bg-white shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
         }`}
       >
         <Image
           src={src}
           alt={label}
-          width={0}
-          height={0}
+          fill
+          className="object-contain"
           sizes="(max-width: 768px) 100vw, 50vw"
-          className="h-auto w-full"
         />
       </div>
     );
@@ -219,6 +221,7 @@ export default function ProductPageTemplate({
   heroStats,
   heroImageLabel,
   heroImageSrc,
+  heroImageAspect,
   enquireSlug,
   backHref,
   backLabel,
@@ -232,6 +235,7 @@ export default function ProductPageTemplate({
   howItWorksTitle,
   specRows,
   applications,
+  applicationImages,
   compatibilityTags,
   partnerNote,
   references,
@@ -308,6 +312,18 @@ export default function ProductPageTemplate({
 
   const currVariant = hasVariants ? variants![activeVariant] : null;
   const currStep = hasSteps ? steps![activeStep] : null;
+  const [activeAppImg, setActiveAppImg] = useState(0);
+  const appImgPaused = useRef(false);
+
+  useEffect(() => {
+    if (!applicationImages || applicationImages.length <= 1) return;
+    const id = setInterval(() => {
+      if (!appImgPaused.current) {
+        setActiveAppImg((i) => (i + 1) % applicationImages.length);
+      }
+    }, 4000);
+    return () => clearInterval(id);
+  }, [applicationImages]);
 
   return (
     <main>
@@ -403,7 +419,7 @@ export default function ProductPageTemplate({
 
             {/* Right — Hero image */}
             <div className="flex items-center">
-              <ImageViewport label={heroImageLabel} src={heroImageSrc} isDark={!hero} className="w-full" />
+              <ImageViewport label={heroImageLabel} src={heroImageSrc} isDark={!hero} className="w-full" aspect={heroImageAspect} />
             </div>
           </div>
         </div>
@@ -524,6 +540,7 @@ export default function ProductPageTemplate({
                 </div>
                 <ImageViewport
                   label={currVariant.imageLabel}
+                  src={currVariant.imageSrc}
                   isDark={!vars}
                   aspect="aspect-[4/3]"
                 />
@@ -663,12 +680,85 @@ export default function ProductPageTemplate({
                 ))}
               </ul>
             </div>
-            <ImageViewport
-              label="Application context · image"
-              isDark={!appl}
-              aspect="aspect-[4/3]"
-              className="self-center"
-            />
+            {applicationImages && applicationImages.length > 0 ? (
+              <div
+                className="self-center w-full"
+                onMouseEnter={() => { appImgPaused.current = true; }}
+                onMouseLeave={() => { appImgPaused.current = false; }}
+              >
+                {/* Carousel image */}
+                <div className={`relative overflow-hidden rounded-[1.2rem] aspect-[4/3] ${appl ? 'bg-black/[0.04] shadow-[0_8px_32px_rgba(0,0,0,0.08)]' : 'bg-white/[0.03]'}`}>
+                  {/* Slide track — each image absolutely positioned, slides in/out */}
+                  {applicationImages.map((img, i) => (
+                    <div
+                      key={img.src}
+                      className="absolute inset-0"
+                      style={{
+                        transform: `translateX(${(i - activeAppImg) * 100}%)`,
+                        transition: 'transform 0.55s cubic-bezier(0.4, 0, 0.2, 1)',
+                      }}
+                    >
+                      <Image
+                        src={img.src}
+                        alt={img.label}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 700px"
+                      />
+                    </div>
+                  ))}
+                  {/* Gradient overlay for legibility */}
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/55 to-transparent z-10" />
+                  {/* Label row */}
+                  <div className="absolute bottom-3 left-3 right-3 z-20 flex items-center justify-between">
+                    <span className="rounded-full bg-black/30 px-2.5 py-1 text-[0.46rem] font-semibold uppercase tracking-[0.14em] text-white/70 backdrop-blur-sm">
+                      {applicationImages[activeAppImg].label}
+                    </span>
+                    <span className="text-[0.46rem] font-semibold tracking-[0.1em] text-white/40">
+                      {activeAppImg + 1} / {applicationImages.length}
+                    </span>
+                  </div>
+                  {/* Auto-progress bar */}
+                  <div className="absolute top-0 left-0 right-0 z-20 h-[2px] overflow-hidden">
+                    <div
+                      key={`bar-${activeAppImg}`}
+                      className="h-full bg-[#FECE00]/70"
+                      style={{ animation: 'appImgProgress 4s linear forwards' }}
+                    />
+                  </div>
+                </div>
+                {/* Controls row */}
+                <div className="mt-3 flex items-center justify-between px-1">
+                  <button
+                    onClick={() => { appImgPaused.current = true; setActiveAppImg((i) => (i - 1 + applicationImages.length) % applicationImages.length); setTimeout(() => { appImgPaused.current = false; }, 6000); }}
+                    aria-label="Previous image"
+                    className={`flex h-7 w-7 items-center justify-center rounded-full border text-xs transition-all ${appl ? 'border-black/[0.1] text-black/35 hover:border-black/[0.3] hover:text-black/65' : 'border-white/[0.1] text-white/35 hover:border-white/[0.3] hover:text-white/65'}`}
+                  >←</button>
+                  <div className="flex gap-1.5">
+                    {applicationImages.map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => { appImgPaused.current = true; setActiveAppImg(i); setTimeout(() => { appImgPaused.current = false; }, 6000); }}
+                        aria-label={`Go to image ${i + 1}`}
+                        className={`h-1.5 rounded-full transition-all duration-300 ${i === activeAppImg ? 'w-5 bg-[#FECE00]' : `w-1.5 ${appl ? 'bg-black/20 hover:bg-black/35' : 'bg-white/20 hover:bg-white/35'}`}`}
+                      />
+                    ))}
+                  </div>
+                  <button
+                    onClick={() => { appImgPaused.current = true; setActiveAppImg((i) => (i + 1) % applicationImages.length); setTimeout(() => { appImgPaused.current = false; }, 6000); }}
+                    aria-label="Next image"
+                    className={`flex h-7 w-7 items-center justify-center rounded-full border text-xs transition-all ${appl ? 'border-black/[0.1] text-black/35 hover:border-black/[0.3] hover:text-black/65' : 'border-white/[0.1] text-white/35 hover:border-white/[0.3] hover:text-white/65'}`}
+                  >→</button>
+                </div>
+              </div>
+            ) : (
+              <ImageViewport
+                label="Application context · image"
+                isDark={!appl}
+                aspect="aspect-[4/3]"
+                className="self-center"
+              />
+            )}
           </div>
         </div>
       </section>

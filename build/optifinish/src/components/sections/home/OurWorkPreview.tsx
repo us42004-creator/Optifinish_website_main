@@ -69,7 +69,7 @@ export default function OurWorkPreview() {
               </div>
               <div className="overflow-hidden pb-[0.15em]">
                 <span ref={line2Ref} className="block" style={{ willChange: 'transform, opacity', color: '#FECE00' }}>
-                  across India.
+                  across <span style={{ background: 'linear-gradient(to bottom, #FF9933 33%, #ffffff 33%, #ffffff 66%, #138808 66%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>India</span>.
                 </span>
               </div>
             </h2>

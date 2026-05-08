@@ -22,7 +22,8 @@ export default function DurrCupGunPage() {
       headlineAccent="Gravity feed. Two models."
       subline="Manual gravity-feed air spray guns for touch-up work, furniture lacquering, and precision area coating — the EcoGun 116 for general-purpose use, the EcoGun 910 for fine-finish applications demanding superior atomisation quality."
       heroImageLabel="Dürr EcoGun 116 / 910 · cup gun"
-      heroImageSrc="/images/products/durr/cup-gun/durr-ecogun-auto-01.webp"
+      heroImageSrc="/images/products/durr/cup-gun/cup_gun_durr.webp"
+      heroImageAspect="aspect-[4/3]"
       enquireSlug="durr-cup-gun"
       backHref="/products/durr"
       backLabel="← Back to Dürr"
@@ -53,6 +54,7 @@ export default function DurrCupGunPage() {
             { l: 'Best for', v: 'General industrial finishes, enamels, primers, lacquers' },
           ],
           imageLabel: 'Dürr EcoGun 116 · general purpose gravity feed',
+          imageSrc: '/images/products/durr/cup-gun/ecogun_116.png',
         },
         {
           id: 'ecogun-910',
@@ -67,6 +69,7 @@ export default function DurrCupGunPage() {
             { l: 'Best for', v: 'Furniture lacquering, premium topcoats, clear coats' },
           ],
           imageLabel: 'Dürr EcoGun 910 · fine finish gravity feed',
+          imageSrc: '/images/products/durr/cup-gun/ecogun_910_durr.jpg',
         },
       ]}
       variantsSectionTitle="EcoGun 116 or 910 — match the gun to the finish"
@@ -88,6 +91,13 @@ export default function DurrCupGunPage() {
         'Custom colour application on architectural hardware',
         'Prototype and sample coating',
         'Low-volume production where material economy is important',
+      ]}
+      applicationImages={[
+        { src: 'https://images.unsplash.com/photo-1674632917616-051b4d6970e3?w=900&q=80&fit=crop&auto=format', label: 'Touch-up & repair coating' },
+        { src: 'https://images.unsplash.com/photo-1560793385-81f522e9b4d8?w=900&q=80&fit=crop&auto=format',   label: 'Furniture lacquering & wood finishing' },
+        { src: 'https://images.unsplash.com/photo-1564030390588-7b4094e10d18?w=900&q=80&fit=crop&auto=format', label: 'Small component & precision coating' },
+        { src: 'https://images.unsplash.com/photo-1627252009027-16321aa0777e?w=900&q=80&fit=crop&auto=format', label: 'Architectural hardware finishing' },
+        { src: 'https://images.unsplash.com/photo-1674485127842-7b63ac41db8c?w=900&q=80&fit=crop&auto=format', label: 'Low-volume production coating' },
       ]}
 
       compatibilityTags={[

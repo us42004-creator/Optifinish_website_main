@@ -23,6 +23,7 @@ const GUNS = [
     ],
     enquireSlug: 'durr-cup-gun',
     learnMoreHref: '/products/durr/cup-gun',
+    imageSrc: '/images/products/durr/cup-gun/ecogun_910_durr.jpg',
   },
   {
     name: 'HVLP Spray Gun',

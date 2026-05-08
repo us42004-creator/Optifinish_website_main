@@ -33,7 +33,7 @@ export default function FacilityTeaser() {
             <div className="flex-1">
               <span className="card-accent-label card-accent-label-light mb-4 block">Greater Noida Facility</span>
               <h2 className="font-display desktop-section-heading mobile-hero-ratio-title font-black text-white">
-                Manufactured in India.<br />
+                Manufactured in <span style={{ background: 'linear-gradient(to bottom, #FF9933 33%, #ffffff 33%, #ffffff 66%, #138808 66%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>India</span>.<br />
                 <span className="text-yellow">Backed by real R&amp;D.</span>
               </h2>
               <p className="mt-5 max-w-md text-[0.88rem] leading-relaxed text-white/48">

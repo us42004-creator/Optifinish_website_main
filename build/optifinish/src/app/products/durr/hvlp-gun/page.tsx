@@ -22,7 +22,8 @@ export default function DurrHVLPGunPage() {
       headlineAccent="Less into the exhaust."
       subline="High Volume Low Pressure atomisation delivers maximum transfer efficiency — significantly reduced overspray, lower material consumption, and improved finish uniformity on topcoats and clear coats."
       heroImageLabel="Dürr EcoGun AS MAN HVLP · high-transfer spray gun"
-      heroImageSrc="/images/products/durr/hvlp-gun/durr-ecogun-as-man-01.jpg"
+      heroImageSrc="/images/products/durr/hvlp-gun/hvlp.png"
+      heroImageAspect="aspect-[4/3]"
       enquireSlug="durr-hvlp-gun"
       backHref="/products/durr"
       backLabel="← Back to Dürr"
@@ -57,6 +58,14 @@ export default function DurrHVLPGunPage() {
         'Water-based paint application for low-VOC compliance',
         'Any application where paint material cost is significant',
         'Operations with environmental compliance targets for overspray reduction',
+      ]}
+
+      applicationImages={[
+        { src: '/images/products/durr/hvlp-gun/furniture_yopcoat.jpg',          label: 'Furniture & cabinetry topcoat' },
+        { src: '/images/products/durr/hvlp-gun/automative_clearcoat.jpg',       label: 'Automotive clear coat' },
+        { src: '/images/products/durr/hvlp-gun/Surface_quality_criteria.jpg',   label: 'Premium surface quality finishing' },
+        { src: '/images/products/durr/hvlp-gun/luxury_items(Rolex).jpg',        label: 'High-value precision coating' },
+        { src: '/images/products/durr/hvlp-gun/Environmental-Compliance-in-India-by-Perfect-Pollucon-Services-V1-e1755500029131.png', label: 'Environmental compliance — low overspray' },
       ]}
 
       compatibilityTags={[

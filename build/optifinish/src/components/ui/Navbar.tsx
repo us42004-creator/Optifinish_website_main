@@ -153,7 +153,8 @@ const isDarkPath = (p: string) =>
   DARK_PAGES.includes(p) ||
   (p.startsWith('/products/') && p.split('/').filter(Boolean).length > 1) ||
   p.startsWith('/services') ||
-  p.startsWith('/facility');
+  p.startsWith('/facility') ||
+  p.startsWith('/about');
 
 /* Fluid eased scroll — cubic in-out over ~1.2s */
 function smoothScrollTo(element: Element) {
@@ -288,7 +289,7 @@ export default function Navbar() {
               {/* Logo + Brand name */}
               <Link href="/" className="flex min-w-0 items-center gap-2.5 self-center group">
                 <Image
-                  src="/logo.png"
+                  src="/images/logos/optifinish-logo.png"
                   alt="OptiFinish"
                   width={192}
                   height={192}
@@ -652,7 +653,7 @@ export default function Navbar() {
           {/* Header row — sits below the physical nav bar area */}
           <div className="flex items-center justify-between px-5 pt-4 pb-2 border-b border-white/[0.06]">
             <Link href="/" onClick={() => setMenuOpen(false)} className="flex items-center gap-2.5">
-              <Image src="/logo.png" alt="OptiFinish" width={192} height={192} priority className="h-9 w-auto object-contain" />
+              <Image src="/images/logos/optifinish-logo.png" alt="OptiFinish" width={192} height={192} priority className="h-9 w-auto object-contain" />
               <span className="font-display text-[0.9rem] font-black tracking-[-0.03em] text-white">OptiFinish</span>
             </Link>
             <button

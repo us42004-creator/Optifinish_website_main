@@ -65,9 +65,9 @@ export default function GlobalNarrative() {
               }}>India</span>
               {'.'}{' '}
               <span style={{ color: '#FECE00' }}>Powered by </span>
-              <span style={{ color: '#D52B1E' }}>Swiss</span>
+              <span style={{ color: '#FECE00' }}>Swiss</span>
               <span style={{ color: '#FECE00' }}> and </span>
-              <span style={{ color: '#D52B1E' }}>German</span>
+              <span style={{ color: '#FECE00' }}>German</span>
               <span style={{ color: '#FECE00' }}> engineering.</span>
             </h2>
           </div>
@@ -102,7 +102,9 @@ export default function GlobalNarrative() {
                   className="font-display text-[0.82rem] font-black leading-tight tracking-[-0.02em] text-white"
                   itemProp="name"
                 >
-                  {p.headline}
+                  {p.country === 'India' ? (
+                    <>Manufactured in <span style={{ background: 'linear-gradient(to bottom, #FF9933 33%, #ffffff 33%, #ffffff 66%, #138808 66%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>India</span></>
+                  ) : p.headline}
                 </h3>
               </div>
 
