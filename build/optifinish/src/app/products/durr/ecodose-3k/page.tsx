@@ -50,21 +50,26 @@ export default function DurrEcoDose3KPage() {
           title: 'Three-stream supply and metering',
           body: 'Component A (base paint), Component B (catalyst/hardener), and Component C (additive or accelerator) are supplied from separate EcoPump packages to the EcoDose 3K dosing unit. Each stream is independently measured — by Coriolis or gear flowmeter — continuously and in real time. No component contacts another before the mix point.',
           imageLabel: 'Step 01 · three independent supply streams to EcoDose 3K metering unit',
+          imageSrc: '/images/products/durr/ecodose-2k/durr-ecodose2k-app-01.webp',
         },
         {
           num: '02',
           title: 'Ratio control and pot life tracking',
           body: 'The EcoDose 3K controls each stream independently to maintain the programmed three-way ratio. Deviations in any component trigger an immediate process alert. Pot life is tracked per component — the system knows how long each stream has been active and alerts when any component approaches its working life limit.',
           imageLabel: 'Step 02 · per-component ratio control and pot life monitoring',
+          imageSrc: '/images/products/durr/ecodose-2k/durr-ecodose2k-ratio-01.webp',
         },
         {
           num: '03',
           title: 'Independent flush — three circuits',
           body: 'Colour change or end-of-shift flush operates independently on each component circuit. Component A flushes without affecting B or C circuits. Because there is no shared premixing chamber, there is no mixed three-component paint volume to purge — each circuit carries only unmixed material up to the mix point. Low waste, fast changeover.',
           imageLabel: 'Step 03 · three independent flush circuits — zero shared premix chamber',
+          imageSrc: '/images/products/durr/ecodose-2k/durr-ecodose2k-flush-01.webp',
         },
       ]}
       howItWorksTitle="Supply, ratio, flush — three streams"
+
+      applicationImageSrc="/images/products/durr/ecodose-2k/durr-ecodose2k-app-01.webp"
 
       specRows={[
         { l: 'Component streams', v: 'Three — base paint (A), catalyst (B), additive/accelerator (C)' },
@@ -102,18 +107,21 @@ export default function DurrEcoDose3KPage() {
           category: 'Dürr',
           href: '/products/durr/ecodose-2k',
           enquireSlug: 'durr-ecodose-2k',
+          imageSrc: '/images/products/durr/ecodose-2k/durr-ecodose2k-01.webp',
         },
         {
           name: 'EcoPump Systems',
           category: 'Dürr',
           href: '/products/durr/ecopump',
           enquireSlug: 'durr-ecopump',
+          imageSrc: '/images/products/durr/ecopump/durr-ecopump9-dosing-01.webp',
         },
         {
           name: 'Bell Atomiser',
           category: 'Dürr',
           href: '/products/durr/bell-atomiser',
           enquireSlug: 'durr-bell-atomiser',
+          imageSrc: '/images/products/durr/bell-atomiser/durr-ecobell-slider-01.webp',
         },
       ]}
 

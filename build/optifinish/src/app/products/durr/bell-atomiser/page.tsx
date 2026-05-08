@@ -50,21 +50,26 @@ export default function DurrBellAtomiserPage() {
           title: 'Bell cup spinning at high speed',
           body: 'Paint is fed to the centre of a rotating bell cup spinning at high speed (typically 15,000–70,000 RPM depending on viscosity and required droplet size). Centrifugal force spreads the paint in a thin film to the cup edge.',
           imageLabel: 'Step 01 · bell cup spinning at high speed — centrifugal atomisation',
+          imageSrc: '/images/products/durr/bell-atomiser/durr-ecobell-app-01.webp',
         },
         {
           num: '02',
           title: 'Atomisation at the cup edge',
           body: 'At the bell cup edge, the thin paint film breaks into an extremely fine, uniform mist of droplets. The rotational speed controls droplet size — faster rotation produces finer droplets for premium finish; slower rotation produces larger droplets for faster coverage.',
           imageLabel: 'Step 02 · paint atomised at bell cup edge — ultra-fine mist',
+          imageSrc: '/images/products/durr/bell-atomiser/durr-ecobell3-atomising-01.webp',
         },
         {
           num: '03',
           title: 'Electrostatic attraction to part',
           body: 'The atomised droplets are electrostatically charged as they leave the bell — charged particles are attracted uniformly to the grounded part surface, wrapping around edges and delivering consistent film build across the full part. The result: automotive-grade finish uniformity with high transfer efficiency.',
           imageLabel: 'Step 03 · electrostatically charged mist attracted uniformly to part surface',
+          imageSrc: '/images/products/durr/bell-atomiser/durr-ecobell-automotive-01.webp',
         },
       ]}
       howItWorksTitle="Spin, atomise, adhere"
+
+      applicationImageSrc="/images/products/durr/bell-atomiser/durr-ecobell-automotive-01.webp"
 
       specRows={[
         { l: 'Atomisation type', v: 'Rotary bell cup — centrifugal atomisation' },
@@ -98,18 +103,21 @@ export default function DurrBellAtomiserPage() {
           category: 'Dürr',
           href: '/products/durr/electrostatic-gun',
           enquireSlug: 'durr-electrostatic-gun',
+          imageSrc: '/images/products/durr/electrostatic-gun/durr-ecogun-as-auto-01.jpg',
         },
         {
           name: 'EcoPump Systems',
           category: 'Dürr',
           href: '/products/durr/ecopump',
           enquireSlug: 'durr-ecopump',
+          imageSrc: '/images/products/durr/ecopump/durr-ecopump9-dosing-01.webp',
         },
         {
           name: '2K Dosing System',
           category: 'Dürr',
           href: '/products/durr/ecodose-2k',
           enquireSlug: 'durr-ecodose-2k',
+          imageSrc: '/images/products/durr/ecodose-2k/durr-ecodose2k-01.webp',
         },
       ]}
 

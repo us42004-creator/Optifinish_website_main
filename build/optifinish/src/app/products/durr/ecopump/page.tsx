@@ -58,6 +58,7 @@ export default function DurrEcoPumpPage() {
             { l: 'Drive', v: 'Air-operated piston' },
           ],
           imageLabel: 'Dürr EcoPump HP Series · horizontal piston pumps',
+          imageSrc: '/images/products/durr/ecopump/durr-ecopump-app-01.webp',
         },
         {
           id: 'vp',
@@ -72,6 +73,7 @@ export default function DurrEcoPumpPage() {
             { l: 'Compatible gun', v: 'Dürr EcoGun 246 / 249 airless guns' },
           ],
           imageLabel: 'Dürr EcoPump VP Series · high-pressure vertical piston',
+          imageSrc: '/images/products/durr/ecopump/durr-ecopump-vp-01.webp',
         },
         {
           id: 'ad',
@@ -86,9 +88,12 @@ export default function DurrEcoPumpPage() {
             { l: 'Advantage', v: 'No particle damage from piston shear forces' },
           ],
           imageLabel: 'Dürr EcoPump AD · diaphragm pump for sensitive formulations',
+          imageSrc: '/images/products/durr/ecopump/durr-ecopump-ad-01.webp',
         },
       ]}
       variantsSectionTitle="Select the EcoPump for your pressure and flow requirement"
+
+      applicationImageSrc="/images/products/durr/ecopump/durr-ecopump-inuse-01.webp"
 
       specRows={[
         { l: 'HP 400', v: '4.2 kg, 8 L/min, air-operated horizontal piston' },
@@ -126,18 +131,21 @@ export default function DurrEcoPumpPage() {
           category: 'Dürr',
           href: '/products/durr/cup-gun',
           enquireSlug: 'durr-cup-gun',
+          imageSrc: '/images/products/durr/cup-gun/durr-ecogun-auto-01.webp',
         },
         {
           name: 'Airless Spray Gun',
           category: 'Dürr',
           href: '/products/durr/airless-gun',
           enquireSlug: 'durr-airless-gun',
+          imageSrc: '/images/products/durr/airless-gun/durr-ecogun-al-auto-01.jpg',
         },
         {
           name: '2K Dosing System',
           category: 'Dürr',
           href: '/products/durr/ecodose-2k',
           enquireSlug: 'durr-ecodose-2k',
+          imageSrc: '/images/products/durr/ecodose-2k/durr-ecodose2k-01.webp',
         },
       ]}
 

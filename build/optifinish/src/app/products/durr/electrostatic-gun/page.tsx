@@ -53,6 +53,7 @@ export default function DurrElectrostaticGunPage() {
             { l: 'Wrap-around', v: 'Maximum electrostatic attraction on grounded parts' },
           ],
           imageLabel: 'Dürr EcoGun AS MAN DC · direct charge electrostatic gun',
+          imageSrc: '/images/products/durr/electrostatic-gun/durr-ecogun-dc-01.webp',
         },
         {
           id: 'ec',
@@ -67,9 +68,12 @@ export default function DurrElectrostaticGunPage() {
             { l: 'Wrap-around', v: 'Effective electrostatic attraction without current leakage issues' },
           ],
           imageLabel: 'Dürr EcoGun AS MAN EC · external charge electrostatic gun',
+          imageSrc: '/images/products/durr/electrostatic-gun/durr-ecogun-ec-01.webp',
         },
       ]}
       variantsSectionTitle="DC for solvent-based, EC for water-based"
+
+      applicationImageSrc="/images/products/durr/general/durr-spray-booth-interior-01.webp"
 
       specRows={[
         { l: 'DC variant', v: 'EcoGun AS MAN DC — internal direct charge electrode for solvent-based paints' },
@@ -104,18 +108,21 @@ export default function DurrElectrostaticGunPage() {
           category: 'Dürr',
           href: '/products/durr/hvlp-gun',
           enquireSlug: 'durr-hvlp-gun',
+          imageSrc: '/images/products/durr/hvlp-gun/durr-ecogun-as-man-01.jpg',
         },
         {
           name: 'Bell Atomiser',
           category: 'Dürr',
           href: '/products/durr/bell-atomiser',
           enquireSlug: 'durr-bell-atomiser',
+          imageSrc: '/images/products/durr/bell-atomiser/durr-ecobell-slider-01.webp',
         },
         {
           name: 'EcoPump Systems',
           category: 'Dürr',
           href: '/products/durr/ecopump',
           enquireSlug: 'durr-ecopump',
+          imageSrc: '/images/products/durr/ecopump/durr-ecopump9-dosing-01.webp',
         },
       ]}
 

@@ -50,21 +50,26 @@ export default function DurrEcoDose2KPage() {
           title: 'Component supply and metering',
           body: 'Base paint (Component A) and catalyst/hardener (Component B) are supplied from separate EcoPump packages to the EcoDose 2K dosing unit. The Coriolis or gear flowmeters measure the exact volume or mass of each component independently — in real time, continuously.',
           imageLabel: 'Step 01 · independent component supply to EcoDose 2K metering unit',
+          imageSrc: '/images/products/durr/ecodose-2k/durr-ecodose2k-app-01.webp',
         },
         {
           num: '02',
           title: 'Precision ratio control',
           body: 'The EcoDose 2K controls the output of each component to maintain the programmed mix ratio — compensating for any viscosity or pressure variations in the supply lines. The system continuously monitors actual vs programmed ratio and alerts if deviation exceeds set limits. Pot life is tracked in real time.',
           imageLabel: 'Step 02 · precision ratio control and real-time monitoring',
+          imageSrc: '/images/products/durr/ecodose-2k/durr-ecodose2k-ratio-01.webp',
         },
         {
           num: '03',
           title: 'Colour change and flushing',
           body: 'When a colour change is required, the EcoDose 2K flushes each component circuit independently — no premixing chamber means no mixed paint to purge. Component A flushes without contaminating component B\'s circuit. Fast, low-waste colour change is built into the system design.',
           imageLabel: 'Step 03 · independent flushing circuits — fast colour change without waste',
+          imageSrc: '/images/products/durr/ecodose-2k/durr-ecodose2k-flush-01.webp',
         },
       ]}
       howItWorksTitle="Measure, ratio, flush"
+
+      applicationImageSrc="/images/products/durr/ecodose-2k/durr-ecodose2k-app-01.webp"
 
       specRows={[
         { l: 'Flow rate range', v: '40–4,000 cc/min — covers touch-up to full production' },
@@ -101,18 +106,21 @@ export default function DurrEcoDose2KPage() {
           category: 'Dürr',
           href: '/products/durr/ecodose-3k',
           enquireSlug: 'durr-ecodose-3k',
+          imageSrc: '/images/products/durr/ecodose-3k/durr-ecodose2k-01.webp',
         },
         {
           name: 'EcoPump Systems',
           category: 'Dürr',
           href: '/products/durr/ecopump',
           enquireSlug: 'durr-ecopump',
+          imageSrc: '/images/products/durr/ecopump/durr-ecopump9-dosing-01.webp',
         },
         {
           name: 'Electrostatic Spray Gun',
           category: 'Dürr',
           href: '/products/durr/electrostatic-gun',
           enquireSlug: 'durr-electrostatic-gun',
+          imageSrc: '/images/products/durr/electrostatic-gun/durr-ecogun-as-auto-01.jpg',
         },
       ]}
 

@@ -7,18 +7,27 @@ import Link from 'next/link';
    REUSABLE PRIMITIVES
 ───────────────────────────────────────────────────────────── */
 
-/** Full-bleed viewport image box — drop a real <img> here later */
 function ImageViewport({
   label,
+  src,
   aspect = 'aspect-[16/9]',
   className = '',
   isDark = false,
 }: {
   label: string;
+  src?: string;
   aspect?: string;
   className?: string;
   isDark?: boolean;
 }) {
+  if (src) {
+    return (
+      <div className={`overflow-hidden rounded-[1.1rem] ${className} ${isDark ? 'bg-white/[0.03]' : 'bg-white shadow-[0_8px_24px_rgba(0,0,0,0.06)]'}`}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={src} alt={label} className="h-auto w-full" />
+      </div>
+    );
+  }
   return (
     <div
       className={`relative flex w-full items-center justify-center overflow-hidden rounded-[1.1rem] border ${
@@ -27,7 +36,6 @@ function ImageViewport({
           : 'border-black/[0.07] bg-black/[0.03]'
       } ${aspect} ${className}`}
     >
-      {/* Subtle grid */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
@@ -38,9 +46,7 @@ function ImageViewport({
           opacity: isDark ? 0.04 : 1,
         }}
       />
-      {/* Top accent */}
       <div className="absolute left-0 right-0 top-0 h-[2px] bg-[#FECE00]/25" />
-      {/* Corner badge */}
       <div className={`absolute left-4 top-4 rounded-full border px-2.5 py-1 text-[0.5rem] font-bold uppercase tracking-[0.18em] ${
         isDark ? 'border-white/[0.1] bg-white/[0.05] text-white/30' : 'border-black/[0.08] bg-white/80 text-[#0A0A0A]/40'
       }`}>
@@ -88,6 +94,7 @@ const MODELS = [
       { l: 'Best for', v: 'Job coaters, custom colour shops' },
     ],
     imageLabel: 'OptiFlex Pro Q · quick colour change gun',
+    imageSrc: '/images/products/gema/manual-gun/gema-optiflex-proq-01.jpg',
   },
   {
     id: 'pro-f',
@@ -102,6 +109,7 @@ const MODELS = [
       { l: 'Best for', v: 'High-volume production lines' },
     ],
     imageLabel: 'OptiFlex Pro F Spray · high-output gun',
+    imageSrc: '/images/products/gema/manual-gun/gema-optiflex-prof-01.jpg',
   },
   {
     id: 'pro-c',
@@ -116,6 +124,7 @@ const MODELS = [
       { l: 'Best for', v: 'Batch shops, mixed-product environments' },
     ],
     imageLabel: 'OptiFlex Pro C · all-round manual gun',
+    imageSrc: '/images/products/gema/manual-gun/gema-optiflex-proc-01.jpg',
   },
 ];
 
@@ -124,16 +133,19 @@ const HOW_IT_WORKS = [
     n: '01',
     title: 'Powder fed via Venturi',
     body: 'Powder coating material is drawn from the hopper or box feed through a Venturi system — pressurised air creates suction that pulls the powder into the gun barrel at a consistent, controlled rate.',
+    imageSrc: '/images/products/gema/manual-gun/gema-manual-gun-inuse-01.jpg',
   },
   {
     n: '02',
     title: 'MagicControl 4.0 charges the powder',
     body: 'As the powder passes the electrode tip inside the gun barrel, the MagicControl 4.0 generator applies a programmable electrostatic charge. The kV and µA output is set to match the powder type and part geometry.',
+    imageSrc: '/images/products/gema/manual-gun/gema-manual-gun-charging-01.jpg',
   },
   {
     n: '03',
     title: 'Charged particles adhere to the part',
     body: 'Electrostatically charged powder particles are attracted to the grounded part. The charge forces the particles toward the surface — wrapping around edges and into recesses — where they adhere electrostatically until the part enters the curing oven.',
+    imageSrc: '/images/products/gema/manual-gun/gema-optiflex2-02.png',
   },
 ];
 
@@ -144,6 +156,7 @@ const RELATED = [
     cat: 'GEMA · Authorised Partner',
     href: '/products/gema/automatic-gun',
     imageLabel: 'GEMA OptiGun automatic gun',
+    imageSrc: '/images/products/gema/automatic-gun/gema-optigun-ga03-01.png',
   },
   {
     name: 'Reciprocators & Automation Axes',
@@ -151,6 +164,7 @@ const RELATED = [
     cat: 'GEMA · Authorised Partner',
     href: '/products/gema/reciprocators',
     imageLabel: 'GEMA ZA reciprocator',
+    imageSrc: '/images/products/gema/reciprocators/gema-reciprocator-01.jpg',
   },
   {
     name: 'OptiCentre Powder Management',
@@ -158,6 +172,7 @@ const RELATED = [
     cat: 'GEMA · Authorised Partner',
     href: '/products/gema/opticentre',
     imageLabel: 'GEMA OC08 OptiCentre',
+    imageSrc: '/images/products/gema/opticentre/gema-opticenter-oc01-01.jpg',
   },
 ];
 
@@ -274,7 +289,8 @@ export default function GemaManualGunPage() {
 
             {/* Right — hero image viewport */}
             <ImageViewport
-              label="Manual Powder Coating Gun · hero shot"
+              label="GEMA OptiFlex Pro manual powder coating gun"
+              src="/images/products/gema/manual-gun/gema-optiflex2-02.png"
               aspect="aspect-[4/3]"
             />
           </div>
@@ -381,6 +397,7 @@ export default function GemaManualGunPage() {
             {/* Image viewport */}
             <ImageViewport
               label={MODELS[activeModel].imageLabel}
+              src={MODELS[activeModel].imageSrc}
               aspect="aspect-[4/3]"
               isDark
             />
@@ -475,6 +492,7 @@ export default function GemaManualGunPage() {
             <div className="flex flex-col gap-4">
               <ImageViewport
                 label={`Step ${HOW_IT_WORKS[activeStep].n} · ${HOW_IT_WORKS[activeStep].title} · diagram`}
+                src={HOW_IT_WORKS[activeStep].imageSrc}
                 aspect="aspect-[4/3]"
                 className="border-[#FECE00]/[0.07] bg-white/[0.025]"
               />
@@ -713,6 +731,7 @@ export default function GemaManualGunPage() {
               >
                 <ImageViewport
                   label={rel.imageLabel}
+                  src={rel.imageSrc}
                   aspect="aspect-[4/3]"
                   className="rounded-none rounded-t-[1.1rem] border-0 border-b border-[#FECE00]/[0.07]"
                 />

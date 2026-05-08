@@ -53,6 +53,7 @@ export default function DurrAirlessGunPage() {
             { l: 'Compatible pump', v: 'Dürr EcoPump VP series' },
           ],
           imageLabel: 'Dürr EcoGun 246 · standard airless gun',
+          imageSrc: '/images/products/durr/airless-gun/durr-ecogun-al246-01.jpg',
         },
         {
           id: 'ecogun-249',
@@ -67,9 +68,12 @@ export default function DurrAirlessGunPage() {
             { l: 'Compatible pump', v: 'Dürr EcoPump VP series (high-pressure)' },
           ],
           imageLabel: 'Dürr EcoGun 249 · heavy duty airless gun',
+          imageSrc: '/images/products/durr/airless-gun/durr-ecogun-al249-01.jpg',
         },
       ]}
       variantsSectionTitle="EcoGun 246 or 249 — match output to area"
+
+      applicationImageSrc="/images/products/durr/airless-gun/durr-airless-inuse-01.webp"
 
       specRows={[
         { l: 'Atomisation type', v: 'High-pressure hydraulic — no carrier air' },
@@ -103,12 +107,14 @@ export default function DurrAirlessGunPage() {
           category: 'Dürr',
           href: '/products/durr/ecopump',
           enquireSlug: 'durr-ecopump',
+          imageSrc: '/images/products/durr/ecopump/durr-ecopump9-dosing-01.webp',
         },
         {
           name: 'Air Assist Spray Gun',
           category: 'Dürr',
           href: '/products/durr/air-assist-gun',
           enquireSlug: 'durr-air-assist-gun',
+          imageSrc: '/images/products/durr/air-assist-gun/durr-ecogun-aa-auto-01.jpg',
         },
         {
           name: 'Liquid Spray Booth',

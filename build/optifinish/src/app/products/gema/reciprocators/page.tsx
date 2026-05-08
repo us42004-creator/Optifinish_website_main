@@ -27,7 +27,8 @@ export default function GEMAReciproactorsPage() {
         { val: 'DCD', label: 'Dynamic contour detection' },
         { val: '6 guns', label: 'Max mounting (ZA10)' },
       ]}
-      heroImageLabel="GEMA ZA Series Reciprocator · image"
+      heroImageLabel="GEMA ZA Series Reciprocator"
+      heroImageSrc="/images/products/gema/reciprocators/gema-reciprocator-01.jpg"
       enquireSlug="gema-reciprocators"
       backHref="/products/gema"
       backLabel="← Back to GEMA"
@@ -60,6 +61,7 @@ export default function GEMAReciproactorsPage() {
             { l: 'Control', v: 'MagicControl 4.0 compatible' },
           ],
           imageLabel: 'GEMA ZA07/ZA08 · entry reciprocator',
+          imageSrc: '/images/products/gema/reciprocators/gema-reciprocator-02.jpg',
         },
         {
           id: 'za-mid',
@@ -74,6 +76,7 @@ export default function GEMAReciproactorsPage() {
             { l: 'Motor', v: 'Advanced synchronized drive' },
           ],
           imageLabel: 'GEMA ZA10 · slim column reciprocator',
+          imageSrc: '/images/products/gema/reciprocators/gema-za10-01.jpg',
         },
         {
           id: 'za-high',
@@ -88,6 +91,7 @@ export default function GEMAReciproactorsPage() {
             { l: 'Best for', v: 'High-volume conveyorised lines, tall part profiles' },
           ],
           imageLabel: 'GEMA ZA15-17 · high-performance reciprocator',
+          imageSrc: '/images/products/gema/reciprocators/gema-za15-01.jpg',
         },
       ]}
       variantsSectionTitle="ZA07 through ZA17 — match the reciprocator to your line"
@@ -103,6 +107,8 @@ export default function GEMAReciproactorsPage() {
         { l: 'Deployment', v: 'Standalone or fully integrated into OptiCenter automatic line' },
         { l: 'Supplied by', v: 'OptiFinish — authorised GEMA partner, India' },
       ]}
+
+      applicationImageSrc="/images/products/gema/reciprocators/gema-reciprocator-inuse-01.jpg"
 
       /* S6 — Applications */
       applications={[
@@ -140,12 +146,14 @@ export default function GEMAReciproactorsPage() {
           category: 'GEMA',
           href: '/products/gema/automatic-gun',
           enquireSlug: 'gema-automatic-gun',
+          imageSrc: '/images/products/gema/automatic-gun/gema-optigun-ga03-01.png',
         },
         {
           name: 'OptiCentre Powder Management',
           category: 'GEMA',
           href: '/products/gema/opticentre',
           enquireSlug: 'gema-opticentre',
+          imageSrc: '/images/products/gema/opticentre/gema-opticenter-oc01-01.jpg',
         },
         {
           name: 'Opti Recip ZA01',

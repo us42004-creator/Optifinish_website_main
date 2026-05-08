@@ -27,7 +27,8 @@ export default function GEMAOptiCentrePage() {
         { val: 'Load cell', label: 'Per-batch tracking' },
         { val: 'Auto clean', label: 'Full cleaning cycle' },
       ]}
-      heroImageLabel="GEMA OptiCentre OC08 · powder management system"
+      heroImageLabel="GEMA OptiCenter powder management system"
+      heroImageSrc="/images/products/gema/opticentre/gema-opticenter-oc01-01.jpg"
       enquireSlug="gema-opticentre"
       backHref="/products/gema"
       backLabel="← Back to GEMA"
@@ -52,18 +53,21 @@ export default function GEMAOptiCentrePage() {
           title: 'Automatic hopper supply',
           body: 'Fresh powder is automatically transported from the storage container to the gun hopper under control of the OC08 — maintaining the correct level at all times without manual filling. The precision load cell records the exact quantity of fresh powder consumed in real time.',
           imageLabel: 'Step 01 · automatic hopper supply and level monitoring',
+          imageSrc: '/images/products/gema/opticentre/gema-opticenter-oc01-02.jpg',
         },
         {
           num: '02',
           title: 'Recovered powder sieving',
           body: 'Powder recovered from the cyclone and bag filter returns to the OC08 sieve unit before re-entering the supply chain. The OC08 automatically sieves recovered powder, removing agglomerates and contamination, then routes clean recovered powder back to the hopper — maintaining virgin powder quality in the system.',
           imageLabel: 'Step 02 · automatic recovered powder sieving',
+          imageSrc: '/images/products/gema/opticentre/gema-opticenter-sieving-01.jpg',
         },
         {
           num: '03',
           title: 'Automatic cleaning cycle',
           body: 'When a colour change is initiated via MagicControl 4.0, the OC08 executes a full automated cleaning cycle — flushing all powder from the hopper, tubing, sieve, and carrying components. The process is complete and consistent every time — no residue, no contamination, no operator cleaning required.',
           imageLabel: 'Step 03 · fully automated colour change cleaning cycle',
+          imageSrc: '/images/products/gema/opticentre/gema-opticenter-colorchange-01.jpg',
         },
       ]}
       howItWorksTitle="Supply, sieve, clean — automatically"
@@ -79,6 +83,8 @@ export default function GEMAOptiCentrePage() {
         { l: 'Remote access', v: 'GemaConnect dashboard — monitoring, diagnostics, maintenance alerts' },
         { l: 'Supplied by', v: 'OptiFinish — authorised GEMA partner, India' },
       ]}
+
+      applicationImageSrc="/images/products/gema/opticentre/gema-opticenter-app-01.jpg"
 
       /* S6 — Applications */
       applications={[
@@ -117,18 +123,21 @@ export default function GEMAOptiCentrePage() {
           category: 'GEMA',
           href: '/products/gema/automatic-gun',
           enquireSlug: 'gema-automatic-gun',
+          imageSrc: '/images/products/gema/automatic-gun/gema-optigun-ga03-01.png',
         },
         {
           name: 'Reciprocators & Automation Axes',
           category: 'GEMA',
           href: '/products/gema/reciprocators',
           enquireSlug: 'gema-reciprocators',
+          imageSrc: '/images/products/gema/reciprocators/gema-reciprocator-01.jpg',
         },
         {
           name: 'PS Vibratory Sieve Machine',
           category: 'OptiFinish Automation',
           href: '/products/automation/sieve-machine',
           enquireSlug: 'sieve-machine',
+          imageSrc: '/images/products/sieve-machine/sieve-machine-01.jpg',
         },
       ]}
 
