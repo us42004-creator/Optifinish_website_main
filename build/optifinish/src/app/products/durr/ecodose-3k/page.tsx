@@ -27,7 +27,9 @@ export default function DurrEcoDose3KPage() {
         { val: 'Auto', label: 'Colour change & flush' },
       ]}
       heroImageLabel="Dürr EcoDose 3K · three-component electronic dosing"
-      heroImageSrc="/images/products/durr/ecodose-3k/durr-ecodose2k-01.webp"
+      heroImageSrc="/images/products/durr/ecodose-2k/csm_duerr-ecodose2k.webp"
+      heroImageAspect="aspect-[4/3]"
+      heroImageCover
       enquireSlug="durr-ecodose-3k"
       backHref="/products/durr"
       backLabel="← Back to Dürr"
@@ -57,19 +59,24 @@ export default function DurrEcoDose3KPage() {
           title: 'Ratio control and pot life tracking',
           body: 'The EcoDose 3K controls each stream independently to maintain the programmed three-way ratio. Deviations in any component trigger an immediate process alert. Pot life is tracked per component — the system knows how long each stream has been active and alerts when any component approaches its working life limit.',
           imageLabel: 'Step 02 · per-component ratio control and pot life monitoring',
-          imageSrc: '/images/products/durr/ecodose-2k/durr-ecodose2k-ratio-01.webp',
+          imageSrc: '/images/products/durr/ecodose-2k/durr-2acu.jpg',
         },
         {
           num: '03',
           title: 'Independent flush — three circuits',
           body: 'Colour change or end-of-shift flush operates independently on each component circuit. Component A flushes without affecting B or C circuits. Because there is no shared premixing chamber, there is no mixed three-component paint volume to purge — each circuit carries only unmixed material up to the mix point. Low waste, fast changeover.',
           imageLabel: 'Step 03 · three independent flush circuits — zero shared premix chamber',
-          imageSrc: '/images/products/durr/ecodose-2k/durr-ecodose2k-flush-01.webp',
+          imageSrc: '/images/products/durr/ecodose-2k/durr-step3.webp',
         },
       ]}
       howItWorksTitle="Supply, ratio, flush — three streams"
 
-      applicationImageSrc="/images/products/durr/ecodose-2k/durr-ecodose2k-app-01.webp"
+      applicationImages={[
+        { src: '/images/products/durr/ecodose-3k/application/automotive-oem-premium.jpg', label: 'Automotive OEM 3K premium topcoat' },
+        { src: '/images/products/durr/ecodose-3k/application/aircraft-component-coating.jpg', label: 'Aerospace & defence multi-component coating' },
+        { src: '/images/products/durr/ecodose-3k/application/industrial-multicoat-line.jpg', label: 'Complex 3-component industrial finishing' },
+        { src: '/images/products/durr/ecodose-3k/application/high-spec-industrial-coating.jpg', label: 'High-specification structural coating' },
+      ]}
 
       specRows={[
         { l: 'Component streams', v: 'Three — base paint (A), catalyst (B), additive/accelerator (C)' },

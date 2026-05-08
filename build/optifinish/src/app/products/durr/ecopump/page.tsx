@@ -1,9 +1,9 @@
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
 
 export const metadata = {
-  title: 'Dürr EcoPump Systems | HP / VP / AD / HPE | OptiFinish',
+  title: 'Dürr EcoPump Systems | HP / HPE / VP / VPS / AD | OptiFinish',
   description:
-    'Dürr EcoPump fluid handling systems — HP, VP, AD, and HPE variants for paint circulation, airless delivery, and viscous material transfer. Pre-assembled EcoPump Package modules available.',
+    'Dürr EcoPump fluid handling systems — HP, HPE, VP, VPS, AD variants plus pre-assembled Package modules for paint circulation, airless delivery, and viscous material transfer. Supplied by OptiFinish.',
 };
 
 export default function DurrEcoPumpPage() {
@@ -17,7 +17,7 @@ export default function DurrEcoPumpPage() {
         { label: 'EcoPump Systems', href: '/products/durr/ecopump' },
       ]}
       badge="Dürr — Fluid Handling"
-      eyebrow="HP / VP / AD / HPE — Paint Shop Fluid Systems"
+      eyebrow="HP / HPE / VP / VPS / AD — Paint Shop Fluid Systems"
       headline="The right fluid pressure"
       headlineAccent="for every coating application."
       subline="A complete family of air-operated and electric pumps for paint circulation, airless spray delivery, and viscous material transfer — from low-pressure water-based paint supply to 360-bar high-pressure airless delivery."
@@ -28,6 +28,8 @@ export default function DurrEcoPumpPage() {
       ]}
       heroImageLabel="Dürr EcoPump Systems · HP / VP / AD fluid pumps"
       heroImageSrc="/images/products/durr/ecopump/durr-ecopump9-dosing-01.webp"
+      heroImageAspect="aspect-[4/3]"
+      heroImageCover
       enquireSlug="durr-ecopump"
       backHref="/products/durr"
       backLabel="← Back to Dürr"
@@ -36,73 +38,137 @@ export default function DurrEcoPumpPage() {
       problemAccent="breaks consistency across the shift."
       problemBody="Pressure fluctuations in the fluid supply cause film build inconsistency — even the best spray gun can't deliver a consistent film if the paint arrives at varying pressure and flow rate. The EcoPump family covers every pressure range and viscosity in liquid coating — match the pump to the application and the gun performs correctly."
       benefits={[
-        'HP Series (horizontal piston): compact, robust paint supply for low-to-medium pressure applications',
+        'HP Series (horizontal piston): compact, robust paint supply — equal thrust on both strokes, concealed shaft seal',
+        'HPE electric variant: motor-driven with DIN EN 12162 certification for mains-powered installations',
         'VP Series (vertical piston): up to 360 bar for airless and high-viscosity material applications',
-        'AD diaphragm variant: low-shear delivery for pulsation-sensitive applications without particle damage',
-        'HPE electric variant: DIN EN 12162 certified motor-driven pump for mains-powered installations',
+        'VPS shovel plate: air-operated chop-check design for high-viscosity fluids — glues, oils, wax',
+        'AD diaphragm: low-shear, low-pulsation delivery for sensitive formulations and abrasive fluids',
         'EcoPump Package modules: pressure pot, filter, hose, gun, and regulator pre-assembled — fast deployment',
-        'Full range from water-based paint supply to structural steel anti-corrosion airless systems',
       ]}
+
+      techVideos={{
+        eyebrow: 'Pump Technology',
+        headline: 'Three pump principles. One family.',
+        videos: [
+          { id: 'nSB1w508eWs', label: 'Diaphragm Pump', sub: 'EcoPump AD — low-shear, low-pulsation delivery' },
+          { id: 'hnKN8OWKwOE', label: 'Shovel Plate Pump', sub: 'EcoPump VPS — high-viscosity fluids' },
+          { id: 'ijAmxVeLyMQ', label: 'Piston Pump', sub: 'EcoPump VP — up to 360 bar airless delivery' },
+        ],
+      }}
 
       variants={[
         {
           id: 'hp',
-          label: 'HP Series',
-          tag: 'Horizontal Piston',
+          label: 'EcoPump HP',
+          tag: 'Air Horizontal Piston',
           headline: 'Compact, reliable paint supply for standard applications.',
-          body: 'Horizontal piston pumps in three capacities — HP 400, HP 800, and HP 1600 — covering standard paint supply for cup guns, HVLP, electrostatic, and air-assist gun systems. Air-operated, compact, and field-serviceable.',
+          body: 'Air-driven horizontal piston pump with a two-piston design delivering equal thrust on both strokes — smooth, consistent paint supply for cup guns, HVLP, electrostatic, and air-assist applications. Concealed shaft seal and quick-release valve reduce surge and simplify maintenance.',
           specs: [
-            { l: 'HP 400', v: '4.2 kg; 8 L/min max output' },
-            { l: 'HP 800', v: '5.8 kg; 16 L/min max output' },
-            { l: 'HP 1600', v: '8 kg; 32 L/min max output' },
-            { l: 'Drive', v: 'Air-operated piston' },
+            { l: 'HP 400', v: '4.2 kg — 8 L/min max output' },
+            { l: 'HP 800', v: '5.8 kg — 16 L/min max output' },
+            { l: 'HP 1600', v: '8 kg — 32 L/min max output' },
+            { l: 'Drive', v: 'Air-operated horizontal piston' },
+            { l: 'Best for', v: 'Water and solvent-based paints, varnishes, lacquers' },
           ],
-          imageLabel: 'Dürr EcoPump HP Series · horizontal piston pumps',
-          imageSrc: '/images/products/durr/ecopump/durr-ecopump-app-01.webp',
+          imageLabel: 'Dürr EcoPump HP · air horizontal piston pump',
+          imageSrc: '/images/products/durr/ecopump/csm_duerr-pumps-ecopump-hp.webp',
+        },
+        {
+          id: 'hpe',
+          label: 'EcoPump HPE',
+          tag: 'Electric Horizontal Piston',
+          headline: 'Motor-driven precision for mains-powered installations.',
+          body: 'Electric-driven variant of the HP horizontal piston pump — delivering superior performance with lower operating costs compared to air-driven units. DIN EN 12162 certified. Modular design retains the same maintenance benefits as the air-driven HP series.',
+          specs: [
+            { l: 'Drive', v: 'Electric motor — lower operating cost vs air-driven' },
+            { l: 'Certification', v: 'DIN EN 12162' },
+            { l: 'Design', v: 'Horizontal two-piston, concealed shaft seal' },
+            { l: 'Best for', v: 'Mains-powered installations where compressed air is limited' },
+          ],
+          imageLabel: 'Dürr EcoPump HPE · electric horizontal piston pump',
+          imageSrc: '/images/products/durr/ecopump/csm_duerr-pumps-ecopump-hpe.webp',
         },
         {
           id: 'vp',
-          label: 'VP Series',
+          label: 'EcoPump VP',
           tag: 'High Pressure — Airless',
           headline: 'Up to 360 bar for airless and high-viscosity delivery.',
-          body: 'Vertical piston pumps for high-pressure airless spray applications — delivering up to 360 bar operating pressure for atomising heavy materials without carrier air. The preferred pump for Dürr airless gun packages.',
+          body: 'Pneumatically driven vertical piston pump for medium and high pressure applications — delivering up to 360 bar for atomising heavy materials without carrier air. Suitable for airless spray, air-assisted application, furniture, steel structures, and automotive body coating.',
           specs: [
             { l: 'Max pressure', v: '360 bar' },
-            { l: 'Best for', v: 'Airless spray, high-viscosity materials, anti-corrosion coatings' },
             { l: 'Drive', v: 'Air-operated vertical piston' },
-            { l: 'Compatible gun', v: 'Dürr EcoGun 246 / 249 airless guns' },
+            { l: 'Configuration', v: 'Multiple air inlet modules and pressure relief valve options' },
+            { l: 'Best for', v: 'Airless spray, anti-corrosion coatings, high-viscosity materials' },
+            { l: 'Compatible gun', v: 'Dürr EcoGun AL MAN / AL AUTO airless guns' },
           ],
           imageLabel: 'Dürr EcoPump VP Series · high-pressure vertical piston',
-          imageSrc: '/images/products/durr/ecopump/durr-ecopump-vp-01.webp',
+          imageSrc: '/images/products/durr/ecopump/csm_duerr-pumps-ecopump-vp.webp',
+        },
+        {
+          id: 'vps',
+          label: 'EcoPump VPS',
+          tag: 'Vertical Shovel Plate',
+          headline: 'Air-operated chop-check for thick, viscous materials.',
+          body: 'Vertical shovel plate (chop-check) pump optimised for medium to high viscosity fluids — glues, oils, wax, and sealants. Modular design for easy maintenance and an optimised fluid path for careful, low-shear material pumping with proven long-term durability.',
+          specs: [
+            { l: 'Type', v: 'Air-operated shovel plate (chop-check)' },
+            { l: 'Viscosity range', v: 'Medium to high — glues, oils, wax, sealants' },
+            { l: 'Fluid path', v: 'Optimised for careful, low-damage material pumping' },
+            { l: 'Best for', v: 'High-viscosity adhesives, sealing compounds, industrial wax' },
+          ],
+          imageLabel: 'Dürr EcoPump VPS · vertical shovel plate pump',
+          imageSrc: '/images/products/durr/ecopump/csm_duerr-pumps-ecopump-vps.webp',
         },
         {
           id: 'ad',
-          label: 'AD Diaphragm',
-          tag: 'Low Shear — Pulsation Sensitive',
-          headline: 'Gentle delivery for sensitive formulations.',
-          body: 'Diaphragm pump variant for applications where pulsation must be minimised and shear forces on the fluid must be kept low — such as metallic flake paints, effect pigments, and shear-sensitive formulations.',
+          label: 'EcoPump AD',
+          tag: 'Air Diaphragm',
+          headline: 'Low-shear delivery for sensitive and abrasive fluids.',
+          body: 'Diaphragm pump for applications where pulsation must be minimised — metallic flake paints, effect pigments, abrasive fluids, and particle-containing materials. Operates in circulation or direct delivery modes with multiple housing material options for chemical compatibility.',
           specs: [
-            { l: 'Type', v: 'Diaphragm — low-shear, low-pulsation' },
-            { l: 'Best for', v: 'Metallic flake paints, effect pigments, shear-sensitive fluids' },
-            { l: 'Drive', v: 'Air-operated' },
-            { l: 'Advantage', v: 'No particle damage from piston shear forces' },
+            { l: 'Type', v: 'Air-operated diaphragm — low-shear, low-pulsation' },
+            { l: 'Best for', v: 'Metallic flake, effect pigments, abrasive fluids, waste liquids' },
+            { l: 'Modes', v: 'Circulation or direct delivery' },
+            { l: 'Housing', v: 'Multiple material options for chemical compatibility' },
           ],
-          imageLabel: 'Dürr EcoPump AD · diaphragm pump for sensitive formulations',
-          imageSrc: '/images/products/durr/ecopump/durr-ecopump-ad-01.webp',
+          imageLabel: 'Dürr EcoPump AD · air diaphragm pump',
+          imageSrc: '/images/products/durr/ecopump/csm_duerr-pumps-ecopump-ad.webp',
+        },
+        {
+          id: 'package',
+          label: 'EcoPump Package',
+          tag: 'Pre-Assembled Modules',
+          headline: 'Fully assembled, ready-to-use pump stations.',
+          body: 'Pre-assembled portable modules combining pump, pressure pot, filter, hose, regulator, and gun into a ready-to-deploy unit. Available in high-pressure (VP-based) and low-pressure (diaphragm-based) configurations for wood finishing, exterior painting, and rapid field deployment.',
+          specs: [
+            { l: 'Low-pressure', v: 'AD diaphragm-based — wood finishing, general painting' },
+            { l: 'High-pressure', v: 'VP-based — exterior painting, structural steel' },
+            { l: 'Configuration', v: 'Carriage, suction type, optional accessories' },
+            { l: 'Benefit', v: 'No on-site assembly — fully tested before delivery' },
+          ],
+          imageLabel: 'Dürr EcoPump Package · pre-assembled pump module',
+          imageSrc: '/images/products/durr/ecopump/csm_duerr-pumps-ecopump-vp-package.webp',
         },
       ]}
-      variantsSectionTitle="Select the EcoPump for your pressure and flow requirement"
+      variantsSectionTitle="Select the EcoPump for your pressure, flow, and fluid type"
+      variantImageCover
 
-      applicationImageSrc="/images/products/durr/ecopump/durr-ecopump-inuse-01.webp"
+      applicationImages={[
+        { src: '/images/products/durr/ecopump/durr-pumps-fluid-01.webp', label: 'Paint circulation in production lines' },
+        { src: '/images/products/durr/ecopump/application/structural-steel-coating.jpg', label: 'High-pressure delivery for anti-corrosion coating' },
+        { src: '/images/products/durr/ecopump/application/adhesive-application.jpg', label: 'High-viscosity adhesive & sealant pumping' },
+        { src: '/images/products/durr/ecopump/application/paint-supply-line.jpg', label: 'Paint supply in production paint shops' },
+      ]}
 
       specRows={[
-        { l: 'HP 400', v: '4.2 kg, 8 L/min, air-operated horizontal piston' },
-        { l: 'HP 800', v: '5.8 kg, 16 L/min, air-operated horizontal piston' },
-        { l: 'HP 1600', v: '8 kg, 32 L/min, air-operated horizontal piston' },
-        { l: 'VP Series max pressure', v: 'Up to 360 bar — for airless and high-viscosity applications' },
-        { l: 'AD diaphragm', v: 'Low-shear, low-pulsation — for metallic and effect pigment paints' },
-        { l: 'HPE electric', v: 'DIN EN 12162 certified — motor-driven for mains-powered installations' },
-        { l: 'EcoPump Package', v: 'Pre-assembled: pressure pot, filter, hose, gun, regulator — quick deploy' },
+        { l: 'HP 400', v: '4.2 kg · 8 L/min · air-operated horizontal piston' },
+        { l: 'HP 800', v: '5.8 kg · 16 L/min · air-operated horizontal piston' },
+        { l: 'HP 1600', v: '8 kg · 32 L/min · air-operated horizontal piston' },
+        { l: 'HPE', v: 'Electric-driven · DIN EN 12162 · horizontal piston' },
+        { l: 'VP max pressure', v: 'Up to 360 bar · air-operated vertical piston' },
+        { l: 'VPS', v: 'Shovel plate (chop-check) · medium to high viscosity fluids' },
+        { l: 'AD diaphragm', v: 'Low-shear · low-pulsation · abrasive and particle fluids' },
+        { l: 'EcoPump Package', v: 'Pre-assembled LP (AD) or HP (VP) · ready to deploy' },
         { l: 'Supplied by', v: 'OptiFinish — authorised Dürr distributor, India' },
       ]}
 
@@ -111,8 +177,8 @@ export default function DurrEcoPumpPage() {
         'High-pressure airless delivery for anti-corrosion and structural steel coating',
         'Water-based and solvent-based paint circulation in production lines',
         'Metallic and effect pigment paint delivery without particle damage',
+        'High-viscosity adhesive, sealant, and wax pumping (VPS)',
         'Quick-deploy touch-up and repair stations (EcoPump Package)',
-        'Continuous production line fluid supply with consistent pressure',
       ]}
 
       compatibilityTags={[

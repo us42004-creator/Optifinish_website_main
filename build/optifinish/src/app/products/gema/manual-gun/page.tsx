@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Link from 'next/link';
 
 /* ─────────────────────────────────────────────────────────────
@@ -13,18 +13,28 @@ function ImageViewport({
   aspect = 'aspect-[16/9]',
   className = '',
   isDark = false,
+  objectFit = 'cover',
 }: {
   label: string;
   src?: string;
   aspect?: string;
   className?: string;
   isDark?: boolean;
+  objectFit?: 'cover' | 'contain';
 }) {
   if (src) {
+    if (objectFit === 'contain') {
+      return (
+        <div className={`relative flex items-center justify-center overflow-hidden rounded-[1.1rem] ${aspect} ${className} ${isDark ? 'bg-[#0A0A0A]' : 'bg-[#f1efea]'}`}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={src} alt={label} className="max-h-full max-w-full rounded-[0.75rem] object-contain" />
+        </div>
+      );
+    }
     return (
-      <div className={`overflow-hidden rounded-[1.1rem] ${className} ${isDark ? 'bg-white/[0.03]' : 'bg-white shadow-[0_8px_24px_rgba(0,0,0,0.06)]'}`}>
+      <div className={`relative overflow-hidden rounded-[1.1rem] ${aspect} ${className} ${isDark ? 'bg-white/[0.03]' : 'bg-white shadow-[0_8px_24px_rgba(0,0,0,0.06)]'}`}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={src} alt={label} className="h-auto w-full" />
+        <img src={src} alt={label} className="absolute inset-0 h-full w-full object-cover" />
       </div>
     );
   }
@@ -76,6 +86,350 @@ function Tag({ label }: { label: string }) {
   );
 }
 
+function LineDiagramSVG() {
+  /* zone config: color accent per zone */
+  const zones = [
+    { name: 'Pretreatment',  sub: 'PT LINE',          num: '01', active: false, accent: 'rgba(56,130,210,0.22)',  border: 'rgba(56,130,210,0.75)',  label: '#2B6FC7' },
+    { name: 'Dry-off Oven',  sub: '120°C PRE-HEAT',   num: '02', active: false, accent: 'rgba(230,140,30,0.20)',  border: 'rgba(230,140,30,0.72)',  label: '#C97A0A' },
+    { name: 'Powder Booth',  sub: 'MANUAL GUN HERE',  num: '03', active: true,  accent: 'rgba(254,206,0,0.20)',   border: 'rgba(201,165,0,0.95)',   label: '#A87D00' },
+    { name: 'Curing Oven',   sub: '180–200°C',         num: '04', active: false, accent: 'rgba(210,70,40,0.18)',   border: 'rgba(210,70,40,0.72)',   label: '#C03A20' },
+    { name: 'Inspection',    sub: 'QC · OFF-LOAD',     num: '05', active: false, accent: 'rgba(40,160,80,0.18)',   border: 'rgba(40,160,80,0.72)',   label: '#1A8A40' },
+  ];
+
+  const ZW = 228, ZX = (i: number) => 30 + i * ZW;
+  const RAIL_Y = 58;
+  const partXs = [90, 185, 325, 420, 568, 658, 798, 893, 1033, 1128];
+  const boothPartXs = new Set([568, 658]);
+  const activePartX = 658;
+  const pTop = 82, pH = 76;
+
+  /* spray fan lines from nozzle (x=625, y=159) → workpiece column at x=658 */
+  const nozzleX = 625, nozzleY = 159;
+  const sprayTargets = [84, 96, 108, 120, 132, 144, 156];
+
+  return (
+    <svg
+      viewBox="0 0 1200 410"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ width: '100%', display: 'block', borderRadius: '1.1rem', background: '#f5f3ee', border: '1px solid rgba(10,10,10,0.07)' }}
+    >
+      <defs>
+        {/* Subtle grid texture */}
+        <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+          <path d="M 24 0 L 0 0 0 24" fill="none" stroke="rgba(10,10,10,0.07)" strokeWidth="0.6" />
+        </pattern>
+
+        {/* Spray line dash animation */}
+        <style>{`
+          @keyframes spray {
+            0%   { stroke-dashoffset: 12; opacity: 0.95; }
+            100% { stroke-dashoffset: 0;  opacity: 0.45; }
+          }
+          @keyframes boothPulse {
+            0%, 100% { opacity: 0.75; }
+            50%       { opacity: 1.0;  }
+          }
+          @keyframes heatRise {
+            0%   { transform: translateY(0px);   opacity: 0.9; }
+            100% { transform: translateY(-14px); opacity: 0;   }
+          }
+          @keyframes partGlow {
+            0%, 100% { opacity: 0.5; }
+            50%       { opacity: 1.0; }
+          }
+          @keyframes ptWave {
+            0%   { stroke-dashoffset: 20; }
+            100% { stroke-dashoffset: 0;  }
+          }
+          .spray-line { stroke-dasharray: 4 3; animation: spray 0.9s linear infinite; }
+          .spray-line:nth-child(2) { animation-delay: -0.13s; }
+          .spray-line:nth-child(3) { animation-delay: -0.26s; }
+          .spray-line:nth-child(4) { animation-delay: -0.39s; }
+          .spray-line:nth-child(5) { animation-delay: -0.52s; }
+          .spray-line:nth-child(6) { animation-delay: -0.65s; }
+          .spray-line:nth-child(7) { animation-delay: -0.78s; }
+          .booth-pulse { animation: boothPulse 2s ease-in-out infinite; }
+          .heat { stroke-dasharray: 6 4; animation: heatRise 1.6s ease-in infinite; }
+          .heat-d1 { animation-delay: -0.4s; }
+          .heat-d2 { animation-delay: -0.8s; }
+          .heat-d3 { animation-delay: -1.2s; }
+          .heat-d4 { animation-delay: -1.6s; }
+          .part-glow { animation: partGlow 1.8s ease-in-out infinite; }
+          .pt-wave { stroke-dasharray: 8 4; animation: ptWave 1.4s linear infinite; }
+        `}</style>
+      </defs>
+
+      {/* ── Grid background ── */}
+      <rect x="0" y="0" width="1200" height="410" fill="url(#grid)" />
+
+      {/* ── Zone fills ── */}
+      {zones.map((z, i) => (
+        <rect key={i} x={ZX(i)} y={48} width={ZW} height={290} fill={z.accent} />
+      ))}
+
+      {/* ── Zone top accent bars ── */}
+      {zones.map((z, i) => (
+        <rect key={i} x={ZX(i)} y={48} width={ZW} height={5} fill={z.border} />
+      ))}
+
+      {/* ── Zone vertical dividers ── */}
+      {[1,2,3,4].map(i => (
+        <line key={i} x1={ZX(i)} y1={48} x2={ZX(i)} y2={338}
+          stroke="rgba(10,10,10,0.22)" strokeWidth="1.2" />
+      ))}
+
+      {/* ── Booth dashed border (animated pulse) ── */}
+      <rect x={ZX(2)} y={48} width={ZW} height={290} fill="none"
+        stroke="rgba(201,165,0,0.95)" strokeWidth="1.8" strokeDasharray="7 3"
+        className="booth-pulse" />
+
+      {/* ── Zone number labels (top-left of each zone) ── */}
+      {zones.map((z, i) => (
+        <text key={i} x={ZX(i) + 10} y={65}
+          fill={z.label} fontSize="8.5" fontWeight="800"
+          fontFamily="system-ui,sans-serif" letterSpacing="0.5">
+          {z.num}
+        </text>
+      ))}
+
+      {/* ── Overhead conveyor rail ── */}
+      <rect x={30} y={RAIL_Y - 5} width={1140} height={6} rx="1" fill="rgba(10,10,10,0.75)" />
+      <rect x={30} y={RAIL_Y - 1} width={1140} height={1.5} fill="rgba(255,255,255,0.35)" />
+      <text x={600} y={44} textAnchor="middle"
+        fill="rgba(10,10,10,0.5)" fontSize="5.5" fontWeight="700"
+        fontFamily="system-ui,sans-serif" letterSpacing="3">OVERHEAD CONVEYOR RAIL</text>
+
+      {/* ── Conveyor trolleys ── */}
+      {partXs.map(x => (
+        <g key={x}>
+          <rect x={x - 7} y={RAIL_Y - 4} width={14} height={6} rx="1"
+            fill={boothPartXs.has(x) ? 'rgba(10,10,10,0.7)' : 'rgba(10,10,10,0.38)'} />
+          <circle cx={x - 3} cy={RAIL_Y + 2} r={2.5}
+            fill={boothPartXs.has(x) ? 'rgba(10,10,10,0.6)' : 'rgba(10,10,10,0.28)'} />
+          <circle cx={x + 3} cy={RAIL_Y + 2} r={2.5}
+            fill={boothPartXs.has(x) ? 'rgba(10,10,10,0.6)' : 'rgba(10,10,10,0.28)'} />
+        </g>
+      ))}
+
+      {/* ── Hanging drop rods + parts ── */}
+      {partXs.map(x => {
+        const inBooth = boothPartXs.has(x);
+        const isActive = x === activePartX;
+        const rodStroke = inBooth ? 'rgba(10,10,10,0.65)' : 'rgba(10,10,10,0.35)';
+        return (
+          <g key={x}>
+            {/* Drop rod */}
+            <line x1={x} y1={RAIL_Y + 4} x2={x} y2={pTop}
+              stroke={rodStroke} strokeWidth="1.2" />
+            {/* Hook */}
+            <path d={`M ${x} ${pTop} Q ${x+5} ${pTop+5} ${x+5} ${pTop+10}`}
+              fill="none" stroke={rodStroke} strokeWidth="1.2" />
+            {/* Part body */}
+            <rect x={x - 14} y={pTop + 8} width={28} height={pH} rx="2"
+              fill={isActive ? 'rgba(10,10,10,0.1)' : inBooth ? 'rgba(10,10,10,0.08)' : 'rgba(10,10,10,0.05)'}
+              stroke={isActive ? 'rgba(201,165,0,0.85)' : rodStroke}
+              strokeWidth={isActive ? 1.8 : 1.1} />
+            {/* Active part: powder stripe lines */}
+            {isActive && [10,22,34,46,58,70].map(dy => (
+              <line key={dy} x1={x - 11} y1={pTop + 8 + dy} x2={x + 11} y2={pTop + 8 + dy}
+                stroke="#FECE00" strokeWidth="1.2" className="part-glow" />
+            ))}
+            {/* Active part: outer glow rect */}
+            {isActive && (
+              <rect x={x - 17} y={pTop + 5} width={34} height={pH + 6} rx="3"
+                fill="none" stroke="rgba(254,206,0,0.7)" strokeWidth="1.5" className="part-glow" />
+            )}
+            {/* Powder drip tail (booth parts only) */}
+            {inBooth && !isActive && [0, 5, 9].map((dy, k) => (
+              <line key={k}
+                x1={x} y1={pTop + 8 + pH + dy}
+                x2={x} y2={pTop + 8 + pH + dy + 3}
+                stroke="rgba(201,165,0,0.7)" strokeWidth={1.6 - k * 0.3} />
+            ))}
+          </g>
+        );
+      })}
+
+      {/* ── Booth side walls ── */}
+      <rect x={ZX(2) - 2} y={64} width={5} height={274} rx="1" fill="rgba(10,10,10,0.42)" />
+      <rect x={ZX(3) - 3} y={64} width={5} height={274} rx="1" fill="rgba(10,10,10,0.42)" />
+
+      {/* ── PRETREATMENT: wash tank illustration ── */}
+      <g transform="translate(144,215)">
+        <rect x={-52} y={-26} width={104} height={54} rx="4"
+          fill="rgba(56,130,210,0.15)" stroke="rgba(56,130,210,0.7)" strokeWidth="1.5" />
+        {[-12, -2, 8].map((y, k) => (
+          <path key={k}
+            d={`M -38 ${y} C -22 ${y-6} -8 ${y+6} 0 ${y} C 8 ${y-6} 22 ${y+6} 38 ${y}`}
+            fill="none" stroke="rgba(56,130,210,0.8)" strokeWidth="1.4"
+            className="pt-wave" style={{ animationDelay: `${-k * 0.47}s` }} />
+        ))}
+        {/* Nozzles */}
+        {[-24, 0, 24].map(x => (
+          <g key={x}>
+            <line x1={x} y1={-26} x2={x} y2={-14}
+              stroke="rgba(56,130,210,0.8)" strokeWidth="2" />
+            <circle cx={x} cy={-12} r={3} fill="rgba(56,130,210,0.75)" />
+          </g>
+        ))}
+      </g>
+
+      {/* ── DRY-OFF OVEN: heat waves ── */}
+      <g transform="translate(372,215)">
+        <rect x={-58} y={-30} width={116} height={66} rx="4"
+          fill="rgba(230,140,30,0.15)" stroke="rgba(230,140,30,0.7)" strokeWidth="1.5" />
+        {[-32,-12,12,32].map((x, k) => (
+          <path key={k}
+            d={`M ${x} 20 Q ${x+6} 8 ${x} -2 Q ${x-6} -14 ${x} -24`}
+            fill="none" stroke="rgba(230,140,30,0.85)" strokeWidth="1.6"
+            className={`heat heat-d${(k % 4) + 1}`} />
+        ))}
+        <text x={0} y={44} textAnchor="middle"
+          fill="rgba(230,140,30,0.9)" fontSize="7" fontWeight="700"
+          fontFamily="system-ui" letterSpacing="1">120°C</text>
+      </g>
+
+      {/* ── POWDER BOOTH: operator + gun + spray ── */}
+
+      {/* Operator — solid filled pictogram */}
+      {/* Head */}
+      <ellipse cx={508} cy={152} rx={9} ry={10}
+        fill="rgba(10,10,10,0.78)" />
+      {/* Hard hat */}
+      <path d="M 499 149 Q 508 138 517 149 Z"
+        fill="rgba(10,10,10,0.88)" />
+      <rect x={497} y={149} width={22} height={2.5} rx="1.2"
+        fill="rgba(10,10,10,0.82)" />
+      {/* Torso */}
+      <rect x={501} y={163} width={14} height={30} rx="3"
+        fill="rgba(10,10,10,0.72)" />
+      {/* Left arm (down) */}
+      <rect x={497} y={165} width={5} height={22} rx="2.5"
+        fill="rgba(10,10,10,0.68)" />
+      {/* Right arm (raised toward gun) */}
+      <path d="M 514 167 L 528 160 L 555 157"
+        fill="none" stroke="rgba(10,10,10,0.75)" strokeWidth="5"
+        strokeLinecap="round" strokeLinejoin="round" />
+      {/* Legs */}
+      <rect x={502} y={193} width={5} height={28} rx="2.5"
+        fill="rgba(10,10,10,0.68)" transform="rotate(4, 504, 193)" />
+      <rect x={509} y={193} width={5} height={28} rx="2.5"
+        fill="rgba(10,10,10,0.68)" transform="rotate(-4, 511, 193)" />
+
+      {/* Gun body */}
+      <rect x={554} y={151} width={32} height={13} rx="3"
+        fill="rgba(10,10,10,0.88)" />
+      {/* Gun grip */}
+      <rect x={561} y={164} width={11} height={14} rx="2.5"
+        fill="rgba(10,10,10,0.78)" />
+      {/* Barrel */}
+      <rect x={586} y={154} width={38} height={7} rx="3.5"
+        fill="rgba(10,10,10,0.92)" />
+      {/* Nozzle tip */}
+      <circle cx={nozzleX} cy={nozzleY} r={5}
+        fill="#FECE00" stroke="rgba(10,10,10,0.6)" strokeWidth="1" />
+
+      {/* 60–80 kV callout */}
+      <line x1={570} y1={149} x2={560} y2={132}
+        stroke="rgba(10,10,10,0.35)" strokeWidth="1" />
+      <text x={558} y={128} textAnchor="middle"
+        fill="rgba(10,10,10,0.85)" fontSize="7.5" fontWeight="800"
+        fontFamily="system-ui,sans-serif" letterSpacing="0.3">GEMA OptiFlex Pro</text>
+      <text x={558} y={140} textAnchor="middle"
+        fill="rgba(180,130,0,1)" fontSize="7" fontWeight="800"
+        fontFamily="monospace" letterSpacing="0.5">60–80 kV</text>
+
+      {/* Animated spray fan lines */}
+      {sprayTargets.map((y2, i) => (
+        <line key={i}
+          x1={nozzleX} y1={nozzleY}
+          x2={647} y2={y2}
+          stroke="rgba(254,206,0,0.9)" strokeWidth="1.4"
+          className="spray-line" />
+      ))}
+
+      {/* Grounded workpiece callout */}
+      <line x1={660} y1={163} x2={692} y2={195}
+        stroke="rgba(180,130,0,0.6)" strokeWidth="1" />
+      <text x={695} y={194} fill="rgba(150,100,0,1)"
+        fontSize="6.5" fontWeight="700"
+        fontFamily="system-ui,sans-serif" letterSpacing="1.5">GROUNDED</text>
+      <text x={695} y={206} fill="rgba(150,100,0,1)"
+        fontSize="6.5" fontWeight="700"
+        fontFamily="system-ui,sans-serif" letterSpacing="1.5">WORKPIECE</text>
+
+      {/* Electrostatic label */}
+      <text x={600} y={288} textAnchor="middle"
+        fill="rgba(150,100,0,0.85)" fontSize="6" fontWeight="700"
+        fontFamily="system-ui,sans-serif" letterSpacing="2.5">ELECTROSTATIC ATTRACTION</text>
+
+      {/* ── CURING OVEN: strong heat waves ── */}
+      <g transform="translate(828,215)">
+        <rect x={-58} y={-30} width={116} height={66} rx="4"
+          fill="rgba(210,70,40,0.15)" stroke="rgba(210,70,40,0.7)" strokeWidth="1.5" />
+        {[-32,-12,12,32].map((x, k) => (
+          <path key={k}
+            d={`M ${x} 20 Q ${x+7} 6 ${x} -4 Q ${x-7} -16 ${x} -26`}
+            fill="none" stroke="rgba(210,70,40,0.88)" strokeWidth="1.8"
+            className={`heat heat-d${(k % 4) + 1}`} />
+        ))}
+        <text x={0} y={44} textAnchor="middle"
+          fill="rgba(210,70,40,0.95)" fontSize="7" fontWeight="700"
+          fontFamily="system-ui" letterSpacing="1">180–200°C</text>
+      </g>
+
+      {/* ── INSPECTION: magnifier icon ── */}
+      <g transform="translate(1056,210)">
+        <circle cx={0} cy={0} r={22} fill="rgba(40,160,80,0.14)" stroke="rgba(40,160,80,0.65)" strokeWidth="1.5" />
+        {/* Magnifier lens */}
+        <circle cx={-5} cy={-5} r={13} fill="none" stroke="rgba(40,160,80,0.9)" strokeWidth="3" />
+        {/* Handle */}
+        <line x1={5} y1={5} x2={16} y2={16}
+          stroke="rgba(40,160,80,0.9)" strokeWidth="4.5" strokeLinecap="round" />
+        {/* Check mark inside lens */}
+        <path d="M -13 -5 L -8 0 L -1 -8"
+          fill="none" stroke="rgba(40,160,80,0.95)" strokeWidth="2.5"
+          strokeLinecap="round" strokeLinejoin="round" />
+      </g>
+
+      {/* ── Bottom separator ── */}
+      <line x1={30} y1={338} x2={1170} y2={338}
+        stroke="rgba(10,10,10,0.2)" strokeWidth="1" />
+
+      {/* ── Zone label strip ── */}
+      {zones.map((z, i) => {
+        const cx = ZX(i) + ZW / 2;
+        return (
+          <g key={i}>
+            {z.active && (
+              <rect x={cx - 62} y={344} width={124} height={46} rx="5"
+                fill="rgba(254,206,0,0.18)" stroke="rgba(201,165,0,0.7)" strokeWidth="1.2" />
+            )}
+            <text x={cx} y={360} textAnchor="middle"
+              fill={z.active ? 'rgba(10,10,10,0.9)' : 'rgba(10,10,10,0.55)'}
+              fontSize={z.active ? 10 : 8.5} fontWeight={z.active ? 800 : 600}
+              fontFamily="system-ui,sans-serif" letterSpacing="0.3">
+              {z.name}
+            </text>
+            <text x={cx} y={376} textAnchor="middle"
+              fill={z.active ? z.label : 'rgba(10,10,10,0.38)'}
+              fontSize="6" fontWeight="700"
+              fontFamily="system-ui,sans-serif" letterSpacing="2.2">
+              {z.sub}
+            </text>
+          </g>
+        );
+      })}
+
+      {/* ── Footer line ── */}
+      <text x={32} y={405} fill="rgba(10,10,10,0.38)" fontSize="5.5" fontWeight="600"
+        fontFamily="system-ui" letterSpacing="2">DIRECTION OF TRAVEL →</text>
+      <text x={1168} y={405} textAnchor="end" fill="rgba(10,10,10,0.38)" fontSize="5.5" fontWeight="600"
+        fontFamily="system-ui" letterSpacing="1.5">GEMA OPTIFLEX PRO · OPTIFINISH INDIA</text>
+    </svg>
+  );
+}
+
 /* ─────────────────────────────────────────────────────────────
    PAGE DATA
 ───────────────────────────────────────────────────────────── */
@@ -94,7 +448,7 @@ const MODELS = [
       { l: 'Best for', v: 'Job coaters, custom colour shops' },
     ],
     imageLabel: 'OptiFlex Pro Q · quick colour change gun',
-    imageSrc: '/images/products/gema/manual-gun/gema-optiflex-proq-01.jpg',
+    imageSrc: '/images/products/gema/manual-gun/optiflex_pro_manual_gun.jpg',
   },
   {
     id: 'pro-f',
@@ -109,7 +463,8 @@ const MODELS = [
       { l: 'Best for', v: 'High-volume production lines' },
     ],
     imageLabel: 'OptiFlex Pro F Spray · high-output gun',
-    imageSrc: '/images/products/gema/manual-gun/gema-optiflex-prof-01.jpg',
+    imageSrc: '/images/products/gema/manual-gun/optiflex-gun.jpeg',
+    objectFit: 'contain' as const,
   },
   {
     id: 'pro-c',
@@ -124,7 +479,8 @@ const MODELS = [
       { l: 'Best for', v: 'Batch shops, mixed-product environments' },
     ],
     imageLabel: 'OptiFlex Pro C · all-round manual gun',
-    imageSrc: '/images/products/gema/manual-gun/gema-optiflex-proc-01.jpg',
+    imageSrc: '/images/products/gema/manual-gun/optiflex-c.png',
+    objectFit: 'contain' as const,
   },
 ];
 
@@ -133,19 +489,19 @@ const HOW_IT_WORKS = [
     n: '01',
     title: 'Powder fed via Venturi',
     body: 'Powder coating material is drawn from the hopper or box feed through a Venturi system — pressurised air creates suction that pulls the powder into the gun barrel at a consistent, controlled rate.',
-    imageSrc: '/images/products/gema/manual-gun/gema-manual-gun-inuse-01.jpg',
+    imageSrc: '/images/products/gema/manual-gun/gun-open.png',
   },
   {
     n: '02',
     title: 'MagicControl 4.0 charges the powder',
     body: 'As the powder passes the electrode tip inside the gun barrel, the MagicControl 4.0 generator applies a programmable electrostatic charge. The kV and µA output is set to match the powder type and part geometry.',
-    imageSrc: '/images/products/gema/manual-gun/gema-manual-gun-charging-01.jpg',
+    imageSrc: '/images/products/gema/manual-gun/magic-control.jpg',
   },
   {
     n: '03',
     title: 'Charged particles adhere to the part',
     body: 'Electrostatically charged powder particles are attracted to the grounded part. The charge forces the particles toward the surface — wrapping around edges and into recesses — where they adhere electrostatically until the part enters the curing oven.',
-    imageSrc: '/images/products/gema/manual-gun/gema-optiflex2-02.png',
+    imageSrc: '/images/products/gema/manual-gun/homepage-img.jpg',
   },
 ];
 
@@ -183,6 +539,17 @@ const RELATED = [
 export default function GemaManualGunPage() {
   const [activeModel, setActiveModel] = useState(0);
   const [activeStep, setActiveStep] = useState(0);
+  const [videoMuted, setVideoMuted] = useState(true);
+  const [showSoundBtn, setShowSoundBtn] = useState(false);
+  const videoRef = useRef<HTMLIFrameElement>(null);
+
+  const toggleSound = () => {
+    const cmd = videoMuted ? 'unMute' : 'mute';
+    videoRef.current?.contentWindow?.postMessage(
+      JSON.stringify({ event: 'command', func: cmd, args: [] }), '*'
+    );
+    setVideoMuted(!videoMuted);
+  };
 
   return (
     <div className="min-h-screen bg-[#f1efea]">
@@ -190,14 +557,13 @@ export default function GemaManualGunPage() {
       {/* ══════════════════════════════════════════════════════
           S1 — PRODUCT HERO
       ══════════════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden bg-[#f1efea] pb-16 pt-[80px] md:pb-20 md:pt-[88px]">
+      <section className="relative bg-[#f1efea] pb-16 pt-[80px] md:pb-20 md:pt-[88px]">
         {/* Grid drift — dual layer */}
         <div className="pointer-events-none absolute inset-0 grid-drift opacity-[0.62] mix-blend-multiply" style={{ backgroundImage: 'linear-gradient(rgba(201,165,0,0.22) 1px, transparent 1px), linear-gradient(90deg, rgba(201,165,0,0.22) 1px, transparent 1px)', backgroundSize: '88px 88px' }} />
         <div className="pointer-events-none absolute inset-0 grid-drift opacity-[0.32] mix-blend-multiply" style={{ backgroundImage: 'linear-gradient(rgba(255,243,163,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,243,163,0.5) 1px, transparent 1px)', backgroundSize: '264px 264px' }} />
 
+        {/* Breadcrumb — constrained */}
         <div className="relative mx-auto max-w-7xl px-5 md:px-8">
-
-          {/* Breadcrumb */}
           <nav className="mb-8 flex items-center gap-2">
             {[
               { label: 'Products', href: '/products' },
@@ -223,76 +589,108 @@ export default function GemaManualGunPage() {
               </span>
             ))}
           </nav>
+        </div>
 
-          <div className="grid items-end gap-12 lg:grid-cols-[1.1fr_0.9fr]">
-
-            {/* Left — copy */}
-            <div>
-              {/* Partner tag */}
-              <div className="mb-5 flex flex-wrap items-center gap-2">
-                <span className="rounded-full border border-[#0A0A0A]/20 px-3 py-1 text-[0.55rem] font-bold uppercase tracking-[0.18em] text-[#0A0A0A]/55">
-                  Authorised Partner
-                </span>
-                <span className="rounded-full border border-[#0A0A0A]/10 px-3 py-1 text-[0.55rem] font-bold uppercase tracking-[0.18em] text-[#0A0A0A]/40">
-                  GEMA Switzerland
-                </span>
-              </div>
-
-              <p className="mb-3 text-[0.58rem] font-bold uppercase tracking-[0.22em] text-[#0A0A0A]/38">
-                OptiFlex Pro Series — Gravity / Box / Hopper Fed
-              </p>
-
-              <h1 className="font-display text-[clamp(2.4rem,5.5vw,4.5rem)] font-black leading-[0.9] tracking-[-0.04em] text-[#0A0A0A]">
-                Manual powder<br />
-                coating gun.<br />
-                <span className="text-[#C9A500]">Swiss standard.</span>
-              </h1>
-
-              <p className="mt-5 max-w-lg text-[0.88rem] leading-relaxed text-[#0A0A0A]/55">
-                GEMA&apos;s OptiFlex Pro is the world reference for manual electrostatic powder coating guns — covering quick colour change, high-output production, and standard all-round use. Supplied and supported in India by OptiFinish.
-              </p>
-
-              {/* Stats */}
-              <div className="mt-8 flex flex-wrap gap-3">
-                {[
-                  { v: '35 sec', l: 'Fastest colour change' },
-                  { v: '600 g/min', l: 'Max powder output' },
-                  { v: '3 Models', l: 'Pro Q · Pro F · Pro C' },
-                ].map((s) => (
-                  <div
-                    key={s.l}
-                    className="rounded-xl border border-[#0A0A0A]/10 bg-[#0A0A0A]/[0.04] px-5 py-3"
-                  >
-                    <div className="font-display text-[1.5rem] font-black leading-none text-[#0A0A0A]">
-                      {s.v}
-                    </div>
-                    <div className="mt-1 text-[0.6rem] font-medium uppercase tracking-[0.12em] text-[#0A0A0A]/40">
-                      {s.l}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* CTAs */}
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Link
-                  href="/contact?product=gema-manual-gun"
-                  className="rounded-full bg-[#0A0A0A] px-6 py-2.5 text-[0.65rem] font-bold uppercase tracking-[0.14em] text-white transition-all hover:bg-[#0A0A0A]/80"
-                >
-                  Get a Quote →
-                </Link>
-                <button className="rounded-full border border-[#0A0A0A]/[0.12] px-6 py-2.5 text-[0.65rem] font-bold uppercase tracking-[0.14em] text-[#0A0A0A]/45 transition-all hover:border-[#0A0A0A]/25 hover:text-[#0A0A0A]/70">
-                  Download Brochure
-                </button>
-              </div>
+        {/* Hero grid — left constrained, right bleeds to edge */}
+        <div
+          className="relative grid items-stretch gap-12 lg:grid-cols-[1fr_1.3fr]"
+          style={{ paddingLeft: 'max(1.25rem, calc((100vw - 80rem) / 2 + 2rem))', paddingRight: 'max(0.75rem, calc((100vw - 80rem) / 2 + 0.5rem))' }}
+        >
+          {/* Left — copy */}
+          <div>
+            {/* Partner tag */}
+            <div className="mb-5 flex flex-wrap items-center gap-2">
+              <span className="rounded-full border border-[#0A0A0A]/20 px-3 py-1 text-[0.55rem] font-bold uppercase tracking-[0.18em] text-[#0A0A0A]/55">
+                Authorised Partner
+              </span>
+              <span className="rounded-full border border-[#0A0A0A]/10 px-3 py-1 text-[0.55rem] font-bold uppercase tracking-[0.18em] text-[#0A0A0A]/40">
+                GEMA Switzerland
+              </span>
             </div>
 
-            {/* Right — hero image viewport */}
-            <ImageViewport
-              label="GEMA OptiFlex Pro manual powder coating gun"
-              src="/images/products/gema/manual-gun/gema-optiflex2-02.png"
-              aspect="aspect-[4/3]"
+            <p className="mb-3 text-[0.58rem] font-bold uppercase tracking-[0.22em] text-[#0A0A0A]/38">
+              OptiFlex Pro Series — Gravity / Box / Hopper Fed
+            </p>
+
+            <h1 className="font-display text-[clamp(2.4rem,5.5vw,4.5rem)] font-black leading-[0.9] tracking-[-0.04em] text-[#0A0A0A]">
+              Manual powder<br />
+              coating gun.<br />
+              <span className="text-[#FECE00]">Swiss standard.</span>
+            </h1>
+
+            <p className="mt-5 max-w-lg text-[0.88rem] leading-relaxed text-[#0A0A0A]/55">
+              GEMA&apos;s OptiFlex Pro is the world reference for manual electrostatic powder coating guns — covering quick colour change, high-output production, and standard all-round use. Supplied and supported in India by OptiFinish.
+            </p>
+
+            {/* Stats */}
+            <div className="mt-8 flex flex-wrap gap-3">
+              {[
+                { v: '35 sec', l: 'Fastest colour change' },
+                { v: '600 g/min', l: 'Max powder output' },
+                { v: '3 Models', l: 'Pro Q · Pro F · Pro C' },
+              ].map((s) => (
+                <div
+                  key={s.l}
+                  className="rounded-xl border border-[#0A0A0A]/10 bg-[#0A0A0A]/[0.04] px-5 py-3"
+                >
+                  <div className="font-display text-[1.5rem] font-black leading-none text-[#0A0A0A]">
+                    {s.v}
+                  </div>
+                  <div className="mt-1 text-[0.6rem] font-medium uppercase tracking-[0.12em] text-[#0A0A0A]/40">
+                    {s.l}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* CTAs */}
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                href="/contact?product=gema-manual-gun"
+                className="rounded-full bg-[#0A0A0A] px-6 py-2.5 text-[0.65rem] font-bold uppercase tracking-[0.14em] text-white transition-all hover:bg-[#0A0A0A]/80"
+              >
+                Get a Quote →
+              </Link>
+              <button className="rounded-full border border-[#0A0A0A]/[0.12] px-6 py-2.5 text-[0.65rem] font-bold uppercase tracking-[0.14em] text-[#0A0A0A]/45 transition-all hover:border-[#0A0A0A]/25 hover:text-[#0A0A0A]/70">
+                Download Brochure
+              </button>
+            </div>
+          </div>
+
+          {/* Right — hero video */}
+          <div
+            className="relative min-h-[320px] w-full overflow-hidden rounded-[1.1rem] lg:h-full mr-5 md:mr-8 bg-black"
+            onMouseEnter={() => setShowSoundBtn(true)}
+            onMouseLeave={() => setShowSoundBtn(false)}
+          >
+            <iframe
+              ref={videoRef}
+              src="https://www.youtube.com/embed/hNxPofBZBqg?autoplay=1&mute=1&loop=1&playlist=hNxPofBZBqg&controls=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&iv_load_policy=3&showinfo=0"
+              title="OptiFlex Pro Animation"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="border-0"
+              style={{ position: 'absolute', top: '-16%', left: '0', width: '100%', height: '132%' }}
             />
+            {/* Transparent overlay — blocks YouTube hover UI */}
+            <div className="absolute inset-0 z-[5]" />
+            {/* Sound toggle — appears on hover */}
+            <button
+              onClick={toggleSound}
+              className={`absolute bottom-4 right-4 z-10 flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[0.6rem] font-bold uppercase tracking-[0.14em] backdrop-blur-sm transition-all duration-200 ${
+                showSoundBtn ? 'opacity-100' : 'opacity-0 pointer-events-none'
+              } ${
+                videoMuted
+                  ? 'border-white/20 bg-black/50 text-white/60 hover:border-white/40 hover:text-white/90'
+                  : 'border-[#FECE00]/40 bg-black/50 text-[#FECE00] hover:border-[#FECE00]/70'
+              }`}
+            >
+              {videoMuted ? (
+                <><span>🔇</span> Sound off</>
+              ) : (
+                <><span>🔊</span> Sound on</>
+              )}
+            </button>
           </div>
         </div>
       </section>
@@ -353,23 +751,22 @@ export default function GemaManualGunPage() {
       {/* ══════════════════════════════════════════════════════
           S3 — MODEL SELECTOR
       ══════════════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden bg-[#070809] py-20 md:py-24">
+      <section className="relative overflow-hidden bg-[#f1efea] py-20 md:py-24">
         {/* Grid texture */}
         <div
-          className="pointer-events-none absolute inset-0"
+          className="pointer-events-none absolute inset-0 grid-drift opacity-[0.62] mix-blend-multiply"
           style={{
-            backgroundImage: 'linear-gradient(rgba(254,206,0,1) 1px, transparent 1px), linear-gradient(90deg, rgba(254,206,0,1) 1px, transparent 1px)',
-            backgroundSize: '72px 72px',
-            opacity: 0.028,
+            backgroundImage: 'linear-gradient(rgba(201,165,0,0.22) 1px, transparent 1px), linear-gradient(90deg, rgba(201,165,0,0.22) 1px, transparent 1px)',
+            backgroundSize: '88px 88px',
           }}
         />
         <div className="relative z-10 mx-auto max-w-7xl px-5 md:px-8">
 
           <div className="mb-10">
-            <p className="mb-2 text-[0.56rem] font-bold uppercase tracking-[0.22em] text-[#FECE00]/55">
+            <p className="mb-2 text-[0.56rem] font-bold uppercase tracking-[0.22em] text-[#0A0A0A]/40">
               Three models — one system
             </p>
-            <h2 className="font-display text-[clamp(1.6rem,3.5vw,2.6rem)] font-black leading-tight tracking-[-0.04em] text-white">
+            <h2 className="font-display text-[clamp(1.6rem,3.5vw,2.6rem)] font-black leading-tight tracking-[-0.04em] text-[#0A0A0A]">
               Choose your OptiFlex Pro
             </h2>
           </div>
@@ -382,8 +779,8 @@ export default function GemaManualGunPage() {
                 onClick={() => setActiveModel(i)}
                 className={`rounded-full px-5 py-2 text-[0.63rem] font-bold uppercase tracking-[0.14em] transition-all duration-200 ${
                   activeModel === i
-                    ? 'border border-[#FECE00] bg-[#FECE00] text-[#0A0A0A]'
-                    : 'border border-white/[0.14] text-white/35 hover:border-white/[0.3] hover:text-white/60'
+                    ? 'border border-[#0A0A0A] bg-[#0A0A0A] text-white'
+                    : 'border border-[#0A0A0A]/[0.14] text-[#0A0A0A]/40 hover:border-[#0A0A0A]/30 hover:text-[#0A0A0A]/70'
                 }`}
               >
                 {m.label}
@@ -399,31 +796,31 @@ export default function GemaManualGunPage() {
               label={MODELS[activeModel].imageLabel}
               src={MODELS[activeModel].imageSrc}
               aspect="aspect-[4/3]"
-              isDark
+              objectFit={MODELS[activeModel].objectFit ?? 'cover'}
             />
 
             {/* Content */}
             <div className="flex flex-col justify-center">
-              <span className="mb-2 self-start rounded-full border border-[#FECE00]/20 bg-[#FECE00]/10 px-3 py-1 text-[0.55rem] font-bold uppercase tracking-[0.15em] text-[#FECE00]/80">
+              <span className="mb-2 self-start rounded-full border border-[#0A0A0A]/15 bg-[#0A0A0A]/[0.06] px-3 py-1 text-[0.55rem] font-bold uppercase tracking-[0.15em] text-[#0A0A0A]/60">
                 {MODELS[activeModel].tag}
               </span>
-              <h3 className="font-display text-[clamp(1.3rem,2.5vw,2rem)] font-black leading-tight tracking-[-0.03em] text-white">
+              <h3 className="font-display text-[clamp(1.3rem,2.5vw,2rem)] font-black leading-tight tracking-[-0.03em] text-[#0A0A0A]">
                 {MODELS[activeModel].headline}
               </h3>
-              <p className="mt-3 text-[0.8rem] leading-relaxed text-white/55">
+              <p className="mt-3 text-[0.8rem] leading-relaxed text-[#0A0A0A]/55">
                 {MODELS[activeModel].body}
               </p>
 
               {/* Model specs */}
-              <div className="mt-6 rounded-[1rem] border border-white/[0.08] bg-white/[0.04] p-5">
+              <div className="mt-6 rounded-[1rem] border border-[#0A0A0A]/[0.08] bg-white/60 p-5">
                 {MODELS[activeModel].specs.map((s) => (
-                  <SpecRow key={s.l} label={s.l} value={s.v} dark />
+                  <SpecRow key={s.l} label={s.l} value={s.v} />
                 ))}
               </div>
 
               <Link
                 href="/contact?product=gema-manual-gun"
-                className="mt-5 self-start rounded-full bg-[#FECE00] px-5 py-2 text-[0.63rem] font-bold uppercase tracking-[0.14em] text-[#0A0A0A] transition-all hover:bg-[#FECE00]/85"
+                className="mt-5 self-start rounded-full bg-[#0A0A0A] px-5 py-2 text-[0.63rem] font-bold uppercase tracking-[0.14em] text-white transition-all hover:bg-[#FECE00] hover:text-[#0A0A0A]"
               >
                 Enquire about {MODELS[activeModel].label} →
               </Link>
@@ -494,7 +891,9 @@ export default function GemaManualGunPage() {
                 label={`Step ${HOW_IT_WORKS[activeStep].n} · ${HOW_IT_WORKS[activeStep].title} · diagram`}
                 src={HOW_IT_WORKS[activeStep].imageSrc}
                 aspect="aspect-[4/3]"
-                className="border-[#FECE00]/[0.07] bg-white/[0.025]"
+                className="border-[#FECE00]/[0.07]"
+                isDark={true}
+                objectFit={HOW_IT_WORKS[activeStep].objectFit ?? 'cover'}
               />
               <div className="rounded-[1rem] border border-[#FECE00]/[0.1] bg-[#FECE00]/[0.04] p-5">
                 <p className="mb-1 text-[0.56rem] font-bold uppercase tracking-[0.2em] text-[#FECE00]/50">
@@ -561,11 +960,8 @@ export default function GemaManualGunPage() {
             )}
           </div>
 
-          {/* Line diagram image viewport */}
-          <ImageViewport
-            label="Powder coating line diagram · manual gun position highlighted"
-            aspect="aspect-[21/7]"
-          />
+          {/* Line diagram */}
+          <LineDiagramSVG />
 
           <p className="mt-4 text-[0.72rem] leading-relaxed text-[#0A0A0A]/45">
             The OptiFlex Pro is the primary application tool in the powder spray booth — positioned between the dry-off oven and the curing oven. In manual lines, the operator controls gun angle, distance, and traverse speed. In batch automatic setups, the manual gun can be paired with a ZA01 or GEMA ZA reciprocator for consistent vertical traversal.

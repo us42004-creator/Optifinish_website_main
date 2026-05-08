@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface Stat {
   value: string;
@@ -15,6 +16,8 @@ interface CategoryHeroProps {
   stats: Stat[];
   theme: 'dark' | 'light';
   breadcrumbLabel: string;
+  imageSrc?: string;
+  imageAlt?: string;
 }
 
 export default function CategoryHero({
@@ -27,6 +30,8 @@ export default function CategoryHero({
   stats,
   theme,
   breadcrumbLabel,
+  imageSrc,
+  imageAlt,
 }: CategoryHeroProps) {
   const isDark = theme === 'dark';
 
@@ -49,6 +54,8 @@ export default function CategoryHero({
       />
 
       <div className="relative mx-auto max-w-7xl px-5 md:px-8">
+        <div className={imageSrc ? 'lg:grid lg:grid-cols-[1fr_1fr] lg:items-stretch lg:gap-16' : ''}>
+        <div>{/* left column */}
         {/* Breadcrumb */}
         <div className="mb-6 flex items-center gap-2">
           <Link
@@ -154,6 +161,33 @@ export default function CategoryHero({
             ))}
           </div>
         )}
+
+        </div>{/* end left column */}
+
+        {/* Right — image viewport */}
+        {imageSrc && (
+          <div className="mt-10 lg:mt-0 lg:h-full">
+            <div
+              className={`relative w-full h-full min-h-[320px] overflow-hidden rounded-[1.2rem] ${
+                isDark
+                  ? 'border border-white/[0.08] bg-white/[0.03]'
+                  : 'border border-black/[0.08] bg-white shadow-[0_12px_40px_rgba(0,0,0,0.08)]'
+              }`}
+            >
+              <div className={`absolute left-0 right-0 top-0 z-10 h-[2px] ${isDark ? 'bg-[#FECE00]/25' : 'bg-[#0A0A0A]/10'}`} />
+              <Image
+                src={imageSrc}
+                alt={imageAlt ?? eyebrow}
+                fill
+                className="object-cover"
+                style={{ objectPosition: '30% center' }}
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                priority
+              />
+            </div>
+          </div>
+        )}
+        </div>{/* end grid */}
       </div>
     </section>
   );

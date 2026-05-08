@@ -28,7 +28,7 @@ export default function GEMAReciproactorsPage() {
         { val: '6 guns', label: 'Max mounting (ZA10)' },
       ]}
       heroImageLabel="GEMA ZA Series Reciprocator"
-      heroImageSrc="/images/products/gema/reciprocators/gema-reciprocator-01.jpg"
+      heroVideoId="CNnxwiJcVzQ"
       enquireSlug="gema-reciprocators"
       backHref="/products/gema"
       backLabel="← Back to GEMA"
@@ -108,7 +108,13 @@ export default function GEMAReciproactorsPage() {
         { l: 'Supplied by', v: 'OptiFinish — authorised GEMA partner, India' },
       ]}
 
-      applicationImageSrc="/images/products/gema/reciprocators/gema-reciprocator-inuse-01.jpg"
+      applicationImages={[
+        { src: '/images/products/gema/reciprocators/application/high volume line.avif', label: 'High-volume automatic coating line' },
+        { src: '/images/products/gema/reciprocators/application/recip4.webp', label: 'Aluminium profile coating' },
+        { src: '/images/products/gema/reciprocators/application/big components.jpg', label: 'Large component coating' },
+        { src: '/images/products/gema/reciprocators/application/conveyor-coating-line.jpg', label: 'Conveyorised production line' },
+        { src: '/images/products/gema/reciprocators/application/agri-equipment-coating.jpg', label: 'Agricultural & construction equipment' },
+      ]}
 
       /* S6 — Applications */
       applications={[

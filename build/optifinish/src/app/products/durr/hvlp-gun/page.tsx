@@ -22,8 +22,9 @@ export default function DurrHVLPGunPage() {
       headlineAccent="Less into the exhaust."
       subline="High Volume Low Pressure atomisation delivers maximum transfer efficiency — significantly reduced overspray, lower material consumption, and improved finish uniformity on topcoats and clear coats."
       heroImageLabel="Dürr EcoGun AS MAN HVLP · high-transfer spray gun"
-      heroImageSrc="/images/products/durr/hvlp-gun/hvlp.png"
       heroImageAspect="aspect-[4/3]"
+      heroVideoId="L11bYA02jug"
+      heroVideoStart={9}
       enquireSlug="durr-hvlp-gun"
       backHref="/products/durr"
       backLabel="← Back to Dürr"
