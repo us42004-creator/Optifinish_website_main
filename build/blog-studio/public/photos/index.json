@@ -1,0 +1,71 @@
+{
+  "$schema": "https://optifinish.com/schemas/photo-library.json",
+  "version": 1,
+  "lastUpdated": "2026-05-05",
+  "note": "Seed entries only — replace with real Greater Noida facility photography. Add new entries by photographing a subject, alt-tagging it precisely (named systems, named processes, named conditions), saving to /public/photos/<id>.jpg, then appending to this index.",
+  "photos": [
+    {
+      "id": "seed-curing-oven-interior",
+      "url": "/photos/seed-curing-oven-interior.jpg",
+      "isPlaceholder": true,
+      "alt": "Interior of an industrial curing oven at the OptiFinish Greater Noida facility, glowing radiant heating elements visible, mesh conveyor mid-cycle",
+      "tags": ["curing oven", "interior", "radiant heating", "conveyor", "facility", "thermal"],
+      "categories": ["facility-behind-scenes", "technical-deep-dive", "pillar-guide"],
+      "aspectRatio": "16:9"
+    },
+    {
+      "id": "seed-thermocouple-on-panel",
+      "url": "/photos/seed-thermocouple-on-panel.jpg",
+      "isPlaceholder": true,
+      "alt": "Calibrated K-type thermocouple probe resting against a freshly powder-coated metal panel inside a curing oven, technician hand visible holding the harness",
+      "tags": ["thermocouple", "calibration", "diagnostic", "cure profile", "panel", "instrument"],
+      "categories": ["technical-deep-dive", "how-to", "facility-behind-scenes"],
+      "aspectRatio": "3:2"
+    },
+    {
+      "id": "seed-gun-mid-spray",
+      "url": "/photos/seed-gun-mid-spray.jpg",
+      "isPlaceholder": true,
+      "alt": "Electrostatic powder coating gun mid-spray on a recessed metal part inside a booth, visible cloud of powder mist, GEMA-style applicator",
+      "tags": ["spray gun", "electrostatic", "GEMA", "transfer efficiency", "booth", "applicator"],
+      "categories": ["technical-deep-dive", "product-spotlight", "case-study"],
+      "aspectRatio": "3:2"
+    },
+    {
+      "id": "seed-rd-booth",
+      "url": "/photos/seed-rd-booth.jpg",
+      "isPlaceholder": true,
+      "alt": "Small R&D-scale spray booth at the OptiFinish Greater Noida facility, instrumented with thermal probes and a powder hopper, late-afternoon natural light",
+      "tags": ["R&D", "test bay", "facility", "Greater Noida", "small batch", "powder hopper"],
+      "categories": ["facility-behind-scenes", "case-study"],
+      "aspectRatio": "16:9"
+    },
+    {
+      "id": "seed-finished-panel-cooling",
+      "url": "/photos/seed-finished-panel-cooling.jpg",
+      "isPlaceholder": true,
+      "alt": "Finished powder-coated automotive body panel cooling under exit-tunnel light, smooth gloss surface reflecting the overhead bars",
+      "tags": ["finished part", "automotive", "body panel", "exit tunnel", "gloss", "outcome", "case study result"],
+      "categories": ["case-study", "comparison-decision", "industry-trends"],
+      "aspectRatio": "16:9"
+    },
+    {
+      "id": "seed-defect-orange-peel-macro",
+      "url": "/photos/seed-defect-orange-peel-macro.jpg",
+      "isPlaceholder": true,
+      "alt": "Macro detail of an orange-peel-textured powder-coated surface, raking side light exposing the dimpled topology, defect diagnostic reference image",
+      "tags": ["defect", "orange peel", "macro", "surface texture", "troubleshooting", "diagnostic"],
+      "categories": ["how-to", "technical-deep-dive"],
+      "aspectRatio": "1:1"
+    },
+    {
+      "id": "seed-coil-export-cbam",
+      "url": "/photos/seed-coil-export-cbam.jpg",
+      "isPlaceholder": true,
+      "alt": "Coil of cold-rolled steel sheet wrapped for export with customs paperwork resting on top, EU destination stamp visible on the bill of lading",
+      "tags": ["export", "CBAM", "steel coil", "customs", "EU", "regulation", "compliance", "shipment"],
+      "categories": ["industry-trends", "cost-of-inaction"],
+      "aspectRatio": "3:2"
+    }
+  ]
+}

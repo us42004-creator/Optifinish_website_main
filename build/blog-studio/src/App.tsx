@@ -14,15 +14,28 @@ import {
   generateBlogDraft,
   generateSeo,
   generateImage,
-  rewriteWithPrompt
+  rewriteWithPrompt,
+  generateDistributionPack,
+  renderDistributionMarkdown,
+  generateAbVariants,
+  scoreVoice
 } from './services/aiService';
+import type { DistributionPack, AbVariants, VoiceScore } from './services/aiService';
 import { buildOptiFinishBlogHtml } from './services/templateBuilder';
+import { CalendarView } from './components/CalendarView';
+import * as historyStore from './services/historyStore';
+
+type Tab = 'pipeline' | 'calendar';
 
 const App: React.FC = () => {
+  const [tab, setTab] = useState<Tab>('pipeline');
   const [stage, setStage] = useState<Stage>('category');
   const [category, setCategory] = useState<CategoryId | null>(null);
   const [audience, setAudience] = useState<AudienceId | null>(null);
   const [topics, setTopics] = useState<TopicIdea[]>([]);
+  const [distribution, setDistribution] = useState<DistributionPack | null>(null);
+  const [abVariants, setAbVariants] = useState<AbVariants | null>(null);
+  const [voiceScore, setVoiceScore] = useState<VoiceScore | null>(null);
   const [topic, setTopic] = useState<TopicIdea | null>(null);
   const [draft, setDraft] = useState<BlogDraft | null>(null);
   const [editPrompt, setEditPrompt] = useState('');
@@ -71,8 +84,68 @@ const App: React.FC = () => {
     }
     const d = await generateBlogDraft(t, category, audience);
     setDraft(d);
+    // Score voice locally (instant feedback) + record to history store
+    setVoiceScore(scoreVoice(d.bodyHtml));
+    historyStore.record({
+      title: d.title,
+      category,
+      audience,
+      archetype: d.snapshot?.structuralShape ?? 'immersive_essay',
+      modelUsed: 'multipass',
+      voiceUsed: 'rotated',
+      wordCount: d.wordCount
+    });
     setStage('draft');
     setBusy(null);
+  };
+
+  const handleGenerateDistribution = async () => {
+    if (!draft || !category || !audience) return;
+    setBusy('Generating distribution pack (LinkedIn / WhatsApp / email / sales / Slack)…');
+    try {
+      const pack = await generateDistributionPack(draft, category, audience);
+      setDistribution(pack);
+    } catch (err) {
+      console.error('[distribution] failed:', err);
+      setError('Distribution generation failed — check console.');
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  const handleGenerateAbVariants = async () => {
+    if (!draft) return;
+    setBusy('Generating A/B variants…');
+    try {
+      const v = await generateAbVariants(draft);
+      setAbVariants(v);
+    } catch (err) {
+      console.error('[ab variants] failed:', err);
+      setError('A/B variant generation failed — check console.');
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  const handleDownloadDistributionMd = () => {
+    if (!distribution || !draft) return;
+    const md = renderDistributionMarkdown(distribution, draft);
+    const blob = new Blob([md], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${draft.seo?.slug || 'optifinish-post'}-distribution.md`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handlePickCalendarCell = (cat: CategoryId, aud: AudienceId) => {
+    setCategory(cat);
+    setAudience(aud);
+    setTab('pipeline');
+    setStage('topic');
+    // Trigger topic gen for the picked cell
+    setTimeout(() => handleGenerateTopics(), 50);
   };
 
   const handleSeo = async () => {
@@ -137,6 +210,10 @@ const App: React.FC = () => {
             </div>
           </div>
           <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1 p-1 bg-ink-900 border border-ink-700 rounded-lg">
+              <TabButton label="Pipeline" active={tab === 'pipeline'} onClick={() => setTab('pipeline')} />
+              <TabButton label="Calendar" active={tab === 'calendar'} onClick={() => setTab('calendar')} />
+            </div>
             {busy && (
               <span className="text-[11px] font-mono text-ember-400 uppercase tracking-wider flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-ember-500 pulse-ember" />
@@ -150,6 +227,23 @@ const App: React.FC = () => {
         </div>
       </header>
 
+      {tab === 'calendar' ? (
+        <main className="flex-1 overflow-y-auto p-10">
+          <div className="max-w-5xl mx-auto">
+            <header className="mb-8">
+              <p className="text-[10px] font-mono uppercase tracking-industrial text-ember-400 mb-2">
+                Editorial calendar
+              </p>
+              <h2 className="text-3xl font-bold tracking-tight mb-2">Coverage matrix</h2>
+              <p className="text-sm text-steel-400">
+                Click any cell — empty (red), stale (amber), or hot (orange) — to jump straight
+                to topic generation for that pairing.
+              </p>
+            </header>
+            <CalendarView onPickCell={handlePickCalendarCell} />
+          </div>
+        </main>
+      ) : (
       <div className="flex-1 grid grid-cols-[260px_1fr_400px] min-h-0">
         {/* Left rail */}
         <aside className="border-r border-ink-800 p-6 overflow-y-auto">
@@ -352,15 +446,59 @@ const App: React.FC = () => {
           {stage === 'export' && (
             <Section
               eyebrow="Step 08"
-              title="Exported"
-              hint="HTML file downloaded. Open it in a browser or drop it into the OptiFinish blog pipeline."
+              title="Exported · multiply the reach"
+              hint="HTML downloaded. Now generate channel-native distribution + A/B variants while the post is hot."
             >
-              <div className="p-10 border border-ember-500/30 bg-ember-500/5 rounded-xl text-center">
-                <p className="text-paper-100 mb-2">Done.</p>
+              <div className="p-6 border border-ember-500/30 bg-ember-500/5 rounded-xl">
+                <p className="text-paper-100 mb-2 font-bold">HTML downloaded ✓</p>
                 <p className="text-xs text-steel-400">
-                  Open the downloaded file, or click any earlier stage in the rail to iterate.
+                  Drop it into the OptiFinish blog pipeline, or click any earlier stage to iterate.
                 </p>
               </div>
+
+              {/* Distribution pack */}
+              <div className="space-y-4">
+                <div className="flex items-baseline justify-between">
+                  <h3 className="text-sm font-bold tracking-tight">Distribution pack</h3>
+                  <span className="text-[10px] font-mono text-steel-500 uppercase tracking-industrial">
+                    LinkedIn · WhatsApp · Email · Sales · Slack
+                  </span>
+                </div>
+                {!distribution ? (
+                  <PrimaryButton disabled={!!busy} onClick={handleGenerateDistribution}>
+                    Generate distribution pack →
+                  </PrimaryButton>
+                ) : (
+                  <div className="space-y-4">
+                    <DistributionPanel pack={distribution} />
+                    <button
+                      onClick={handleDownloadDistributionMd}
+                      className="px-5 py-2 rounded-lg bg-ink-800 border border-ink-700 hover:border-ember-500 text-xs font-bold uppercase tracking-wider"
+                    >
+                      Download as Markdown
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* A/B variants */}
+              <div className="space-y-4">
+                <h3 className="text-sm font-bold tracking-tight">A/B variants</h3>
+                {!abVariants ? (
+                  <button
+                    onClick={handleGenerateAbVariants}
+                    disabled={!!busy || !draft?.seo}
+                    className="px-5 py-2 rounded-lg bg-ink-800 border border-ink-700 hover:border-ember-500 text-xs font-bold uppercase tracking-wider disabled:opacity-40"
+                  >
+                    Generate A/B variants
+                  </button>
+                ) : (
+                  <AbVariantsPanel variants={abVariants} />
+                )}
+              </div>
+
+              {/* Voice score */}
+              {voiceScore && <VoiceScorePanel score={voiceScore} />}
             </Section>
           )}
         </main>
@@ -399,9 +537,131 @@ const App: React.FC = () => {
           )}
         </aside>
       </div>
+      )}
     </div>
   );
 };
+
+const DistributionPanel: React.FC<{ pack: DistributionPack }> = ({ pack }) => (
+  <div className="space-y-3">
+    <ChannelCard title="LinkedIn">
+      <p className="text-xs text-paper-100 whitespace-pre-wrap leading-relaxed">{pack.linkedin.body}</p>
+      {pack.linkedin.hashtags.length > 0 && (
+        <p className="text-[11px] font-mono text-ember-400 mt-2">
+          {pack.linkedin.hashtags.map((h) => `#${h.replace(/^#/, '')}`).join('  ')}
+        </p>
+      )}
+    </ChannelCard>
+    <ChannelCard title={`WhatsApp Carousel (${pack.whatsappCarousel.length} cards)`}>
+      <div className="space-y-2">
+        {pack.whatsappCarousel.map((c, i) => (
+          <div key={i} className="border-l-2 border-ember-500/50 pl-3">
+            <div className="text-[11px] font-mono text-steel-500 uppercase tracking-wider">Card {i + 1}</div>
+            <div className="text-paper-100 font-bold text-xs mt-1">{c.headline}</div>
+            <div className="text-steel-400 text-[11px] mt-0.5">{c.body}</div>
+          </div>
+        ))}
+      </div>
+    </ChannelCard>
+    <ChannelCard title="Email Newsletter">
+      <div className="text-[10px] font-mono uppercase tracking-wider text-ember-400 mb-1">Subject</div>
+      <p className="text-paper-100 text-xs font-bold mb-3">{pack.newsletter.subject}</p>
+      <div className="text-[10px] font-mono uppercase tracking-wider text-ember-400 mb-1">Preview</div>
+      <p className="text-steel-400 text-[11px] mb-3">{pack.newsletter.previewText}</p>
+      <div className="text-[10px] font-mono uppercase tracking-wider text-ember-400 mb-1">Body</div>
+      <p className="text-paper-100 text-xs whitespace-pre-wrap leading-relaxed">{pack.newsletter.body}</p>
+    </ChannelCard>
+    <ChannelCard title="Sales One-Pager">
+      <div className="text-[10px] font-mono uppercase tracking-wider text-ember-400 mb-1">Exec TL;DR</div>
+      <p className="text-paper-100 text-xs mb-3">{pack.salesOnePager.execTldr}</p>
+      <div className="text-[10px] font-mono uppercase tracking-wider text-ember-400 mb-1">Talking points</div>
+      <ul className="text-paper-100 text-xs space-y-1 mb-3">
+        {pack.salesOnePager.talkingPoints.map((p, i) => (
+          <li key={i} className="flex gap-2"><span className="text-ember-400">→</span><span>{p}</span></li>
+        ))}
+      </ul>
+      <div className="text-[10px] font-mono uppercase tracking-wider text-ember-400 mb-1">Objection handlers</div>
+      <ul className="text-xs space-y-2">
+        {pack.salesOnePager.objectionHandlers.map((o, i) => (
+          <li key={i} className="border-l-2 border-ink-700 pl-3">
+            <div className="text-rose-300 italic">{o.objection}</div>
+            <div className="text-paper-100 mt-0.5">{o.response}</div>
+          </li>
+        ))}
+      </ul>
+    </ChannelCard>
+    <ChannelCard title="Slack Summary">
+      <p className="text-paper-100 text-xs leading-relaxed">{pack.slackSummary}</p>
+    </ChannelCard>
+  </div>
+);
+
+const ChannelCard: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
+  <div className="border border-ink-700 rounded-xl p-4 bg-ink-900/40">
+    <div className="text-[10px] font-mono uppercase tracking-industrial text-steel-500 mb-3">
+      {title}
+    </div>
+    {children}
+  </div>
+);
+
+const AbVariantsPanel: React.FC<{ variants: AbVariants }> = ({ variants }) => (
+  <div className="space-y-3">
+    <p className="text-[11px] text-steel-400 italic">Hypothesis: {variants.rationale}</p>
+    <VariantRow label="Meta Description" a={variants.metaDescription.a} b={variants.metaDescription.b} />
+    <VariantRow label="OG Title" a={variants.ogTitle.a} b={variants.ogTitle.b} />
+    <VariantRow label="CTA Headline" a={variants.ctaHeadline.a} b={variants.ctaHeadline.b} />
+    <p className="text-[10px] text-steel-600 italic">
+      Both variants exported. Traffic split activates when analytics layer ships.
+    </p>
+  </div>
+);
+
+const VariantRow: React.FC<{ label: string; a: string; b: string }> = ({ label, a, b }) => (
+  <div className="space-y-2">
+    <div className="text-[10px] font-mono uppercase tracking-industrial text-steel-500">{label}</div>
+    <div className="border-l-2 border-emerald-500/40 pl-3 text-xs"><span className="text-emerald-400 font-bold mr-2">A</span>{a}</div>
+    <div className="border-l-2 border-ember-500/40 pl-3 text-xs"><span className="text-ember-400 font-bold mr-2">B</span>{b}</div>
+  </div>
+);
+
+const VoiceScorePanel: React.FC<{ score: VoiceScore }> = ({ score }) => {
+  const color =
+    score.overall >= 85 ? 'text-emerald-400' : score.overall >= 70 ? 'text-ember-400' : 'text-rose-400';
+  return (
+    <div className="border border-ink-700 rounded-xl p-4 bg-ink-900/40">
+      <div className="flex items-baseline justify-between mb-3">
+        <span className="text-[10px] font-mono uppercase tracking-industrial text-steel-500">
+          Voice Fingerprint Score
+        </span>
+        <span className={`text-2xl font-bold ${color}`}>{score.overall}</span>
+      </div>
+      {score.warnings.length > 0 && (
+        <ul className="text-[11px] text-rose-300 space-y-1">
+          {score.warnings.map((w, i) => <li key={i}>· {w}</li>)}
+        </ul>
+      )}
+      {score.warnings.length === 0 && (
+        <p className="text-[11px] text-emerald-400">Within OptiFinish editorial guidelines ✓</p>
+      )}
+    </div>
+  );
+};
+
+const TabButton: React.FC<{ label: string; active: boolean; onClick: () => void }> = ({
+  label,
+  active,
+  onClick
+}) => (
+  <button
+    onClick={onClick}
+    className={`px-3 py-1 text-[11px] font-mono uppercase tracking-wider rounded-md transition-colors ${
+      active ? 'bg-ember-500 text-ink-950' : 'text-steel-400 hover:text-paper-100'
+    }`}
+  >
+    {label}
+  </button>
+);
 
 // --- inline helpers ---
 

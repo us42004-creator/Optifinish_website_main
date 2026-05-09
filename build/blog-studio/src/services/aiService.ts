@@ -5,6 +5,7 @@ import { generateTopicIdeasLLM } from './topicEngine';
 import { generateBlogDraftLLM } from './draftEngine';
 import { generateBlogDraftMultipass } from './draftEngineMultipass';
 import { generateSeoLLM } from './seoEngine';
+import { searchBest as photoSearchBest } from './photoLibrary';
 
 // v0.1: mocked AI responses so the full UI flow works without an API key.
 // Real Gemini/Claude wiring goes here next.
@@ -243,8 +244,21 @@ export async function generateSeo(
 }
 
 export async function generateImage(prompt: string): Promise<string> {
-  // Real Flux (FLUX.1-dev) via NVIDIA Build, with brand-style suffix appended.
-  // Falls back to a placeholder if the endpoint errors so the demo never breaks.
+  // Photo library FIRST — Indian B2B readers can smell AI factory shots,
+  // so a real photo from /public/photos beats a Flux render every time.
+  // Only falls through to Flux when no library match clears the trust
+  // threshold (currently low because the library is mostly placeholders).
+  try {
+    const realPhoto = await photoSearchBest(prompt);
+    if (realPhoto) {
+      console.log('[generateImage] using real photo from library:', realPhoto.url);
+      return realPhoto.url;
+    }
+  } catch (err) {
+    console.warn('[generateImage] photo library lookup failed, falling through to Flux:', err);
+  }
+
+  // Real Flux (FLUX.1-dev) via NVIDIA Build, with brand-style suffix.
   const fullPrompt = applyBrandSuffix(prompt);
   try {
     return await generateFluxImage({
@@ -258,3 +272,21 @@ export async function generateImage(prompt: string): Promise<string> {
     return `https://picsum.photos/seed/${seed}/1024/1024`;
   }
 }
+
+// ─────────────────────────────────────────────────────────────
+// Distribution pack — re-export from distributionEngine for the UI
+// ─────────────────────────────────────────────────────────────
+export { generateDistributionPack, renderDistributionMarkdown } from './distributionEngine';
+export type { DistributionPack } from './distributionEngine';
+
+// ─────────────────────────────────────────────────────────────
+// A/B variants
+// ─────────────────────────────────────────────────────────────
+export { generateAbVariants } from './abVariants';
+export type { AbVariants } from './abVariants';
+
+// ─────────────────────────────────────────────────────────────
+// Voice classifier
+// ─────────────────────────────────────────────────────────────
+export { scoreVoice, DEFAULT_PROFILE as DEFAULT_VOICE_PROFILE } from './voiceClassifier';
+export type { VoiceScore, VoiceProfile } from './voiceClassifier';
