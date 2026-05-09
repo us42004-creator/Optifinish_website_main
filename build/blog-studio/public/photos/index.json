@@ -1,71 +1,369 @@
 {
   "$schema": "https://optifinish.com/schemas/photo-library.json",
-  "version": 1,
-  "lastUpdated": "2026-05-05",
-  "note": "Seed entries only — replace with real Greater Noida facility photography. Add new entries by photographing a subject, alt-tagging it precisely (named systems, named processes, named conditions), saving to /public/photos/<id>.jpg, then appending to this index.",
+  "version": 2,
+  "lastUpdated": "2026-05-09",
+  "note": "Preheated library: 18 brand-locked Flux renders. Replace individual entries with real Greater Noida photography by saving photo to /public/photos/<id>.jpg and editing this index.",
   "photos": [
     {
-      "id": "seed-curing-oven-interior",
-      "url": "/photos/seed-curing-oven-interior.jpg",
-      "isPlaceholder": true,
-      "alt": "Interior of an industrial curing oven at the OptiFinish Greater Noida facility, glowing radiant heating elements visible, mesh conveyor mid-cycle",
-      "tags": ["curing oven", "interior", "radiant heating", "conveyor", "facility", "thermal"],
-      "categories": ["facility-behind-scenes", "technical-deep-dive", "pillar-guide"],
-      "aspectRatio": "16:9"
+      "id": "preheat-curing-oven-interior",
+      "url": "/photos/preheat-curing-oven-interior.jpg",
+      "alt": "Interior of an industrial curing oven, glowing radiant heating elements visible, mesh conveyor mid-cycle",
+      "tags": [
+        "curing oven",
+        "interior",
+        "radiant heating",
+        "conveyor",
+        "thermal",
+        "cure profile",
+        "facility"
+      ],
+      "categories": [
+        "facility-behind-scenes",
+        "technical-deep-dive",
+        "pillar-guide"
+      ],
+      "aspectRatio": "1:1",
+      "isPlaceholder": false
     },
     {
-      "id": "seed-thermocouple-on-panel",
-      "url": "/photos/seed-thermocouple-on-panel.jpg",
-      "isPlaceholder": true,
-      "alt": "Calibrated K-type thermocouple probe resting against a freshly powder-coated metal panel inside a curing oven, technician hand visible holding the harness",
-      "tags": ["thermocouple", "calibration", "diagnostic", "cure profile", "panel", "instrument"],
-      "categories": ["technical-deep-dive", "how-to", "facility-behind-scenes"],
-      "aspectRatio": "3:2"
+      "id": "preheat-thermocouple-on-panel",
+      "url": "/photos/preheat-thermocouple-on-panel.jpg",
+      "alt": "Calibrated K-type thermocouple probe resting against a freshly coated metal panel inside a curing oven, gloved hand steadying the harness",
+      "tags": [
+        "thermocouple",
+        "calibration",
+        "diagnostic",
+        "cure profile",
+        "panel",
+        "instrument",
+        "K-type"
+      ],
+      "categories": [
+        "technical-deep-dive",
+        "how-to",
+        "facility-behind-scenes"
+      ],
+      "aspectRatio": "1:1",
+      "isPlaceholder": false
     },
     {
-      "id": "seed-gun-mid-spray",
-      "url": "/photos/seed-gun-mid-spray.jpg",
-      "isPlaceholder": true,
-      "alt": "Electrostatic powder coating gun mid-spray on a recessed metal part inside a booth, visible cloud of powder mist, GEMA-style applicator",
-      "tags": ["spray gun", "electrostatic", "GEMA", "transfer efficiency", "booth", "applicator"],
-      "categories": ["technical-deep-dive", "product-spotlight", "case-study"],
-      "aspectRatio": "3:2"
+      "id": "preheat-gun-mid-spray",
+      "url": "/photos/preheat-gun-mid-spray.jpg",
+      "alt": "Electrostatic powder coating gun mid-spray on a recessed metal part, visible cloud of powder mist, gun-to-part distance clearly framed",
+      "tags": [
+        "spray gun",
+        "electrostatic",
+        "GEMA",
+        "transfer efficiency",
+        "booth",
+        "applicator",
+        "powder mist"
+      ],
+      "categories": [
+        "technical-deep-dive",
+        "pillar-guide",
+        "case-study"
+      ],
+      "aspectRatio": "1:1",
+      "isPlaceholder": false
     },
     {
-      "id": "seed-rd-booth",
-      "url": "/photos/seed-rd-booth.jpg",
-      "isPlaceholder": true,
-      "alt": "Small R&D-scale spray booth at the OptiFinish Greater Noida facility, instrumented with thermal probes and a powder hopper, late-afternoon natural light",
-      "tags": ["R&D", "test bay", "facility", "Greater Noida", "small batch", "powder hopper"],
-      "categories": ["facility-behind-scenes", "case-study"],
-      "aspectRatio": "16:9"
+      "id": "preheat-pretreatment-dip",
+      "url": "/photos/preheat-pretreatment-dip.jpg",
+      "alt": "Steel part being lowered into a degreasing tank, stainless dip-cage visible, chemical mist hovering above the bath",
+      "tags": [
+        "pretreatment",
+        "degreasing",
+        "dip tank",
+        "phosphate",
+        "chemistry",
+        "preparation"
+      ],
+      "categories": [
+        "technical-deep-dive",
+        "how-to",
+        "facility-behind-scenes"
+      ],
+      "aspectRatio": "1:1",
+      "isPlaceholder": false
     },
     {
-      "id": "seed-finished-panel-cooling",
-      "url": "/photos/seed-finished-panel-cooling.jpg",
-      "isPlaceholder": true,
-      "alt": "Finished powder-coated automotive body panel cooling under exit-tunnel light, smooth gloss surface reflecting the overhead bars",
-      "tags": ["finished part", "automotive", "body panel", "exit tunnel", "gloss", "outcome", "case study result"],
-      "categories": ["case-study", "comparison-decision", "industry-trends"],
-      "aspectRatio": "16:9"
+      "id": "preheat-finished-automotive-panel",
+      "url": "/photos/preheat-finished-automotive-panel.jpg",
+      "alt": "Finished powder-coated automotive body panel cooling under exit-tunnel light, smooth finish reflecting overhead bars",
+      "tags": [
+        "finished part",
+        "automotive",
+        "body panel",
+        "exit tunnel",
+        "gloss",
+        "outcome"
+      ],
+      "categories": [
+        "case-study",
+        "comparison-decision",
+        "industry-trends"
+      ],
+      "aspectRatio": "1:1",
+      "isPlaceholder": false
     },
     {
-      "id": "seed-defect-orange-peel-macro",
-      "url": "/photos/seed-defect-orange-peel-macro.jpg",
-      "isPlaceholder": true,
-      "alt": "Macro detail of an orange-peel-textured powder-coated surface, raking side light exposing the dimpled topology, defect diagnostic reference image",
-      "tags": ["defect", "orange peel", "macro", "surface texture", "troubleshooting", "diagnostic"],
-      "categories": ["how-to", "technical-deep-dive"],
-      "aspectRatio": "1:1"
+      "id": "preheat-rd-booth-greater-noida",
+      "url": "/photos/preheat-rd-booth-greater-noida.jpg",
+      "alt": "Small R&D-scale spray booth at the OptiFinish Greater Noida facility, instrumented with thermal probes and powder hoppers, late-afternoon natural light",
+      "tags": [
+        "R&D",
+        "test bay",
+        "facility",
+        "Greater Noida",
+        "small batch",
+        "powder hopper",
+        "natural light"
+      ],
+      "categories": [
+        "facility-behind-scenes",
+        "case-study",
+        "pillar-guide"
+      ],
+      "aspectRatio": "1:1",
+      "isPlaceholder": false
     },
     {
-      "id": "seed-coil-export-cbam",
-      "url": "/photos/seed-coil-export-cbam.jpg",
-      "isPlaceholder": true,
-      "alt": "Coil of cold-rolled steel sheet wrapped for export with customs paperwork resting on top, EU destination stamp visible on the bill of lading",
-      "tags": ["export", "CBAM", "steel coil", "customs", "EU", "regulation", "compliance", "shipment"],
-      "categories": ["industry-trends", "cost-of-inaction"],
-      "aspectRatio": "3:2"
+      "id": "preheat-orange-peel-macro",
+      "url": "/photos/preheat-orange-peel-macro.jpg",
+      "alt": "Macro detail of orange-peel-textured powder-coated surface, raking side light exposing the dimpled topology",
+      "tags": [
+        "defect",
+        "orange peel",
+        "macro",
+        "surface texture",
+        "troubleshooting",
+        "diagnostic",
+        "rejection"
+      ],
+      "categories": [
+        "how-to",
+        "technical-deep-dive"
+      ],
+      "aspectRatio": "1:1",
+      "isPlaceholder": false
+    },
+    {
+      "id": "preheat-conveyor-line-wide",
+      "url": "/photos/preheat-conveyor-line-wide.jpg",
+      "alt": "Wide overhead view of a powder coating conveyor line, parts hanging on hooks moving through a curing oven entrance",
+      "tags": [
+        "conveyor",
+        "line",
+        "overhead",
+        "plant",
+        "throughput",
+        "wide shot"
+      ],
+      "categories": [
+        "facility-behind-scenes",
+        "pillar-guide",
+        "case-study"
+      ],
+      "aspectRatio": "1:1",
+      "isPlaceholder": false
+    },
+    {
+      "id": "preheat-cbam-export-coil",
+      "url": "/photos/preheat-cbam-export-coil.jpg",
+      "alt": "Coil of cold-rolled steel wrapped for export, customs paperwork resting on top, EU destination stamp visible on the bill of lading",
+      "tags": [
+        "export",
+        "CBAM",
+        "steel coil",
+        "customs",
+        "EU",
+        "regulation",
+        "compliance",
+        "shipment"
+      ],
+      "categories": [
+        "industry-trends",
+        "cost-of-inaction"
+      ],
+      "aspectRatio": "1:1",
+      "isPlaceholder": false
+    },
+    {
+      "id": "preheat-application-pump",
+      "url": "/photos/preheat-application-pump.jpg",
+      "alt": "GEMA-style powder application pump, canister and nozzle visible, control valves and powder hose in frame, mounted at a powder coating booth",
+      "tags": [
+        "pump",
+        "application",
+        "GEMA",
+        "OptiSpray",
+        "control valve",
+        "hose",
+        "booth equipment"
+      ],
+      "categories": [
+        "pillar-guide",
+        "technical-deep-dive",
+        "case-study"
+      ],
+      "aspectRatio": "1:1",
+      "isPlaceholder": false
+    },
+    {
+      "id": "preheat-blistering-cast-aluminium",
+      "url": "/photos/preheat-blistering-cast-aluminium.jpg",
+      "alt": "Coated cast-aluminium part on a cooling rack, surface showing fine micro-blistering, raked side light revealing the defect texture",
+      "tags": [
+        "defect",
+        "blistering",
+        "outgassing",
+        "cast aluminium",
+        "rejection",
+        "diagnostic",
+        "monsoon"
+      ],
+      "categories": [
+        "how-to",
+        "technical-deep-dive"
+      ],
+      "aspectRatio": "1:1",
+      "isPlaceholder": false
+    },
+    {
+      "id": "preheat-pfas-free-powder-bags",
+      "url": "/photos/preheat-pfas-free-powder-bags.jpg",
+      "alt": "Row of powder bags labelled PFAS-free on a warehouse pallet, scanner gun and compliance clipboard in foreground",
+      "tags": [
+        "compliance",
+        "PFAS",
+        "powder bags",
+        "warehouse",
+        "scanner",
+        "stockroom",
+        "regulation"
+      ],
+      "categories": [
+        "industry-trends",
+        "cost-of-inaction"
+      ],
+      "aspectRatio": "1:1",
+      "isPlaceholder": false
+    },
+    {
+      "id": "preheat-architectural-extrusion-stack",
+      "url": "/photos/preheat-architectural-extrusion-stack.jpg",
+      "alt": "Stack of finished powder-coated architectural aluminium extrusion profiles in a Qualicoat warehouse, ends visible",
+      "tags": [
+        "architectural",
+        "extrusion",
+        "aluminium",
+        "Qualicoat",
+        "finished",
+        "facade"
+      ],
+      "categories": [
+        "case-study",
+        "industry-trends",
+        "comparison-decision"
+      ],
+      "aspectRatio": "1:1",
+      "isPlaceholder": false
+    },
+    {
+      "id": "preheat-engineer-with-tablet",
+      "url": "/photos/preheat-engineer-with-tablet.jpg",
+      "alt": "Process engineer with tablet inspecting a curing oven temperature profile, soft factory ambient light, no posed eye contact",
+      "tags": [
+        "engineer",
+        "inspection",
+        "tablet",
+        "temperature profile",
+        "oven",
+        "people"
+      ],
+      "categories": [
+        "facility-behind-scenes",
+        "how-to"
+      ],
+      "aspectRatio": "1:1",
+      "isPlaceholder": false
+    },
+    {
+      "id": "preheat-powder-hopper",
+      "url": "/photos/preheat-powder-hopper.jpg",
+      "alt": "Close-up of a powder hopper feed valve, powder bed visible, light dust haze above the bed",
+      "tags": [
+        "hopper",
+        "feed valve",
+        "powder bed",
+        "macro",
+        "equipment"
+      ],
+      "categories": [
+        "technical-deep-dive",
+        "pillar-guide"
+      ],
+      "aspectRatio": "1:1",
+      "isPlaceholder": false
+    },
+    {
+      "id": "preheat-exit-tunnel-cooling",
+      "url": "/photos/preheat-exit-tunnel-cooling.jpg",
+      "alt": "Coated panels exiting a curing oven into the cooling tunnel, glowing slightly orange from residual heat, conveyor turn visible",
+      "tags": [
+        "exit tunnel",
+        "cooling",
+        "oven",
+        "conveyor",
+        "thermal",
+        "finished"
+      ],
+      "categories": [
+        "facility-behind-scenes",
+        "case-study"
+      ],
+      "aspectRatio": "1:1",
+      "isPlaceholder": false
+    },
+    {
+      "id": "preheat-degreasing-rinse",
+      "url": "/photos/preheat-degreasing-rinse.jpg",
+      "alt": "Multi-stage rinse line in a pretreatment section, water cascading over a steel part on a stainless rack",
+      "tags": [
+        "rinse",
+        "pretreatment",
+        "water",
+        "stainless",
+        "cascading",
+        "preparation"
+      ],
+      "categories": [
+        "technical-deep-dive",
+        "how-to"
+      ],
+      "aspectRatio": "1:1",
+      "isPlaceholder": false
+    },
+    {
+      "id": "preheat-faraday-cage-detail",
+      "url": "/photos/preheat-faraday-cage-detail.jpg",
+      "alt": "Macro detail of Faraday-cage dropouts on a coated recessed corner, dull patches against surrounding gloss surface",
+      "tags": [
+        "defect",
+        "Faraday cage",
+        "dropouts",
+        "recess",
+        "diagnostic",
+        "macro",
+        "transfer efficiency"
+      ],
+      "categories": [
+        "how-to",
+        "technical-deep-dive"
+      ],
+      "aspectRatio": "1:1",
+      "isPlaceholder": false
     }
   ]
 }

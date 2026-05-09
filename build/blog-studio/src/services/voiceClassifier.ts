@@ -21,17 +21,26 @@ export interface VoiceProfile {
   fleschReadingEaseRange: { min: number; max: number };
 }
 
-// Default profile encodes the editorial guidelines we've been enforcing
-// in the prompt. Replace by running the trainer script on real corpus.
+// Default profile bootstrapped from 3 hand-curated voice-on samples
+// (see scripts/bootstrap-voice.mjs). Tightened from the original generic
+// editorial ranges:
+//   - avgSentenceWords 12-22 → 9-15  (punchier, declarative)
+//   - shortSentenceShare 18-50% → 36-72%  (more short sentences)
+//   - emDashRate 0.5 → 0.2  (basically zero)
+//   - fleschReadingEase 35-55 → 50-75  (engineer-readable, not academic)
+//
+// When you publish 10-12 posts you consider voice-on, replace SAMPLES in
+// scripts/bootstrap-voice.mjs and re-run; copy the new ranges here.
 export const DEFAULT_PROFILE: VoiceProfile = {
-  id: 'optifinish-editorial-v1',
-  name: 'OptiFinish Editorial Default',
-  avgSentenceWords: { min: 12, max: 22, ideal: 17 },
+  id: 'optifinish-editorial-v2',
+  name: 'OptiFinish Editorial — Bootstrapped',
+  avgSentenceWords: { min: 9, max: 15, ideal: 12 },
   avgParaWords: { min: 35, max: 80, ideal: 55 },
-  shortSentenceShare: { min: 18, max: 50 }, // ≥18% should be punchy
-  longSentenceShare: { max: 8 }, // ≤8% may be long
-  emDashRate: { max: 0.5 }, // basically zero
+  shortSentenceShare: { min: 36, max: 72 },
+  longSentenceShare: { max: 8 },
+  emDashRate: { max: 0.2 },
   bannedPhrases: [
+    // Marketing hype
     'best-in-class',
     'industry-leading',
     'unparalleled',
@@ -46,6 +55,8 @@ export const DEFAULT_PROFILE: VoiceProfile = {
     'empower',
     'robust',
     'seamless',
+    'leverage', // banned as a verb only — see post-processing if needed
+    // Cliché openers
     'in today',
     'did you know',
     'have you ever',
@@ -54,27 +65,54 @@ export const DEFAULT_PROFILE: VoiceProfile = {
     'take your operation',
     'unlocking',
     'mastering',
+    // Template phrases
     'it is worth noting',
+    'it should be mentioned',
     'when it comes to',
     'at the end of the day',
     'in essence',
     'all in all',
-    'to put it simply'
+    'to put it simply',
+    'in conclusion',
+    'as we have seen',
+    'last but not least'
   ],
   preferredPhrases: [
+    // Hour-six / shift-floor language
     'hour six',
-    'monsoon',
-    'INR',
-    'BIS',
-    'BEE',
-    'Greater Noida',
-    'multi-OEM',
     'third shift',
     'rejection bin',
-    'cure window'
+    'rejection rate',
+    // India-context anchors
+    'monsoon',
+    'INR',
+    'capex',
+    'BIS',
+    'BEE',
+    'CPCB',
+    'CBAM',
+    'PFAS',
+    'Qualicoat',
+    'MSME',
+    'Greater Noida',
+    // OptiFinish positioning
+    'multi-OEM',
+    'GEMA',
+    'DURR',
+    'Z-TAP',
+    'Vinayak Agencies',
+    'authorised partner',
+    // Process specificity
+    'cure window',
+    'transfer efficiency',
+    'outgassing',
+    'cast aluminium',
+    'CR-sheet',
+    'Faraday cage',
+    'pretreatment',
+    'film build'
   ],
-  // Flesch range tuned for "smart-but-readable engineer prose"
-  fleschReadingEaseRange: { min: 35, max: 55 }
+  fleschReadingEaseRange: { min: 50, max: 75 }
 };
 
 export interface VoiceScore {

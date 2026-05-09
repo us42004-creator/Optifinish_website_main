@@ -31,8 +31,11 @@ interface PhotoIndex {
 }
 
 // Score above which we trust the photo enough to use it instead of FLUX.
-// Tuned loose for the seeded library; bump as the library grows.
-const TRUST_THRESHOLD = 1.2;
+// With the 18 brand-locked preheat photos in place, 0.9 catches most
+// section-prompt queries; raise to 1.2+ once you replace AI photos with
+// real Greater Noida photography (real photos shouldn't win on weak
+// matches because the visual stakes go up).
+const TRUST_THRESHOLD = 0.9;
 
 // Stop-words filtered out before scoring.
 const STOP_WORDS = new Set([
@@ -118,14 +121,40 @@ export async function searchPhotos(query: string, limit = 3): Promise<SearchHit[
   return hits;
 }
 
-// Returns the single best photo URL if its score clears the trust threshold,
-// otherwise null (caller falls back to AI generation). Excludes placeholders
-// — those are seed records that don't yet have real photo data.
+// Returns the single best photo as a base64 data URL if its score clears
+// the trust threshold, otherwise null (caller falls back to AI). Base64
+// embedding ensures exported HTML stays self-contained (works offline,
+// works when shared via WhatsApp).
+//
+// Excludes placeholders — those are seed records without real photo data.
 export async function searchBest(query: string): Promise<{ url: string; alt: string } | null> {
   const hits = await searchPhotos(query, 5);
   const trustedReal = hits.find((h) => h.trusted && !h.entry.isPlaceholder);
   if (!trustedReal) return null;
-  return { url: trustedReal.entry.url, alt: trustedReal.entry.alt };
+
+  // Convert the relative URL to a base64 data URL so it embeds in exports
+  try {
+    const res = await fetch(trustedReal.entry.url);
+    if (!res.ok) {
+      console.warn(`[photoLibrary] fetch ${trustedReal.entry.url} → ${res.status}, falling through`);
+      return null;
+    }
+    const blob = await res.blob();
+    const dataUrl = await blobToDataUrl(blob);
+    return { url: dataUrl, alt: trustedReal.entry.alt };
+  } catch (err) {
+    console.warn('[photoLibrary] base64 encode failed, falling through:', err);
+    return null;
+  }
+}
+
+function blobToDataUrl(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result as string);
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(blob);
+  });
 }
 
 export async function getLibraryStats(): Promise<{

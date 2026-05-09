@@ -30,14 +30,40 @@ const SOURCES = [
     name: 'CPCB (Central Pollution Control Board) — recent notifications',
     url: 'https://cpcb.nic.in/important-notifications/',
     extract: extractCpcb
+  },
+  {
+    id: 'bis-news',
+    name: 'BIS (Bureau of Indian Standards) — All News',
+    url: 'https://www.bis.gov.in/all-news/',
+    extract: extractGenericDated
+  },
+  {
+    id: 'bee-notifications',
+    name: 'BEE (Bureau of Energy Efficiency) — Notifications & Circulars',
+    url: 'https://beeindia.gov.in/en/notifications-circulars',
+    extract: extractGenericDated
+  },
+  {
+    id: 'mahindra-newsroom',
+    name: 'Mahindra Group — Newsroom',
+    url: 'https://www.mahindra.com/news-room',
+    extract: extractGenericDated
+  },
+  {
+    id: 'tata-motors-press',
+    name: 'Tata Motors — Press Releases',
+    url: 'https://www.tatamotors.com/press/',
+    extract: extractGenericDated
+  },
+  {
+    id: 'jsw-press',
+    name: 'JSW Group — Press Releases',
+    url: 'https://www.jsw.in/media/press-releases',
+    extract: extractGenericDated
   }
-  // ADD MORE HERE — minimum needed for legendary tier:
-  // - https://www.bis.gov.in/standardsearch/  (BIS standards updates)
-  // - https://beeindia.gov.in/en/notifications  (BEE notifications)
-  // - https://www.mahindra.com/news-room       (Mahindra IR / press)
-  // - https://www.tatamotors.com/press         (Tata Motors press)
-  // - https://www.ather.com/press              (Ather press)
-  // - https://paintindia.in/exhibitor-list     (PaintIndia exhibitors / news)
+  // Each extractor is intentionally conservative — returns [] on parse
+  // failure rather than guessing. Add more sources by appending to this
+  // array; each just needs a URL and an extractor function.
 ];
 
 // ─────────────────────────────────────────────────────────────
@@ -59,6 +85,49 @@ async function extractCpcb(html) {
     console.warn('[cpcb extract] failed:', err.message);
     return [];
   }
+}
+
+// Generic extractor — handles most corporate / regulatory press pages that
+// render as dated anchor lists. Tries multiple date patterns:
+//   - DD-MM-YYYY / DD/MM/YYYY
+//   - "Month DD, YYYY" (e.g. "January 8, 2025")
+//   - "DD Mon YYYY" (e.g. "8 Jan 2025")
+// Tries multiple title patterns: <a>title</a>, <h3>title</h3>, <h2>title</h2>.
+// Returns the most recent ~10 matches. If neither pattern fires, returns []
+// rather than guessing — better to skip a source than fabricate triggers.
+async function extractGenericDated(html) {
+  const items = [];
+  const seen = new Set();
+  const push = (date, title) => {
+    const t = (title || '').trim().replace(/\s+/g, ' ');
+    if (t.length < 18 || t.length > 250) return;
+    const key = t.toLowerCase();
+    if (seen.has(key)) return;
+    seen.add(key);
+    items.push({ date: (date || '').trim(), title: t });
+  };
+
+  const patterns = [
+    // Numeric date near anchor: "8-1-2025 ... <a>...</a>"
+    /(\d{1,2}[-/]\d{1,2}[-/]\d{4})\s*(?:[\s\S]{0,500}?)<a[^>]*>([^<]{18,250})<\/a>/gi,
+    // "Month DD, YYYY ... <a>...</a>"
+    /((?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+\d{1,2},?\s+\d{4})\s*(?:[\s\S]{0,500}?)<a[^>]*>([^<]{18,250})<\/a>/gi,
+    // "DD Mon YYYY ... <a>...</a>" (Indian format common on BIS / BEE / Tata)
+    /(\d{1,2}\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+\d{4})\s*(?:[\s\S]{0,500}?)<a[^>]*>([^<]{18,250})<\/a>/gi,
+    // <h2/h3> headline followed by "DD-MM-YYYY"
+    /<h[23][^>]*>([^<]{18,250})<\/h[23]>\s*(?:[\s\S]{0,500}?)(\d{1,2}[-/]\d{1,2}[-/]\d{4})/gi
+  ];
+
+  for (const re of patterns) {
+    let m;
+    while ((m = re.exec(html)) !== null && items.length < 10) {
+      // Pattern 4 has title-then-date order; others have date-then-title
+      if (re.source.startsWith('<h')) push(m[2], m[1]);
+      else push(m[1], m[2]);
+    }
+    if (items.length >= 10) break;
+  }
+  return items;
 }
 
 // ─────────────────────────────────────────────────────────────
