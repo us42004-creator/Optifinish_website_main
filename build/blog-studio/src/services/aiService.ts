@@ -11,12 +11,14 @@ const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export async function generateTopicIdeas(
   category: CategoryId,
-  audience: AudienceId
+  audience: AudienceId,
+  excludeTitles: string[] = []
 ): Promise<TopicIdea[]> {
-  // Real generation via NVIDIA Build (Llama 3.3 70B) with brand-tuned system prompt.
-  // Falls back to a synthetic set if NVIDIA is unreachable so the demo never breaks.
+  // Real generation via NVIDIA Build with multi-model rotation (Llama / DeepSeek /
+  // Gemma / Nemotron) + random voice nudge + random trigger subset + exclusion of
+  // recently-generated titles. Falls back to a synthetic set if everything fails.
   try {
-    return await generateTopicIdeasLLM(category, audience);
+    return await generateTopicIdeasLLM(category, audience, excludeTitles);
   } catch (err) {
     console.error('[generateTopicIdeas] LLM failed, using fallback:', err);
     const cat = CATEGORIES.find((c) => c.id === category)!;

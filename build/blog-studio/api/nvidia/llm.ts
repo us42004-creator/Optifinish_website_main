@@ -1,13 +1,21 @@
-// Vercel Node serverless function. Proxies POST /api/nvidia/llm to NVIDIA Build's
-// chat completions endpoint, injecting NVIDIA_API_KEY server-side so it never
-// reaches the browser bundle.
-//
-// In local dev this path is intercepted by the Vite proxy (see vite.config.ts).
-// In production on Vercel, this file IS the route.
+// Vercel Node serverless function. Multi-key dispatcher: routes the request
+// to the right NVIDIA Build API key based on the model prefix, so DeepSeek /
+// Gemma / Nemotron / Llama traffic each uses its own key (per-model rate-limit
+// headroom, easier rotation). Falls back to NVIDIA_API_KEY if a model-specific
+// key is unset.
 
 export const config = {
-  maxDuration: 60 // Hobby plan max. Bump to 300 on Pro for 405B long-form output.
+  maxDuration: 60
 };
+
+function pickKey(model: string, env: NodeJS.ProcessEnv): string {
+  const m = (model || '').toLowerCase();
+  const fallback = env.NVIDIA_API_KEY || '';
+  if (m.includes('deepseek')) return env.NVIDIA_DEEPSEEK_KEY || fallback;
+  if (m.includes('gemma') || m.startsWith('google/')) return env.NVIDIA_GEMMA_KEY || fallback;
+  if (m.includes('nemotron')) return env.NVIDIA_NEMOTRON_KEY || fallback;
+  return fallback;
+}
 
 export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') {
@@ -15,14 +23,19 @@ export default async function handler(req: any, res: any) {
     return;
   }
 
-  const apiKey = process.env.NVIDIA_API_KEY;
+  const model = (req.body?.model as string) ?? '';
+  const apiKey = pickKey(model, process.env);
+
   if (!apiKey) {
-    res.status(500).json({ error: 'NVIDIA_API_KEY environment variable is not set' });
+    res.status(500).json({
+      error: 'No matching NVIDIA API key for model',
+      hint: 'Set NVIDIA_API_KEY or one of NVIDIA_DEEPSEEK_KEY / NVIDIA_GEMMA_KEY / NVIDIA_NEMOTRON_KEY',
+      model
+    });
     return;
   }
 
   try {
-    // Vercel parses JSON bodies automatically; re-stringify for forwarding
     const body = typeof req.body === 'string' ? req.body : JSON.stringify(req.body);
 
     const upstream = await fetch('https://integrate.api.nvidia.com/v1/chat/completions', {

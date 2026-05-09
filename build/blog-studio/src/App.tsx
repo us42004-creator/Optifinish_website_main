@@ -42,7 +42,16 @@ const App: React.FC = () => {
   const handleGenerateTopics = async () => {
     if (!category || !audience) return;
     setBusy('Drafting topic options…');
-    const ideas = await generateTopicIdeas(category, audience);
+    // Pull recent titles from localStorage so the engine excludes them — the
+    // primary anti-repetition signal across regeneration clicks within a
+    // session. We keep the most recent 30 across all category/audience pairs.
+    let recent: string[] = [];
+    try {
+      recent = JSON.parse(localStorage.getItem('optifinish-recent-topics') || '[]');
+    } catch {
+      /* ignore parse errors */
+    }
+    const ideas = await generateTopicIdeas(category, audience, recent.slice(0, 30));
     setTopics(ideas);
     setStage('topic');
     setBusy(null);
@@ -52,6 +61,14 @@ const App: React.FC = () => {
     if (!category || !audience) return;
     setTopic(t);
     setBusy('Composing draft…');
+    // Persist this title into the recent-topics ledger so future calls exclude it.
+    try {
+      const prev: string[] = JSON.parse(localStorage.getItem('optifinish-recent-topics') || '[]');
+      const updated = [t.title, ...prev.filter((x) => x !== t.title)].slice(0, 30);
+      localStorage.setItem('optifinish-recent-topics', JSON.stringify(updated));
+    } catch {
+      /* localStorage unavailable — non-fatal */
+    }
     const d = await generateBlogDraft(t, category, audience);
     setDraft(d);
     setStage('draft');

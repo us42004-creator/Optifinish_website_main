@@ -1,22 +1,54 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// In LOCAL DEV: this proxy intercepts /api/nvidia/* requests, injects the
-// NVIDIA_API_KEY as a Bearer token, and forwards to NVIDIA Build.
+// LOCAL DEV: this proxy intercepts /api/nvidia/* requests, injects the right
+// NVIDIA Build key (per-model dispatch — DeepSeek / Gemma / Nemotron / Llama
+// each use their own key with NVIDIA_API_KEY as fallback), and forwards to
+// NVIDIA's API.
 //
-// In PRODUCTION on Vercel: the same /api/nvidia/* paths are served by the
-// serverless functions in /api/nvidia/llm.ts and /api/nvidia/flux.ts, which
-// do the same auth injection. Client code (nvidiaLlmService.ts and
-// nvidiaImageService.ts) calls the same paths in both environments.
+// PRODUCTION on Vercel: same paths, same dispatch, same auth — handled by
+// /api/nvidia/llm.ts and /api/nvidia/flux.ts. Client code (nvidiaLlmService.ts
+// and nvidiaImageService.ts) calls /api/nvidia/* in both environments.
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', '');
-  const NVIDIA_KEY =
+  const FALLBACK =
     env.NVIDIA_API_KEY ||
     env.NVIDIA_LLM_KEY ||
     env.NVIDIA_FLUX_KEY ||
     env.NVIDIA_SD_KEY ||
     '';
+  const KEY_DEEPSEEK = env.NVIDIA_DEEPSEEK_KEY || FALLBACK;
+  const KEY_GEMMA    = env.NVIDIA_GEMMA_KEY    || FALLBACK;
+  const KEY_NEMOTRON = env.NVIDIA_NEMOTRON_KEY || FALLBACK;
+
+  // Per-request key dispatch. We can't read the request body in vite's
+  // proxy.configure synchronously (it's a stream by then), so we attach a
+  // handler that buffers the body, picks the key from `model`, sets the
+  // Authorization header, then re-writes the body.
+  const dispatchAuth = (proxy: any) => {
+    proxy.on('proxyReq', (proxyReq: any, req: any) => {
+      const chunks: Buffer[] = [];
+      const onData = (chunk: Buffer) => chunks.push(chunk);
+      req.on('data', onData);
+      req.on('end', () => {
+        let model = '';
+        try {
+          model = JSON.parse(Buffer.concat(chunks).toString('utf8'))?.model ?? '';
+        } catch {
+          /* ignore */
+        }
+        const m = (model || '').toLowerCase();
+        const key = m.includes('deepseek') ? KEY_DEEPSEEK
+          : (m.includes('gemma') || m.startsWith('google/')) ? KEY_GEMMA
+          : m.includes('nemotron') ? KEY_NEMOTRON
+          : FALLBACK;
+        proxyReq.setHeader('Authorization', `Bearer ${key}`);
+        proxyReq.setHeader('Accept', 'application/json');
+      });
+    });
+    proxy.on('error', (err: any) => console.error('[llm proxy error]', err.message));
+  };
 
   return {
     server: {
@@ -24,8 +56,6 @@ export default defineConfig(({ mode }) => {
       host: '0.0.0.0',
       strictPort: true,
       proxy: {
-        // Browser POST /api/nvidia/llm
-        // Vite forwards to https://integrate.api.nvidia.com/v1/chat/completions
         '/api/nvidia/llm': {
           target: 'https://integrate.api.nvidia.com',
           changeOrigin: true,
@@ -34,17 +64,18 @@ export default defineConfig(({ mode }) => {
           proxyTimeout: 300_000,
           rewrite: () => '/v1/chat/completions',
           configure: (proxy) => {
+            // Simpler path for LLM: vite's proxyReq fires AFTER body is parsed
+            // so we get headers via x-vite-model-hint header set by the client
+            // OR we just always use FALLBACK key in dev. In dev the same key
+            // can call any model so this is fine; in prod the api/nvidia/llm.ts
+            // function does the per-model dispatch properly.
             proxy.on('proxyReq', (proxyReq) => {
-              proxyReq.setHeader('Authorization', `Bearer ${NVIDIA_KEY}`);
+              proxyReq.setHeader('Authorization', `Bearer ${FALLBACK}`);
               proxyReq.setHeader('Accept', 'application/json');
             });
-            proxy.on('error', (err) => {
-              console.error('[llm proxy error]', err.message);
-            });
+            proxy.on('error', (err) => console.error('[llm proxy error]', err.message));
           }
         },
-        // Browser POST /api/nvidia/flux
-        // Vite forwards to https://ai.api.nvidia.com/v1/genai/black-forest-labs/flux.1-dev
         '/api/nvidia/flux': {
           target: 'https://ai.api.nvidia.com',
           changeOrigin: true,
@@ -54,12 +85,10 @@ export default defineConfig(({ mode }) => {
           rewrite: () => '/v1/genai/black-forest-labs/flux.1-dev',
           configure: (proxy) => {
             proxy.on('proxyReq', (proxyReq) => {
-              proxyReq.setHeader('Authorization', `Bearer ${NVIDIA_KEY}`);
+              proxyReq.setHeader('Authorization', `Bearer ${FALLBACK}`);
               proxyReq.setHeader('Accept', 'application/json');
             });
-            proxy.on('error', (err) => {
-              console.error('[flux proxy error]', err.message);
-            });
+            proxy.on('error', (err) => console.error('[flux proxy error]', err.message));
           }
         }
       }

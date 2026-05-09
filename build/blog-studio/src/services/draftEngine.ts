@@ -9,6 +9,7 @@ import {
 } from '../types';
 import { CATEGORIES, AUDIENCES } from '../constants';
 import { chatJSON } from './nvidiaLlmService';
+import { pickRotated, MODELS, ModelId } from './modelRouter';
 
 // ─────────────────────────────────────────────────────────────
 // Per-category structural blueprint. The model MUST follow the
@@ -124,11 +125,24 @@ export const CATEGORY_BLUEPRINT: Record<
 // System prompt — strict editorial guardrails + per-archetype
 // blueprint injected dynamically below.
 // ─────────────────────────────────────────────────────────────
-export const buildDraftSystemPrompt = (categoryId: CategoryId): string => {
+export const buildDraftSystemPrompt = (
+  categoryId: CategoryId,
+  opts: { voiceNudge?: string; modelVoice?: string } = {}
+): string => {
   const bp = CATEGORY_BLUEPRINT[categoryId];
   const sectionList = bp.sections.map((s, i) => `H2 ${i + 1}. ${s}`).join('\n');
+  const voiceBlock =
+    opts.voiceNudge && opts.modelVoice
+      ? `
 
-  return `You are the OptiFinish editorial writer. You produce one complete blog post per call, written to the standard of a senior process engineer who has walked 200 plant floors. The reader is intelligent, busy, and skeptical of marketing.
+YOUR INTRINSIC VOICE THIS RUN: ${opts.modelVoice}.
+
+EDITORIAL VOICE NUDGE FOR THIS RUN:
+${opts.voiceNudge}
+`
+      : '';
+
+  return `You are the OptiFinish editorial writer. You produce one complete blog post per call, written to the standard of a senior process engineer who has walked 200 plant floors. The reader is intelligent, busy, and skeptical of marketing.${voiceBlock}
 
 OPTIFINISH CONTEXT:
 - Indian B2B industrial powder coating equipment company (parent: VACSPL).
@@ -178,6 +192,16 @@ End with a soft CTA paragraph that primes: "${bp.cta}". The CTA paragraph must N
 7. NO CLICHÉ OPENERS. Banned anywhere in body: "In today's competitive market", "Did you know", "Have you ever wondered", "What if you could", "Get the inside scoop", "Take your operation to the next level", "Unlocking", "Mastering". Open with a named system, dated event, or specific physical observation.
 8. NO META H2s. Do NOT write H2s named after schema fields ("Decision Friction", "Core Insight", "Conclusion and Call to Action"). Those are reserved for the snapshot block.
 9. PULL-QUOTE OPPORTUNITY. Wrap exactly ONE sharp 1-2 sentence insight from the body in <blockquote> — the most quotable line of the post. The template renders these as editorial pull-quotes.
+
+═════════════════════════════════════════════
+  ANTI-MONOTONY RULES (read carefully — repeat output is a generation failure)
+═════════════════════════════════════════════
+- VARIED PARAGRAPH OPENINGS. No two consecutive paragraphs may begin with the same word. Across the whole post, the words "However", "In addition", "Furthermore", "Moreover", "Therefore", "Additionally", "Notably" may appear at the start of AT MOST ONE paragraph each.
+- VARIED SENTENCE LENGTH. Each major section must contain at least three short sentences (under 12 words each), at least one mid-length sentence (15-25 words), and at most one long sentence (40+ words). Vary the rhythm.
+- NO TEMPLATE PHRASES. Forbidden: "It is worth noting that", "It should be mentioned", "It is important to consider", "When it comes to", "At the end of the day", "In essence", "In summary", "All in all", "To put it simply".
+- NO "FIRST X, SECOND Y, THIRD Z" SCAFFOLDING in prose paragraphs. If you need to enumerate, use a real <ol> or <ul>. In prose, vary the connective tissue.
+- REPEATED CONCEPT, FRESH ANGLE. If you have a concept (e.g. "transfer efficiency", "rejection rate") to refer to multiple times, use SYNONYMS or rephrase the second and third mentions.
+- AVOID THE 3-CLAUSE "X, Y, AND Z" CONSTRUCTION. Limit to one occurrence per section.
 
 ═════════════════════════════════════════════
   SNAPSHOT FIELDS
@@ -278,21 +302,41 @@ Write the full post per the rules. Hit at least 1100 words of body text — this
     }>;
   };
 
-  // Llama 3.3 70B Instruct: reliable and fast (~15-30s). Hits length cap
-  // around 500-700 words in single-pass JSON mode — the 1100-word target
-  // is enforced by the 2-pass expander below. 405B was tried but hits
-  // socket timeouts on NVIDIA Build queueing (1-2 min responses regularly
-  // exceed Vite proxy + Node fetch defaults).
-  const json = await chatJSON<DraftJson>({
-    model: 'meta/llama-3.3-70b-instruct',
-    messages: [
-      { role: 'system', content: buildDraftSystemPrompt(category) },
-      { role: 'user', content: userPrompt }
-    ],
-    temperature: 0.65,
-    topP: 0.92,
-    maxTokens: 6000
-  });
+  // Multi-model rotation: each call randomly picks Llama / DeepSeek-V4 /
+  // Gemma-3 / Nemotron-Super, rotated to avoid the same model twice in a row.
+  // Each model has a different intrinsic voice. Combined with the random
+  // editorial-voice nudge, this fights repetitive output across regenerations.
+  const { model, voice } = pickRotated();
+  const baseTemp = 0.65 + model.draftTempOffset;
+
+  const callWith = async (modelId: ModelId, modelVoice: string) =>
+    chatJSON<DraftJson>({
+      model: modelId,
+      messages: [
+        {
+          role: 'system',
+          content: buildDraftSystemPrompt(category, {
+            voiceNudge: voice.nudge,
+            modelVoice
+          })
+        },
+        { role: 'user', content: userPrompt }
+      ],
+      temperature: baseTemp,
+      topP: 0.92,
+      maxTokens: 6000
+    });
+
+  let json: DraftJson;
+  try {
+    json = await callWith(model.id, model.intrinsicVoice);
+  } catch (err) {
+    // Fallback to Llama (most reliable) if the rotated model fails — keeps
+    // a single bad rollout from breaking the UI. Voice nudge stays the same.
+    console.warn(`[draftEngine] ${model.shortName} failed, falling back to Llama:`, err);
+    const llama = MODELS[0];
+    json = await callWith(llama.id, llama.intrinsicVoice);
+  }
 
   const wordCount = json.bodyHtml.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
 

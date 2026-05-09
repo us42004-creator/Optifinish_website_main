@@ -26,6 +26,40 @@ const CATEGORY_ID = process.env.CATEGORY || 'pillar-guide';
 const AUDIENCE_ID = process.env.AUDIENCE || 'plant-manager';
 
 // ─────────────────────────────────────────────────────────────
+// Multi-model rotation — mirrors src/services/modelRouter.ts
+// ─────────────────────────────────────────────────────────────
+const MODELS = [
+  { id: 'meta/llama-3.3-70b-instruct',            shortName: 'Llama-3.3-70B',      intrinsicVoice: 'balanced, calm authority, slight academic register',                                            topicTempOffset: 0,     draftTempOffset: 0     },
+  { id: 'deepseek-ai/deepseek-v4-pro',            shortName: 'DeepSeek-V4-Pro',    intrinsicVoice: 'analytical, reasoning-forward, dense with structured argument',                                  topicTempOffset: -0.05, draftTempOffset: -0.05 },
+  { id: 'google/gemma-3-12b-it',                  shortName: 'Gemma-3-12B',        intrinsicVoice: 'crisp, declarative, short sentences, no-nonsense',                                                topicTempOffset: 0.05,  draftTempOffset: 0.05  },
+  { id: 'nvidia/llama-3.3-nemotron-super-49b-v1', shortName: 'Nemotron-Super-49B', intrinsicVoice: 'nuanced, sometimes contrarian, asks better questions, walks through reasoning',                    topicTempOffset: 0,     draftTempOffset: 0     }
+];
+const VOICES = [
+  { id: 'analyst',   nudge: `Open with a specific, named observation from the shop floor — a metric, a behaviour at hour six, a measurable shift. Lead with the data, not the framing. Sentence rhythm: medium, with at least three short declarative sentences per major section.` },
+  { id: 'mentor',    nudge: `Write as a senior process engineer mentoring a younger one. Use "you" liberally. Walk through reasoning step by step. Each H2 poses a question and answers it. Conversational rhythm with one parenthetical aside per section.` },
+  { id: 'reporter',  nudge: `Open with a scene — a specific Indian plant, a specific shift, a specific sensory detail. Carry the narrative voice through. Cinematic rhythm, varied, with occasional one-line paragraphs for emphasis.` },
+  { id: 'critic',    nudge: `Open with what most articles on this topic get wrong. Take a mildly skeptical position. Each H2 contains at least one "but" or "however that" turn. Pointed, declarative, no hedging.` },
+  { id: 'frame',     nudge: `Open with the trade-off itself, named explicitly. The whole post is a decision frame. Use the word "decide" at least three times. Tight balanced rhythm, parallel structure.` },
+  { id: 'unhurried', nudge: `Open without urgency. The post breathes. Longer sentences in the first two paragraphs to set tone, then tighten. Each section ends with a one-line takeaway.` }
+];
+function pickRandom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+let lastModel = null;
+function pickRotated() {
+  const candidates = lastModel ? MODELS.filter(m => m.id !== lastModel) : MODELS;
+  const model = pickRandom(candidates);
+  lastModel = model.id;
+  return { model, voice: pickRandom(VOICES) };
+}
+
+// ─────────────────────────────────────────────────────────────
 // Constants — MUST stay in sync with src/constants.ts
 // ─────────────────────────────────────────────────────────────
 const CATEGORIES = [
@@ -87,8 +121,24 @@ const RECENT_TRIGGERS = [
 
 // ─────────────────────────────────────────────────────────────
 // Topic prompt — MUST stay in sync with src/services/topicEngine.ts
+// Note: TRIGGER POOL and voice nudge are randomised per call inside main().
 // ─────────────────────────────────────────────────────────────
-const TOPIC_SYSTEM_PROMPT = `You are the OptiFinish editorial strategist. Indian B2B industrial powder coating equipment company (parent: VACSPL). Sells own plants, ovens, booths, automation (Z-TAP). Authorised India partners for GEMA and DURR. Sister concern Vinayak Agencies.
+function buildTopicSystemPrompt({ voiceNudge, modelVoice, triggers, excludeTitles = [] }) {
+  const exclusion = excludeTitles.length
+    ? `
+
+═════════════════════════════════════════════
+  RECENTLY GENERATED — DO NOT REPRODUCE OR HEAVILY OVERLAP
+═════════════════════════════════════════════
+${excludeTitles.map((t, i) => `${i + 1}. ${t}`).join('\n')}
+`
+    : '';
+  return `You are the OptiFinish editorial strategist. Indian B2B industrial powder coating equipment company (parent: VACSPL). Sells own plants, ovens, booths, automation (Z-TAP). Authorised India partners for GEMA and DURR. Sister concern Vinayak Agencies.
+
+YOUR INTRINSIC VOICE THIS RUN: ${modelVoice}.
+
+EDITORIAL VOICE NUDGE FOR THIS RUN:
+${voiceNudge}
 
 UNIQUE POSITIONS (every topic must reflect at least one):
 1. India-first context (INR, monsoon, BIS/BEE/CPCB, MSME-ZED, CBAM, generator-power, summer powder shelf-life)
@@ -96,8 +146,9 @@ UNIQUE POSITIONS (every topic must reflect at least one):
 3. Premium industrial tone — calm authority, never marketing hype
 4. Specificity over platitudes
 
-TRIGGER POOL (anchor at least 2 of 5 topics to one of these):
-${RECENT_TRIGGERS.map((t, i) => `[${i + 1}] ${t}`).join('\n')}
+TRIGGER POOL (curated subset, anchor at least 2 of 5 topics to one of these):
+${triggers.map((t, i) => `[${i + 1}] ${t}`).join('\n')}
+${exclusion}
 
 PATTERNS TO SUBSTITUTE:
 ✗ "Did you know that 10% improvement..." → ✓ Open with a named system or dated event
@@ -111,20 +162,29 @@ DO NOT FABRICATE NUMBERS. No invented percentages, INR figures, or ROI claims.
 
 REQUIRED PER TOPIC: sharp HEADLINE, 1-line HOOK, 1-line ANGLE naming structural shape, estimated read time 5-14 min.
 
-VARIETY: across 5 topics, vary the structural shape.
+ANTI-MONOTONY RULES:
+- 5 titles MUST start with 5 DIFFERENT first words.
+- AT LEAST 2 of 5 must NOT start with "How", "The", "What", "Why", or "When".
+- AT LEAST 1 must be a declarative statement.
+- AT LEAST 1 must be ≤ 6 words; AT LEAST 1 must be ≥ 12 words.
+- Vary structural shape across the 5.
 
 OUTPUT: STRICT JSON only.
 {"topics":[{"id":"t1","title":"","angle":"","hook":"","estimatedReadTime":"7 min"}]}
 Return exactly 5 topics. At least 2 must reference a TRIGGER POOL entry by content.`;
+}
 
 // ─────────────────────────────────────────────────────────────
 // Draft prompt — generated from per-category blueprint
 // ─────────────────────────────────────────────────────────────
-function draftSystemPrompt(categoryId) {
+function draftSystemPrompt(categoryId, opts = {}) {
   const bp = CATEGORY_BLUEPRINT[categoryId];
   const sectionList = bp.sections.map((s, i) => `H2 ${i + 1}. ${s}`).join('\n');
+  const voiceBlock = opts.voiceNudge && opts.modelVoice
+    ? `\n\nYOUR INTRINSIC VOICE THIS RUN: ${opts.modelVoice}.\n\nEDITORIAL VOICE NUDGE FOR THIS RUN:\n${opts.voiceNudge}\n`
+    : '';
 
-  return `You are the OptiFinish editorial writer. Senior process engineer voice. Reader is intelligent, busy, skeptical of marketing.
+  return `You are the OptiFinish editorial writer. Senior process engineer voice. Reader is intelligent, busy, skeptical of marketing.${voiceBlock}
 
 OPTIFINISH CONTEXT: Indian B2B powder coating equipment (VACSPL). Own plants, ovens, booths, automation (Z-TAP, ZA01). Authorised India partners for GEMA + DURR. Greater Noida facility. Sister concern Vinayak Agencies.
 
@@ -162,6 +222,14 @@ End with a soft CTA paragraph priming: "${bp.cta}". CTA paragraph must NOT begin
 7. NO CLICHÉ OPENERS: "In today's competitive market", "Did you know", "Have you ever wondered", "What if you could", "Get the inside scoop", "Take your operation to the next level", "Unlocking", "Mastering".
 8. NO META H2s. Never write H2s named after schema fields ("Decision Friction", "Core Insight", "Conclusion and Call to Action").
 9. PULL-QUOTE: wrap exactly ONE sharp 1-2 sentence insight in <blockquote> — the most quotable line.
+
+ANTI-MONOTONY RULES (read carefully):
+- VARIED PARAGRAPH OPENINGS. No two consecutive paragraphs may begin with the same word. "However", "In addition", "Furthermore", "Moreover", "Therefore" may each appear at the start of AT MOST ONE paragraph.
+- VARIED SENTENCE LENGTH. Each section: ≥3 short sentences (<12 words), ≥1 mid (15-25), ≤1 long (40+).
+- NO TEMPLATE PHRASES: "It is worth noting", "It should be mentioned", "When it comes to", "At the end of the day", "In essence", "In summary", "All in all", "To put it simply".
+- NO "FIRST X, SECOND Y, THIRD Z" SCAFFOLDING in prose; use real <ol>/<ul> for enumeration.
+- REPEATED CONCEPT, FRESH ANGLE: re-phrase the second and third mention of any concept.
+- AVOID 3-CLAUSE "X, Y, AND Z": limit one per section.
 
 ═════════════════════════════════════════════
   SNAPSHOT FIELDS
@@ -416,13 +484,35 @@ async function main() {
     process.exit(1);
   }
 
-  log('1/4', `Generating topics — ${cat.label} × ${aud.label}…`);
+  // Pick a random model + voice for topic gen
+  const topicRun = pickRotated();
+  const triggerSubset = shuffle(RECENT_TRIGGERS).slice(0, 9);
+  log('1/4', `Generating topics — ${cat.label} × ${aud.label}  [model: ${topicRun.model.shortName}, voice: ${topicRun.voice.id}]…`);
   const t0 = Date.now();
-  const { topics } = await chatJson(
-    TOPIC_SYSTEM_PROMPT,
-    `Generate 5 topic ideas.\n\nCategory: ${cat.label} — ${cat.blurb}\nExamples: ${cat.examples.join(', ')}\n\nAudience: ${aud.label} (${aud.role})\nCares: ${aud.cares}\n\nVary structural shape. Anchor at least 2 to a real TRIGGER POOL entry. Apply substitution patterns. No fabricated numbers.`,
-    { temperature: 0.85, maxTokens: 2000 }
-  );
+  let topicResult;
+  try {
+    topicResult = await chatJson(
+      buildTopicSystemPrompt({
+        voiceNudge: topicRun.voice.nudge,
+        modelVoice: topicRun.model.intrinsicVoice,
+        triggers: triggerSubset
+      }),
+      `Generate 5 topic ideas.\n\nCategory: ${cat.label} — ${cat.blurb}\nExamples: ${cat.examples.join(', ')}\n\nAudience: ${aud.label} (${aud.role})\nCares: ${aud.cares}\n\nApply the editorial voice nudge above. Vary structural shape. Anchor at least 2 to a real TRIGGER POOL entry. Apply substitution + anti-monotony patterns. No fabricated numbers.`,
+      { model: topicRun.model.id, temperature: 0.85 + topicRun.model.topicTempOffset, maxTokens: 2000 }
+    );
+  } catch (err) {
+    log('1/4', `${topicRun.model.shortName} failed (${err.message?.slice(0, 80)}), retrying with Llama…`);
+    topicResult = await chatJson(
+      buildTopicSystemPrompt({
+        voiceNudge: topicRun.voice.nudge,
+        modelVoice: MODELS[0].intrinsicVoice,
+        triggers: triggerSubset
+      }),
+      `Generate 5 topic ideas.\n\nCategory: ${cat.label} — ${cat.blurb}\nExamples: ${cat.examples.join(', ')}\n\nAudience: ${aud.label} (${aud.role})\nCares: ${aud.cares}\n\nApply the editorial voice nudge above. Vary structural shape. Anchor at least 2 to a real TRIGGER POOL entry.`,
+      { model: MODELS[0].id, temperature: 0.85, maxTokens: 2000 }
+    );
+  }
+  const topics = topicResult.topics;
   log('1/4', `${topics.length} topics in ${((Date.now() - t0) / 1000).toFixed(1)}s`);
   topics.forEach((t, i) => console.log(`     ${i + 1}. ${t.title}`));
 
@@ -432,12 +522,26 @@ async function main() {
   log('1/4', `Picked: "${chosen.title}"`);
 
   log('2/4', `Generating full draft via Llama 3.3 70B (target 1100-1400 words)…`);
+  // Different model + voice for the draft (rotation continues from topic step)
+  const draftRun = pickRotated();
+  log('2/4', `Generating draft  [model: ${draftRun.model.shortName}, voice: ${draftRun.voice.id}]…`);
   const t1 = Date.now();
-  const draft = await chatJson(
-    draftSystemPrompt(CATEGORY_ID),
-    `Write the post for this topic.\n\nTITLE: "${chosen.title}"\nHOOK: "${chosen.hook}"\nANGLE: ${chosen.angle}\n\nCategory: ${cat.label} — ${cat.blurb}\nAudience: ${aud.label} (${aud.role})\nCares: ${aud.cares}\n\nWrite the full post per the rules. Hit at least 1100 words — non-negotiable. Include exactly one <blockquote>.`,
-    { model: 'meta/llama-3.3-70b-instruct', temperature: 0.65, maxTokens: 6000 }
-  );
+  const draftUserPrompt = `Write the post for this topic.\n\nTITLE: "${chosen.title}"\nHOOK: "${chosen.hook}"\nANGLE: ${chosen.angle}\n\nCategory: ${cat.label} — ${cat.blurb}\nAudience: ${aud.label} (${aud.role})\nCares: ${aud.cares}\n\nApply the editorial voice nudge above. Apply ANTI-MONOTONY rules. Hit at least 1100 words — non-negotiable. Include exactly one <blockquote>.`;
+  let draft;
+  try {
+    draft = await chatJson(
+      draftSystemPrompt(CATEGORY_ID, { voiceNudge: draftRun.voice.nudge, modelVoice: draftRun.model.intrinsicVoice }),
+      draftUserPrompt,
+      { model: draftRun.model.id, temperature: 0.65 + draftRun.model.draftTempOffset, maxTokens: 6000 }
+    );
+  } catch (err) {
+    log('2/4', `${draftRun.model.shortName} failed (${err.message?.slice(0, 80)}), retrying with Llama…`);
+    draft = await chatJson(
+      draftSystemPrompt(CATEGORY_ID, { voiceNudge: draftRun.voice.nudge, modelVoice: MODELS[0].intrinsicVoice }),
+      draftUserPrompt,
+      { model: MODELS[0].id, temperature: 0.65, maxTokens: 6000 }
+    );
+  }
   draft.wordCount = String(draft.bodyHtml).replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
   log('2/4', `Draft ready in ${((Date.now() - t1) / 1000).toFixed(1)}s — ${draft.wordCount} words, shape: ${draft.snapshot.structuralShape}`);
   if (draft.wordCount < 1100) {
