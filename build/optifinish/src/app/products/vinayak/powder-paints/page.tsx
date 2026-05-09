@@ -90,12 +90,14 @@ export default function VinayakPowderPaintsPage() {
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/powder-coating-plant',
           enquireSlug: 'powder-coating-plant',
+          imageSrc: '/images/products/optifinish-manufactured/powder-coating-plant/optifinish-powder-coating-plant-01.jpg',
         },
         {
           name: 'Powder Spray Booth',
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/powder-spray-booth',
           enquireSlug: 'powder-spray-booth',
+          imageSrc: '/images/products/optifinish-manufactured/powder-spray-booth/optifinish-powder-spray-booth-01.jpg',
         },
       ]}
 
