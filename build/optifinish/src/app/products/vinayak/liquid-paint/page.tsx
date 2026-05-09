@@ -27,6 +27,7 @@ export default function VinayakLiquidPaintPage() {
         { val: '2', label: 'Trusted brands stocked' },
       ]}
       heroImageLabel="Vinayak Agencies · liquid industrial paints — Kansai Nerolac, Paramount Tansy"
+      heroImageSrc="/images/products/vinayak/liquid-paint/nerolac-industrial-paint-banner.jpg"
       enquireSlug="vinayak-liquid-paint"
       backHref="/products/vinayak"
       backLabel="← Back to Vinayak Agencies"
@@ -42,6 +43,8 @@ export default function VinayakLiquidPaintPage() {
         'Single source supply — liquid paint and the liquid spray booth from the same supplier',
         'Vinayak Agencies supply integrated with OptiFinish liquid coating system commissioning',
       ]}
+
+      applicationImageSrc="/images/products/vinayak/liquid-paint/nerolac-high-performance-coatings.webp"
 
       specRows={[
         { l: 'Kansai Nerolac', v: 'Industrial primers, anticorrosion coatings, and topcoats — established brand portfolio' },
@@ -78,12 +81,14 @@ export default function VinayakLiquidPaintPage() {
           category: 'Vinayak Agencies',
           href: '/products/vinayak/touchup-paints',
           enquireSlug: 'vinayak-touchup-paints',
+          imageSrc: '/images/products/vinayak/touchup-paints/nerolac-tansy-touchup-01.webp',
         },
         {
           name: 'PU Enamel',
           category: 'Vinayak Agencies',
           href: '/products/vinayak/pu-enamel',
           enquireSlug: 'vinayak-pu-enamel',
+          imageSrc: '/images/products/vinayak/pu-enamel/nerolac-pu-enamel-10in1-hero.jpg',
         },
         {
           name: 'Liquid Spray Booth',

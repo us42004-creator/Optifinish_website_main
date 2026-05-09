@@ -27,6 +27,7 @@ export default function VinayakPuEnamelPage() {
         { val: 'Satin', label: 'Low-sheen finish grade' },
       ]}
       heroImageLabel="Vinayak Agencies · Nerolac PU Enamel, Hi-Gloss Synthetic, Satin Enamel"
+      heroImageSrc="/images/products/vinayak/pu-enamel/nerolac-pu-enamel-10in1-hero.jpg"
       enquireSlug="vinayak-pu-enamel"
       backHref="/products/vinayak"
       backLabel="← Back to Vinayak Agencies"
@@ -57,6 +58,7 @@ export default function VinayakPuEnamelPage() {
             { l: 'Application', v: 'Brush, roller, or spray — metal and wood substrates' },
           ],
           imageLabel: 'Nerolac PU Enamel 10-in-1 · polyurethane modified premium enamel',
+          imageSrc: '/images/products/vinayak/pu-enamel/nerolac-pu-enamel-10in1-01.png',
         },
         {
           id: 'hi-gloss',
@@ -71,6 +73,7 @@ export default function VinayakPuEnamelPage() {
             { l: 'Application', v: 'Brush, roller, or spray application' },
           ],
           imageLabel: 'Nerolac Hi-Gloss Synthetic Enamel · full-gloss industrial enamel',
+          imageSrc: '/images/products/vinayak/pu-enamel/nerolac-higloss-enamel-01.png',
         },
         {
           id: 'satin',
@@ -85,9 +88,12 @@ export default function VinayakPuEnamelPage() {
             { l: 'Application', v: 'Brush, roller, or spray application' },
           ],
           imageLabel: 'Nerolac Satin Enamel · low-sheen controlled finish enamel',
+          imageSrc: '/images/products/vinayak/pu-enamel/nerolac-satin-enamel-02.png',
         },
       ]}
       variantsSectionTitle="Select the Nerolac enamel grade for your application"
+
+      applicationImageSrc="/images/products/vinayak/pu-enamel/nerolac-metal-enamel-banner.webp"
 
       specRows={[
         { l: 'PU Enamel 10-in-1', v: 'Polyurethane-modified alkyd — premium hardness, gloss retention, stain resistance' },
@@ -123,18 +129,21 @@ export default function VinayakPuEnamelPage() {
           category: 'Vinayak Agencies',
           href: '/products/vinayak/liquid-paint',
           enquireSlug: 'vinayak-liquid-paint',
+          imageSrc: '/images/products/vinayak/liquid-paint/nerolac-industrial-paint-banner.jpg',
         },
         {
           name: 'Touch-up Paints',
           category: 'Vinayak Agencies',
           href: '/products/vinayak/touchup-paints',
           enquireSlug: 'vinayak-touchup-paints',
+          imageSrc: '/images/products/vinayak/touchup-paints/nerolac-tansy-touchup-01.webp',
         },
         {
           name: 'Adhesives',
           category: 'Vinayak Agencies',
           href: '/products/vinayak/adhesives',
           enquireSlug: 'vinayak-adhesives',
+          imageSrc: '/images/products/vinayak/adhesives/nerolac-nerofix-01.png',
         },
       ]}
 

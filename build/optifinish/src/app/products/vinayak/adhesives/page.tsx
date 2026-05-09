@@ -27,6 +27,7 @@ export default function VinayakAdhesivesPage() {
         { val: 'Nerolac', label: 'Trusted brand formulation' },
       ]}
       heroImageLabel="Vinayak Agencies · Nerolac synthetic glue and white PVA adhesive"
+      heroImageSrc="/images/products/vinayak/adhesives/nerolac-nerofix-01.png"
       enquireSlug="vinayak-adhesives"
       backHref="/products/vinayak"
       backLabel="← Back to Vinayak Agencies"
@@ -57,6 +58,7 @@ export default function VinayakAdhesivesPage() {
             { l: 'Application', v: 'Brush or notched spreader' },
           ],
           imageLabel: 'Nerolac synthetic glue · contact adhesive for laminates and veneers',
+          imageSrc: '/images/products/vinayak/adhesives/nerolac-synthetic-glue-01.jpg',
         },
         {
           id: 'pva',
@@ -71,9 +73,12 @@ export default function VinayakAdhesivesPage() {
             { l: 'Application', v: 'Brush or nozzle applicator' },
           ],
           imageLabel: 'Nerolac white PVA glue · woodworking adhesive for joinery and assembly',
+          imageSrc: '/images/products/vinayak/adhesives/nerolac-synthetic-glue-02.jpg',
         },
       ]}
       variantsSectionTitle="Synthetic contact adhesive or PVA woodworking glue"
+
+      applicationImageSrc="/images/products/vinayak/adhesives/nerolac-adhesives-banner.webp"
 
       specRows={[
         { l: 'Synthetic glue', v: 'Contact adhesive — laminates, veneers, decorative surfaces to substrate' },
@@ -109,18 +114,21 @@ export default function VinayakAdhesivesPage() {
           category: 'Vinayak Agencies',
           href: '/products/vinayak/pu-enamel',
           enquireSlug: 'vinayak-pu-enamel',
+          imageSrc: '/images/products/vinayak/pu-enamel/nerolac-pu-enamel-10in1-hero.jpg',
         },
         {
           name: 'Liquid Industrial Paints',
           category: 'Vinayak Agencies',
           href: '/products/vinayak/liquid-paint',
           enquireSlug: 'vinayak-liquid-paint',
+          imageSrc: '/images/products/vinayak/liquid-paint/nerolac-industrial-paint-banner.jpg',
         },
         {
           name: 'Touch-up Paints',
           category: 'Vinayak Agencies',
           href: '/products/vinayak/touchup-paints',
           enquireSlug: 'vinayak-touchup-paints',
+          imageSrc: '/images/products/vinayak/touchup-paints/nerolac-tansy-touchup-01.webp',
         },
       ]}
 
