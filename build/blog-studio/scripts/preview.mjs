@@ -231,7 +231,7 @@ const CTA_BY_SHAPE = {
 // API helpers — all via the Vite proxy
 // ─────────────────────────────────────────────────────────────
 async function chatJson(systemPrompt, userPrompt, opts = {}) {
-  const res = await fetch(`${PROXY}/nvidia/llm/chat/completions`, {
+  const res = await fetch(`${PROXY}/api/nvidia/llm`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -257,7 +257,7 @@ async function chatJson(systemPrompt, userPrompt, opts = {}) {
 }
 
 async function fluxImage(prompt, { steps = 30, seed = 0, attempt = 1 } = {}) {
-  const res = await fetch(`${PROXY}/nvidia/flux/flux.1-dev`, {
+  const res = await fetch(`${PROXY}/api/nvidia/flux`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
