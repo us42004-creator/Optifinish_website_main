@@ -186,33 +186,23 @@ export default function VinayakPage() {
           </div>
 
           {/* Warehouse image grid */}
-          {/* Add warehouse photos to /images/products/vinayak/warehouse/warehouse-01.jpg etc. to activate */}
           <div className="grid gap-4 sm:grid-cols-3">
             {[
-              { id: 'warehouse-01', src: '/images/products/vinayak/warehouse/warehouse-01.jpg' },
-              { id: 'warehouse-02', src: '/images/products/vinayak/warehouse/warehouse-02.jpg' },
-              { id: 'warehouse-03', src: '/images/products/vinayak/warehouse/warehouse-03.jpg' },
-            ].map((item, i) => (
+              { id: 'warehouse-01', src: '/images/facility/facility-22.jpg' },
+              { id: 'warehouse-02', src: '/images/facility/facility-23.jpg' },
+              { id: 'warehouse-03', src: '/images/facility/facility-25.jpg' },
+            ].map((item) => (
               <div
                 key={item.id}
-                className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-[1rem]"
+                className="relative aspect-[4/3] overflow-hidden rounded-[1rem]"
               >
-                {/* Placeholder grid */}
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    backgroundImage:
-                      'linear-gradient(rgba(254,206,0,1) 1px, transparent 1px), linear-gradient(90deg, rgba(254,206,0,1) 1px, transparent 1px)',
-                    backgroundSize: '32px 32px',
-                    opacity: 0.045,
-                    backgroundColor: '#1a1a1a',
-                  }}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={item.src}
+                  alt="Vinayak Agencies warehouse"
+                  className="h-full w-full object-cover"
                 />
-                <div className="absolute inset-0 bg-[#161616]" style={{ zIndex: -1 }} />
-                <div className="absolute left-0 right-0 top-0 h-[2px] bg-[#FECE00]/25" />
-                <span className="relative text-[9px] font-semibold uppercase tracking-[0.2em] text-white/15">
-                  Vinayak Warehouse · {String(i + 1).padStart(2, '0')}
-                </span>
+                <div className="absolute inset-0 bg-[#0A0A0A]/20" />
               </div>
             ))}
           </div>
