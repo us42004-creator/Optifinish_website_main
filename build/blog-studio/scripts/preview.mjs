@@ -29,10 +29,10 @@ const AUDIENCE_ID = process.env.AUDIENCE || 'plant-manager';
 // Multi-model rotation — mirrors src/services/modelRouter.ts
 // ─────────────────────────────────────────────────────────────
 const MODELS = [
-  { id: 'meta/llama-3.3-70b-instruct',            shortName: 'Llama-3.3-70B',      intrinsicVoice: 'balanced, calm authority, slight academic register',                                            topicTempOffset: 0,     draftTempOffset: 0     },
-  { id: 'deepseek-ai/deepseek-v4-pro',            shortName: 'DeepSeek-V4-Pro',    intrinsicVoice: 'analytical, reasoning-forward, dense with structured argument',                                  topicTempOffset: -0.05, draftTempOffset: -0.05 },
-  { id: 'google/gemma-3-12b-it',                  shortName: 'Gemma-3-12B',        intrinsicVoice: 'crisp, declarative, short sentences, no-nonsense',                                                topicTempOffset: 0.05,  draftTempOffset: 0.05  },
-  { id: 'nvidia/llama-3.3-nemotron-super-49b-v1', shortName: 'Nemotron-Super-49B', intrinsicVoice: 'nuanced, sometimes contrarian, asks better questions, walks through reasoning',                    topicTempOffset: 0,     draftTempOffset: 0     }
+  { id: 'meta/llama-3.3-70b-instruct',            shortName: 'Llama-3.3-70B',      intrinsicVoice: 'balanced, calm authority, slight academic register',                                            topicTempOffset: 0,     draftTempOffset: 0,     supportsJsonMode: true,  maxTokensCap: 8000 },
+  { id: 'deepseek-ai/deepseek-v4-pro',            shortName: 'DeepSeek-V4-Pro',    intrinsicVoice: 'analytical, reasoning-forward, dense with structured argument',                                  topicTempOffset: -0.05, draftTempOffset: -0.05, supportsJsonMode: true,  maxTokensCap: 8000 },
+  { id: 'google/gemma-3-12b-it',                  shortName: 'Gemma-3-12B',        intrinsicVoice: 'crisp, declarative, short sentences, no-nonsense',                                                topicTempOffset: 0.05,  draftTempOffset: 0.05,  supportsJsonMode: false, maxTokensCap: 4096 },
+  { id: 'nvidia/llama-3.3-nemotron-super-49b-v1', shortName: 'Nemotron-Super-49B', intrinsicVoice: 'nuanced, sometimes contrarian, asks better questions, walks through reasoning',                    topicTempOffset: 0,     draftTempOffset: 0,     supportsJsonMode: true,  maxTokensCap: 8000 }
 ];
 const VOICES = [
   { id: 'analyst',   nudge: `Open with a specific, named observation from the shop floor — a metric, a behaviour at hour six, a measurable shift. Lead with the data, not the framing. Sentence rhythm: medium, with at least three short declarative sentences per major section.` },
@@ -298,21 +298,29 @@ const CTA_BY_SHAPE = {
 // ─────────────────────────────────────────────────────────────
 // API helpers — all via the Vite proxy
 // ─────────────────────────────────────────────────────────────
+// Returns parsed JSON. Skips response_format on models that don't support it.
 async function chatJson(systemPrompt, userPrompt, opts = {}) {
+  const modelId = opts.model ?? 'meta/llama-3.3-70b-instruct';
+  const entry = MODELS.find(m => m.id === modelId);
+  const supportsJson = entry ? entry.supportsJsonMode : true;
+  const cap = entry ? entry.maxTokensCap : 8000;
+
+  const body = {
+    model: modelId,
+    messages: [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userPrompt }
+    ],
+    temperature: opts.temperature ?? 0.7,
+    top_p: opts.topP ?? 0.92,
+    max_tokens: Math.min(opts.maxTokens ?? 5000, cap)
+  };
+  if (supportsJson) body.response_format = { type: 'json_object' };
+
   const res = await fetch(`${PROXY}/api/nvidia/llm`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: opts.model ?? 'meta/llama-3.3-70b-instruct',
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userPrompt }
-      ],
-      temperature: opts.temperature ?? 0.7,
-      top_p: opts.topP ?? 0.92,
-      max_tokens: opts.maxTokens ?? 5000,
-      response_format: { type: 'json_object' }
-    })
+    body: JSON.stringify(body)
   });
   if (!res.ok) {
     const t = await res.text();
@@ -320,8 +328,64 @@ async function chatJson(systemPrompt, userPrompt, opts = {}) {
   }
   const j = await res.json();
   const txt = j.choices?.[0]?.message?.content ?? '';
-  const cleaned = txt.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '');
-  return JSON.parse(cleaned);
+  return parseJsonish(txt);
+}
+
+// Returns plain text (no JSON parsing). Used for the editorial scrub
+// where Gemma returns HTML directly without a JSON wrapper.
+async function chatText(systemPrompt, userPrompt, opts = {}) {
+  const modelId = opts.model ?? 'google/gemma-3-12b-it';
+  const entry = MODELS.find(m => m.id === modelId);
+  const cap = entry ? entry.maxTokensCap : 4096;
+  const res = await fetch(`${PROXY}/api/nvidia/llm`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: modelId,
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: userPrompt }
+      ],
+      temperature: opts.temperature ?? 0.5,
+      top_p: opts.topP ?? 0.9,
+      max_tokens: Math.min(opts.maxTokens ?? 4000, cap)
+    })
+  });
+  if (!res.ok) {
+    const t = await res.text();
+    throw new Error(`LLM ${res.status}: ${t.slice(0, 400)}`);
+  }
+  const j = await res.json();
+  return j.choices?.[0]?.message?.content ?? '';
+}
+
+// Tolerant JSON parser — handles code fences and prose-padded outputs from
+// models that don't have JSON mode.
+function parseJsonish(text) {
+  const trimmed = text.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '');
+  try { return JSON.parse(trimmed); } catch {}
+  const objStart = trimmed.indexOf('{');
+  const arrStart = trimmed.indexOf('[');
+  const start = objStart === -1 ? arrStart : arrStart === -1 ? objStart : Math.min(objStart, arrStart);
+  if (start === -1) throw new Error('No JSON in model output');
+  const opener = trimmed[start];
+  const closer = opener === '{' ? '}' : ']';
+  let depth = 0, inStr = false, escape = false;
+  for (let i = start; i < trimmed.length; i++) {
+    const c = trimmed[i];
+    if (inStr) {
+      if (escape) escape = false;
+      else if (c === '\\') escape = true;
+      else if (c === '"') inStr = false;
+      continue;
+    }
+    if (c === '"') inStr = true;
+    else if (c === opener) depth++;
+    else if (c === closer && --depth === 0) {
+      return JSON.parse(trimmed.slice(start, i + 1));
+    }
+  }
+  throw new Error('Unterminated JSON');
 }
 
 async function fluxImage(prompt, { steps = 30, seed = 0, attempt = 1 } = {}) {
@@ -471,6 +535,188 @@ function buildHtml(draft, categoryId, audienceId) {
 }
 
 // ─────────────────────────────────────────────────────────────
+// Multi-pass draft (mirror of src/services/draftEngineMultipass.ts)
+// ─────────────────────────────────────────────────────────────
+function buildOutlineSystemPrompt(category, voiceNudge, modelVoice) {
+  const bp = CATEGORY_BLUEPRINT[category];
+  const sectionGuide = bp.sections.map((s, i) => `${i + 1}. ${s}`).join('\n');
+  return `You are the OptiFinish editorial outliner. Produce only the OUTLINE — not the body.
+
+OPTIFINISH CONTEXT: Indian B2B powder coating equipment (VACSPL). Own plants/ovens/booths/automation (Z-TAP). Authorised India partners for GEMA + DURR. Greater Noida facility.
+
+UNIQUE POSITIONS: India-first (INR, monsoon, BIS/BEE/CPCB, MSME-ZED, CBAM, generator-power), multi-OEM neutrality, premium industrial tone, specificity over platitudes.
+
+YOUR INTRINSIC VOICE THIS RUN: ${modelVoice}.
+
+EDITORIAL VOICE NUDGE FOR THIS RUN:
+${voiceNudge}
+
+STRUCTURE (mandatory): shape=${bp.shape}. Use these section ideas in order, rewrite headings to hint at content. Aim for 6-8 sections.
+${sectionGuide}
+
+HEADING QUALITY: NO meta headings ("Introduction", "Conclusion", "Benefits of"). Headings must HINT AT CONTENT. Bad: "Cure Window Control". Good: "The thermal profile that decides adhesion". Vary across the post; no two consecutive share an opening word.
+
+INTENT FIELD: tells the writer EXACTLY what physical content the section needs (named systems like GEMA OptiSpray, named failure modes like outgassing on cast aluminium, named verifiable triggers).
+
+SNAPSHOT: decisionFriction (names BOTH sides), dominantAnxiety (CONCRETE consequence), coreInsight (substantive reframe), structuralShape=${bp.shape}, lever (1-line specific differentiator).
+
+IMAGES: exactly 2 inline. anchorHeading must EXACTLY match a section heading you write. Front-load CONCRETE PHYSICAL SUBJECT. NO charts/graphs/infographics. NO sci-fi clichés. NO posed humans with eye contact. 30-80 words per prompt.
+
+WORD TARGETS: each section 170-220 words; sum to 1100-1400. Mark exactly ONE section hasPullQuote: true.
+
+OUTPUT: Strict JSON.
+{
+  "title": "max 75 chars", "subtitle": "max 130 chars",
+  "snapshot": {"decisionFriction":"","dominantAnxiety":"","coreInsight":"","structuralShape":"${bp.shape}","lever":""},
+  "sections": [{"id":"s1","heading":"","intent":"","wordTarget":200,"hasPullQuote":false}],
+  "imagePlacements": [
+    {"id":"img-inline-1","position":"inline","anchorHeading":"exact heading from sections","prompt":"","alt":""},
+    {"id":"img-inline-2","position":"inline","anchorHeading":"different heading","prompt":"","alt":""}
+  ]
+}`;
+}
+
+function buildExpandSystemPrompt(modelVoice, voiceNudge) {
+  return `You are the OptiFinish editorial writer expanding ONE section. Output only this section's body HTML — no <h2>, no preamble, just paragraphs.
+
+OPTIFINISH CONTEXT: Indian B2B powder coating equipment. Own plants/ovens/booths/automation (Z-TAP). GEMA + DURR partners. Greater Noida.
+
+YOUR INTRINSIC VOICE THIS RUN: ${modelVoice}.
+
+EDITORIAL VOICE NUDGE FOR THIS RUN:
+${voiceNudge}
+
+STRICT RULES:
+1. NO EM-DASHES.
+2. NO INLINE COLOR/style tags. Emphasis only via <b>, <i>, or 'single quotes'.
+3. SEMANTIC HTML ONLY: <p>, <ol>, <ul>, <li>, <strong>, <em>, <b>, <i>, <blockquote>.
+4. NO FABRICATED NUMBERS. Cite only verifiable public facts. Otherwise qualitative.
+5. NO MARKETING HYPE: best-in-class, industry-leading, unparalleled, game-changing, cutting-edge, revolutionary, next-level, world-class, synergy, leverage(verb), unlock, harness, empower, robust, seamless.
+6. NO CLICHÉ OPENERS or template phrases ("It is worth noting", "When it comes to", "At the end of the day", "In essence", "Did you know", "What if you could", "Take your operation to the next level", "Unlocking", "Mastering").
+
+ANTI-MONOTONY: No two consecutive paragraphs may begin with the same word. ≥3 short sentences (<12 words), ≥1 mid (15-25), ≤1 long (40+) per section. No "First X, Second Y, Third Z" prose scaffolding — use real <ol>/<ul>. Max one 3-clause "X, Y, and Z" per section.
+
+OUTPUT: Strict JSON. {"html": "string — body HTML only, no <h2>"}`;
+}
+
+const EDIT_SYSTEM_PROMPT = `You are a senior B2B technical editor scrubbing one OptiFinish blog draft. TIGHTEN, do not rewrite. Preserve every <h2> heading EXACTLY. Preserve any <blockquote> EXACTLY. Keep total word count within ±5%.
+
+FIX: cliché openers, template phrases ("It is worth noting", "When it comes to", "At the end of the day", "In essence"), marketing hype (best-in-class, industry-leading, game-changing, robust, seamless, synergy, leverage(verb), unlock, harness, empower), repetitive paragraph openings (vary the second), cross-section concept repetition (synonyms/rephrasings), em-dashes (replace with comma/colon/period), overused 3-clause "X, Y, and Z".
+
+DO NOT TOUCH: H2 headings, the <blockquote>, concrete claims (named systems, dates, OEM figures), section count, section order.
+
+DO NOT ADD: new numbers, new claims, editorial commentary.
+
+OUTPUT: Return ONLY the polished body HTML. No JSON wrapper, no code fences, no preamble. The first character of your output must be '<'.`;
+
+async function runMultipassDraft(chosen, categoryId, audienceId, cat, aud, draftRun) {
+  // Pass 1: outline. Needs reliable structured JSON. If the rotated model
+  // doesn't support response_format (Gemma), use Llama for outline; the
+  // section voice nudge still carries the intended feel through expansion.
+  const outlineModel = draftRun.model.supportsJsonMode
+    ? draftRun.model
+    : (MODELS.find(m => m.supportsJsonMode) ?? MODELS[0]);
+  if (outlineModel.id !== draftRun.model.id) {
+    log('  ↳', `outline on ${outlineModel.shortName} (${draftRun.model.shortName} lacks JSON mode)`);
+  }
+  log('  ↳', 'Pass 1/3: outline…');
+  const tA = Date.now();
+  const outlineUserPrompt = `Outline this post.\n\nTITLE (provisional): "${chosen.title}"\nHOOK: "${chosen.hook}"\nANGLE: ${chosen.angle}\n\nCategory: ${cat.label} — ${cat.blurb}\nAudience: ${aud.label} (${aud.role}) — cares about: ${aud.cares}\n\nProduce 6-8 sections. wordTargets sum to 1100-1400. Mark exactly one section hasPullQuote: true. Anchor 2 inline images to two different section headings (exact text match).`;
+  let outline;
+  try {
+    outline = await chatJson(
+      buildOutlineSystemPrompt(categoryId, draftRun.voice.nudge, outlineModel.intrinsicVoice),
+      outlineUserPrompt,
+      { model: outlineModel.id, temperature: 0.7, maxTokens: 3500 }
+    );
+  } catch (err) {
+    log('  ↳', `outline failed on ${outlineModel.shortName}, retrying with Llama…`);
+    outline = await chatJson(
+      buildOutlineSystemPrompt(categoryId, draftRun.voice.nudge, MODELS[0].intrinsicVoice),
+      outlineUserPrompt,
+      { model: MODELS[0].id, temperature: 0.7, maxTokens: 3500 }
+    );
+  }
+  log('  ↳', `outline ready (${((Date.now() - tA) / 1000).toFixed(1)}s, ${outline.sections.length} sections)`);
+
+  // Pass 2: expand sections in parallel
+  log('  ↳', `Pass 2/3: expanding ${outline.sections.length} sections in parallel…`);
+  const tB = Date.now();
+  const sectionResults = await Promise.allSettled(
+    outline.sections.map((sec, i) => {
+      const prev = i > 0 ? outline.sections[i - 1] : null;
+      const next = i < outline.sections.length - 1 ? outline.sections[i + 1] : null;
+      const continuity =
+        (prev ? `\nPrevious section was "${prev.heading}" — covered: ${prev.intent}. Do not repeat that.` : '') +
+        (next ? `\nNext section will be "${next.heading}" — will cover: ${next.intent}. Set up the handoff but don't preempt.` : '');
+      const userPrompt = `Expand this section.\n\nPOST CONTEXT:\n- Title: "${outline.title}"\n- Category: ${cat.label} — ${cat.blurb}\n- Audience: ${aud.label} (${aud.role}) — cares about: ${aud.cares}\n\nTHIS SECTION:\n- Heading: "${sec.heading}"\n- Intent: ${sec.intent}\n- Word target: ${sec.wordTarget} words (acceptable range: ${Math.round(sec.wordTarget * 0.85)}-${Math.round(sec.wordTarget * 1.2)})${continuity}\n\nCONSTRAINTS:\n- 2-3 paragraphs of body HTML.\n${sec.hasPullQuote ? '- Include exactly ONE <blockquote> wrapping the most quotable line.' : '- DO NOT include <blockquote>.'}\n- An <ol>/<ul> may appear if appropriate. Optional.\n\nApply ALL anti-monotony / no-fabricated-numbers / no-marketing-hype / no-cliché rules.`;
+      return chatJson(
+        buildExpandSystemPrompt(draftRun.model.intrinsicVoice, draftRun.voice.nudge),
+        userPrompt,
+        { model: draftRun.model.id, temperature: 0.65 + draftRun.model.draftTempOffset, maxTokens: 1500 }
+      );
+    })
+  );
+  const sectionHtmls = sectionResults.map((r, i) => {
+    if (r.status === 'fulfilled') return r.value.html?.trim() || '';
+    log('  ↳', `section ${i + 1} failed: ${r.reason.message?.slice(0, 80)}`);
+    return `<p><em>Section content unavailable — re-run to fill.</em></p>`;
+  });
+  log('  ↳', `expansion done (${((Date.now() - tB) / 1000).toFixed(1)}s, ${sectionHtmls.filter(h => h.length > 100).length}/${outline.sections.length} solid)`);
+
+  // Assemble
+  const assembled = outline.sections
+    .map((sec, i) => `<h2>${esc(sec.heading)}</h2>\n${sectionHtmls[i]}`)
+    .join('\n\n');
+
+  // Pass 3: editorial scrub (Gemma, plain-text output). Capped at 90s — the
+  // sections have already been expanded individually, so the body is solid
+  // even without scrub. If Gemma's queue is saturated, ship un-polished.
+  log('  ↳', 'Pass 3/3: editorial scrub (Gemma, 90s ceiling)…');
+  const tC = Date.now();
+  let polished;
+  try {
+    const editPromise = chatText(
+      EDIT_SYSTEM_PROMPT,
+      `Edit this draft. Tighten only. Preserve all H2s and any blockquote.\n\n${assembled}`,
+      { model: 'google/gemma-3-12b-it', temperature: 0.4, maxTokens: 4000 }
+    );
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('editorial scrub exceeded 90s ceiling')), 90_000)
+    );
+    const editText = await Promise.race([editPromise, timeoutPromise]);
+    const tt = editText.trim().replace(/^```(?:html)?\s*/i, '').replace(/\s*```$/i, '');
+    const lt = tt.indexOf('<');
+    polished = lt >= 0 ? tt.slice(lt) : assembled;
+  } catch (err) {
+    log('  ↳', `editorial scrub skipped (${err.message?.slice(0, 80)}), shipping un-polished body`);
+    polished = assembled;
+  }
+  // Sanity: don't accept a polish that shrunk too much
+  const origCount = assembled.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+  const polishedCount = polished.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+  if (polishedCount < origCount * 0.85) {
+    log('  ↳', `editorial pass shrank body too much (${origCount}→${polishedCount}), reverting`);
+    polished = assembled;
+  }
+  log('  ↳', `editorial done (${((Date.now() - tC) / 1000).toFixed(1)}s)`);
+
+  return {
+    title: outline.title,
+    subtitle: outline.subtitle,
+    bodyHtml: polished,
+    snapshot: outline.snapshot,
+    imagePlacements: (outline.imagePlacements ?? []).slice(0, 2).map((p, i) => ({
+      id: p.id || `img-inline-${i + 1}`,
+      position: 'inline',
+      anchorHeading: p.anchorHeading,
+      prompt: p.prompt,
+      alt: p.alt
+    }))
+  };
+}
+
+// ─────────────────────────────────────────────────────────────
 // Pipeline
 // ─────────────────────────────────────────────────────────────
 function log(stage, msg) { console.log(`[${stage}] ${msg}`); }
@@ -484,8 +730,13 @@ async function main() {
     process.exit(1);
   }
 
-  // Pick a random model + voice for topic gen
-  const topicRun = pickRotated();
+  // Topic gen needs reliable structured output. If the rotated model lacks
+  // JSON-mode support, the prompt-only fallback is unreliable — skip those
+  // models for topic gen and use a JSON-capable model instead.
+  let topicRun = pickRotated();
+  while (!topicRun.model.supportsJsonMode) {
+    topicRun = pickRotated();
+  }
   const triggerSubset = shuffle(RECENT_TRIGGERS).slice(0, 9);
   log('1/4', `Generating topics — ${cat.label} × ${aud.label}  [model: ${topicRun.model.shortName}, voice: ${topicRun.voice.id}]…`);
   const t0 = Date.now();
@@ -500,6 +751,9 @@ async function main() {
       `Generate 5 topic ideas.\n\nCategory: ${cat.label} — ${cat.blurb}\nExamples: ${cat.examples.join(', ')}\n\nAudience: ${aud.label} (${aud.role})\nCares: ${aud.cares}\n\nApply the editorial voice nudge above. Vary structural shape. Anchor at least 2 to a real TRIGGER POOL entry. Apply substitution + anti-monotony patterns. No fabricated numbers.`,
       { model: topicRun.model.id, temperature: 0.85 + topicRun.model.topicTempOffset, maxTokens: 2000 }
     );
+    if (!topicResult || !Array.isArray(topicResult.topics) || topicResult.topics.length === 0) {
+      throw new Error(`malformed shape: ${JSON.stringify(topicResult).slice(0, 100)}`);
+    }
   } catch (err) {
     log('1/4', `${topicRun.model.shortName} failed (${err.message?.slice(0, 80)}), retrying with Llama…`);
     topicResult = await chatJson(
@@ -512,7 +766,8 @@ async function main() {
       { model: MODELS[0].id, temperature: 0.85, maxTokens: 2000 }
     );
   }
-  const topics = topicResult.topics;
+  const topics = (topicResult && Array.isArray(topicResult.topics)) ? topicResult.topics : [];
+  if (topics.length === 0) throw new Error('No topics returned by either model');
   log('1/4', `${topics.length} topics in ${((Date.now() - t0) / 1000).toFixed(1)}s`);
   topics.forEach((t, i) => console.log(`     ${i + 1}. ${t.title}`));
 
@@ -521,27 +776,12 @@ async function main() {
   const chosen = anchored ?? topics[0];
   log('1/4', `Picked: "${chosen.title}"`);
 
-  log('2/4', `Generating full draft via Llama 3.3 70B (target 1100-1400 words)…`);
-  // Different model + voice for the draft (rotation continues from topic step)
+  // ─── MULTI-PASS draft generation (matches src/services/draftEngineMultipass.ts) ───
+  // Pass 1: outline (one call) → Pass 2: parallel section expansion (N calls) → Pass 3: editorial scrub (Gemma)
   const draftRun = pickRotated();
-  log('2/4', `Generating draft  [model: ${draftRun.model.shortName}, voice: ${draftRun.voice.id}]…`);
+  log('2/4', `Multi-pass draft  [model: ${draftRun.model.shortName}, voice: ${draftRun.voice.id}]`);
   const t1 = Date.now();
-  const draftUserPrompt = `Write the post for this topic.\n\nTITLE: "${chosen.title}"\nHOOK: "${chosen.hook}"\nANGLE: ${chosen.angle}\n\nCategory: ${cat.label} — ${cat.blurb}\nAudience: ${aud.label} (${aud.role})\nCares: ${aud.cares}\n\nApply the editorial voice nudge above. Apply ANTI-MONOTONY rules. Hit at least 1100 words — non-negotiable. Include exactly one <blockquote>.`;
-  let draft;
-  try {
-    draft = await chatJson(
-      draftSystemPrompt(CATEGORY_ID, { voiceNudge: draftRun.voice.nudge, modelVoice: draftRun.model.intrinsicVoice }),
-      draftUserPrompt,
-      { model: draftRun.model.id, temperature: 0.65 + draftRun.model.draftTempOffset, maxTokens: 6000 }
-    );
-  } catch (err) {
-    log('2/4', `${draftRun.model.shortName} failed (${err.message?.slice(0, 80)}), retrying with Llama…`);
-    draft = await chatJson(
-      draftSystemPrompt(CATEGORY_ID, { voiceNudge: draftRun.voice.nudge, modelVoice: MODELS[0].intrinsicVoice }),
-      draftUserPrompt,
-      { model: MODELS[0].id, temperature: 0.65, maxTokens: 6000 }
-    );
-  }
+  const draft = await runMultipassDraft(chosen, CATEGORY_ID, AUDIENCE_ID, cat, aud, draftRun);
   draft.wordCount = String(draft.bodyHtml).replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
   log('2/4', `Draft ready in ${((Date.now() - t1) / 1000).toFixed(1)}s — ${draft.wordCount} words, shape: ${draft.snapshot.structuralShape}`);
   if (draft.wordCount < 1100) {

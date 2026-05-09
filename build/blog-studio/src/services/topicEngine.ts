@@ -133,7 +133,14 @@ export async function generateTopicIdeasLLM(
   const aud = AUDIENCES.find((a) => a.id === audience);
   if (!cat || !aud) throw new Error('Invalid category or audience');
 
-  const { model, voice } = pickRotated();
+  // Topic gen returns rich structured JSON, so we need a JSON-mode-capable
+  // model. If pickRotated returned Gemma (which lacks JSON mode), spin to
+  // the next rotated pick that's JSON-capable.
+  let { model, voice } = pickRotated();
+  let safety = 0;
+  while (!model.supportsJsonMode && safety++ < 5) {
+    ({ model, voice } = pickRotated());
+  }
   const triggers = shuffle(RECENT_TRIGGERS_2025_2026).slice(0, 9);
 
   const userPrompt = `Generate 5 topic ideas.

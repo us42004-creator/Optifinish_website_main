@@ -3,6 +3,7 @@ import { CATEGORIES, AUDIENCES } from '../constants';
 import { generateFluxImage, applyBrandSuffix } from './nvidiaImageService';
 import { generateTopicIdeasLLM } from './topicEngine';
 import { generateBlogDraftLLM } from './draftEngine';
+import { generateBlogDraftMultipass } from './draftEngineMultipass';
 
 // v0.1: mocked AI responses so the full UI flow works without an API key.
 // Real Gemini/Claude wiring goes here next.
@@ -47,11 +48,19 @@ export async function generateBlogDraft(
   category: CategoryId,
   audience: AudienceId
 ): Promise<BlogDraft> {
-  // Try real LLM-driven draft first.
+  // Multi-pass pipeline (outline → parallel section expand → editorial scrub).
+  // Reliably hits 1100+ word target because each section is expanded with the
+  // model's full attention. Falls back to single-pass if multipass errors,
+  // and to a seeded mock if both fail — so the demo never breaks.
+  try {
+    return await generateBlogDraftMultipass(topic, category, audience);
+  } catch (err) {
+    console.warn('[generateBlogDraft] multipass failed, trying single-pass:', err);
+  }
   try {
     return await generateBlogDraftLLM(topic, category, audience);
   } catch (err) {
-    console.error('[generateBlogDraft] LLM failed, using seed mock:', err);
+    console.error('[generateBlogDraft] both LLM paths failed, using seed mock:', err);
   }
   // Fallback: hand-seeded mock so the demo never breaks.
   await wait(800);

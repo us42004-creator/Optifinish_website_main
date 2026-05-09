@@ -19,6 +19,10 @@ export interface ModelEntry {
   // creativity, some lower. These are deltas applied to the base temperature.
   topicTempOffset: number;
   draftTempOffset: number;
+  // NVIDIA Build hosting capability flags (discovered via 422 errors at
+  // runtime — kept here so callers can adapt their request shape).
+  supportsJsonMode: boolean; // false → omit response_format, rely on prompt
+  maxTokensCap: number; // hard ceiling NVIDIA enforces
 }
 
 export const MODELS: ModelEntry[] = [
@@ -27,30 +31,44 @@ export const MODELS: ModelEntry[] = [
     shortName: 'Llama-3.3-70B',
     intrinsicVoice: 'balanced, calm authority, slight academic register',
     topicTempOffset: 0,
-    draftTempOffset: 0
+    draftTempOffset: 0,
+    supportsJsonMode: true,
+    maxTokensCap: 8000
   },
   {
     id: 'deepseek-ai/deepseek-v4-pro',
     shortName: 'DeepSeek-V4-Pro',
     intrinsicVoice: 'analytical, reasoning-forward, dense with structured argument',
     topicTempOffset: -0.05,
-    draftTempOffset: -0.05
+    draftTempOffset: -0.05,
+    supportsJsonMode: true,
+    maxTokensCap: 8000
   },
   {
     id: 'google/gemma-3-12b-it',
     shortName: 'Gemma-3-12B',
     intrinsicVoice: 'crisp, declarative, short sentences, no-nonsense',
     topicTempOffset: 0.05,
-    draftTempOffset: 0.05
+    draftTempOffset: 0.05,
+    // Gemma 3 on NVIDIA Build returns 422 when response_format is set, and
+    // caps max_tokens at 4096. We skip JSON-mode and instruct via prompt.
+    supportsJsonMode: false,
+    maxTokensCap: 4096
   },
   {
     id: 'nvidia/llama-3.3-nemotron-super-49b-v1',
     shortName: 'Nemotron-Super-49B',
     intrinsicVoice: 'nuanced, sometimes contrarian, asks better questions, walks through reasoning',
     topicTempOffset: 0,
-    draftTempOffset: 0
+    draftTempOffset: 0,
+    supportsJsonMode: true,
+    maxTokensCap: 8000
   }
 ];
+
+export function getModelEntry(id: ModelId): ModelEntry | undefined {
+  return MODELS.find((m) => m.id === id);
+}
 
 // Voice nudges applied on top of the model's intrinsic voice. One is randomly
 // selected per call. Even the same model produces different output across runs
