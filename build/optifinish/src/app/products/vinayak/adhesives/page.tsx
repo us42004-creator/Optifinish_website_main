@@ -79,6 +79,12 @@ export default function VinayakAdhesivesPage() {
       variantsSectionTitle="Synthetic contact adhesive or PVA woodworking glue"
 
       applicationImageSrc="/images/products/vinayak/adhesives/nerolac-adhesives-banner.webp"
+      applicationImages={[
+        '/images/products/vinayak/adhesives/app-furniture-workshop-01.jpg',
+        '/images/products/vinayak/adhesives/app-kitchen-cabinet-01.jpg',
+        '/images/products/vinayak/adhesives/app-laminate-wood-01.jpg',
+        '/images/products/vinayak/adhesives/app-wood-joinery-01.jpg',
+      ]}
 
       specRows={[
         { l: 'Synthetic glue', v: 'Contact adhesive — laminates, veneers, decorative surfaces to substrate' },

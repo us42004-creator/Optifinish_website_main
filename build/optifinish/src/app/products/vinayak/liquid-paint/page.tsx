@@ -45,6 +45,12 @@ export default function VinayakLiquidPaintPage() {
       ]}
 
       applicationImageSrc="/images/products/vinayak/liquid-paint/nerolac-high-performance-coatings.webp"
+      applicationImages={[
+        '/images/products/vinayak/liquid-paint/app-agriculture-01.jpg',
+        '/images/products/vinayak/liquid-paint/app-metal-fabrication-01.jpg',
+        '/images/products/vinayak/liquid-paint/app-industrial-machinery-01.jpg',
+        '/images/products/vinayak/liquid-paint/app-furniture-metal-01.jpg',
+      ]}
 
       specRows={[
         { l: 'Kansai Nerolac', v: 'Industrial primers, anticorrosion coatings, and topcoats — established brand portfolio' },

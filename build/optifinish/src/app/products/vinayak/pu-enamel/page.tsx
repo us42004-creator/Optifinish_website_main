@@ -94,6 +94,12 @@ export default function VinayakPuEnamelPage() {
       variantsSectionTitle="Select the Nerolac enamel grade for your application"
 
       applicationImageSrc="/images/products/vinayak/pu-enamel/nerolac-metal-enamel-banner.webp"
+      applicationImages={[
+        '/images/products/vinayak/pu-enamel/app-metal-gate-01.jpg',
+        '/images/products/vinayak/pu-enamel/app-structural-steel-01.jpg',
+        '/images/products/vinayak/pu-enamel/app-wood-furniture-01.jpg',
+        '/images/products/vinayak/pu-enamel/app-metal-door-01.jpg',
+      ]}
 
       specRows={[
         { l: 'PU Enamel 10-in-1', v: 'Polyurethane-modified alkyd — premium hardness, gloss retention, stain resistance' },

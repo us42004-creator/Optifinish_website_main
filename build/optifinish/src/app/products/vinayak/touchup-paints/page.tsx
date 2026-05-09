@@ -45,6 +45,12 @@ export default function VinayakTouchupPaintsPage() {
       ]}
 
       applicationImageSrc="/images/products/vinayak/touchup-paints/nerolac-products-overview-01.jpg"
+      applicationImages={[
+        '/images/products/vinayak/touchup-paints/app-metal-product-01.jpg',
+        '/images/products/vinayak/touchup-paints/app-quality-inspection-01.jpg',
+        '/images/products/vinayak/touchup-paints/app-welding-fabrication-01.jpg',
+        '/images/products/vinayak/touchup-paints/app-automotive-panel-01.jpg',
+      ]}
 
       specRows={[
         { l: 'Nerolac Tansy', v: 'Touch-up liquid paint — adhesion to powder coat and liquid painted metal' },

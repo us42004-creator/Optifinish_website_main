@@ -79,8 +79,9 @@ export interface ProductPageTemplateProps {
   /* S6 — Applications */
   applications: string[];
 
-  /* S6 — Applications */
+  /* S6 — Application image (single) or carousel (array of paths) */
   applicationImageSrc?: string;
+  applicationImages?: string[];
 
   /* S7 — Compatibility */
   compatibilityTags: string[];
@@ -239,6 +240,7 @@ export default function ProductPageTemplate({
   specRows,
   applications,
   applicationImageSrc,
+  applicationImages,
   compatibilityTags,
   partnerNote,
   references,
@@ -249,6 +251,8 @@ export default function ProductPageTemplate({
 }: ProductPageTemplateProps) {
   const [activeVariant, setActiveVariant] = useState(0);
   const [activeStep, setActiveStep] = useState(0);
+  const [appImgIdx, setAppImgIdx] = useState(0);
+  const appImgs = applicationImages && applicationImages.length > 0 ? applicationImages : null;
 
   const isLight = theme === 'light';
   const hasVariants = !!(variants && variants.length > 0);
@@ -672,13 +676,67 @@ export default function ProductPageTemplate({
                 ))}
               </ul>
             </div>
-            <ImageViewport
-              label="Application context"
-              src={applicationImageSrc}
-              isDark={!appl}
-              aspect="aspect-[4/3]"
-              className="self-center"
-            />
+            {appImgs ? (
+              /* ── Application image carousel ───────────────── */
+              <div className="relative self-center overflow-hidden rounded-[1.1rem] shadow-[0_12px_40px_rgba(0,0,0,0.18)]">
+                {/* Images */}
+                <div className="relative aspect-[4/3] w-full overflow-hidden">
+                  {appImgs.map((src, i) => (
+                    <div
+                      key={i}
+                      className={`absolute inset-0 transition-opacity duration-500 ${
+                        i === appImgIdx ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                      }`}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={src}
+                        alt={`Application ${i + 1}`}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                  ))}
+                  {/* Gradient overlay bottom */}
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/50 to-transparent" />
+                  {/* Arrows */}
+                  <button
+                    onClick={() => setAppImgIdx((p) => (p - 1 + appImgs.length) % appImgs.length)}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-2 text-white backdrop-blur-sm transition hover:bg-black/60"
+                    aria-label="Previous"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  </button>
+                  <button
+                    onClick={() => setAppImgIdx((p) => (p + 1) % appImgs.length)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-2 text-white backdrop-blur-sm transition hover:bg-black/60"
+                    aria-label="Next"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3L11 8L6 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  </button>
+                </div>
+                {/* Dots */}
+                <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
+                  {appImgs.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setAppImgIdx(i)}
+                      className={`h-1.5 rounded-full transition-all duration-300 ${
+                        i === appImgIdx ? 'w-5 bg-white' : 'w-1.5 bg-white/45'
+                      }`}
+                      aria-label={`Image ${i + 1}`}
+                    />
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <ImageViewport
+                label="Application context"
+                src={applicationImageSrc}
+                isDark={!appl}
+                aspect="aspect-[4/3]"
+                className="self-center"
+              />
+            )}
           </div>
         </div>
       </section>

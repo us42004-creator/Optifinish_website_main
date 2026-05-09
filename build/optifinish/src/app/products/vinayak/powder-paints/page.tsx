@@ -46,6 +46,13 @@ export default function VinayakPowderPaintsPage() {
       ]}
 
       applicationImageSrc="/images/products/vinayak/powder-paints/nerolac-powder-coating-application.webp"
+      applicationImages={[
+        '/images/products/vinayak/powder-paints/app-automotive-01.jpg',
+        '/images/products/vinayak/powder-paints/app-metal-fabrication-01.jpg',
+        '/images/products/vinayak/powder-paints/app-agriculture-01.jpg',
+        '/images/products/vinayak/powder-paints/app-aluminium-01.jpg',
+        '/images/products/vinayak/powder-paints/app-electrical-01.jpg',
+      ]}
 
       specRows={[
         { l: 'Epoxy powder', v: 'Interior grade — high adhesion, chemical resistance, not UV-stable' },
