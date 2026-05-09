@@ -77,8 +77,8 @@ const App: React.FC = () => {
 
   const handleSeo = async () => {
     if (!draft) return;
-    setBusy('Building SEO layer…');
-    const seo = await generateSeo(draft);
+    setBusy('Building SEO layer (keywords, meta, schema, geo)…');
+    const seo = await generateSeo(draft, category ?? undefined, audience ?? undefined);
     setDraft({ ...draft, seo });
     setStage('seo');
     setBusy(null);
@@ -473,21 +473,126 @@ const DraftBlock: React.FC<{ draft: BlogDraft }> = ({ draft }) => (
 
 const SeoView: React.FC<{ draft: BlogDraft }> = ({ draft }) => {
   if (!draft.seo) return null;
+  const seo = draft.seo;
+  const scoreColor =
+    seo.scores.overall >= 85
+      ? 'text-emerald-400'
+      : seo.scores.overall >= 70
+      ? 'text-ember-400'
+      : 'text-rose-400';
   return (
-    <div className="space-y-4">
-      <SeoRow label="Meta Title" value={draft.seo.metaTitle} />
-      <SeoRow label="Meta Description" value={draft.seo.metaDescription} />
-      <SeoRow label="Slug" value={`/blog/${draft.seo.slug}`} mono />
-      <SeoRow label="Focus Keyword" value={draft.seo.focusKeyword} />
-      <SeoRow label="Secondary" value={draft.seo.secondaryKeywords.join(' · ')} />
-      <div>
-        <p className="text-[10px] font-mono uppercase tracking-industrial text-steel-500 mb-2">
-          Schema.org JSON-LD
-        </p>
-        <pre className="text-[11px] font-mono p-4 bg-ink-900 border border-ink-700 rounded-lg overflow-x-auto text-paper-200">
-          {draft.seo.schemaJsonLd}
-        </pre>
+    <div className="space-y-8">
+      {/* Health card */}
+      <div className="border border-ink-700 bg-ink-900/40 rounded-xl p-6">
+        <div className="flex items-baseline justify-between mb-4">
+          <span className="text-[10px] font-mono uppercase tracking-industrial text-steel-500">
+            SEO Health Score
+          </span>
+          <span className={`text-3xl font-bold ${scoreColor}`}>{seo.scores.overall}</span>
+        </div>
+        <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-[11px] font-mono">
+          <ScoreRow label="Title length" pct={seo.scores.titleLength} />
+          <ScoreRow label="Desc length" pct={seo.scores.descLength} />
+          <ScoreRow label="Keyword in title" bool={seo.scores.keywordInTitle} />
+          <ScoreRow label="Keyword in 1st paragraph" bool={seo.scores.keywordInFirstParagraph} />
+          <ScoreRow label="Keyword in URL" bool={seo.scores.keywordInUrl} />
+          <ScoreRow label="Keyword density" value={`${seo.scores.keywordDensityPct}%`} />
+        </div>
       </div>
+
+      {/* Meta tags */}
+      <SeoSection title="Search Engine">
+        <SeoRow label="Meta Title" value={`${seo.metaTitle} (${seo.metaTitle.length} chars)`} />
+        <SeoRow label="Meta Description" value={`${seo.metaDescription} (${seo.metaDescription.length} chars)`} />
+        <SeoRow label="URL" value={`https://optifinish.com/blog/${seo.slug}`} mono />
+        <SeoRow label="Schema Type" value={seo.schemaType} mono />
+      </SeoSection>
+
+      {/* Keywords */}
+      <SeoSection title="Keywords">
+        <SeoRow label="Focus" value={seo.focusKeyword} mono />
+        <SeoRow label="Secondary" value={(seo.secondaryKeywords ?? []).join(' · ')} />
+        <SeoRow label="Long-tail" value={(seo.longTailKeywords ?? []).join(' · ') || '—'} />
+      </SeoSection>
+
+      {/* Open Graph + Twitter */}
+      <SeoSection title="Social Preview (LinkedIn / WhatsApp / Twitter)">
+        <SeoRow label="OG Title" value={seo.ogTitle ?? seo.metaTitle} />
+        <SeoRow label="OG Description" value={seo.ogDescription ?? seo.metaDescription} />
+        <SeoRow label="OG Image" value={seo.ogImage ? '[hero image embedded]' : '— (no image rendered yet)'} mono />
+        <SeoRow label="Locale" value={seo.ogLocale ?? 'en_IN'} mono />
+      </SeoSection>
+
+      {/* Geo */}
+      <SeoSection title="Geo Targeting">
+        <SeoRow label="Region" value={seo.geoRegion ?? 'IN-UP'} mono />
+        <SeoRow label="Place" value={seo.geoPlacename ?? 'Greater Noida'} mono />
+      </SeoSection>
+
+      {/* Internal links */}
+      {seo.internalLinkSuggestions && seo.internalLinkSuggestions.length > 0 && (
+        <SeoSection title="Internal Link Suggestions">
+          <div className="space-y-2">
+            {seo.internalLinkSuggestions.map((s, i) => (
+              <div key={i} className="text-xs p-3 border border-ink-700 rounded-lg bg-ink-900/40">
+                <div className="font-bold text-ember-400 mb-1">{s.anchor}</div>
+                <div className="text-steel-400">→ {s.targetCategory}</div>
+                <div className="text-steel-500 mt-1 italic text-[11px]">{s.rationale}</div>
+              </div>
+            ))}
+          </div>
+        </SeoSection>
+      )}
+
+      {/* Schema */}
+      <SeoSection title="Schema.org JSON-LD">
+        <pre className="text-[10px] font-mono p-4 bg-ink-900 border border-ink-700 rounded-lg overflow-x-auto text-paper-200 max-h-80">
+          {seo.schemaJsonLd}
+        </pre>
+      </SeoSection>
+    </div>
+  );
+};
+
+const SeoSection: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
+  <div>
+    <p className="text-[10px] font-mono uppercase tracking-industrial text-steel-500 mb-3">
+      {title}
+    </p>
+    <div className="space-y-3">{children}</div>
+  </div>
+);
+
+const ScoreRow: React.FC<{ label: string; pct?: number; bool?: boolean; value?: string }> = ({
+  label,
+  pct,
+  bool,
+  value
+}) => {
+  const display =
+    typeof pct === 'number'
+      ? `${pct}/100`
+      : typeof bool === 'boolean'
+      ? bool
+        ? '✓'
+        : '✗'
+      : value ?? '—';
+  const color =
+    typeof bool === 'boolean'
+      ? bool
+        ? 'text-emerald-400'
+        : 'text-rose-400'
+      : typeof pct === 'number'
+      ? pct >= 85
+        ? 'text-emerald-400'
+        : pct >= 60
+        ? 'text-ember-400'
+        : 'text-rose-400'
+      : 'text-paper-100';
+  return (
+    <div className="flex items-baseline justify-between">
+      <span className="text-steel-500">{label}</span>
+      <span className={`${color} font-semibold`}>{display}</span>
     </div>
   );
 };

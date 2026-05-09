@@ -40,13 +40,61 @@ export interface TopicIdea {
   estimatedReadTime: string;
 }
 
+export interface SeoScores {
+  titleLength: number; // 0-100, 100 = 50-60 chars
+  descLength: number; // 0-100, 100 = 150-160 chars
+  keywordInTitle: boolean;
+  keywordInFirstParagraph: boolean;
+  keywordInUrl: boolean;
+  keywordDensityPct: number; // % of body word count
+  hasH2s: boolean;
+  hasPullQuote: boolean;
+  overall: number; // 0-100 weighted average
+}
+
+export interface InternalLinkSuggestion {
+  anchor: string;
+  targetCategory: string; // category-id of suggested target
+  rationale: string;
+}
+
 export interface SeoMeta {
-  metaTitle: string;
-  metaDescription: string;
-  slug: string;
-  focusKeyword: string;
-  secondaryKeywords: string[];
-  schemaJsonLd: string;
+  // Primary meta
+  metaTitle: string; // 50-60 chars, primary keyword + brand
+  metaDescription: string; // 150-160 chars
+  slug: string; // includes primary keyword
+
+  // Keywords
+  focusKeyword: string; // 1 primary, 2-4 words
+  secondaryKeywords: string[]; // 5-8 contextual
+  longTailKeywords: string[]; // 2-3 long-tail variants
+
+  // Open Graph (social sharing — LinkedIn, Facebook, WhatsApp previews)
+  ogTitle: string;
+  ogDescription: string;
+  ogImage?: string; // hero image URL or first inline image
+  ogType: 'article';
+  ogLocale: string; // 'en_IN'
+
+  // Twitter Card
+  twitterCard: 'summary_large_image';
+  twitterTitle: string;
+  twitterDescription: string;
+  twitterImage?: string;
+
+  // Schema.org
+  schemaType: 'BlogPosting' | 'HowTo' | 'TechArticle' | 'FAQPage' | 'Article';
+  schemaJsonLd: string; // serialized JSON-LD (may include multiple @graph entries)
+
+  // Geo (relevant for facility / India-targeted posts)
+  geoRegion: string; // 'IN-UP'
+  geoPlacename: string; // 'Greater Noida'
+
+  // Advisory — internal linking opportunities (not auto-injected)
+  internalLinkSuggestions: InternalLinkSuggestion[];
+
+  // Computed health scores
+  scores: SeoScores;
 }
 
 export type StructuralShape =

@@ -4,6 +4,7 @@ import { generateFluxImage, applyBrandSuffix } from './nvidiaImageService';
 import { generateTopicIdeasLLM } from './topicEngine';
 import { generateBlogDraftLLM } from './draftEngine';
 import { generateBlogDraftMultipass } from './draftEngineMultipass';
+import { generateSeoLLM } from './seoEngine';
 
 // v0.1: mocked AI responses so the full UI flow works without an API key.
 // Real Gemini/Claude wiring goes here next.
@@ -160,8 +161,25 @@ export async function rewriteWithPrompt(
   );
 }
 
-export async function generateSeo(draft: BlogDraft): Promise<BlogDraft['seo']> {
-  await wait(700);
+export async function generateSeo(
+  draft: BlogDraft,
+  category?: CategoryId,
+  audience?: AudienceId
+): Promise<BlogDraft['seo']> {
+  // Real LLM-driven SEO: keyword extraction tied to the actual body, character-
+  // limit-enforced meta tags, archetype-specific Schema.org JSON-LD, Open Graph
+  // + Twitter Card, Indian geo-tagging, internal-link suggestions, health
+  // scores. Falls back to a thin synthetic if the LLM call fails so the demo
+  // never breaks.
+  if (category && audience) {
+    try {
+      return await generateSeoLLM(draft, category, audience);
+    } catch (err) {
+      console.warn('[generateSeo] LLM failed, falling back to synthetic SEO:', err);
+    }
+  }
+  // Thin fallback (covers the "no category passed" case + LLM failure)
+  await wait(400);
   const focus = draft.title.split(' ').slice(0, 3).join(' ').toLowerCase();
   const slug = draft.title
     .toLowerCase()
@@ -170,8 +188,8 @@ export async function generateSeo(draft: BlogDraft): Promise<BlogDraft['seo']> {
     .slice(0, 64);
 
   return {
-    metaTitle: `${draft.title} | OptiFinish`,
-    metaDescription: draft.subtitle.slice(0, 155),
+    metaTitle: `${draft.title} | OptiFinish`.slice(0, 60),
+    metaDescription: (draft.subtitle || draft.title).slice(0, 155),
     slug,
     focusKeyword: focus,
     secondaryKeywords: [
@@ -180,6 +198,31 @@ export async function generateSeo(draft: BlogDraft): Promise<BlogDraft['seo']> {
       'OptiFinish',
       'powder coating plant india'
     ],
+    longTailKeywords: ['powder coating equipment manufacturer India'],
+    ogTitle: draft.title,
+    ogDescription: draft.subtitle || draft.title,
+    ogImage: draft.imagePlacements?.find((p) => p.generatedUrl)?.generatedUrl,
+    ogType: 'article',
+    ogLocale: 'en_IN',
+    twitterCard: 'summary_large_image',
+    twitterTitle: draft.title.slice(0, 70),
+    twitterDescription: (draft.subtitle || draft.title).slice(0, 200),
+    twitterImage: draft.imagePlacements?.find((p) => p.generatedUrl)?.generatedUrl,
+    schemaType: 'BlogPosting',
+    geoRegion: 'IN-UP',
+    geoPlacename: 'Greater Noida',
+    internalLinkSuggestions: [],
+    scores: {
+      titleLength: 0,
+      descLength: 0,
+      keywordInTitle: false,
+      keywordInFirstParagraph: false,
+      keywordInUrl: false,
+      keywordDensityPct: 0,
+      hasH2s: /<h2[^>]*>/i.test(draft.bodyHtml),
+      hasPullQuote: /<blockquote[^>]*>/i.test(draft.bodyHtml),
+      overall: 0
+    },
     schemaJsonLd: JSON.stringify(
       {
         '@context': 'https://schema.org',

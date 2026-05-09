@@ -71,15 +71,7 @@ export function buildOptiFinishBlogHtml({ draft, category, audience }: BuildArgs
   const snapshot: DossierSnapshot = draft.snapshot ?? fallbackSnapshot(category);
   const cta = CTA_BY_SHAPE[snapshot.structuralShape] ?? CTA_BY_SHAPE.immersive_essay;
 
-  const seoBlock = draft.seo
-    ? `
-  <meta name="description" content="${esc(draft.seo.metaDescription)}" />
-  <meta name="keywords" content="${esc(
-    [draft.seo.focusKeyword, ...draft.seo.secondaryKeywords].join(', ')
-  )}" />
-  <link rel="canonical" href="https://optifinish.com/blog/${esc(draft.seo.slug)}" />
-  <script type="application/ld+json">${draft.seo.schemaJsonLd}</script>`
-    : '';
+  const seoBlock = draft.seo ? buildSeoHead(draft.seo) : '';
 
   const articleBody = injectImages(draft.bodyHtml, draft.imagePlacements);
   const readMin = Math.max(3, Math.round(draft.wordCount / 220));
@@ -572,6 +564,71 @@ function esc(s: string): string {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
+}
+
+// Builds the full SEO <head> block: standard meta + Open Graph + Twitter Card
+// + geo + canonical + Schema.org JSON-LD. Search engines and AI search crawlers
+// (ChatGPT, Perplexity) all read different subsets of these — comprehensive
+// coverage is the goal.
+function buildSeoHead(seo: NonNullable<BlogDraft['seo']>): string {
+  const url = `https://optifinish.com/blog/${seo.slug}`;
+  const allKeywords = [seo.focusKeyword, ...(seo.secondaryKeywords ?? []), ...(seo.longTailKeywords ?? [])]
+    .filter(Boolean)
+    .join(', ');
+
+  const lines: string[] = [
+    // Standard meta
+    `  <meta name="description" content="${esc(seo.metaDescription)}" />`,
+    `  <meta name="keywords" content="${esc(allKeywords)}" />`,
+    `  <meta name="author" content="OptiFinish" />`,
+    `  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />`,
+    // Geo (helps Indian search ranking + Google Business signals)
+    `  <meta name="geo.region" content="${esc(seo.geoRegion ?? 'IN-UP')}" />`,
+    `  <meta name="geo.placename" content="${esc(seo.geoPlacename ?? 'Greater Noida')}" />`,
+    `  <link rel="canonical" href="${esc(url)}" />`,
+    // Open Graph (LinkedIn, Facebook, WhatsApp share previews)
+    `  <meta property="og:type" content="${esc(seo.ogType ?? 'article')}" />`,
+    `  <meta property="og:locale" content="${esc(seo.ogLocale ?? 'en_IN')}" />`,
+    `  <meta property="og:url" content="${esc(url)}" />`,
+    `  <meta property="og:title" content="${esc(seo.ogTitle ?? seo.metaTitle)}" />`,
+    `  <meta property="og:description" content="${esc(seo.ogDescription ?? seo.metaDescription)}" />`,
+    `  <meta property="og:site_name" content="OptiFinish" />`
+  ];
+
+  if (seo.ogImage) {
+    lines.push(
+      `  <meta property="og:image" content="${esc(seo.ogImage)}" />`,
+      `  <meta property="og:image:width" content="1024" />`,
+      `  <meta property="og:image:height" content="1024" />`
+    );
+  }
+
+  // Twitter Card
+  lines.push(
+    `  <meta name="twitter:card" content="${esc(seo.twitterCard ?? 'summary_large_image')}" />`,
+    `  <meta name="twitter:title" content="${esc(seo.twitterTitle ?? seo.metaTitle)}" />`,
+    `  <meta name="twitter:description" content="${esc(seo.twitterDescription ?? seo.metaDescription)}" />`
+  );
+  if (seo.twitterImage) {
+    lines.push(`  <meta name="twitter:image" content="${esc(seo.twitterImage)}" />`);
+  }
+
+  // Article-specific Open Graph
+  lines.push(
+    `  <meta property="article:published_time" content="${new Date().toISOString()}" />`,
+    `  <meta property="article:section" content="${esc(seo.schemaType ?? 'BlogPosting')}" />`
+  );
+  for (const k of (seo.secondaryKeywords ?? []).slice(0, 6)) {
+    lines.push(`  <meta property="article:tag" content="${esc(k)}" />`);
+  }
+
+  // Schema.org JSON-LD (already includes BlogPosting/HowTo/TechArticle +
+  // BreadcrumbList + Organization in a @graph)
+  lines.push(
+    `  <script type="application/ld+json">${seo.schemaJsonLd}</script>`
+  );
+
+  return '\n' + lines.join('\n');
 }
 
 // Inject up to 2 inline images at the H2 anchor headings the model produced.
