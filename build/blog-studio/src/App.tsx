@@ -456,6 +456,40 @@ const App: React.FC = () => {
                 </p>
               </div>
 
+              {/* Internal link suggestions — surfaced here so the editor
+                  sees them at publish-time, not just back in Step 5 */}
+              {draft?.seo?.internalLinkSuggestions && draft.seo.internalLinkSuggestions.length > 0 && (
+                <div className="space-y-4">
+                  <div className="flex items-baseline justify-between">
+                    <h3 className="text-sm font-bold tracking-tight">Internal pages to link to</h3>
+                    <span className="text-[10px] font-mono text-steel-500 uppercase tracking-industrial">
+                      Before publishing
+                    </span>
+                  </div>
+                  <p className="text-xs text-steel-400 -mt-2">
+                    Wire these anchors into the body when you paste the HTML into the
+                    OptiFinish blog. Strengthens topical clusters and keeps readers in
+                    the funnel.
+                  </p>
+                  <div className="space-y-2">
+                    {draft.seo.internalLinkSuggestions.map((s, i) => (
+                      <div
+                        key={i}
+                        className="text-xs p-3 border border-ink-700 rounded-lg bg-ink-900/40"
+                      >
+                        <div className="font-bold text-ember-400 mb-1">{s.anchor}</div>
+                        <div className="text-steel-400 font-mono text-[11px]">
+                          → /blog/category/{s.targetCategory}
+                        </div>
+                        <div className="text-steel-500 mt-1 italic text-[11px]">
+                          {s.rationale}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Distribution pack */}
               <div className="space-y-4">
                 <div className="flex items-baseline justify-between">
