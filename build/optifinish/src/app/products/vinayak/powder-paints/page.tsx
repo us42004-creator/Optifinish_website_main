@@ -27,6 +27,7 @@ export default function VinayakPowderPaintsPage() {
         { val: 'Hybrid', label: 'Epoxy-polyester blend' },
       ]}
       heroImageLabel="Vinayak Agencies · powder coating paints — Nerolac, Prominent, Paramount"
+      heroImageSrc="/images/products/vinayak/powder-paints/nerolac-powder-coating-01.png"
       enquireSlug="vinayak-powder-paints"
       backHref="/products/vinayak"
       backLabel="← Back to Vinayak Agencies"
@@ -43,6 +44,8 @@ export default function VinayakPowderPaintsPage() {
         'Hybrid (epoxy-polyester) grades: balanced performance for general industrial interiors',
         'Supplied by Vinayak Agencies — sister concern to OptiFinish, integrated supply with OptiFinish coating systems',
       ]}
+
+      applicationImageSrc="/images/products/vinayak/powder-paints/nerolac-powder-coating-application.webp"
 
       specRows={[
         { l: 'Epoxy powder', v: 'Interior grade — high adhesion, chemical resistance, not UV-stable' },
@@ -80,18 +83,21 @@ export default function VinayakPowderPaintsPage() {
           category: 'Vinayak Agencies',
           href: '/products/vinayak/touchup-paints',
           enquireSlug: 'vinayak-touchup-paints',
+          imageSrc: '/images/products/vinayak/touchup-paints/nerolac-tansy-touchup-01.webp',
         },
         {
           name: 'Powder Coating Plant',
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/powder-coating-plant',
           enquireSlug: 'powder-coating-plant',
+          imageSrc: '/images/products/optifinish-manufactured/powder-coating-plant/optifinish-powder-coating-plant-01.jpg',
         },
         {
           name: 'Powder Spray Booth',
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/powder-spray-booth',
           enquireSlug: 'powder-spray-booth',
+          imageSrc: '/images/products/optifinish-manufactured/powder-spray-booth/optifinish-powder-spray-booth-01.jpg',
         },
       ]}
 

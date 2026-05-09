@@ -27,6 +27,7 @@ export default function VinayakTouchupPaintsPage() {
         { val: '2', label: 'Brands available' },
       ]}
       heroImageLabel="Vinayak Agencies · touch-up paints — Nerolac Tansy, Paramount"
+      heroImageSrc="/images/products/vinayak/touchup-paints/nerolac-tansy-touchup-01.webp"
       enquireSlug="vinayak-touchup-paints"
       backHref="/products/vinayak"
       backLabel="← Back to Vinayak Agencies"
@@ -42,6 +43,8 @@ export default function VinayakTouchupPaintsPage() {
         'Colour matching to standard industrial colours — aligned with Vinayak Agencies powder and liquid range',
         'Field-applicable — repair at installation site or assembly line end without specialist equipment',
       ]}
+
+      applicationImageSrc="/images/products/vinayak/touchup-paints/nerolac-products-overview-01.jpg"
 
       specRows={[
         { l: 'Nerolac Tansy', v: 'Touch-up liquid paint — adhesion to powder coat and liquid painted metal' },
@@ -78,18 +81,21 @@ export default function VinayakTouchupPaintsPage() {
           category: 'Vinayak Agencies',
           href: '/products/vinayak/powder-paints',
           enquireSlug: 'vinayak-powder-paints',
+          imageSrc: '/images/products/vinayak/powder-paints/nerolac-powder-coating-01.png',
         },
         {
           name: 'Liquid Industrial Paints',
           category: 'Vinayak Agencies',
           href: '/products/vinayak/liquid-paint',
           enquireSlug: 'vinayak-liquid-paint',
+          imageSrc: '/images/products/vinayak/liquid-paint/nerolac-industrial-paint-banner.jpg',
         },
         {
           name: 'PU Enamel',
           category: 'Vinayak Agencies',
           href: '/products/vinayak/pu-enamel',
           enquireSlug: 'vinayak-pu-enamel',
+          imageSrc: '/images/products/vinayak/pu-enamel/nerolac-pu-enamel-10in1-hero.jpg',
         },
       ]}
 

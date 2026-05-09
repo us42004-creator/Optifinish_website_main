@@ -24,6 +24,7 @@ const PRODUCTS = [
     ],
     enquireSlug: 'vinayak-powder-paints',
     learnMoreHref: '/products/vinayak/powder-paints',
+    imageSrc: '/images/products/vinayak/powder-paints/nerolac-powder-coating-01.png',
   },
   {
     name: 'Liquid Industrial Paint',
@@ -38,6 +39,7 @@ const PRODUCTS = [
     ],
     enquireSlug: 'vinayak-liquid-paint',
     learnMoreHref: '/products/vinayak/liquid-paint',
+    imageSrc: '/images/products/vinayak/liquid-paint/nerolac-industrial-paint-banner.jpg',
   },
   {
     name: 'Touch-up Paints',
@@ -51,6 +53,7 @@ const PRODUCTS = [
     ],
     enquireSlug: 'vinayak-touchup-paints',
     learnMoreHref: '/products/vinayak/touchup-paints',
+    imageSrc: '/images/products/vinayak/touchup-paints/nerolac-tansy-touchup-01.webp',
   },
   {
     name: 'PU & Enamel Paints',
@@ -65,6 +68,7 @@ const PRODUCTS = [
     ],
     enquireSlug: 'vinayak-pu-enamel',
     learnMoreHref: '/products/vinayak/pu-enamel',
+    imageSrc: '/images/products/vinayak/pu-enamel/nerolac-pu-enamel-10in1-hero.jpg',
   },
   {
     name: 'Adhesives & Tapes',
@@ -78,6 +82,7 @@ const PRODUCTS = [
     ],
     enquireSlug: 'vinayak-adhesives',
     learnMoreHref: '/products/vinayak/adhesives',
+    imageSrc: '/images/products/vinayak/adhesives/nerolac-nerofix-01.png',
   },
 ];
 
@@ -184,28 +189,22 @@ export default function VinayakPage() {
 
           {/* Warehouse image grid */}
           <div className="grid gap-4 sm:grid-cols-3">
-            {['warehouse-01', 'warehouse-02', 'warehouse-03'].map((id, i) => (
+            {[
+              { id: 'warehouse-01', src: '/images/facility/facility-22.jpg' },
+              { id: 'warehouse-02', src: '/images/facility/facility-23.jpg' },
+              { id: 'warehouse-03', src: '/images/facility/facility-25.jpg' },
+            ].map((item) => (
               <div
-                key={id}
-                className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-[1rem]"
+                key={item.id}
+                className="relative aspect-[4/3] overflow-hidden rounded-[1rem]"
               >
-                {/* Placeholder */}
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    backgroundImage:
-                      'linear-gradient(rgba(254,206,0,1) 1px, transparent 1px), linear-gradient(90deg, rgba(254,206,0,1) 1px, transparent 1px)',
-                    backgroundSize: '32px 32px',
-                    opacity: 0.045,
-                    backgroundColor: '#1a1a1a',
-                  }}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={item.src}
+                  alt="Vinayak Agencies warehouse"
+                  className="h-full w-full object-cover"
                 />
-                <div className="absolute inset-0 bg-[#161616]" style={{ zIndex: -1 }} />
-                <div className="absolute left-0 right-0 top-0 h-[2px] bg-[#FECE00]/25" />
-                <span className="relative text-[9px] font-semibold uppercase tracking-[0.2em] text-white/15">
-                  Vinayak Warehouse · {String(i + 1).padStart(2, '0')}
-                </span>
-                {/* Replace with: <img src={`/images/vinayak/${id}.jpg`} alt="Vinayak Warehouse" className="absolute inset-0 h-full w-full object-cover" /> */}
+                <div className="absolute inset-0 bg-[#0A0A0A]/20" />
               </div>
             ))}
           </div>
