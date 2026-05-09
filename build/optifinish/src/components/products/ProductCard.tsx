@@ -98,6 +98,7 @@ interface ProductCardProps {
   variantTags?: string[];
   imageContain?: boolean;
   imageBgDark?: boolean;
+  imageBg?: string;
 }
 
 export default function ProductCard({
@@ -117,6 +118,7 @@ export default function ProductCard({
   variantTags,
   imageContain = false,
   imageBgDark = false,
+  imageBg,
 }: ProductCardProps) {
   const isDark = theme === 'dark';
   const hasCarousel = imageSrcs && imageSrcs.length > 1;
@@ -132,7 +134,7 @@ export default function ProductCard({
       } ${learnMoreHref ? 'cursor-pointer' : ''} ${className}`}
     >
       {/* Image / Carousel */}
-      <div className={`relative aspect-[4/3] w-full overflow-hidden ${imageBgDark ? 'bg-black' : isDark ? 'bg-white/[0.06]' : 'bg-white'}`}>
+      <div className={`relative aspect-[4/3] w-full overflow-hidden ${imageBg ? '' : imageBgDark ? 'bg-black' : isDark ? 'bg-white/[0.06]' : 'bg-white'}`} style={imageBg ? { background: imageBg } : undefined}>
         <div className={`absolute left-0 right-0 top-0 z-10 h-[2px] ${isDark ? 'bg-[#FECE00]/30' : 'bg-[#0A0A0A]/15'}`} />
         {hasCarousel ? (
           <CardImageCarousel images={imageSrcs!} name={name} isDark={isDark} imageContain={imageContain} />

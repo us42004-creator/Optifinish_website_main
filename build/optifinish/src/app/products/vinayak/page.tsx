@@ -24,7 +24,7 @@ const PRODUCTS = [
     ],
     enquireSlug: 'vinayak-powder-paints',
     learnMoreHref: '/products/vinayak/powder-paints',
-    imageSrc: '/images/products/vinayak/powder-paints/nerolac-powder-coating-01.png',
+    imageSrc: '/images/products/vinayak/powder-paints/powder-optifinish-ou6fj3aa340eugh1kkz0yz9yhfm73ery5inqr04248.jpg.webp',
   },
   {
     name: 'Liquid Industrial Paint',
@@ -82,7 +82,9 @@ const PRODUCTS = [
     ],
     enquireSlug: 'vinayak-adhesives',
     learnMoreHref: '/products/vinayak/adhesives',
-    imageSrc: '/images/products/vinayak/adhesives/nerolac-nerofix-01.png',
+    imageSrc: '/images/products/vinayak/adhesives/hero image.webp',
+    imageContain: true,
+    imageBg: '#8CC640',
   },
 ];
 

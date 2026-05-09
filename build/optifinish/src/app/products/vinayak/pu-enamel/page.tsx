@@ -28,6 +28,8 @@ export default function VinayakPuEnamelPage() {
       ]}
       heroImageLabel="Vinayak Agencies · Nerolac PU Enamel, Hi-Gloss Synthetic, Satin Enamel"
       heroImageSrc="/images/products/vinayak/pu-enamel/nerolac-pu-enamel-10in1-hero.jpg"
+      heroImageAspect="aspect-[4/3]"
+      heroImageCover
       enquireSlug="vinayak-pu-enamel"
       backHref="/products/vinayak"
       backLabel="← Back to Vinayak Agencies"

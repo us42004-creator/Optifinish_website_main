@@ -44,12 +44,12 @@ export default function VinayakLiquidPaintPage() {
         'Vinayak Agencies supply integrated with OptiFinish liquid coating system commissioning',
       ]}
 
-      applicationImageSrc="/images/products/vinayak/liquid-paint/nerolac-high-performance-coatings.webp"
       applicationImages={[
-        '/images/products/vinayak/liquid-paint/app-agriculture-01.jpg',
-        '/images/products/vinayak/liquid-paint/app-metal-fabrication-01.jpg',
-        '/images/products/vinayak/liquid-paint/app-industrial-machinery-01.jpg',
-        '/images/products/vinayak/liquid-paint/app-furniture-metal-01.jpg',
+        { src: '/images/products/vinayak/liquid-paint/application/nerolac-high-performance-coatings.webp', label: 'High-performance industrial coatings' },
+        { src: '/images/products/vinayak/liquid-paint/application/app-agriculture-01.jpg', label: 'Agricultural & construction equipment' },
+        { src: '/images/products/vinayak/liquid-paint/application/metal fabrication.jpg', label: 'Metal fabrication primer & topcoat' },
+        { src: '/images/products/vinayak/liquid-paint/application/furniture.jpg', label: 'Furniture & metal frame finishing' },
+        { src: '/images/products/vinayak/liquid-paint/application/Electrical-Control-Panel.webp', label: 'Electrical enclosures & control panels' },
       ]}
 
       specRows={[

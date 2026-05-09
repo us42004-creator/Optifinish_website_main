@@ -44,12 +44,11 @@ export default function VinayakTouchupPaintsPage() {
         'Field-applicable — repair at installation site or assembly line end without specialist equipment',
       ]}
 
-      applicationImageSrc="/images/products/vinayak/touchup-paints/nerolac-products-overview-01.jpg"
       applicationImages={[
-        '/images/products/vinayak/touchup-paints/app-metal-product-01.jpg',
-        '/images/products/vinayak/touchup-paints/app-quality-inspection-01.jpg',
-        '/images/products/vinayak/touchup-paints/app-welding-fabrication-01.jpg',
-        '/images/products/vinayak/touchup-paints/app-automotive-panel-01.jpg',
+        { src: '/images/products/vinayak/touchup-paints/application/Metal-fabrication-quality-control-Metfab.jpg', label: 'Metal fabrication quality control' },
+        { src: '/images/products/vinayak/touchup-paints/application/app-welding-fabrication-01.jpg', label: 'Weld zone touch-up' },
+        { src: '/images/products/vinayak/touchup-paints/application/powder coating surface damange.jpg', label: 'Powder coat surface damage repair' },
+        { src: '/images/products/vinayak/touchup-paints/application/weld mark.jpg', label: 'Weld mark correction' },
       ]}
 
       specRows={[

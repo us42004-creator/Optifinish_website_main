@@ -54,8 +54,10 @@ export interface ProductPageTemplateProps {
   heroStats?: { val: string; label: string }[];
   heroImageLabel: string;
   heroImageSrc?: string;
+  heroImageSrcs?: string[];
   heroImageAspect?: string;
   heroImageCover?: boolean;
+  heroImageBg?: string;
   heroVideoId?: string;
   heroVideoStart?: number;
   enquireSlug: string;
@@ -82,6 +84,7 @@ export interface ProductPageTemplateProps {
 
   /* S5 — Specifications */
   specRows: SpecRow[];
+  downloads?: { label: string; href: string }[];
 
   /* S6 — Applications */
   applications: string[];
@@ -234,8 +237,10 @@ export default function ProductPageTemplate({
   heroStats,
   heroImageLabel,
   heroImageSrc,
+  heroImageSrcs,
   heroImageAspect,
   heroImageCover = false,
+  heroImageBg,
   heroVideoId,
   heroVideoStart = 0,
   enquireSlug,
@@ -252,6 +257,7 @@ export default function ProductPageTemplate({
   steps,
   howItWorksTitle,
   specRows,
+  downloads,
   applications,
   applicationImages,
   compatibilityTags,
@@ -264,6 +270,7 @@ export default function ProductPageTemplate({
 }: ProductPageTemplateProps) {
   const [activeVariant, setActiveVariant] = useState(0);
   const [activeStep, setActiveStep] = useState(0);
+  const [heroImgIdx, setHeroImgIdx] = useState(0);
   const [videoMuted, setVideoMuted] = useState(true);
   const [showSoundBtn, setShowSoundBtn] = useState(false);
   const videoRef = useRef<HTMLIFrameElement>(null);
@@ -473,9 +480,43 @@ export default function ProductPageTemplate({
                   {videoMuted ? (<><span>🔇</span> Sound off</>) : (<><span>🔊</span> Sound on</>)}
                 </button>
               </div>
+            ) : heroImageSrcs && heroImageSrcs.length > 1 ? (
+              <div className="relative w-full overflow-hidden rounded-[1.2rem]">
+                <div className={`relative w-full overflow-hidden ${heroImageAspect ?? 'aspect-[16/9]'}`}>
+                  {heroImageSrcs.map((src, i) => (
+                    <div
+                      key={src}
+                      className="absolute inset-0"
+                      style={{
+                        transform: `translateX(${(i - heroImgIdx) * 100}%)`,
+                        transition: 'transform 0.5s cubic-bezier(0.4,0,0.2,1)',
+                      }}
+                    >
+                      <Image src={src} alt={heroImageLabel} fill className={heroImageCover ? 'object-cover' : 'object-contain'} sizes="700px" />
+                    </div>
+                  ))}
+                </div>
+                <div className="absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 gap-1.5">
+                  {heroImageSrcs.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setHeroImgIdx(i)}
+                      aria-label={`Image ${i + 1}`}
+                      className={`h-1.5 rounded-full transition-all duration-300 ${i === heroImgIdx ? 'w-5 bg-[#FECE00]' : 'w-1.5 bg-white/40'}`}
+                    />
+                  ))}
+                </div>
+              </div>
             ) : (
               <div className="flex items-center">
-                <ImageViewport label={heroImageLabel} src={heroImageSrc} isDark={!hero} className="w-full" aspect={heroImageAspect} cover={heroImageCover} />
+                <div
+                  className={`relative overflow-hidden rounded-[1.1rem] w-full ${heroImageAspect ?? 'aspect-[16/9]'} ${heroImageBg ? '' : !hero ? 'bg-white/[0.03]' : 'bg-white shadow-[0_8px_24px_rgba(0,0,0,0.06)]'}`}
+                  style={heroImageBg ? { background: heroImageBg } : undefined}
+                >
+                  {heroImageSrc && (
+                    <Image src={heroImageSrc} alt={heroImageLabel} fill quality={90} className={heroImageCover ? 'object-cover' : 'object-contain'} sizes="(max-width: 768px) 100vw, 50vw" />
+                  )}
+                </div>
               </div>
             )}
           </div>
@@ -608,7 +649,7 @@ export default function ProductPageTemplate({
 
             {/* Active variant detail — card always dark */}
             {currVariant && (
-              <div className="grid gap-8 rounded-[1.2rem] border border-white/[0.08] bg-[#070809] p-6 md:p-8 lg:grid-cols-[1fr_1fr] lg:gap-12">
+              <div className="grid gap-8 rounded-[1.2rem] border border-white/[0.08] bg-[#070809] p-6 md:p-8 lg:grid-cols-[1fr_1.5fr] lg:gap-12">
                 <div>
                   <span className="mb-3 inline-block rounded-full bg-[#FECE00]/10 px-3 py-1 text-[0.52rem] font-bold uppercase tracking-[0.14em] text-[#FECE00]/80">
                     {currVariant.tag}
@@ -699,7 +740,7 @@ export default function ProductPageTemplate({
 
             {/* Active step detail — always dark card */}
             {currStep && (
-              <div className="grid gap-8 rounded-[1.2rem] border border-white/[0.08] bg-[#070809] p-6 md:p-8 lg:grid-cols-[1fr_1fr] lg:gap-12">
+              <div className="grid gap-8 rounded-[1.2rem] border border-white/[0.08] bg-[#070809] p-6 md:p-8 lg:grid-cols-[1fr_1.5fr] lg:gap-12">
                 <div>
                   <div className="mb-3 font-display text-[2rem] font-black leading-none text-white/10 md:text-[3rem]">
                     {currStep.num}
@@ -755,6 +796,23 @@ export default function ProductPageTemplate({
               </div>
             ))}
           </div>
+          {downloads && downloads.length > 0 && (
+            <div className="mt-8 flex flex-wrap gap-3">
+              {downloads.map((d) => (
+                <a
+                  key={d.href}
+                  href={d.href}
+                  download
+                  className="inline-flex items-center gap-2.5 rounded-full bg-[#FECE00] px-5 py-2.5 text-[0.65rem] font-black uppercase tracking-[0.14em] text-[#0A0A0A] shadow-[0_2px_12px_rgba(254,206,0,0.35)] transition-all duration-200 hover:bg-[#FECE00]/85 hover:shadow-[0_4px_20px_rgba(254,206,0,0.45)]"
+                >
+                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6.5 1v8M3.5 6.5l3 3 3-3M1.5 11.5h10" stroke="#0A0A0A" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  {d.label}
+                </a>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

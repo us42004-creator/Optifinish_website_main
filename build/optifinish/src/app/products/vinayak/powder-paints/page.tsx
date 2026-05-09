@@ -27,7 +27,9 @@ export default function VinayakPowderPaintsPage() {
         { val: 'Hybrid', label: 'Epoxy-polyester blend' },
       ]}
       heroImageLabel="Vinayak Agencies · powder coating paints — Nerolac, Prominent, Paramount"
-      heroImageSrc="/images/products/vinayak/powder-paints/nerolac-powder-coating-01.png"
+      heroImageSrc="/images/products/vinayak/powder-paints/powder-optifinish-ou6fj3aa340eugh1kkz0yz9yhfm73ery5inqr04248.jpg.webp"
+      heroImageAspect="aspect-[4/3]"
+      heroImageCover
       enquireSlug="vinayak-powder-paints"
       backHref="/products/vinayak"
       backLabel="← Back to Vinayak Agencies"
@@ -45,13 +47,16 @@ export default function VinayakPowderPaintsPage() {
         'Supplied by Vinayak Agencies — sister concern to OptiFinish, integrated supply with OptiFinish coating systems',
       ]}
 
-      applicationImageSrc="/images/products/vinayak/powder-paints/nerolac-powder-coating-application.webp"
       applicationImages={[
-        '/images/products/vinayak/powder-paints/app-automotive-01.jpg',
-        '/images/products/vinayak/powder-paints/app-metal-fabrication-01.jpg',
-        '/images/products/vinayak/powder-paints/app-agriculture-01.jpg',
-        '/images/products/vinayak/powder-paints/app-aluminium-01.jpg',
-        '/images/products/vinayak/powder-paints/app-electrical-01.jpg',
+        { src: '/images/products/vinayak/powder-paints/application/app-metal-fabrication-01.jpg', label: 'Metal fabrication & structural steel' },
+        { src: '/images/products/vinayak/powder-paints/application/app-agriculture-01.jpg', label: 'Agricultural & construction equipment' },
+        { src: '/images/products/vinayak/powder-paints/application/app-aluminium-01.jpg', label: 'Architectural aluminium extrusions' },
+        { src: '/images/products/vinayak/powder-paints/application/app-electrical-01.jpg', label: 'Electrical enclosures & switchgear' },
+        { src: '/images/products/vinayak/powder-paints/application/almirah.jpg.webp', label: 'Consumer goods & furniture' },
+      ]}
+
+      downloads={[
+        { label: 'Nerolac Shade Card (PDF)', href: '/images/products/vinayak/powder-paints/Vacspl Nerolac Shade Card.pdf' },
       ]}
 
       specRows={[
