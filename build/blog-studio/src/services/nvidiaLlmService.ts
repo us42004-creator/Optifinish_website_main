@@ -34,7 +34,10 @@ export async function chatCompletion(opts: ChatOptions): Promise<string> {
     body.seed = opts.seed;
   }
 
-  const res = await fetch('/nvidia/llm/chat/completions', {
+  // /api/nvidia/llm is a Vercel serverless function in production and a Vite
+  // dev-server proxy locally. Both inject NVIDIA_API_KEY server-side and
+  // forward to NVIDIA Build's chat completions endpoint.
+  const res = await fetch('/api/nvidia/llm', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body)

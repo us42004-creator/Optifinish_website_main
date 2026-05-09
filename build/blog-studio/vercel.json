@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "buildCommand": "vite build",
+  "outputDirectory": "dist",
+  "installCommand": "pnpm install",
+  "functions": {
+    "api/nvidia/llm.ts": { "maxDuration": 60 },
+    "api/nvidia/flux.ts": { "maxDuration": 60 }
+  }
+}

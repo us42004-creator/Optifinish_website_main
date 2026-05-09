@@ -36,7 +36,9 @@ export async function generateFluxImage(opts: FluxOptions): Promise<string> {
     samples: 1
   };
 
-  const res = await fetch('/nvidia/flux/flux.1-dev', {
+  // /api/nvidia/flux is a Vercel serverless function in production and a Vite
+  // dev-server proxy locally. Hardcoded to FLUX.1-dev upstream.
+  const res = await fetch('/api/nvidia/flux', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body)
