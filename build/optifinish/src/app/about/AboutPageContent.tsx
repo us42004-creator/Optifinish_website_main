@@ -98,7 +98,7 @@ const TIMELINE: { year: string; title: string; body: string; logos?: TimelineLog
     title: 'Liquid coating, formally added',
     body: 'VACSPL became an authorised Dürr channel partner — adding the world\'s leading liquid coating equipment to the OptiFinish offering. For customers running liquid lines alongside powder, OptiFinish is now a single-source solution.',
     logos: [
-      { src: '/images/logos/duerr-logo-RGB.png', alt: 'Dürr' },
+      { src: '/images/logos/duerr-logo-rgb.png', alt: 'Dürr' },
     ],
   },
   {

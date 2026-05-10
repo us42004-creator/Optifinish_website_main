@@ -171,6 +171,11 @@ export default function AutomationPage() {
                 'Removes lumps, agglomerates, and foreign particles before re-entry to hopper',
                 'Low maintenance design; accessible internal components for quick service',
               ]}
+              imageSrcs={[
+                { src: '/images/products/sieve-machine/sieve-machine-04.jpg', label: 'PS Vibratory Sieve Machine' },
+                { src: '/images/products/sieve-machine/sieve-machine-02.jpg', label: 'Cyclone output feed' },
+                { src: '/images/products/sieve-machine/sieve-machine-03.jpg', label: 'Vibratory sieving mechanism' },
+              ]}
               enquireSlug="sieve-machine"
               learnMoreHref="/products/automation/sieve-machine"
               theme="dark"

@@ -66,9 +66,9 @@ export default function DurrHVLPGunPage() {
       applicationImages={[
         { src: '/images/products/durr/hvlp-gun/furniture_yopcoat.jpg',          label: 'Furniture & cabinetry topcoat' },
         { src: '/images/products/durr/hvlp-gun/automative_clearcoat.jpg',       label: 'Automotive clear coat' },
-        { src: '/images/products/durr/hvlp-gun/Surface_quality_criteria.jpg',   label: 'Premium surface quality finishing' },
-        { src: '/images/products/durr/hvlp-gun/luxury_items(Rolex).jpg',        label: 'High-value precision coating' },
-        { src: '/images/products/durr/hvlp-gun/Environmental-Compliance-in-India-by-Perfect-Pollucon-Services-V1-e1755500029131.png', label: 'Environmental compliance — low overspray' },
+        { src: '/images/products/durr/hvlp-gun/surface-quality-criteria.jpg',   label: 'Premium surface quality finishing' },
+        { src: '/images/products/durr/hvlp-gun/luxury-items-rolex.jpg',        label: 'High-value precision coating' },
+        { src: '/images/products/durr/hvlp-gun/environmental-compliance-india.png', label: 'Environmental compliance — low overspray' },
       ]}
 
       compatibilityTags={[

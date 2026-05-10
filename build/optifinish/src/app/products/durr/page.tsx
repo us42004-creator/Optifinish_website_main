@@ -58,7 +58,7 @@ const GUNS = [
     learnMoreHref: '/products/durr/airless-gun',
     variantTags: ['AL MAN — Manual', 'AL AUTO — Automatic'],
     imageSrcs: [
-      { src: '/images/products/durr/airless-gun/Airless manual.jpg',       label: 'EcoGun AL MAN — Manual' },
+      { src: '/images/products/durr/airless-gun/airless-manual.jpg',       label: 'EcoGun AL MAN — Manual' },
       { src: '/images/products/durr/airless-gun/durr-ecogun-al-auto-01.jpg', label: 'EcoGun AL AUTO — Automatic' },
     ],
   },
@@ -185,7 +185,7 @@ export default function DurrPage() {
         ]}
         theme="light"
         breadcrumbLabel="Dürr"
-        imageSrc="/images/products/durr/dURR HOMEPAGE.jpeg"
+        imageSrc="/images/products/durr/durr-homepage.jpeg"
         imageAlt="Dürr liquid coating equipment in operation"
       />
 

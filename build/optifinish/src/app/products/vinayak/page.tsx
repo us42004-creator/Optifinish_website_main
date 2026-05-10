@@ -82,7 +82,7 @@ const PRODUCTS = [
     ],
     enquireSlug: 'vinayak-adhesives',
     learnMoreHref: '/products/vinayak/adhesives',
-    imageSrc: '/images/products/vinayak/adhesives/hero image.webp',
+    imageSrc: '/images/products/vinayak/adhesives/adhesives-hero.webp',
     imageContain: true,
     imageBg: '#8CC640',
   },

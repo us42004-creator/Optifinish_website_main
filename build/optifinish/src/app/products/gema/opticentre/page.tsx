@@ -54,7 +54,7 @@ export default function GEMAOptiCentrePage() {
           title: 'Automatic hopper supply',
           body: 'Fresh powder is automatically transported from the storage container to the gun hopper under control of the OC08 — maintaining the correct level at all times without manual filling. The precision load cell records the exact quantity of fresh powder consumed in real time.',
           imageLabel: 'Step 01 · automatic hopper supply and level monitoring',
-          imageSrc: '/images/products/gema/opticentre/powder management new 1.jpg',
+          imageSrc: '/images/products/gema/opticentre/gema-opticenter-powder-management-01.jpg',
         },
         {
           num: '02',
@@ -86,9 +86,9 @@ export default function GEMAOptiCentrePage() {
       ]}
 
       applicationImages={[
-        { src: '/images/products/gema/automatic-gun/application/high volume line.avif', label: 'High-volume multi-colour coating line' },
-        { src: '/images/products/gema/opticentre/powder management new 2.jpg', label: 'Powder consumption tracking & cost control' },
-        { src: '/images/products/gema/automatic-gun/application/automotive components.jpg', label: 'Automotive & white goods manufacturing' },
+        { src: '/images/products/gema/automatic-gun/application/high-volume-line.avif', label: 'High-volume multi-colour coating line' },
+        { src: '/images/products/gema/opticentre/gema-opticenter-oc07-oc08-01.jpg', label: 'Powder consumption tracking & cost control' },
+        { src: '/images/products/gema/automatic-gun/application/automotive-components.jpg', label: 'Automotive & white goods manufacturing' },
         { src: '/images/products/gema/reciprocators/application/recip4.webp', label: 'Aluminium profile lines' },
         { src: '/images/products/gema/reciprocators/recip2.jpg', label: 'Integrated OptiGun + ZA reciprocator line' },
       ]}
@@ -130,7 +130,7 @@ export default function GEMAOptiCentrePage() {
           category: 'GEMA',
           href: '/products/gema/automatic-gun',
           enquireSlug: 'gema-automatic-gun',
-          imageSrc: '/images/products/gema/automatic-gun/optigun ga04.png',
+          imageSrc: '/images/products/gema/automatic-gun/optigun-ga04.png',
         },
         {
           name: 'Reciprocators & Automation Axes',

@@ -8,8 +8,8 @@ import { useHeadingAnimation } from '@/hooks/useHeadingAnimation';
 
 const GEMA_SLIDES = [
   { src: '/images/products/gema/manual-gun/homepage-img.jpg',                          label: 'OptiFlex Pro — Manual Gun' },
-  { src: '/images/products/gema/automatic-gun/optigun ga04.png',                       label: 'OptiGun GA04 — Automatic Gun' },
-  { src: '/images/products/gema/opticentre/powder management new 2.jpg',               label: 'OptiCenter OC07 / OC08' },
+  { src: '/images/products/gema/automatic-gun/optigun-ga04.png',                       label: 'OptiGun GA04 — Automatic Gun' },
+  { src: '/images/products/gema/opticentre/gema-opticenter-oc07-oc08-01.jpg',               label: 'OptiCenter OC07 / OC08' },
   { src: '/images/products/gema/reciprocators/gema-reciprocator-inuse-01.jpg',         label: 'Reciprocator — In Operation' },
   { src: '/images/products/gema/opticentre/gema-opticenter-colorchange-01.jpg',        label: 'OptiCenter — Color Change' },
 ];
@@ -29,7 +29,7 @@ const VINAYAK_SLIDES = [
   { src: '/images/products/vinayak/liquid-paint/nerolac-industrial-paint-banner.jpg',     label: 'Nerolac Liquid Industrial Paints' },
   { src: '/images/products/vinayak/pu-enamel/metal-fences-640w.jpg.webp',                 label: 'PU Enamel — Metal Application' },
   { src: '/images/products/vinayak/touchup-paints/nerolac-tansy-touchup-01.webp',         label: 'Touch-Up Paints' },
-  { src: '/images/products/vinayak/adhesives/hero image.webp',                            label: 'NeroFix Adhesives' },
+  { src: '/images/products/vinayak/adhesives/adhesives-hero.webp',                            label: 'NeroFix Adhesives', contain: true, bg: '#8CC63E' },
 ];
 
 const TOP_GROUPS = [
@@ -71,7 +71,7 @@ const BOTTOM_GROUPS = [
     label: 'DÜRR',
     tag: 'Authorised Distributor',
     flag: '🇩🇪',
-    logo: '/images/logos/duerr-logo-RGB.png',
+    logo: '/images/logos/duerr-logo-rgb.png',
     subheading: 'High-precision liquid coating systems for demanding industrial paint applications.',
     items: ['Liquid Coating Guns', 'EcoPump Systems', 'Liquid Coating Plants'],
     slides: DURR_SLIDES,
@@ -301,7 +301,7 @@ export default function WhatWeOffer() {
                     <div
                       key={i}
                       className="absolute inset-0 transition-opacity duration-700"
-                      style={{ opacity: i === slides[gi] ? 1 : 0 }}
+                      style={{ opacity: i === slides[gi] ? 1 : 0, backgroundColor: slide.bg ?? 'transparent' }}
                     >
                       <Image
                         src={slide.src}

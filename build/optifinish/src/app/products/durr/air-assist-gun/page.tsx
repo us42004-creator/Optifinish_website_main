@@ -88,11 +88,11 @@ export default function DurrAirAssistGunPage() {
       ]}
 
       applicationImages={[
-        { src: '/images/products/durr/air-assist-gun/application/solid wood lacquer.webp', label: 'Solid wood furniture finishing & lacquering' },
-        { src: '/images/products/durr/air-assist-gun/application/high build industrial top coat.jpeg', label: 'High-build industrial topcoat' },
-        { src: '/images/products/durr/air-assist-gun/application/automotive interior.jpg', label: 'Automotive interior components & trim' },
-        { src: '/images/products/durr/air-assist-gun/application/high production pain line.webp', label: 'High-production paint lines' },
-        { src: '/images/products/durr/air-assist-gun/application/high viscosity coating.jpg', label: 'High-viscosity coating application' },
+        { src: '/images/products/durr/air-assist-gun/application/solid-wood-lacquer.webp', label: 'Solid wood furniture finishing & lacquering' },
+        { src: '/images/products/durr/air-assist-gun/application/high-build-industrial-top-coat.jpeg', label: 'High-build industrial topcoat' },
+        { src: '/images/products/durr/air-assist-gun/application/automotive-interior.jpg', label: 'Automotive interior components & trim' },
+        { src: '/images/products/durr/air-assist-gun/application/high-production-paint-line.webp', label: 'High-production paint lines' },
+        { src: '/images/products/durr/air-assist-gun/application/high-viscosity-coating.jpg', label: 'High-viscosity coating application' },
       ]}
 
       applications={[

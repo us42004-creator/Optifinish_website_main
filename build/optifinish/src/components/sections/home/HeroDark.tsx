@@ -174,7 +174,7 @@ export default function HeroDark() {
               <div className="flex min-w-0 flex-1 items-center gap-2.5 px-4 py-3.5 md:px-5 md:py-5 lg:px-6">
                 <div className="shrink-0 overflow-hidden rounded-[6px] bg-white px-2.5 py-1.5">
                   <Image
-                    src="/images/logos/duerr-logo-RGB.png"
+                    src="/images/logos/duerr-logo-rgb.png"
                     alt="DÜRR"
                     width={600}
                     height={285}

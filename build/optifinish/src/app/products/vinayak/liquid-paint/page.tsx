@@ -47,9 +47,9 @@ export default function VinayakLiquidPaintPage() {
       applicationImages={[
         { src: '/images/products/vinayak/liquid-paint/application/nerolac-high-performance-coatings.webp', label: 'High-performance industrial coatings' },
         { src: '/images/products/vinayak/liquid-paint/application/app-agriculture-01.jpg', label: 'Agricultural & construction equipment' },
-        { src: '/images/products/vinayak/liquid-paint/application/metal fabrication.jpg', label: 'Metal fabrication primer & topcoat' },
+        { src: '/images/products/vinayak/liquid-paint/application/metal-fabrication.jpg', label: 'Metal fabrication primer & topcoat' },
         { src: '/images/products/vinayak/liquid-paint/application/furniture.jpg', label: 'Furniture & metal frame finishing' },
-        { src: '/images/products/vinayak/liquid-paint/application/Electrical-Control-Panel.webp', label: 'Electrical enclosures & control panels' },
+        { src: '/images/products/vinayak/liquid-paint/application/electrical-control-panel.webp', label: 'Electrical enclosures & control panels' },
       ]}
 
       specRows={[

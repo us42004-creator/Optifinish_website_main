@@ -109,6 +109,7 @@ export default function SieveMachinePage() {
           category: 'GEMA',
           href: '/products/gema/opticentre',
           enquireSlug: 'gema-opticentre',
+          imageSrc: '/images/products/gema/opticentre/gema-opticenter-oc07-oc08-01.jpg',
         },
         {
           name: 'Powder Spray Booth',

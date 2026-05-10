@@ -79,11 +79,11 @@ export default function DurrAirlessGunPage() {
 
       applicationImages={[
         { src: '/images/products/durr/airless-gun/Application/structural_steel_corrosion.webp', label: 'Structural steel anti-corrosion coating' },
-        { src: '/images/products/durr/airless-gun/Application/zinc rich primer.jpeg', label: 'Zinc-rich primer coating' },
-        { src: '/images/products/durr/airless-gun/Application/bitumen coating.jpg', label: 'Bitumen & rubberised coating' },
-        { src: '/images/products/durr/airless-gun/Application/heavy machinery.JPG', label: 'Heavy machinery painting' },
-        { src: '/images/products/durr/airless-gun/Application/steel fabrication.avif', label: 'Steel fabrication coating' },
-        { src: '/images/products/durr/airless-gun/Application/industrial high build projects.jpeg', label: 'Industrial high-build projects' },
+        { src: '/images/products/durr/airless-gun/application/zinc-rich-primer.jpeg', label: 'Zinc-rich primer coating' },
+        { src: '/images/products/durr/airless-gun/application/bitumen-coating.jpg', label: 'Bitumen & rubberised coating' },
+        { src: '/images/products/durr/airless-gun/application/heavy-machinery.jpg', label: 'Heavy machinery painting' },
+        { src: '/images/products/durr/airless-gun/application/steel-fabrication.avif', label: 'Steel fabrication coating' },
+        { src: '/images/products/durr/airless-gun/application/industrial-high-build-projects.jpeg', label: 'Industrial high-build projects' },
       ]}
 
       specRows={[

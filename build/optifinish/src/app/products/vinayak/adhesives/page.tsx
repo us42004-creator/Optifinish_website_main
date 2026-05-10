@@ -27,7 +27,7 @@ export default function VinayakAdhesivesPage() {
         { val: 'Nerolac', label: 'Kansai Paint brand' },
       ]}
       heroImageLabel="Vinayak Agencies · Nerolac synthetic glue and white PVA adhesive"
-      heroImageSrc="/images/products/vinayak/adhesives/hero image.webp"
+      heroImageSrc="/images/products/vinayak/adhesives/adhesives-hero.webp"
       heroImageAspect="aspect-[4/3]"
       heroImageBg="#8CC640"
       enquireSlug="vinayak-adhesives"
@@ -60,7 +60,7 @@ export default function VinayakAdhesivesPage() {
             { l: 'Application', v: 'Brush or notched spreader — easy to spread, high coverage' },
           ],
           imageLabel: 'Nerolac NeroFix — fast drying strong adhesive',
-          imageSrc: '/images/products/vinayak/adhesives/Nerolac-adhesive1.jpeg.webp',
+          imageSrc: '/images/products/vinayak/adhesives/nerolac-adhesive-01.webp',
         },
         {
           id: 'nerofix-aqua-smart',
@@ -75,7 +75,7 @@ export default function VinayakAdhesivesPage() {
             { l: 'Certification', v: 'Nerolac Experience Lab certified — Kansai Paint brand' },
           ],
           imageLabel: 'Nerolac NeroFix Aqua Smart — waterproof woodworking adhesive',
-          imageSrc: '/images/products/vinayak/adhesives/Nerolac-adhesive2.jpeg.webp',
+          imageSrc: '/images/products/vinayak/adhesives/nerolac-adhesive-02.webp',
         },
       ]}
       variantsSectionTitle="NeroFix or NeroFix Aqua Smart"

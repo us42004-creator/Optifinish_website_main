@@ -74,12 +74,12 @@ export default function DurrElectrostaticGunPage() {
       variantsSectionTitle="DC for solvent-based, EC for water-based"
 
       applicationImages={[
-        { src: '/images/products/durr/electrostatic-gun/appication/car spray.jpeg', label: 'Automotive body & component painting' },
-        { src: '/images/products/durr/electrostatic-gun/appication/consumer goods and applicances.jpg', label: 'Consumer goods & appliance painting' },
-        { src: '/images/products/durr/electrostatic-gun/appication/industrial-metal-parts-coating.jpg', label: 'General industrial manufacturing' },
-        { src: '/images/products/durr/electrostatic-gun/appication/metal-fabrication-spray.jpg', label: 'Metal fabrication coating' },
-        { src: '/images/products/durr/electrostatic-gun/appication/automated-spray-line.jpg', label: 'Automated industrial spray line' },
-        { src: '/images/products/durr/electrostatic-gun/appication/appliance-coating-line.jpg', label: 'Appliance & furniture coating line' },
+        { src: '/images/products/durr/electrostatic-gun/application/car-spray.jpeg', label: 'Automotive body & component painting' },
+        { src: '/images/products/durr/electrostatic-gun/application/consumer-goods-and-appliances.jpg', label: 'Consumer goods & appliance painting' },
+        { src: '/images/products/durr/electrostatic-gun/application/industrial-metal-parts-coating.jpg', label: 'General industrial manufacturing' },
+        { src: '/images/products/durr/electrostatic-gun/application/metal-fabrication-spray.jpg', label: 'Metal fabrication coating' },
+        { src: '/images/products/durr/electrostatic-gun/application/automated-spray-line.jpg', label: 'Automated industrial spray line' },
+        { src: '/images/products/durr/electrostatic-gun/application/appliance-coating-line.jpg', label: 'Appliance & furniture coating line' },
       ]}
 
       specRows={[

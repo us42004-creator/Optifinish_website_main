@@ -72,11 +72,11 @@ export default function DurrBellAtomiserPage() {
       howItWorksTitle="Spin, atomise, adhere"
 
       applicationImages={[
-        { src: '/images/products/durr/bell-atomiser/application/high end luxury car coating.avif', label: 'High-end luxury automotive coating' },
+        { src: '/images/products/durr/bell-atomiser/application/high-end-luxury-car-coating.avif', label: 'High-end luxury automotive coating' },
         { src: '/images/products/durr/bell-atomiser/application/harvestors.jpg', label: 'Agricultural & heavy machinery coating' },
-        { src: '/images/products/durr/bell-atomiser/application/high end aluninium kitchen cabinets.jpg', label: 'High-end aluminium cabinetry finishing' },
-        { src: '/images/products/durr/bell-atomiser/application/high end speakers.webp', label: 'Consumer electronics & premium goods' },
-        { src: '/images/products/durr/bell-atomiser/application/high end laptops.avif', label: 'High-end electronics coating' },
+        { src: '/images/products/durr/bell-atomiser/application/high-end-aluminium-kitchen-cabinets.jpg', label: 'High-end aluminium cabinetry finishing' },
+        { src: '/images/products/durr/bell-atomiser/application/high-end-speakers.webp', label: 'Consumer electronics & premium goods' },
+        { src: '/images/products/durr/bell-atomiser/application/high-end-laptops.avif', label: 'High-end electronics coating' },
         { src: '/images/products/durr/bell-atomiser/application/durr-ecobell2-01.webp', label: 'Automated bell atomiser in operation' },
       ]}
 

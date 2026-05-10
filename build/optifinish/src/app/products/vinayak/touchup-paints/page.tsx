@@ -45,10 +45,10 @@ export default function VinayakTouchupPaintsPage() {
       ]}
 
       applicationImages={[
-        { src: '/images/products/vinayak/touchup-paints/application/Metal-fabrication-quality-control-Metfab.jpg', label: 'Metal fabrication quality control' },
+        { src: '/images/products/vinayak/touchup-paints/application/metal-fabrication-quality-control.jpg', label: 'Metal fabrication quality control' },
         { src: '/images/products/vinayak/touchup-paints/application/app-welding-fabrication-01.jpg', label: 'Weld zone touch-up' },
-        { src: '/images/products/vinayak/touchup-paints/application/powder coating surface damange.jpg', label: 'Powder coat surface damage repair' },
-        { src: '/images/products/vinayak/touchup-paints/application/weld mark.jpg', label: 'Weld mark correction' },
+        { src: '/images/products/vinayak/touchup-paints/application/powder-coating-surface-damage.jpg', label: 'Powder coat surface damage repair' },
+        { src: '/images/products/vinayak/touchup-paints/application/weld-mark.jpg', label: 'Weld mark correction' },
       ]}
 
       specRows={[

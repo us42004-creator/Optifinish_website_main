@@ -43,8 +43,8 @@ const PRODUCTS = [
     learnMoreHref: '/products/gema/automatic-gun',
     imageBgDark: true,
     imageSrcs: [
-      { src: '/images/products/gema/automatic-gun/optigun ga04.png', label: 'OptiGun GA04 automatic gun', fit: 'contain' },
-      { src: '/images/products/gema/automatic-gun/gema automatic gun.jpg', label: 'GEMA automatic gun in use' },
+      { src: '/images/products/gema/automatic-gun/optigun-ga04.png', label: 'OptiGun GA04 automatic gun', fit: 'contain' },
+      { src: '/images/products/gema/automatic-gun/gema-automatic-gun.jpg', label: 'GEMA automatic gun in use' },
     ],
   },
   {
@@ -79,9 +79,9 @@ const PRODUCTS = [
     enquireSlug: 'gema-opticentre',
     learnMoreHref: '/products/gema/opticentre',
     imageSrcs: [
-      { src: '/images/products/gema/opticentre/powder mangement new.jpg', label: 'OptiCentre OC08 system' },
-      { src: '/images/products/gema/opticentre/powder management new 1.jpg', label: 'OptiCentre in production' },
-      { src: '/images/products/gema/opticentre/powder management new 2.jpg', label: 'Powder management system' },
+      { src: '/images/products/gema/opticentre/gema-opticenter-powder-management-new.jpg', label: 'OptiCentre OC08 system' },
+      { src: '/images/products/gema/opticentre/gema-opticenter-powder-management-01.jpg', label: 'OptiCentre in production' },
+      { src: '/images/products/gema/opticentre/gema-opticenter-oc07-oc08-01.jpg', label: 'Powder management system' },
     ],
   },
 ];
@@ -103,7 +103,7 @@ export default function GemaPage() {
         ]}
         theme="light"
         breadcrumbLabel="GEMA"
-        imageSrc="/images/products/gema/gema office.gif"
+        imageSrc="/images/products/gema/gema-office.gif"
         imageAlt="GEMA powder coating equipment — OptiFinish authorised partner India"
       />
 

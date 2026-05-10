@@ -71,7 +71,7 @@ export default function DurrEcoDose2KPage() {
       howItWorksTitle="Measure, ratio, flush"
 
       applicationImages={[
-        { src: '/images/products/durr/bell-atomiser/application/car spray.jpeg', label: 'Automated production paint line' },
+        { src: '/images/products/durr/bell-atomiser/application/car-spray.jpeg', label: 'Automated production paint line' },
         { src: '/images/products/durr/ecodose-2k/application/automotive-spray-booth.jpg', label: 'Automotive 2K topcoat — spray booth' },
         { src: '/images/products/durr/ecodose-2k/application/industrial-2k-coating.jpg', label: 'Industrial 2K structural coating' },
         { src: '/images/products/durr/ecodose-2k/application/industrial-spray-metal.jpg', label: '2K epoxy & primer on structural steel' },

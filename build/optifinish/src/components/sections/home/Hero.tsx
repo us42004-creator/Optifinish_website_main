@@ -177,7 +177,7 @@ export default function Hero() {
                   {/* DÜRR */}
                   <div className="flex flex-1 items-center gap-3 px-6 py-5 md:px-9">
                     <Image
-                      src="/images/logos/duerr-logo-RGB.png"
+                      src="/images/logos/duerr-logo-rgb.png"
                       alt="DÜRR"
                       width={64}
                       height={32}

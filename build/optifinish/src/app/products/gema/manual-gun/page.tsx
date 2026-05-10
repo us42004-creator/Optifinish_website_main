@@ -512,7 +512,7 @@ const RELATED = [
     cat: 'GEMA · Authorised Partner',
     href: '/products/gema/automatic-gun',
     imageLabel: 'GEMA OptiGun automatic gun',
-    imageSrc: '/images/products/gema/automatic-gun/optigun ga04.png',
+    imageSrc: '/images/products/gema/automatic-gun/optigun-ga04.png',
   },
   {
     name: 'Reciprocators & Automation Axes',
@@ -528,7 +528,7 @@ const RELATED = [
     cat: 'GEMA · Authorised Partner',
     href: '/products/gema/opticentre',
     imageLabel: 'GEMA OC08 OptiCentre',
-    imageSrc: '/images/products/gema/opticentre/powder management new 2.jpg',
+    imageSrc: '/images/products/gema/opticentre/gema-opticenter-oc07-oc08-01.jpg',
   },
 ];
 

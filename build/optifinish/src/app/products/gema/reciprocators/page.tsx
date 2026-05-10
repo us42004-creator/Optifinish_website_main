@@ -109,9 +109,9 @@ export default function GEMAReciproactorsPage() {
       ]}
 
       applicationImages={[
-        { src: '/images/products/gema/reciprocators/application/high volume line.avif', label: 'High-volume automatic coating line' },
+        { src: '/images/products/gema/reciprocators/application/high-volume-line.avif', label: 'High-volume automatic coating line' },
         { src: '/images/products/gema/reciprocators/application/recip4.webp', label: 'Aluminium profile coating' },
-        { src: '/images/products/gema/reciprocators/application/big components.jpg', label: 'Large component coating' },
+        { src: '/images/products/gema/reciprocators/application/big-components.jpg', label: 'Large component coating' },
         { src: '/images/products/gema/reciprocators/application/conveyor-coating-line.jpg', label: 'Conveyorised production line' },
         { src: '/images/products/gema/reciprocators/application/agri-equipment-coating.jpg', label: 'Agricultural & construction equipment' },
       ]}
@@ -152,14 +152,14 @@ export default function GEMAReciproactorsPage() {
           category: 'GEMA',
           href: '/products/gema/automatic-gun',
           enquireSlug: 'gema-automatic-gun',
-          imageSrc: '/images/products/gema/automatic-gun/optigun ga04.png',
+          imageSrc: '/images/products/gema/automatic-gun/optigun-ga04.png',
         },
         {
           name: 'OptiCentre Powder Management',
           category: 'GEMA',
           href: '/products/gema/opticentre',
           enquireSlug: 'gema-opticentre',
-          imageSrc: '/images/products/gema/opticentre/powder management new 2.jpg',
+          imageSrc: '/images/products/gema/opticentre/gema-opticenter-oc07-oc08-01.jpg',
         },
         {
           name: 'Opti Recip ZA01',

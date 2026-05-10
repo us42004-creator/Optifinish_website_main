@@ -62,7 +62,7 @@ export default function GEMAAutomaticGunPage() {
             { l: 'Best for', v: 'High-volume flat and simple profile parts' },
           ],
           imageLabel: 'GEMA OptiGun GA02 · standard automatic gun',
-          imageSrc: '/images/products/gema/automatic-gun/gema automatic gun.jpg',
+          imageSrc: '/images/products/gema/automatic-gun/gema-automatic-gun.jpg',
         },
         {
           id: 'ga03',
@@ -89,21 +89,21 @@ export default function GEMAAutomaticGunPage() {
           title: 'Powder delivery',
           body: 'Powder is transported from the OptiCenter or hopper to the gun via a controlled Venturi system. DVC (Digital Volume Control) regulates the precise volume reaching each gun independently — ensuring every gun on a multi-gun line applies the same film build.',
           imageLabel: 'Step 01 · powder delivery to gun',
-          imageSrc: '/images/products/gema/automatic-gun/venturi system.jpg',
+          imageSrc: '/images/products/gema/automatic-gun/venturi-system.jpg',
         },
         {
           num: '02',
           title: 'Electrostatic charging',
           body: 'As powder exits the gun tip, the 110 kV PowerBoost® generator and corona electrode electrostatically charge every particle. PCC Technology (GA03) adjusts the corona field dynamically to maximise penetration into Faraday cage areas without causing back-ionisation on flat sections.',
           imageLabel: 'Step 02 · electrostatic charging at gun tip',
-          imageSrc: '/images/products/gema/automatic-gun/power boost.jpg',
+          imageSrc: '/images/products/gema/automatic-gun/power-boost.jpg',
         },
         {
           num: '03',
           title: 'Wrap-around and adhesion',
           body: 'Charged particles follow electric field lines around the part — wrapping into recesses, onto reverse faces, and into internal corners. The SuperCorona electrode (GA03) extends the field reach for deep geometric penetration. Powder adheres electrostatically and is held until it enters the curing oven.',
           imageLabel: 'Step 03 · wrap-around adhesion on part',
-          imageSrc: '/images/products/gema/automatic-gun/super corona.png',
+          imageSrc: '/images/products/gema/automatic-gun/super-corona.png',
         },
       ]}
       howItWorksTitle="Charge, penetrate, adhere"
@@ -122,12 +122,12 @@ export default function GEMAAutomaticGunPage() {
       ]}
 
       applicationImages={[
-        { src: '/images/products/gema/automatic-gun/application/high volume line.avif', label: 'High-volume automatic powder coating line' },
-        { src: '/images/products/gema/automatic-gun/application/automotive components.jpg', label: 'Automotive components with complex geometries' },
-        { src: '/images/products/gema/automatic-gun/application/powder coated aliminum extrusion.webp', label: 'Architectural aluminium profiles and extrusions' },
-        { src: '/images/products/gema/automatic-gun/application/electrical equipments.webp', label: 'Electrical enclosures and cabinets' },
-        { src: '/images/products/gema/automatic-gun/application/agri equipment.jpg', label: 'Agricultural and construction equipment', fit: 'contain' },
-        { src: '/images/products/gema/automatic-gun/application/Powder-Coated-Pipes.jpg', label: 'Steel tube and pipe coating', fit: 'contain' },
+        { src: '/images/products/gema/automatic-gun/application/high-volume-line.avif', label: 'High-volume automatic powder coating line' },
+        { src: '/images/products/gema/automatic-gun/application/automotive-components.jpg', label: 'Automotive components with complex geometries' },
+        { src: '/images/products/gema/automatic-gun/application/powder-coated-aluminium-extrusion.webp', label: 'Architectural aluminium profiles and extrusions' },
+        { src: '/images/products/gema/automatic-gun/application/electrical-equipments.webp', label: 'Electrical enclosures and cabinets' },
+        { src: '/images/products/gema/automatic-gun/application/agri-equipment.jpg', label: 'Agricultural and construction equipment', fit: 'contain' },
+        { src: '/images/products/gema/automatic-gun/application/powder-coated-pipes.jpg', label: 'Steel tube and pipe coating', fit: 'contain' },
       ]}
 
       /* S6 — Applications */
@@ -176,7 +176,7 @@ export default function GEMAAutomaticGunPage() {
           category: 'GEMA',
           href: '/products/gema/opticentre',
           enquireSlug: 'gema-opticentre',
-          imageSrc: '/images/products/gema/opticentre/powder management new 2.jpg',
+          imageSrc: '/images/products/gema/opticentre/gema-opticenter-oc07-oc08-01.jpg',
         },
         {
           name: 'Opti Recip ZA01',
