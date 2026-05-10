@@ -7,20 +7,20 @@ import { useSearchParams } from 'next/navigation';
 import { useHeadingAnimation } from '@/hooks/useHeadingAnimation';
 
 const GEMA_SLIDES = [
-  { src: '/images/products/gema/manual-gun/homepage-img.jpg',               label: 'OptiFlex Pro — Manual Gun' },
-  { src: '/images/products/gema/automatic-gun/gema-optigun-ga03-charged-01.jpg', label: 'OptiGun GA03 — Automatic Gun' },
-  { src: '/images/products/gema/opticentre/gema-opticenter-colorchange-01.jpg',   label: 'OptiCenter — Color Change' },
-  { src: '/images/products/gema/reciprocators/gema-reciprocator-inuse-01.jpg',    label: 'Reciprocator — In Operation' },
-  { src: '/images/products/gema/opticentre/gema-opticenter-sieving-01.jpg',       label: 'OptiCenter — Powder Sieving' },
+  { src: '/images/products/gema/manual-gun/homepage-img.jpg',                          label: 'OptiFlex Pro — Manual Gun' },
+  { src: '/images/products/gema/automatic-gun/optigun ga04.png',                       label: 'OptiGun GA04 — Automatic Gun' },
+  { src: '/images/products/gema/opticentre/powder management new 2.jpg',               label: 'OptiCenter OC07 / OC08' },
+  { src: '/images/products/gema/reciprocators/gema-reciprocator-inuse-01.jpg',         label: 'Reciprocator — In Operation' },
+  { src: '/images/products/gema/opticentre/gema-opticenter-colorchange-01.jpg',        label: 'OptiCenter — Color Change' },
 ];
 
 const DURR_SLIDES = [
-  { src: '/images/products/durr/bell-atomiser/durr-ecobell-slider-01.webp',        label: 'EcoBell Rotary Atomiser' },
-  { src: '/images/products/durr/general/durr-spray-booth-interior-01.webp',        label: 'Liquid Coating Booth' },
-  { src: '/images/products/durr/general/durr-paint-robot-automotive-01.webp',      label: 'Paint Robot — Automotive' },
-  { src: '/images/products/durr/air-assist-gun/durr-ecogun-aa-auto-01.jpg',        label: 'EcoGun AA Auto' },
-  { src: '/images/products/durr/ecopump/durr-ecopump9-dosing-01.webp',             label: 'EcoPump9 Dosing System' },
-  { src: '/images/products/durr/general/durr-ready2spray-01.webp',                 label: 'Ready2Spray Robot Cell' },
+  { src: '/images/products/durr/hvlp-gun/hvlp.png',                               label: 'EcoGun HVLP — Spray Gun' },
+  { src: '/images/products/durr/air-assist-gun/durr-ecogun-aa-auto-01.jpg',        label: 'EcoGun AA — Air Assist Auto' },
+  { src: '/images/products/durr/electrostatic-gun/durr-ecogun-ec-01.webp',         label: 'EcoGun EC — Electrostatic Gun' },
+  { src: '/images/products/durr/cup-gun/ecogun_910_durr.jpg',                      label: 'EcoGun 910 — Cup Gun' },
+  { src: '/images/products/durr/ecopump/csm_duerr-pumps-ecopump-vp.webp',          label: 'EcoPump VP — Pump System' },
+  { src: '/images/products/durr/ecodose-2k/csm_duerr-ecodose2k.webp',              label: 'EcoDose 2K — Dosing System' },
 ];
 
 const VINAYAK_SLIDES = [
