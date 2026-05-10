@@ -2,6 +2,7 @@
 
 import { useRef, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 import { useHeadingAnimation } from '@/hooks/useHeadingAnimation';
 
@@ -38,7 +39,7 @@ const PRODUCTS = [
   },
   {
     id: 'sieve',
-    href: '/products/automation/automatic-sieve-machine',
+    href: '/products/automation/sieve-machine',
     name: 'Sieve Machine',
     tag: 'Support Equipment',
     tagline: 'Automated powder preparation.',
@@ -49,6 +50,9 @@ const PRODUCTS = [
       'Reduced manual handling',
       'Compact footprint',
     ],
+    heroImage: '/images/products/sieve-machine/sieve-machine-04.jpg',
+    detailImage: '/images/products/sieve-machine/sieve-machine-02.jpg',
+    inUseImage: '/images/products/sieve-machine/sieve-machine-03.jpg',
   },
 ];
 
@@ -230,23 +234,34 @@ export default function ProprietaryAutomation() {
                   className="flex flex-col gap-3"
                 >
                   <div className="overflow-hidden rounded-[1.4rem] border border-ink/[0.07] bg-white/70 shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
-                    <div className="flex aspect-[16/10] w-full items-center justify-center bg-ink/[0.03]">
-                      <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-ink/20">
-                        Image placeholder
-                      </span>
+                    <div className="relative aspect-[16/10] w-full bg-ink/[0.03]">
+                      {product.heroImage ? (
+                        <Image src={product.heroImage} alt={product.name} fill className="object-cover" sizes="(max-width: 768px) 100vw, 55vw" />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center">
+                          <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-ink/20">Image placeholder</span>
+                        </div>
+                      )}
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
-                    {(['Detail view', 'In-use shot'] as const).map((label) => (
+                    {([
+                      { label: 'Detail view', key: 'detailImage' as const },
+                      { label: 'In-use shot',  key: 'inUseImage'  as const },
+                    ]).map(({ label, key }) => (
                       <div
                         key={label}
                         className="overflow-hidden rounded-[1.1rem] border border-ink/[0.07] bg-white/70 shadow-[0_4px_14px_rgba(0,0,0,0.05)]"
                       >
-                        <div className="flex min-h-[13rem] w-full items-center justify-center bg-ink/[0.03]">
-                          <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-ink/20">
-                            {label}
-                          </span>
+                        <div className="relative min-h-[13rem] w-full bg-ink/[0.03]">
+                          {product[key] ? (
+                            <Image src={product[key]!} alt={label} fill className="object-cover" sizes="(max-width: 768px) 50vw, 27vw" />
+                          ) : (
+                            <div className="flex h-full min-h-[13rem] w-full items-center justify-center">
+                              <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-ink/20">{label}</span>
+                            </div>
+                          )}
                         </div>
                       </div>
                     ))}
