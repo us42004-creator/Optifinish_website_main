@@ -15,7 +15,7 @@ const GEMA_SLIDES = [
 ];
 
 const DURR_SLIDES = [
-  { src: '/images/products/durr/hvlp-gun/hvlp.png',                               label: 'EcoGun HVLP — Spray Gun' },
+  { src: '/images/products/durr/hvlp-gun/hvlp.png',                               label: 'EcoGun HVLP — Spray Gun', contain: true },
   { src: '/images/products/durr/air-assist-gun/durr-ecogun-aa-auto-01.jpg',        label: 'EcoGun AA — Air Assist Auto' },
   { src: '/images/products/durr/electrostatic-gun/durr-ecogun-ec-01.webp',         label: 'EcoGun EC — Electrostatic Gun' },
   { src: '/images/products/durr/cup-gun/ecogun_910_durr.jpg',                      label: 'EcoGun 910 — Cup Gun' },
@@ -307,7 +307,7 @@ export default function WhatWeOffer() {
                         src={slide.src}
                         alt={slide.label}
                         fill
-                        className="object-cover object-center"
+                        className={slide.contain ? 'object-contain p-4' : 'object-cover object-center'}
                         sizes="(max-width: 768px) 100vw, 33vw"
                         priority={gi === 0 && i === 0}
                       />
