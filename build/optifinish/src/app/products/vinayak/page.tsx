@@ -104,6 +104,8 @@ export default function VinayakPage() {
         ]}
         theme="light"
         breadcrumbLabel="Vinayak Agencies"
+        imageSrc="/images/products/vinayak/applicator.jpg"
+        imageAlt="Vinayak Agencies — industrial paint applicator in operation"
       />
 
       {/* Brand strip */}
