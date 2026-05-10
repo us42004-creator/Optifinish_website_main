@@ -6,13 +6,30 @@ import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { useHeadingAnimation } from '@/hooks/useHeadingAnimation';
 
+const GEMA_SLIDES = [
+  { src: '/images/products/gema/manual-gun/homepage-img.jpg',               label: 'OptiFlex Pro — Manual Gun' },
+  { src: '/images/products/gema/automatic-gun/gema-optigun-ga03-charged-01.jpg', label: 'OptiGun GA03 — Automatic Gun' },
+  { src: '/images/products/gema/opticentre/gema-opticenter-colorchange-01.jpg',   label: 'OptiCenter — Color Change' },
+  { src: '/images/products/gema/reciprocators/gema-reciprocator-inuse-01.jpg',    label: 'Reciprocator — In Operation' },
+  { src: '/images/products/gema/opticentre/gema-opticenter-sieving-01.jpg',       label: 'OptiCenter — Powder Sieving' },
+];
+
 const DURR_SLIDES = [
   { src: '/images/products/durr/bell-atomiser/durr-ecobell-slider-01.webp',        label: 'EcoBell Rotary Atomiser' },
-  { src: '/images/products/durr/general/durr-spray-booth-interior-01.webp',   label: 'Liquid Coating Booth' },
-  { src: '/images/products/durr/general/durr-paint-robot-automotive-01.webp', label: 'Paint Robot — Automotive' },
-  { src: '/images/products/durr/air-assist-gun/durr-ecogun-aa-auto-01.jpg',          label: 'EcoGun AA Auto' },
-  { src: '/images/products/durr/ecopump/durr-ecopump9-dosing-01.webp',        label: 'EcoPump9 Dosing System' },
-  { src: '/images/products/durr/general/durr-ready2spray-01.webp',            label: 'Ready2Spray Robot Cell' },
+  { src: '/images/products/durr/general/durr-spray-booth-interior-01.webp',        label: 'Liquid Coating Booth' },
+  { src: '/images/products/durr/general/durr-paint-robot-automotive-01.webp',      label: 'Paint Robot — Automotive' },
+  { src: '/images/products/durr/air-assist-gun/durr-ecogun-aa-auto-01.jpg',        label: 'EcoGun AA Auto' },
+  { src: '/images/products/durr/ecopump/durr-ecopump9-dosing-01.webp',             label: 'EcoPump9 Dosing System' },
+  { src: '/images/products/durr/general/durr-ready2spray-01.webp',                 label: 'Ready2Spray Robot Cell' },
+];
+
+const VINAYAK_SLIDES = [
+  { src: '/images/products/vinayak/applicator.jpg',                                       label: 'Industrial Paint Application' },
+  { src: '/images/products/vinayak/powder-paints/powder-optifinish-ou6fj3aa340eugh1kkz0yz9yhfm73ery5inqr04248.jpg.webp', label: 'Powder Coatings — In Stock' },
+  { src: '/images/products/vinayak/liquid-paint/nerolac-industrial-paint-banner.jpg',     label: 'Nerolac Liquid Industrial Paints' },
+  { src: '/images/products/vinayak/pu-enamel/metal-fences-640w.jpg.webp',                 label: 'PU Enamel — Metal Application' },
+  { src: '/images/products/vinayak/touchup-paints/nerolac-tansy-touchup-01.webp',         label: 'Touch-Up Paints' },
+  { src: '/images/products/vinayak/adhesives/hero image.webp',                            label: 'NeroFix Adhesives' },
 ];
 
 const TOP_GROUPS = [
@@ -47,7 +64,7 @@ const BOTTOM_GROUPS = [
     logo: '/images/logos/gema_logo.png',
     subheading: 'World-leading powder coating equipment — guns, booths, reciprocators, and OptiCenter systems.',
     items: ['Manual Powder Guns', 'Automatic Guns', 'OptiCenter Systems', 'Reciprocators'],
-    mediaLabel: 'GEMA equipment · image',
+    slides: GEMA_SLIDES,
   },
   {
     href: '/products/durr',
@@ -57,7 +74,7 @@ const BOTTOM_GROUPS = [
     logo: '/images/logos/duerr-logo-RGB.png',
     subheading: 'High-precision liquid coating systems for demanding industrial paint applications.',
     items: ['Liquid Coating Guns', 'EcoPump Systems', 'Liquid Coating Plants'],
-    mediaLabel: 'DÜRR systems · image',
+    slides: DURR_SLIDES,
   },
   {
     href: '/products/vinayak',
@@ -67,7 +84,7 @@ const BOTTOM_GROUPS = [
     logo: null,
     subheading: 'Catalogue supply of coating powders, consumables, and finishing materials.',
     items: ['Coating Powders', 'Touch-Up Paints', 'Adhesives'],
-    mediaLabel: 'Products · image',
+    slides: VINAYAK_SLIDES,
   },
 ];
 
@@ -79,9 +96,13 @@ export default function WhatWeOffer() {
   const bodyRef    = useRef<HTMLParagraphElement>(null);
   const searchParams = useSearchParams();
 
-  const [durrSlide, setDurrSlide] = useState(0);
+  const [slides, setSlides] = useState(() => BOTTOM_GROUPS.map(() => 0));
   useEffect(() => {
-    const t = setInterval(() => setDurrSlide((s) => (s + 1) % DURR_SLIDES.length), 3200);
+    const t = setInterval(() => {
+      setSlides((prev) =>
+        prev.map((idx, gi) => (idx + 1) % BOTTOM_GROUPS[gi].slides.length)
+      );
+    }, 3200);
     return () => clearInterval(t);
   }, []);
 
@@ -225,7 +246,7 @@ export default function WhatWeOffer() {
 
         {/* Bottom row */}
         <div className="grid gap-4 md:grid-cols-3">
-          {BOTTOM_GROUPS.map((g) => (
+          {BOTTOM_GROUPS.map((g, gi) => (
             <Link
               key={g.href}
               href={g.href}
@@ -273,52 +294,42 @@ export default function WhatWeOffer() {
                 </div>
               </div>
 
-              {/* Media slot — carousel for DÜRR, placeholder for others */}
+              {/* Image carousel */}
               <div className="relative mt-auto overflow-hidden">
-                {g.href === '/products/durr' ? (
-                  <div className="relative aspect-[16/9] w-full overflow-hidden">
-                    {DURR_SLIDES.map((slide, i) => (
-                      <div
-                        key={i}
-                        className="absolute inset-0 transition-opacity duration-700"
-                        style={{ opacity: i === durrSlide ? 1 : 0 }}
-                      >
-                        <Image
-                          src={slide.src}
-                          alt={slide.label}
-                          fill
-                          className="object-cover object-center"
-                          sizes="(max-width: 768px) 100vw, 33vw"
-                          priority={i === 0}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-                      </div>
-                    ))}
-                    {/* Label */}
-                    <div className="absolute bottom-2 left-3 z-10">
-                      <span className="rounded-full bg-black/35 px-2 py-0.5 text-[0.48rem] font-bold uppercase tracking-[0.16em] text-white/80 backdrop-blur-sm">
-                        {DURR_SLIDES[durrSlide].label}
-                      </span>
+                <div className="relative aspect-[16/9] w-full overflow-hidden">
+                  {g.slides.map((slide, i) => (
+                    <div
+                      key={i}
+                      className="absolute inset-0 transition-opacity duration-700"
+                      style={{ opacity: i === slides[gi] ? 1 : 0 }}
+                    >
+                      <Image
+                        src={slide.src}
+                        alt={slide.label}
+                        fill
+                        className="object-cover object-center"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        priority={gi === 0 && i === 0}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
                     </div>
-                    {/* Dot indicators */}
-                    <div className="absolute bottom-2 right-3 z-10 flex gap-1">
-                      {DURR_SLIDES.map((_, i) => (
-                        <span
-                          key={i}
-                          className={`block h-1 rounded-full transition-all duration-300 ${
-                            i === durrSlide ? 'w-3 bg-white' : 'w-1 bg-white/35'
-                          }`}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                ) : (
-                  <div className="flex aspect-[16/9] w-full items-center justify-center bg-white/[0.05] border-t border-white/[0.08]">
-                    <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-white/40">
-                      {g.mediaLabel}
+                  ))}
+                  <div className="absolute bottom-2 left-3 z-10">
+                    <span className="rounded-full bg-black/35 px-2 py-0.5 text-[0.48rem] font-bold uppercase tracking-[0.16em] text-white/80 backdrop-blur-sm">
+                      {g.slides[slides[gi]].label}
                     </span>
                   </div>
-                )}
+                  <div className="absolute bottom-2 right-3 z-10 flex gap-1">
+                    {g.slides.map((_, i) => (
+                      <span
+                        key={i}
+                        className={`block h-1 rounded-full transition-all duration-300 ${
+                          i === slides[gi] ? 'w-3 bg-white' : 'w-1 bg-white/35'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                </div>
               </div>
             </Link>
           ))}
