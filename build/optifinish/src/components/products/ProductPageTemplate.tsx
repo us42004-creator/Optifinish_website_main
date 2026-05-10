@@ -649,7 +649,7 @@ export default function ProductPageTemplate({
 
             {/* Active variant detail — card always dark */}
             {currVariant && (
-              <div className="grid gap-8 rounded-[1.2rem] border border-white/[0.08] bg-[#070809] p-6 md:p-8 lg:grid-cols-[1fr_1.5fr] lg:gap-12">
+              <div className="grid gap-8 rounded-[1.2rem] border border-white/[0.08] bg-[#070809] p-6 md:p-8 lg:grid-cols-[1.2fr_1fr] lg:gap-12">
                 <div>
                   <span className="mb-3 inline-block rounded-full bg-[#FECE00]/10 px-3 py-1 text-[0.52rem] font-bold uppercase tracking-[0.14em] text-[#FECE00]/80">
                     {currVariant.tag}
@@ -683,6 +683,24 @@ export default function ProductPageTemplate({
                       style={{ position: 'absolute', top: '-16%', left: '0', width: '100%', height: '132%' }}
                     />
                     <div className="absolute inset-0 z-[5]" />
+                  </div>
+                ) : currVariant.imageSrc ? (
+                  <div className="relative flex items-center justify-center overflow-hidden rounded-[1.1rem] bg-[#0c0c0e] py-8 md:py-10">
+                    <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_50%,rgba(254,206,0,0.055)_0%,transparent_70%)]" />
+                    <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_40%_40%_at_50%_50%,rgba(255,255,255,0.03)_0%,transparent_60%)]" />
+                    <div className="relative mx-auto w-[58%] max-w-[280px]">
+                      <div className="relative aspect-square w-full">
+                        <Image
+                          src={currVariant.imageSrc}
+                          alt={currVariant.imageLabel}
+                          fill
+                          quality={92}
+                          className="object-contain drop-shadow-[0_8px_40px_rgba(0,0,0,0.55)]"
+                          sizes="320px"
+                        />
+                      </div>
+                    </div>
+                    <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#0c0c0e]/60 to-transparent" />
                   </div>
                 ) : (
                   <ImageViewport

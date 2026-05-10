@@ -68,7 +68,7 @@ const PRODUCTS = [
     ],
     enquireSlug: 'vinayak-pu-enamel',
     learnMoreHref: '/products/vinayak/pu-enamel',
-    imageSrc: '/images/products/vinayak/pu-enamel/nerolac-pu-enamel-10in1-hero.jpg',
+    imageSrc: '/images/products/vinayak/pu-enamel/metal-fences-640w.jpg.webp',
   },
   {
     name: 'Adhesives & Tapes',

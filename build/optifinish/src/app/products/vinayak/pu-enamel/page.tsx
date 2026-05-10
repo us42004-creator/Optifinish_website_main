@@ -27,7 +27,7 @@ export default function VinayakPuEnamelPage() {
         { val: 'Satin', label: 'Low-sheen finish grade' },
       ]}
       heroImageLabel="Vinayak Agencies · Nerolac PU Enamel, Hi-Gloss Synthetic, Satin Enamel"
-      heroImageSrc="/images/products/vinayak/pu-enamel/nerolac-pu-enamel-10in1-hero.jpg"
+      heroImageSrc="/images/products/vinayak/pu-enamel/metal-fences-640w.jpg.webp"
       heroImageAspect="aspect-[4/3]"
       heroImageCover
       enquireSlug="vinayak-pu-enamel"
