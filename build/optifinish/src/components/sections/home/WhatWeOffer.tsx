@@ -296,7 +296,7 @@ export default function WhatWeOffer() {
 
               {/* Image carousel */}
               <div className="relative mt-auto overflow-hidden">
-                <div className="relative aspect-[16/9] w-full overflow-hidden">
+                <div className="relative aspect-[4/3] w-full overflow-hidden">
                   {g.slides.map((slide, i) => (
                     <div
                       key={i}
