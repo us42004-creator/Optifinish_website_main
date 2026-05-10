@@ -119,7 +119,7 @@ export default function DurrAirAssistGunPage() {
           category: 'Dürr',
           href: '/products/durr/airless-gun',
           enquireSlug: 'durr-airless-gun',
-          imageSrc: '/images/products/durr/airless-gun/durr_airless_automatic.jpg',
+          imageSrc: '/images/products/durr/airless-gun/durr-ecogun-al-auto-01.jpg',
         },
         {
           name: 'EcoPump Systems',
@@ -133,6 +133,7 @@ export default function DurrAirAssistGunPage() {
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/liquid-spray-booth',
           enquireSlug: 'liquid-spray-booth',
+          imageSrc: '/images/products/optifinish-manufactured/liquid-spray-booth/optifinish-liquid-spray-booth-01.jpg',
         },
       ]}
 

@@ -116,18 +116,21 @@ export default function DurrCupGunPage() {
           category: 'Dürr',
           href: '/products/durr/hvlp-gun',
           enquireSlug: 'durr-hvlp-gun',
+          imageSrc: '/images/products/durr/hvlp-gun/hvlp.png',
         },
         {
           name: 'EcoPump Systems',
           category: 'Dürr',
           href: '/products/durr/ecopump',
           enquireSlug: 'durr-ecopump',
+          imageSrc: '/images/products/durr/ecopump/csm_duerr-pumps-ecopump-vp.webp',
         },
         {
           name: 'Liquid Spray Booth',
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/liquid-spray-booth',
           enquireSlug: 'liquid-spray-booth',
+          imageSrc: '/images/products/optifinish-manufactured/liquid-spray-booth/optifinish-liquid-spray-booth-01.jpg',
         },
       ]}
 

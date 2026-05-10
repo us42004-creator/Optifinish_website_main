@@ -130,7 +130,7 @@ export default function GEMAOptiCentrePage() {
           category: 'GEMA',
           href: '/products/gema/automatic-gun',
           enquireSlug: 'gema-automatic-gun',
-          imageSrc: '/images/products/gema/automatic-gun/gema-optigun-ga03-01.png',
+          imageSrc: '/images/products/gema/automatic-gun/optigun ga04.png',
         },
         {
           name: 'Reciprocators & Automation Axes',
@@ -144,7 +144,7 @@ export default function GEMAOptiCentrePage() {
           category: 'OptiFinish Automation',
           href: '/products/automation/sieve-machine',
           enquireSlug: 'sieve-machine',
-          imageSrc: '/images/products/sieve-machine/sieve-machine-01.jpg',
+          imageSrc: '/images/products/sieve-machine/sieve-machine-04.jpg',
         },
       ]}
 

@@ -197,7 +197,7 @@ export default function DurrEcoPumpPage() {
           category: 'Dürr',
           href: '/products/durr/cup-gun',
           enquireSlug: 'durr-cup-gun',
-          imageSrc: '/images/products/durr/cup-gun/durr-ecogun-auto-01.webp',
+          imageSrc: '/images/products/durr/cup-gun/ecogun_910_durr.jpg',
         },
         {
           name: 'Airless Spray Gun',

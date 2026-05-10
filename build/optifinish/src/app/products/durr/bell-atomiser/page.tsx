@@ -112,7 +112,7 @@ export default function DurrBellAtomiserPage() {
           category: 'Dürr',
           href: '/products/durr/electrostatic-gun',
           enquireSlug: 'durr-electrostatic-gun',
-          imageSrc: '/images/products/durr/electrostatic-gun/durr-ecogun-as-auto-01.jpg',
+          imageSrc: '/images/products/durr/electrostatic-gun/durr-ecogun-ec-01.webp',
         },
         {
           name: 'EcoPump Systems',

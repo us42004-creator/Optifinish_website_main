@@ -86,14 +86,14 @@ export default function DurrHVLPGunPage() {
           category: 'Dürr',
           href: '/products/durr/cup-gun',
           enquireSlug: 'durr-cup-gun',
-          imageSrc: '/images/products/durr/cup-gun/durr-ecogun-auto-01.webp',
+          imageSrc: '/images/products/durr/cup-gun/ecogun_910_durr.jpg',
         },
         {
           name: 'Electrostatic Spray Gun',
           category: 'Dürr',
           href: '/products/durr/electrostatic-gun',
           enquireSlug: 'durr-electrostatic-gun',
-          imageSrc: '/images/products/durr/electrostatic-gun/durr-ecogun-as-auto-01.jpg',
+          imageSrc: '/images/products/durr/electrostatic-gun/durr-ecogun-ec-01.webp',
         },
         {
           name: 'EcoPump Systems',

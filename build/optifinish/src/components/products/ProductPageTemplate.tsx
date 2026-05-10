@@ -1030,8 +1030,9 @@ export default function ProductPageTemplate({
           </h2>
           <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3">
             {related.map((item) => (
-              <div
+              <Link
                 key={item.href}
+                href={item.href}
                 className={`group flex flex-col overflow-hidden rounded-[1.1rem] border transition-all duration-300 hover:-translate-y-0.5 ${
                   rltd
                     ? 'border-[#0A0A0A]/[0.07] bg-white/70 shadow-[0_4px_14px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.09)]'
@@ -1039,17 +1040,27 @@ export default function ProductPageTemplate({
                 }`}
               >
                 <div
-                  className={`flex aspect-[16/9] items-center justify-center ${
-                    rltd ? 'bg-black/[0.03]' : 'bg-white/[0.02]'
+                  className={`relative aspect-[16/9] overflow-hidden ${
+                    rltd ? 'bg-black/[0.04]' : 'bg-white/[0.03]'
                   }`}
                 >
-                  <span
-                    className={`text-[0.58rem] font-bold uppercase tracking-[0.2em] ${
-                      rltd ? 'text-[#0A0A0A]/18' : 'text-white/14'
-                    }`}
-                  >
-                    {item.name} · image
-                  </span>
+                  {item.imageSrc ? (
+                    <Image
+                      src={item.imageSrc}
+                      alt={item.name}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                  ) : (
+                    <span
+                      className={`absolute inset-0 flex items-center justify-center text-[0.58rem] font-bold uppercase tracking-[0.2em] ${
+                        rltd ? 'text-[#0A0A0A]/18' : 'text-white/14'
+                      }`}
+                    >
+                      {item.name} · image
+                    </span>
+                  )}
                 </div>
                 <div className="flex flex-1 flex-col gap-3 p-5">
                   <div>
@@ -1065,20 +1076,23 @@ export default function ProductPageTemplate({
                     </h3>
                   </div>
                   <div
+                    onClick={(e) => e.preventDefault()}
                     className={`mt-auto flex gap-2 border-t pt-3 ${cBdr(rltd)}`}
                   >
                     <Link
                       href={`/contact?product=${item.enquireSlug}`}
+                      onClick={(e) => e.stopPropagation()}
                       className={`rounded-full px-4 py-1.5 text-[0.6rem] font-bold uppercase tracking-[0.14em] transition-all ${
                         rltd
-                          ? 'bg-[#0A0A0A] text-white hover:bg-[#0A0A0A]/80'
-                          : 'bg-[#FECE00] text-[#0A0A0A] hover:opacity-85'
+                          ? 'bg-[#0A0A0A] text-white hover:bg-[#FECE00] hover:text-[#0A0A0A]'
+                          : 'bg-[#FECE00] text-[#0A0A0A] hover:bg-[#FECE00]/80'
                       }`}
                     >
                       Enquire
                     </Link>
                     <Link
                       href={item.href}
+                      onClick={(e) => e.stopPropagation()}
                       className={`rounded-full border px-4 py-1.5 text-[0.6rem] font-bold uppercase tracking-[0.14em] transition-all ${
                         rltd
                           ? 'border-black/[0.12] text-[#0A0A0A]/40 hover:border-black/[0.24] hover:text-[#0A0A0A]/65'
@@ -1089,7 +1103,7 @@ export default function ProductPageTemplate({
                     </Link>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

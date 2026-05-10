@@ -24,6 +24,8 @@ export default function SieveMachinePage() {
       subline="A vibratory sieve unit developed in-house by OptiFinish — processing recovered powder from the cyclone to remove agglomerates, lumps, and foreign particles before it re-enters the hopper. Clean powder. Consistent quality. No manual sieve operation."
       heroImageLabel="PS Vibratory Sieve Machine"
       heroImageSrc="/images/products/sieve-machine/sieve-machine-04.jpg"
+      heroImageAspect="aspect-[3/4]"
+      heroImageCover
       enquireSlug="sieve-machine"
       backHref="/products/automation"
       backLabel="← Back to Automation"

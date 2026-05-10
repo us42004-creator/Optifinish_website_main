@@ -152,14 +152,14 @@ export default function GEMAReciproactorsPage() {
           category: 'GEMA',
           href: '/products/gema/automatic-gun',
           enquireSlug: 'gema-automatic-gun',
-          imageSrc: '/images/products/gema/automatic-gun/gema-optigun-ga03-01.png',
+          imageSrc: '/images/products/gema/automatic-gun/optigun ga04.png',
         },
         {
           name: 'OptiCentre Powder Management',
           category: 'GEMA',
           href: '/products/gema/opticentre',
           enquireSlug: 'gema-opticentre',
-          imageSrc: '/images/products/gema/opticentre/gema-opticenter-oc01-01.jpg',
+          imageSrc: '/images/products/gema/opticentre/powder management new 2.jpg',
         },
         {
           name: 'Opti Recip ZA01',

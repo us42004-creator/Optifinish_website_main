@@ -100,7 +100,7 @@ export default function VinayakTouchupPaintsPage() {
           category: 'Vinayak Agencies',
           href: '/products/vinayak/pu-enamel',
           enquireSlug: 'vinayak-pu-enamel',
-          imageSrc: '/images/products/vinayak/pu-enamel/nerolac-pu-enamel-10in1-hero.jpg',
+          imageSrc: '/images/products/vinayak/pu-enamel/metal-fences-640w.jpg.webp',
         },
       ]}
 

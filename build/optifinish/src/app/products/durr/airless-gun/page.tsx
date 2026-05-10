@@ -133,6 +133,7 @@ export default function DurrAirlessGunPage() {
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/liquid-spray-booth',
           enquireSlug: 'liquid-spray-booth',
+          imageSrc: '/images/products/optifinish-manufactured/liquid-spray-booth/optifinish-liquid-spray-booth-01.jpg',
         },
       ]}
 

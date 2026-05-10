@@ -115,7 +115,7 @@ export default function DurrElectrostaticGunPage() {
           category: 'Dürr',
           href: '/products/durr/hvlp-gun',
           enquireSlug: 'durr-hvlp-gun',
-          imageSrc: '/images/products/durr/hvlp-gun/durr-ecogun-as-man-01.jpg',
+          imageSrc: '/images/products/durr/hvlp-gun/hvlp.png',
         },
         {
           name: 'Bell Atomiser',

@@ -176,7 +176,7 @@ export default function GEMAAutomaticGunPage() {
           category: 'GEMA',
           href: '/products/gema/opticentre',
           enquireSlug: 'gema-opticentre',
-          imageSrc: '/images/products/gema/opticentre/gema-opticenter-oc01-01.jpg',
+          imageSrc: '/images/products/gema/opticentre/powder management new 2.jpg',
         },
         {
           name: 'Opti Recip ZA01',
