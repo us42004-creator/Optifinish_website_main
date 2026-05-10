@@ -95,12 +95,12 @@ export default function VinayakPuEnamelPage() {
       ]}
       variantsSectionTitle="Select the Nerolac enamel grade for your application"
 
-      applicationImageSrc="/images/products/vinayak/pu-enamel/nerolac-metal-enamel-banner.webp"
       applicationImages={[
-        '/images/products/vinayak/pu-enamel/app-metal-gate-01.jpg',
-        '/images/products/vinayak/pu-enamel/app-structural-steel-01.jpg',
-        '/images/products/vinayak/pu-enamel/app-wood-furniture-01.jpg',
-        '/images/products/vinayak/pu-enamel/app-metal-door-01.jpg',
+        { src: '/images/products/vinayak/pu-enamel/application/app-metal-gate-01.jpg', label: 'Metal gates & decorative ironwork' },
+        { src: '/images/products/vinayak/pu-enamel/application/app-structural-steel-01.jpg', label: 'Structural steel & infrastructure' },
+        { src: '/images/products/vinayak/pu-enamel/application/app-wood-furniture-01.jpg', label: 'Wood furniture & cabinetry' },
+        { src: '/images/products/vinayak/pu-enamel/application/app-metal-door-01.jpg', label: 'Metal doors & frames' },
+        { src: '/images/products/vinayak/pu-enamel/application/nerolac-satin-enamel-01.jpg', label: 'Satin enamel finish — interior surfaces' },
       ]}
 
       specRows={[
