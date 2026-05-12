@@ -1,16 +1,21 @@
 #!/usr/bin/env node
-// Trigger-pool refresh script. Scrapes a curated list of regulatory + OEM
-// sources for new dated events, runs them through the LLM to produce
-// trigger-pool-shaped one-liners, and writes a candidates file the
-// editorial team reviews before merging into topicEngine.ts.
+// Trigger-pool refresh — Brave Search edition. Replaces the regex scrapers
+// with broad search queries over Brave's index, then runs results through
+// Llama to shape into trigger-pool one-liners. Massively more useful than
+// site-specific scrapers because Brave finds news from anywhere on the
+// open web that mentions the search terms.
 //
 // USAGE
 //   node scripts/refresh-triggers.mjs
 //   → writes scripts/triggers-candidates.json with proposed entries
 //
-// Each Sunday this should run via cron / GitHub Action. For now it's a
-// one-shot CLI. SOURCES are easy to extend — add an entry to SOURCES,
-// implement extract(), done.
+// SETUP REQUIRED
+//   1. Get a Brave Search API key at https://brave.com/search/api/
+//      (free tier: 2,000 queries/month, 1 QPS — plenty for weekly refresh)
+//   2. Add to .env.local: BRAVE_API_KEY=BSA...
+//   3. Make sure the dev server is running (pnpm dev) so the proxy works
+//
+// Each Sunday this should run via cron / GitHub Action.
 
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -22,150 +27,104 @@ const PROXY = process.env.PROXY || 'http://localhost:5001';
 const OUTPUT = path.join(__dirname, 'triggers-candidates.json');
 
 // ─────────────────────────────────────────────────────────────
-// Sources — easy to extend
+// QUERIES — broad enough to surface OEM moves, regulations, and
+// industry news that matter to OptiFinish's content map.
+// Each query has a freshness hint: 'pw' (past week) for fast-moving
+// news, 'pm' (past month) for regulations, 'py' (past year) for slow
+// signals. Tune frequencies to suit the editorial cadence.
 // ─────────────────────────────────────────────────────────────
-const SOURCES = [
-  {
-    id: 'cpcb-notifications',
-    name: 'CPCB (Central Pollution Control Board) — recent notifications',
-    url: 'https://cpcb.nic.in/important-notifications/',
-    extract: extractCpcb
-  },
-  {
-    id: 'bis-news',
-    name: 'BIS (Bureau of Indian Standards) — All News',
-    url: 'https://www.bis.gov.in/all-news/',
-    extract: extractGenericDated
-  },
-  {
-    id: 'bee-notifications',
-    name: 'BEE (Bureau of Energy Efficiency) — Notifications & Circulars',
-    url: 'https://beeindia.gov.in/en/notifications-circulars',
-    extract: extractGenericDated
-  },
-  {
-    id: 'mahindra-newsroom',
-    name: 'Mahindra Group — Newsroom',
-    url: 'https://www.mahindra.com/news-room',
-    extract: extractGenericDated
-  },
-  {
-    id: 'tata-motors-press',
-    name: 'Tata Motors — Press Releases',
-    url: 'https://www.tatamotors.com/press/',
-    extract: extractGenericDated
-  },
-  {
-    id: 'jsw-press',
-    name: 'JSW Group — Press Releases',
-    url: 'https://www.jsw.in/media/press-releases',
-    extract: extractGenericDated
-  }
-  // Each extractor is intentionally conservative — returns [] on parse
-  // failure rather than guessing. Add more sources by appending to this
-  // array; each just needs a URL and an extractor function.
+const QUERIES = [
+  // India regulatory + compliance
+  { q: 'BEE energy efficiency mandate India 2026', freshness: 'pm', tag: 'regulatory-bee' },
+  { q: 'CBAM India aluminium steel exports impact', freshness: 'pm', tag: 'regulatory-cbam' },
+  { q: 'PFAS phase out powder coating compliance India', freshness: 'pm', tag: 'regulatory-pfas' },
+  { q: 'BIS Bureau Indian Standards new notification industrial coatings', freshness: 'pm', tag: 'regulatory-bis' },
+  { q: 'CPCB pollution control board powder coating notification', freshness: 'pm', tag: 'regulatory-cpcb' },
+
+  // OEM expansion + paint shop news
+  { q: 'Mahindra paint shop expansion robots India', freshness: 'pm', tag: 'oem-mahindra' },
+  { q: 'Tata Motors EV paint shop automation 2026', freshness: 'pm', tag: 'oem-tata' },
+  { q: 'JSW MG Motor India plant expansion paint', freshness: 'pm', tag: 'oem-jsw' },
+  { q: 'Ather Energy plant expansion paint coating', freshness: 'pm', tag: 'oem-ather' },
+  { q: 'Hindalco Jindal aluminium extrusion coating line India', freshness: 'pm', tag: 'oem-aluminium' },
+
+  // Industry vendors + product launches
+  { q: 'GEMA OptiSpray powder coating new launch 2026', freshness: 'py', tag: 'vendor-gema' },
+  { q: 'Durr powder coating booth EcoBell automation', freshness: 'py', tag: 'vendor-durr' },
+  { q: 'low temperature cure powder coating India 2026', freshness: 'pm', tag: 'tech-low-cure' },
+  { q: 'AI vision inspection powder coating quality control', freshness: 'pm', tag: 'tech-ai-qc' },
+
+  // Events + market
+  { q: 'PaintIndia FABTECH India 2026 exhibitor announcement', freshness: 'pm', tag: 'event' },
+  { q: 'India industrial coatings market consolidation merger 2026', freshness: 'pm', tag: 'market' }
 ];
 
 // ─────────────────────────────────────────────────────────────
-// Source-specific extractors (light HTML scraping)
+// LLM — converts raw Brave results into trigger-pool one-liners
 // ─────────────────────────────────────────────────────────────
-async function extractCpcb(html) {
-  // CPCB notifications page renders as a dated list. Pull the most recent
-  // 10 entries with their dates. Defensive — if the markup changes, return [].
-  try {
-    const items = [];
-    // Match patterns like "DD-MM-YYYY" near anchor tags
-    const dateRegex = /(\d{1,2}[-/]\d{1,2}[-/]\d{4})\s*(?:[\s\S]{0,400}?)<a[^>]*>([^<]{20,200})<\/a>/gi;
-    let m;
-    while ((m = dateRegex.exec(html)) !== null && items.length < 10) {
-      items.push({ date: m[1].trim(), title: m[2].trim().replace(/\s+/g, ' ') });
-    }
-    return items;
-  } catch (err) {
-    console.warn('[cpcb extract] failed:', err.message);
-    return [];
-  }
-}
+const TRIGGER_SHAPING_PROMPT = `You are formatting raw web search results into one-line entries for OptiFinish's editorial trigger pool.
 
-// Generic extractor — handles most corporate / regulatory press pages that
-// render as dated anchor lists. Tries multiple date patterns:
-//   - DD-MM-YYYY / DD/MM/YYYY
-//   - "Month DD, YYYY" (e.g. "January 8, 2025")
-//   - "DD Mon YYYY" (e.g. "8 Jan 2025")
-// Tries multiple title patterns: <a>title</a>, <h3>title</h3>, <h2>title</h2>.
-// Returns the most recent ~10 matches. If neither pattern fires, returns []
-// rather than guessing — better to skip a source than fabricate triggers.
-async function extractGenericDated(html) {
-  const items = [];
-  const seen = new Set();
-  const push = (date, title) => {
-    const t = (title || '').trim().replace(/\s+/g, ' ');
-    if (t.length < 18 || t.length > 250) return;
-    const key = t.toLowerCase();
-    if (seen.has(key)) return;
-    seen.add(key);
-    items.push({ date: (date || '').trim(), title: t });
-  };
+INPUT FORMAT: a list of search results, each with a title, hostname, age, and description.
 
-  const patterns = [
-    // Numeric date near anchor: "8-1-2025 ... <a>...</a>"
-    /(\d{1,2}[-/]\d{1,2}[-/]\d{4})\s*(?:[\s\S]{0,500}?)<a[^>]*>([^<]{18,250})<\/a>/gi,
-    // "Month DD, YYYY ... <a>...</a>"
-    /((?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+\d{1,2},?\s+\d{4})\s*(?:[\s\S]{0,500}?)<a[^>]*>([^<]{18,250})<\/a>/gi,
-    // "DD Mon YYYY ... <a>...</a>" (Indian format common on BIS / BEE / Tata)
-    /(\d{1,2}\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+\d{4})\s*(?:[\s\S]{0,500}?)<a[^>]*>([^<]{18,250})<\/a>/gi,
-    // <h2/h3> headline followed by "DD-MM-YYYY"
-    /<h[23][^>]*>([^<]{18,250})<\/h[23]>\s*(?:[\s\S]{0,500}?)(\d{1,2}[-/]\d{1,2}[-/]\d{4})/gi
-  ];
+OUTPUT: one trigger-pool entry per item that is GENUINELY RELEVANT to industrial coatings / powder coating / paint / surface finishing / metal manufacturing in India.
 
-  for (const re of patterns) {
-    let m;
-    while ((m = re.exec(html)) !== null && items.length < 10) {
-      // Pattern 4 has title-then-date order; others have date-then-title
-      if (re.source.startsWith('<h')) push(m[2], m[1]);
-      else push(m[1], m[2]);
-    }
-    if (items.length >= 10) break;
-  }
-  return items;
-}
-
-// ─────────────────────────────────────────────────────────────
-// LLM — converts raw source items into trigger-pool one-liners
-// ─────────────────────────────────────────────────────────────
-const TRIGGER_SHAPING_PROMPT = `You are formatting raw regulatory / industry events into one-line entries for OptiFinish's editorial trigger pool.
-
-INPUT FORMAT: a list of items, each with a date and a raw title.
-
-OUTPUT: one trigger-pool entry per item, each shaped like the existing pool. Examples of the existing pool's shape:
-
+EXAMPLES OF THE EXISTING POOL'S SHAPE:
 - "EU CBAM live since 1 Jan 2026 — 15-22% price hit on Indian aluminium and steel exports per GTRI"
 - "Mahindra inaugurated 500-robot Chakan EV paint shop on 8 Jan 2025, INR 4,500 cr investment"
 - "BEE made energy-efficiency star labelling mandatory 1 Jan 2026 for chillers, cooling towers, distribution transformers"
+- "GEMA launched OptiSpray All-in-One pump (FABTECH 2025, PaintExpo 2026)"
 
 RULES:
 - Lead with the named entity (regulator / OEM / company / event).
-- Include the date in human-readable form (e.g. "Jan 2026", "8 Jan 2025").
-- One concrete fact: a number, a deadline, a capacity figure, a regulation scope. If the source title doesn't supply one, write a faithful 1-line summary; do NOT fabricate numbers.
-- Skip items that are not relevant to industrial coatings / powder coating / paint / surface finishing / metal manufacturing in India.
+- Include the date in human-readable form derived from the title or age field (e.g. "Jan 2026", "8 Jan 2025"). If you cannot confirm a date, skip the item.
+- One concrete fact: a number, a deadline, a capacity figure, a regulation scope. If the source doesn't supply one verifiable fact, write a faithful 1-line summary; do NOT fabricate numbers.
+- SKIP items that are:
+  - not relevant to industrial coatings / surface finishing / metal manufacturing in India
+  - obvious marketing fluff with no concrete information
+  - older than 18 months (age field will tell you)
+  - duplicates of entries you've already produced in this output
 - Preserve technical accuracy. If the title is ambiguous, skip rather than guess.
 
 OUTPUT: Strict JSON.
 
 {
   "candidates": [
-    { "trigger": "string", "sourceTitle": "string from input", "date": "string from input", "relevance": "high" | "medium" | "low" }
+    {
+      "trigger": "string — the formatted one-liner",
+      "sourceTitle": "string from input",
+      "sourceUrl": "string from input",
+      "age": "string from input or empty",
+      "relevance": "high" | "medium" | "low"
+    }
   ]
 }`;
 
-async function shapeWithLlm(sourceItems, sourceName) {
-  if (sourceItems.length === 0) return [];
-  const userPrompt = `Source: ${sourceName}
+async function shapeWithLlm(allBuckets) {
+  const flatList = [];
+  for (const bucket of allBuckets) {
+    for (const r of bucket.results.slice(0, 6)) {
+      flatList.push({
+        title: r.title,
+        hostname: r.hostname,
+        age: r.age ?? '',
+        description: r.description,
+        url: r.url,
+        bucket: bucket.tag
+      });
+    }
+  }
+  if (flatList.length === 0) return [];
 
-Raw items:
-${sourceItems.map((it, i) => `${i + 1}. [${it.date}] ${it.title}`).join('\n')}
+  const userPrompt = `Search results from ${allBuckets.length} queries. Shape relevant items into trigger-pool entries.
 
-Shape into trigger-pool entries. Skip items not relevant to industrial coatings / surface finishing / metal manufacturing in India.`;
+${flatList
+  .map(
+    (r, i) =>
+      `${i + 1}. [${r.bucket}] [${r.age || 'unknown age'}] ${r.title} — ${r.hostname}\n   ${r.description?.slice(0, 220)}\n   ${r.url}`
+  )
+  .join('\n\n')}
+
+Output strict JSON. Skip anything not relevant to Indian industrial coatings, surface finishing, paint, or metal-manufacturing OEM activity.`;
 
   const res = await fetch(`${PROXY}/api/nvidia/llm`, {
     method: 'POST',
@@ -177,7 +136,7 @@ Shape into trigger-pool entries. Skip items not relevant to industrial coatings 
         { role: 'user', content: userPrompt }
       ],
       temperature: 0.4,
-      max_tokens: 2000,
+      max_tokens: 3000,
       response_format: { type: 'json_object' }
     })
   });
@@ -197,45 +156,52 @@ Shape into trigger-pool entries. Skip items not relevant to industrial coatings 
 }
 
 // ─────────────────────────────────────────────────────────────
-// Main
+// Brave call (sequential — free tier is 1 QPS)
 // ─────────────────────────────────────────────────────────────
-async function fetchHtml(url) {
-  const res = await fetch(url, {
-    headers: {
-      'User-Agent':
-        'OptiFinish-TriggerRefresh/1.0 (+https://optifinish.com; editorial@optifinish.com)'
-    }
-  });
-  if (!res.ok) throw new Error(`fetch ${url} ${res.status}`);
-  return res.text();
+async function brave(q, freshness) {
+  const params = new URLSearchParams({ q, count: '8', freshness, country: 'IN' });
+  const res = await fetch(`${PROXY}/api/brave/search?${params}`);
+  if (!res.ok) throw new Error(`Brave ${res.status}`);
+  const json = await res.json();
+  return (json.web?.results ?? []).map((r) => ({
+    title: r.title,
+    url: r.url,
+    description: r.description,
+    age: r.age,
+    hostname: r.meta_url?.hostname
+  }));
 }
 
+// ─────────────────────────────────────────────────────────────
+// Main
+// ─────────────────────────────────────────────────────────────
 async function main() {
-  console.log(`[refresh-triggers] checking ${SOURCES.length} source(s)…`);
-  const allCandidates = [];
-
-  for (const src of SOURCES) {
-    process.stdout.write(`  ${src.id}… `);
+  console.log(`[refresh-triggers] running ${QUERIES.length} Brave queries (sequential, ~1s each)…`);
+  const buckets = [];
+  for (const { q, freshness, tag } of QUERIES) {
+    process.stdout.write(`  ${tag.padEnd(20)} `);
     try {
-      const html = await fetchHtml(src.url);
-      const rawItems = await src.extract(html);
-      console.log(`raw items: ${rawItems.length}`);
-      if (rawItems.length === 0) continue;
-      const shaped = await shapeWithLlm(rawItems, src.name);
-      console.log(`    → ${shaped.length} trigger candidates`);
-      allCandidates.push({
-        source: src.id,
-        sourceUrl: src.url,
-        candidates: shaped
-      });
+      const results = await brave(q, freshness);
+      console.log(`${results.length} results`);
+      buckets.push({ query: q, tag, results });
     } catch (err) {
-      console.log(`failed (${err.message})`);
+      console.log(`✗ ${err.message?.slice(0, 80)}`);
+      buckets.push({ query: q, tag, results: [] });
     }
+    // Stay under 1 QPS
+    await new Promise((r) => setTimeout(r, 1100));
   }
+
+  const total = buckets.reduce((s, b) => s + b.results.length, 0);
+  console.log(`\n[refresh-triggers] ${total} raw results → running through Llama to shape…`);
+
+  const candidates = await shapeWithLlm(buckets);
 
   const output = {
     generated: new Date().toISOString(),
-    sources: allCandidates,
+    queries: QUERIES.map((q) => q.q),
+    rawResultCount: total,
+    candidates,
     instructions:
       'Review each candidate. Merge accepted entries into ' +
       'src/services/topicEngine.ts → RECENT_TRIGGERS_2025_2026 array. ' +
@@ -243,14 +209,12 @@ async function main() {
   };
 
   await fs.writeFile(OUTPUT, JSON.stringify(output, null, 2));
-  const total = allCandidates.reduce((s, b) => s + b.candidates.length, 0);
-  console.log(`\n[refresh-triggers] wrote ${total} candidates → ${OUTPUT}`);
-  console.log(`\nNext steps:`);
+  console.log(`[refresh-triggers] wrote ${candidates.length} shaped candidates → ${OUTPUT}`);
+  console.log(``);
+  console.log(`Next steps:`);
   console.log(`  1. Review ${path.relative(ROOT, OUTPUT)}`);
-  console.log(
-    `  2. Edit src/services/topicEngine.ts → RECENT_TRIGGERS_2025_2026, paste accepted entries`
-  );
-  console.log(`  3. (optional) commit and redeploy to refresh production`);
+  console.log(`  2. Merge accepted entries into src/services/topicEngine.ts`);
+  console.log(`  3. (optional) commit and redeploy`);
 }
 
 main().catch((e) => {

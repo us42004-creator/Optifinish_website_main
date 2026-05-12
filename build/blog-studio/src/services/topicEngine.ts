@@ -2,6 +2,7 @@ import { CategoryId, AudienceId, TopicIdea } from '../types';
 import { CATEGORIES, AUDIENCES } from '../constants';
 import { chatJSON } from './nvidiaLlmService';
 import { pickRotated, shuffle, MODELS } from './modelRouter';
+import { searchBrave, resultsToPromptContext } from './braveSearch';
 
 // 2025-2026 verified triggers from the niche-research synthesis.
 // We show a RANDOM SUBSET of 9 to the model on each call so different runs
@@ -143,6 +144,26 @@ export async function generateTopicIdeasLLM(
   }
   const triggers = shuffle(RECENT_TRIGGERS_2025_2026).slice(0, 9);
 
+  // Fresh-context block: hit Brave for actually-current industry news so
+  // topics can reference events past the model's training cutoff. Best-
+  // effort — if Brave fails or the key isn't set, fall through with no
+  // freshness block (the static trigger pool still covers us).
+  let freshContextBlock = '';
+  try {
+    const freshQuery = `${cat.label} India 2026 ${aud.label.split(' ')[0].toLowerCase()}`;
+    const fresh = await searchBrave(freshQuery, {
+      count: 6,
+      freshness: 'pm',
+      country: 'IN'
+    });
+    if (fresh.length > 0) {
+      freshContextBlock = `\n\nFRESH WEB SIGNAL (past 30 days, via Brave Search — use sparingly, only if relevant):\n${resultsToPromptContext(fresh, { maxEntries: 6, maxDescChars: 150 })}\n`;
+    }
+  } catch (err) {
+    // Silent — fresh context is bonus, not required
+    console.warn('[topicEngine] Brave freshness fetch skipped:', err);
+  }
+
   const userPrompt = `Generate 5 topic ideas.
 
 Category: ${cat.label} — ${cat.blurb}
@@ -151,7 +172,7 @@ Examples that fit this category: ${cat.examples.join(', ')}
 Audience: ${aud.label} (${aud.role})
 This reader cares about: ${aud.cares}
 
-Apply the editorial voice nudge above. Vary structural angle across the 5 topics. Anchor at least 2 to a real TRIGGER POOL entry. Apply substitution patterns. Apply anti-monotony rules. Do not fabricate numbers.${
+Apply the editorial voice nudge above. Vary structural angle across the 5 topics. Anchor at least 2 to a real TRIGGER POOL entry. Apply substitution patterns. Apply anti-monotony rules. Do not fabricate numbers.${freshContextBlock}${
     excludeTitles.length > 0
       ? `
 
