@@ -21,7 +21,6 @@ export default defineConfig(({ mode }) => {
   const KEY_DEEPSEEK = env.NVIDIA_DEEPSEEK_KEY || FALLBACK;
   const KEY_GEMMA    = env.NVIDIA_GEMMA_KEY    || FALLBACK;
   const KEY_NEMOTRON = env.NVIDIA_NEMOTRON_KEY || FALLBACK;
-  const KEY_BRAVE    = env.BRAVE_API_KEY        || '';
 
   // Per-request key dispatch. We can't read the request body in vite's
   // proxy.configure synchronously (it's a stream by then), so we attach a
@@ -90,24 +89,6 @@ export default defineConfig(({ mode }) => {
               proxyReq.setHeader('Accept', 'application/json');
             });
             proxy.on('error', (err) => console.error('[flux proxy error]', err.message));
-          }
-        },
-        // Browser GET /api/brave/search?q=...
-        // Vite forwards to https://api.search.brave.com/res/v1/web/search?q=...
-        '/api/brave/search': {
-          target: 'https://api.search.brave.com',
-          changeOrigin: true,
-          secure: true,
-          timeout: 30_000,
-          proxyTimeout: 30_000,
-          rewrite: (p) => p.replace(/^\/api\/brave\/search/, '/res/v1/web/search'),
-          configure: (proxy) => {
-            proxy.on('proxyReq', (proxyReq) => {
-              proxyReq.setHeader('X-Subscription-Token', KEY_BRAVE);
-              proxyReq.setHeader('Accept', 'application/json');
-              proxyReq.setHeader('Accept-Encoding', 'gzip');
-            });
-            proxy.on('error', (err) => console.error('[brave proxy error]', err.message));
           }
         }
       }
