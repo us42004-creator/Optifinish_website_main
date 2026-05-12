@@ -121,27 +121,36 @@ export async function searchPhotos(query: string, limit = 3): Promise<SearchHit[
   return hits;
 }
 
-// Returns the single best photo as a base64 data URL if its score clears
-// the trust threshold, otherwise null (caller falls back to AI). Base64
-// embedding ensures exported HTML stays self-contained (works offline,
-// works when shared via WhatsApp).
+// Returns a top-tier photo as a base64 data URL if any of the top matches
+// clear the trust threshold, otherwise null. Base64 embedding keeps the
+// exported HTML self-contained (works offline, works on WhatsApp).
+//
+// VARIETY: when multiple hits clear the threshold, picks ONE AT RANDOM
+// among the top 3 instead of always returning the highest-score match.
+// Eliminates "same photo every time for similar topics".
 //
 // Excludes placeholders — those are seed records without real photo data.
 export async function searchBest(query: string): Promise<{ url: string; alt: string } | null> {
   const hits = await searchPhotos(query, 5);
-  const trustedReal = hits.find((h) => h.trusted && !h.entry.isPlaceholder);
-  if (!trustedReal) return null;
+  const trustedReal = hits.filter((h) => h.trusted && !h.entry.isPlaceholder);
+  if (trustedReal.length === 0) return null;
 
-  // Convert the relative URL to a base64 data URL so it embeds in exports
+  // Random pick among the top 3 trusted matches — gives variety across runs
+  // even when the topic word-set is similar. Always-#1 made every cure-window
+  // post show the same thermocouple shot.
+  const candidatePool = trustedReal.slice(0, 3);
+  const chosen = candidatePool[Math.floor(Math.random() * candidatePool.length)];
+
+  // Convert relative URL → base64 data URL so it embeds in exports
   try {
-    const res = await fetch(trustedReal.entry.url);
+    const res = await fetch(chosen.entry.url);
     if (!res.ok) {
-      console.warn(`[photoLibrary] fetch ${trustedReal.entry.url} → ${res.status}, falling through`);
+      console.warn(`[photoLibrary] fetch ${chosen.entry.url} → ${res.status}, falling through`);
       return null;
     }
     const blob = await res.blob();
     const dataUrl = await blobToDataUrl(blob);
-    return { url: dataUrl, alt: trustedReal.entry.alt };
+    return { url: dataUrl, alt: chosen.entry.alt };
   } catch (err) {
     console.warn('[photoLibrary] base64 encode failed, falling through:', err);
     return null;

@@ -49,12 +49,49 @@ OPTIFINISH CONTEXT: Indian B2B industrial powder coating equipment. Sells own pl
 
 CHANNEL VOICE RULES (these are hard rules — exceeding them hurts performance):
 
+═══════════════════════════════════════════════════════════════════
+  GLOBAL VOICE CONSTRAINT — APPLIES TO ALL FIVE CHANNELS
+═══════════════════════════════════════════════════════════════════
+NEVER use FIRST-PERSON PRONOUNS. Banned everywhere in this output:
+"I", "me", "my", "mine", "we", "us", "our", "ours", "I'm", "I've",
+"I'll", "we're", "we've", "we'll". Also banned: "OptiFinish has",
+"OptiFinish believes", "we at OptiFinish", "in our experience".
+
+Write in THIRD-PERSON OBSERVATIONAL or SECOND-PERSON ADDRESSED-TO-
+READER instead. Examples:
+  ✗ "I think hour-six humidity wrecks transfer efficiency."
+  ✓ "Hour-six humidity wrecks transfer efficiency."
+  ✓ "Plant managers find that hour-six humidity wrecks transfer
+     efficiency."
+  ✓ "Walk a coating line at hour six and the rejection rate tells
+     a different story than the morning audit."
+
+  ✗ "We've been working on a guide to monsoon outgassing."
+  ✓ "A new field guide to monsoon outgassing breaks down the three
+     upstream causes that show up on cast aluminium."
+
+  ✗ "My takeaway: most defects live upstream."
+  ✓ "Most powder coating defects live upstream of the booth that
+     gets the blame."
+
+This rule is non-negotiable. Output containing first-person pronouns
+is a generation failure.
+
+═══════════════════════════════════════════════════════════════════
+
 1. LINKEDIN POST (250-300 words)
-- Voice: Plant manager talking peer-to-peer. First-person where appropriate.
-- Hook: a specific scene, observation, or question from the third shift. NO "I'm excited to share…" / "Just published…" openings.
-- Middle: 2-3 concrete points the post makes (paraphrased, not copy-pasted).
-- Close: single line directing to the full post. No "click below" — let curiosity pull.
-- 3-5 hashtags, mixing industry ("PowderCoating", "IndustrialAutomation") and India-specific ("MakeInIndia", "MSME") tags.
+- Voice: Senior process engineer observing the industry, third-person
+  or addressed-to-reader. Peer-to-peer register but NEVER first-person.
+- Hook: a specific scene, observation, or named system from the floor.
+  NOT "Excited to share…" / "Just published…" / "Thrilled to announce…".
+  These openings are doubly forbidden — they're both clichés AND
+  first-person.
+- Middle: 2-3 concrete points the post makes (paraphrased, not
+  copy-pasted from the body).
+- Close: single line directing to the full post. No "click below" —
+  let curiosity pull.
+- 3-5 hashtags, mixing industry ("PowderCoating", "IndustrialAutomation")
+  and India-specific ("MakeInIndia", "MSME") tags.
 
 2. WHATSAPP STATUS CAROUSEL (exactly 5 cards)
 - Card 1: HOOK card — headline + 1-line body that makes them tap.
@@ -76,7 +113,7 @@ CHANNEL VOICE RULES (these are hard rules — exceeding them hurts performance):
 - objectionHandlers: 2-3 entries, each with a likely objection and a 1-2 sentence response that opens dialogue rather than closing it.
 
 5. SLACK SUMMARY (50 words exactly, ±10)
-- For internal teams. What changed, what's new, what the team should know. Not a marketing voice — a colleague's voice.
+- For internal teams. What changed, what's new, what the team should know. Not a marketing voice — a colleague's voice. Still NO first-person. Use "The new post covers…", "It walks through…", "Worth a read for anyone working on…".
 
 EDITORIAL RULES (apply to ALL channels):
 - NO em-dashes. Use commas, colons, periods.
@@ -138,7 +175,8 @@ ${bodyExcerpt}
 
 Produce all 5 channels per the voice rules. Return strict JSON.`;
 
-  const result = await chatJSON<DistributionLlmJson>({
+  // First attempt
+  let result = await chatJSON<DistributionLlmJson>({
     model: llmModel.id,
     messages: [
       { role: 'system', content: SYSTEM_PROMPT },
@@ -148,6 +186,33 @@ Produce all 5 channels per the voice rules. Return strict JSON.`;
     topP: 0.92,
     maxTokens: 3000
   });
+
+  // Defensive first-person check. If the LLM ignored the rule, re-roll once
+  // with an explicit correction message. Easier than trying to rewrite per-
+  // channel ourselves — the model is faster at de-personalising its own
+  // output than we are at regex-mangling it.
+  if (containsFirstPerson(result)) {
+    console.warn('[distribution] first-person detected, re-rolling with correction');
+    result = await chatJSON<DistributionLlmJson>({
+      model: llmModel.id,
+      messages: [
+        { role: 'system', content: SYSTEM_PROMPT },
+        { role: 'user', content: userPrompt },
+        {
+          role: 'assistant',
+          content: JSON.stringify(result)
+        },
+        {
+          role: 'user',
+          content:
+            'Your previous output contained first-person pronouns (I / me / my / we / our / us). This violates the GLOBAL VOICE CONSTRAINT. Rewrite ALL five channels in third-person observational or second-person addressed-to-reader. Return the same JSON shape.'
+        }
+      ],
+      temperature: 0.5,
+      topP: 0.9,
+      maxTokens: 3000
+    });
+  }
 
   // Defensive trimming so we always conform to the channel limits even if
   // the LLM drifted.
@@ -172,6 +237,24 @@ Produce all 5 channels per the voice rules. Return strict JSON.`;
     },
     slackSummary: result.slackSummary?.trim() ?? ''
   };
+}
+
+// Detects first-person pronouns across all channels. Matches whole words only
+// (so "ironic" doesn't trigger on "i", "Wednesday" doesn't trigger on "we").
+function containsFirstPerson(pack: DistributionLlmJson): boolean {
+  const FP_RE = /\b(?:I|me|my|mine|we|us|our|ours|I['']m|I['']ve|I['']ll|we['']re|we['']ve|we['']ll)\b/i;
+  const surfaces: string[] = [
+    pack.linkedin?.body ?? '',
+    ...(pack.whatsappCarousel ?? []).flatMap((c) => [c.headline ?? '', c.body ?? '']),
+    pack.newsletter?.subject ?? '',
+    pack.newsletter?.previewText ?? '',
+    pack.newsletter?.body ?? '',
+    pack.salesOnePager?.execTldr ?? '',
+    ...(pack.salesOnePager?.talkingPoints ?? []),
+    ...(pack.salesOnePager?.objectionHandlers ?? []).flatMap((o) => [o.objection ?? '', o.response ?? '']),
+    pack.slackSummary ?? ''
+  ];
+  return surfaces.some((s) => FP_RE.test(s));
 }
 
 // Renders the distribution pack as a single Markdown file the team can paste
