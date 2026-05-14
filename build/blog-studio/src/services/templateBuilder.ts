@@ -632,20 +632,43 @@ function buildSeoHead(seo: NonNullable<BlogDraft['seo']>): string {
 }
 
 // Inject up to 2 inline images at the H2 anchor headings the model produced.
+// Image anchors that fall on the FIRST H2 get re-routed to the second H2
+// instead — otherwise the image sits at the very top of the post with no
+// opening prose above it, the drop cap can't render, and the article looks
+// headless. If both anchors hit the first H2, the second falls through to
+// the gentle end-of-body fallback.
 function injectImages(bodyHtml: string, placements: ImagePlacement[]): string {
   const usable = placements.filter((p) => !!p.generatedUrl).slice(0, 2);
   if (usable.length === 0) return bodyHtml;
 
+  // Find all H2 headings in order so we can re-route an anchor that lands on
+  // the first one (and detect anchors that don't exist in the body).
+  const h2Matches = Array.from(bodyHtml.matchAll(/<h2[^>]*>\s*([^<]+?)\s*<\/h2>/gi));
+  const firstH2Text = h2Matches[0]?.[1]?.trim().toLowerCase() ?? '';
+  const secondH2Text = h2Matches[1]?.[1]?.trim().toLowerCase() ?? '';
+  const usedAnchors = new Set<string>();
+
   let html = bodyHtml;
   for (const p of usable) {
-    if (!p.anchorHeading) continue;
-    const re = new RegExp(`(<h2[^>]*>\\s*${escapeReg(p.anchorHeading)}\\s*</h2>)`, 'i');
+    let anchor = p.anchorHeading?.trim() ?? '';
+    if (!anchor) continue;
+    const al = anchor.toLowerCase();
+
+    // Re-route first-H2 anchor to second H2 (or skip if already used)
+    if (al === firstH2Text && secondH2Text && !usedAnchors.has(secondH2Text)) {
+      anchor = h2Matches[1][1].trim();
+    }
+    // Don't double-insert at the same anchor
+    if (usedAnchors.has(anchor.toLowerCase())) {
+      continue;
+    }
+
+    const re = new RegExp(`(<h2[^>]*>\\s*${escapeReg(anchor)}\\s*</h2>)`, 'i');
     const block = imageContainer(p);
     if (re.test(html)) {
-      // Insert image BEFORE the H2, breaking up the page rhythm
       html = html.replace(re, `${block}$1`);
+      usedAnchors.add(anchor.toLowerCase());
     } else {
-      // Anchor not found — append at end of body (graceful fallback)
       html = html + block;
     }
   }
