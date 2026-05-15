@@ -17,21 +17,48 @@ export interface FluxModel {
   label: string;
 }
 
-const FLUX_BRAND_SUFFIX = `Shot on Hasselblad X2D, 80mm lens, f/4, natural directional light. Editorial industrial photography, calm and precise, restrained color palette of graphite, steel grey, and warm white, with a single ember-orange accent acting as the warmest light source. Kodak Portra 400 color science. Sharp focus on the subject, gentle falloff into shadow.`;
+// Brand suffix has FOUR variants. One is picked at random per render so
+// images don't all look like the same Hasselblad-80mm-f/4 frame. The
+// shared elements (restrained palette, ember accent, industrial editorial
+// register) lock the brand. The varying elements (focal length, light,
+// film stock) give the library visual range.
+const FLUX_BRAND_SUFFIX_VARIANTS = [
+  // Wide editorial — for facility shots, conveyor lines, plant interiors
+  `Shot on Hasselblad X2D, 35mm lens, f/5.6, soft cool overhead light. Editorial industrial photography, calm and precise, restrained palette of graphite, steel grey, warm white. A single ember-orange accent. Kodak Portra 400 color science. Wide framing, generous negative space.`,
+  // Detail / portrait — for guns, instruments, hands-at-work
+  `Shot on Hasselblad X2D, 80mm lens, f/4, natural directional light from a tall side window. Editorial industrial photography, calm and precise, graphite and steel grey palette with one warm ember accent. Kodak Portra 400 color science. Sharp subject focus, gentle falloff into shadow.`,
+  // Macro / defect — for orange-peel, blistering, surface texture
+  `Shot on Phase One IQ4 macro setup, 120mm lens, f/8, raking side light from low angle. Editorial diagnostic photography, surface texture in extreme detail. Restrained palette of cool steel grey with a single warm highlight. Cinestill 50D color science. Shallow depth, exposed micro-topology.`,
+  // Cinematic interior — for ovens, booths, exit tunnels
+  `Shot on Hasselblad X2D, 50mm lens, f/2.8, deep dramatic chiaroscuro with a single ember-warm key light. Editorial industrial photography, atmospheric, calm. Graphite and ink palette with a warm orange glow source. Cinestill 800T color science. Sharp focus on the foreground subject.`
+];
+
+function pickBrandSuffix(): string {
+  return FLUX_BRAND_SUFFIX_VARIANTS[Math.floor(Math.random() * FLUX_BRAND_SUFFIX_VARIANTS.length)];
+}
+
+// Backwards-compat: first variant is the original suffix shape so existing
+// callers and the dedupe check both still work.
+const FLUX_BRAND_SUFFIX = FLUX_BRAND_SUFFIX_VARIANTS[1];
 
 export function applyBrandSuffix(rawPrompt: string): string {
-  if (rawPrompt.includes('Hasselblad X2D')) return rawPrompt; // already suffixed
-  return `${rawPrompt.trim()}\n\n${FLUX_BRAND_SUFFIX}`;
+  if (rawPrompt.includes('Hasselblad') || rawPrompt.includes('Phase One')) return rawPrompt;
+  return `${rawPrompt.trim()}\n\n${pickBrandSuffix()}`;
 }
 
 export async function generateFluxImage(opts: FluxOptions): Promise<string> {
+  // Random seed by default — same prompt across calls produces visual
+  // variation instead of the same image. Pass an explicit seed only when
+  // you want reproducibility (preheat-photos.mjs sets one explicitly).
+  const seed = opts.seed ?? Math.floor(Math.random() * 1_000_000);
+
   const body = {
     prompt: opts.prompt,
     width: opts.width ?? 1024,
     height: opts.height ?? 1024,
     cfg_scale: opts.cfgScale ?? 5,
     mode: opts.mode ?? 'base',
-    seed: opts.seed ?? 0,
+    seed,
     steps: opts.steps ?? 30,
     samples: 1
   };

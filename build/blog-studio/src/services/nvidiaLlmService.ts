@@ -18,15 +18,36 @@ export interface ChatOptions {
   topP?: number;
   responseFormat?: 'text' | 'json_object';
   seed?: number;
+  // Per-call hard timeout in ms. Default 90s — long enough for any reasonable
+  // NVIDIA queue but short enough that a wedged call doesn't hang the pipeline.
+  timeoutMs?: number;
+  // If set, the call will retry with these models in order on AbortError or
+  // 5xx. Default: rotates through MODELS array excluding the original. This
+  // is what kills the "studio hangs forever on one bad NVIDIA call" failure.
+  fallbackModels?: string[];
 }
 
 const DEFAULT_MODEL = 'meta/llama-3.3-70b-instruct';
+const DEFAULT_TIMEOUT_MS = 90_000;
 
-export async function chatCompletion(opts: ChatOptions): Promise<string> {
-  const modelId = opts.model ?? DEFAULT_MODEL;
+// Wraps fetch with an AbortController so a single stuck NVIDIA call can't
+// hang the pipeline. AbortError is caught upstream and triggers fallback.
+async function fetchWithTimeout(
+  url: string,
+  init: RequestInit,
+  timeoutMs: number
+): Promise<Response> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, { ...init, signal: controller.signal });
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function singleCall(opts: ChatOptions, modelId: string): Promise<string> {
   const entry = getModelEntry(modelId as any);
-
-  // Cap max_tokens to whatever NVIDIA actually accepts for this model.
   const requestedMax = opts.maxTokens ?? 2048;
   const maxTokens = entry ? Math.min(requestedMax, entry.maxTokensCap) : requestedMax;
 
@@ -46,16 +67,17 @@ export async function chatCompletion(opts: ChatOptions): Promise<string> {
   if (wantsJson && canUseJsonMode) {
     body.response_format = { type: 'json_object' };
   }
+  if (typeof opts.seed === 'number') body.seed = opts.seed;
 
-  if (typeof opts.seed === 'number') {
-    body.seed = opts.seed;
-  }
-
-  const res = await fetch('/api/nvidia/llm', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
-  });
+  const res = await fetchWithTimeout(
+    '/api/nvidia/llm',
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    },
+    opts.timeoutMs ?? DEFAULT_TIMEOUT_MS
+  );
 
   if (!res.ok) {
     const errText = await res.text().catch(() => '<no body>');
@@ -67,6 +89,35 @@ export async function chatCompletion(opts: ChatOptions): Promise<string> {
   const content = json.choices?.[0]?.message?.content;
   if (!content) throw new Error('LLM returned empty content');
   return content;
+}
+
+export async function chatCompletion(opts: ChatOptions): Promise<string> {
+  const primary = opts.model ?? DEFAULT_MODEL;
+  // Fallback chain: caller-supplied → rotation excluding primary → Llama as
+  // ultimate safety net. Up to 3 attempts total.
+  const fallbacks =
+    opts.fallbackModels ??
+    MODELS.filter((m) => m.id !== primary)
+      .slice(0, 2)
+      .map((m) => m.id);
+  const chain = [primary, ...fallbacks];
+
+  let lastErr: unknown;
+  for (let i = 0; i < chain.length; i++) {
+    const m = chain[i];
+    try {
+      return await singleCall(opts, m);
+    } catch (err: any) {
+      lastErr = err;
+      const msg = String(err?.message ?? err);
+      const isAbort = err?.name === 'AbortError' || msg.includes('aborted');
+      const is5xx = /NVIDIA LLM 5\d\d/.test(msg);
+      const isRecoverable = isAbort || is5xx || msg.includes('socket') || msg.includes('fetch failed');
+      if (!isRecoverable || i === chain.length - 1) throw err;
+      console.warn(`[chatCompletion] ${m} failed (${msg.slice(0, 80)}), falling back to ${chain[i + 1]}`);
+    }
+  }
+  throw lastErr;
 }
 
 export async function chatJSON<T>(opts: Omit<ChatOptions, 'responseFormat'>): Promise<T> {
