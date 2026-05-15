@@ -53,6 +53,7 @@ const PRODUCTS = [
     heroImage: '/images/products/sieve-machine/sieve-machine-04.jpg',
     detailImage: '/images/products/sieve-machine/sieve-machine-02.jpg',
     inUseImage: '/images/products/sieve-machine/sieve-machine-03.jpg',
+    heroImageContain: true,
   },
 ];
 
@@ -234,11 +235,11 @@ export default function ProprietaryAutomation() {
                   className="flex flex-col gap-3"
                 >
                   <div className="overflow-hidden rounded-[1.4rem] border border-ink/[0.07] bg-white/70 shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
-                    <div className="relative aspect-[16/10] w-full bg-ink/[0.03]">
+                    <div className="relative aspect-[4/3] w-full bg-[#f0f0f0]">
                       {product.heroImage ? (
-                        <Image src={product.heroImage} alt={product.name} fill className="object-cover" sizes="(max-width: 768px) 100vw, 55vw" />
+                        <Image src={product.heroImage} alt={product.name} fill className="object-cover" style={{ objectPosition: 'center 25%' }} sizes="(max-width: 768px) 100vw, 55vw" />
                       ) : (
-                        <div className="flex h-full w-full items-center justify-center">
+                        <div className="flex h-full w-full items-center justify-center bg-ink/[0.03]">
                           <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-ink/20">Image placeholder</span>
                         </div>
                       )}
@@ -254,11 +255,11 @@ export default function ProprietaryAutomation() {
                         key={label}
                         className="overflow-hidden rounded-[1.1rem] border border-ink/[0.07] bg-white/70 shadow-[0_4px_14px_rgba(0,0,0,0.05)]"
                       >
-                        <div className="relative min-h-[13rem] w-full bg-ink/[0.03]">
+                        <div className="relative aspect-[4/3] w-full bg-[#f0f0f0]">
                           {product[key] ? (
-                            <Image src={product[key]!} alt={label} fill className="object-cover" sizes="(max-width: 768px) 50vw, 27vw" />
+                            <Image src={product[key]!} alt={label} fill className="object-cover object-center" sizes="(max-width: 768px) 50vw, 27vw" />
                           ) : (
-                            <div className="flex h-full min-h-[13rem] w-full items-center justify-center">
+                            <div className="flex h-full w-full items-center justify-center bg-ink/[0.03]">
                               <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-ink/20">{label}</span>
                             </div>
                           )}

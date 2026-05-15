@@ -24,6 +24,11 @@ const PRODUCTS = [
     ],
     enquireSlug: 'powder-coating-plant',
     learnMoreHref: '/products/optifinish-manufactured/powder-coating-plant',
+    imageSrcs: [
+      { src: '/images/products/optifinish-manufactured/powder-coating-plant/plant2.jpeg', label: 'Conveyorised line' },
+      { src: '/images/products/optifinish-manufactured/powder-coating-plant/plant1.jpeg', label: 'Booth & recovery system' },
+      { src: '/images/products/optifinish-manufactured/powder-coating-plant/plant3.jpeg', label: 'Full line overview' },
+    ],
   },
   {
     name: 'Curing Oven',
@@ -41,7 +46,7 @@ const PRODUCTS = [
   },
   {
     name: 'Powder Spray Booth',
-    subtitle: 'MS / SS-304 — Manual & Automatic',
+    subtitle: 'MS · SS-304 · Plastic — Manual & Automatic',
     description:
       'A powder spray enclosure designed for 92–96% powder recovery with an integrated cyclone and bag filter — manufactured in MS or full SS-304 construction to suit production environment and product requirements.',
     specs: [
@@ -52,6 +57,12 @@ const PRODUCTS = [
     ],
     enquireSlug: 'powder-spray-booth',
     learnMoreHref: '/products/optifinish-manufactured/powder-spray-booth',
+    imageSrcs: [
+      { src: '/images/products/spray-booth/automatic/automatic-booth-inside.jpeg', label: 'Automatic booth interior' },
+      { src: '/images/products/spray-booth/automatic/ss-booth.jpeg', label: 'SS-304 construction' },
+      { src: '/images/products/spray-booth/manual/manual1.jpg', label: 'Manual booth' },
+      { src: '/images/products/spray-booth/automatic/plastic-booth-cropped.jpeg', label: 'Plastic modular booth' },
+    ],
   },
   {
     name: 'Liquid Spray Booth',
@@ -80,6 +91,12 @@ const PRODUCTS = [
     ],
     enquireSlug: 'ss-booth-system',
     learnMoreHref: '/products/optifinish-manufactured/ss-booth-system',
+    imageSrcs: [
+      { src: '/images/products/optifinish-manufactured/SS_BOOTH/ss-booth-master-shot.png', label: 'SS-304 Booth' },
+      { src: '/images/products/optifinish-manufactured/SS_BOOTH/automatic-booth-inside.jpeg', label: 'Booth Interior' },
+      { src: '/images/products/optifinish-manufactured/SS_BOOTH/ss-booth.jpeg', label: 'Exterior Build' },
+      { src: '/images/products/optifinish-manufactured/SS_BOOTH/booth-exterior.jpeg', label: 'Booth Exterior' },
+    ],
   },
   {
     name: 'Plastic / PP Booth',
@@ -108,6 +125,12 @@ const PRODUCTS = [
     ],
     enquireSlug: 'cyclone-dust-collector',
     learnMoreHref: '/products/optifinish-manufactured/cyclone-dust-collector',
+    imageSrcs: [
+      { src: '/images/products/optifinish-manufactured/cyclone-dust-collector/cyclone-dust-collect.png', label: 'Full Line View' },
+      { src: '/images/products/optifinish-manufactured/cyclone-dust-collector/cyclone001.png', label: 'Compact Setup' },
+      { src: '/images/products/optifinish-manufactured/cyclone-dust-collector/cyclone.png', label: 'Factory Installation' },
+      { src: '/images/products/optifinish-manufactured/cyclone-dust-collector/dust-collector.jpeg', label: 'Dust Collector Unit' },
+    ],
   },
   {
     name: 'Pretreatment Line (PT Line)',

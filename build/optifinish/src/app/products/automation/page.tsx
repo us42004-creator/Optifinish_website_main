@@ -172,7 +172,7 @@ export default function AutomationPage() {
                 'Low maintenance design; accessible internal components for quick service',
               ]}
               imageSrcs={[
-                { src: '/images/products/sieve-machine/sieve-machine-04.jpg', label: 'PS Vibratory Sieve Machine' },
+                { src: '/images/products/sieve-machine/sieve-machine-04.jpg', label: 'PS Vibratory Sieve Machine', fit: 'cover' },
                 { src: '/images/products/sieve-machine/sieve-machine-02.jpg', label: 'Cyclone output feed' },
                 { src: '/images/products/sieve-machine/sieve-machine-03.jpg', label: 'Vibratory sieving mechanism' },
               ]}

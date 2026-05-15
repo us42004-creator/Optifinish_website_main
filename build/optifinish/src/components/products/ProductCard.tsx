@@ -33,14 +33,15 @@ function CardImageCarousel({
       onMouseEnter={() => { paused.current = true; }}
       onMouseLeave={() => { paused.current = false; }}
     >
-      {/* Slide track */}
+      {/* All images stacked; active one fades in */}
       {images.map((img, i) => (
         <div
           key={img.src}
           className="absolute inset-0"
           style={{
-            transform: `translateX(${(i - active) * 100}%)`,
-            transition: 'transform 0.5s cubic-bezier(0.4,0,0.2,1)',
+            opacity: i === active ? 1 : 0,
+            transition: 'opacity 0.55s ease-in-out',
+            zIndex: i === active ? 1 : 0,
           }}
         >
           <Image

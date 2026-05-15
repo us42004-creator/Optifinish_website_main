@@ -27,6 +27,7 @@ export interface Step {
   title: string;
   body: string;
   imageLabel?: string;
+  videoId?: string;
 }
 
 export interface Reference {
@@ -39,6 +40,13 @@ export interface RelatedItem {
   category: string;
   href: string;
   enquireSlug: string;
+}
+
+export interface MediaShowcaseVariant {
+  id: string;
+  label: string;
+  videoSrc?: string;
+  images: { src: string; alt?: string; fit?: 'cover' | 'contain'; objectPosition?: string }[];
 }
 
 export interface ProductPageTemplateProps {
@@ -60,6 +68,12 @@ export interface ProductPageTemplateProps {
   heroImageBg?: string;
   heroVideoId?: string;
   heroVideoStart?: number;
+  heroVideoPortrait?: boolean;
+  heroVideoSrc?: string;
+  heroVideoFull?: boolean;
+  showcaseImages?: { src: string; alt?: string }[];
+  photoGallery?: { src: string; label: string; fit?: 'cover' | 'contain'; objectPosition?: string }[];
+  mediaShowcase?: MediaShowcaseVariant[];
   enquireSlug: string;
   backHref: string;
   backLabel: string;
@@ -243,6 +257,12 @@ export default function ProductPageTemplate({
   heroImageBg,
   heroVideoId,
   heroVideoStart = 0,
+  heroVideoPortrait = false,
+  heroVideoSrc,
+  heroVideoFull = false,
+  showcaseImages,
+  photoGallery,
+  mediaShowcase,
   enquireSlug,
   backHref,
   backLabel,
@@ -274,6 +294,8 @@ export default function ProductPageTemplate({
   const [videoMuted, setVideoMuted] = useState(true);
   const [showSoundBtn, setShowSoundBtn] = useState(false);
   const videoRef = useRef<HTMLIFrameElement>(null);
+  const [stepVideoMuted, setStepVideoMuted] = useState(true);
+  const stepVideoRef = useRef<HTMLIFrameElement>(null);
 
   const toggleSound = () => {
     const cmd = videoMuted ? 'unMute' : 'mute';
@@ -281,6 +303,14 @@ export default function ProductPageTemplate({
       JSON.stringify({ event: 'command', func: cmd, args: [] }), '*'
     );
     setVideoMuted(!videoMuted);
+  };
+
+  const toggleStepSound = () => {
+    const cmd = stepVideoMuted ? 'unMute' : 'mute';
+    stepVideoRef.current?.contentWindow?.postMessage(
+      JSON.stringify({ event: 'command', func: cmd, args: [] }), '*'
+    );
+    setStepVideoMuted(!stepVideoMuted);
   };
 
   const isLight = theme === 'light';
@@ -357,6 +387,19 @@ export default function ProductPageTemplate({
     return () => clearInterval(id);
   }, [applicationImages]);
 
+  const [activeMediaVariant, setActiveMediaVariant] = useState(0);
+  const mediaVariantPaused = useRef(false);
+
+  useEffect(() => {
+    if (!mediaShowcase || mediaShowcase.length <= 1) return;
+    const id = setInterval(() => {
+      if (!mediaVariantPaused.current) {
+        setActiveMediaVariant((i) => (i + 1) % mediaShowcase.length);
+      }
+    }, 5000);
+    return () => clearInterval(id);
+  }, [mediaShowcase]);
+
   return (
     <main>
 
@@ -364,6 +407,93 @@ export default function ProductPageTemplate({
           BREADCRUMB + S1 — shared wrapper so grid covers the
           full page from top (behind navbar) into hero
       ══════════════════════════════════════════════════════ */}
+
+      {/* ── Full-viewport video hero ── */}
+      {heroVideoFull && heroVideoSrc ? (
+        <div className="relative min-h-screen overflow-hidden bg-black">
+          {/* Background video */}
+          <video
+            src={heroVideoSrc}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+          {/* Gradient overlay — strong on left for text, fades right */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/55 to-black/25" />
+          {/* Bottom vignette for scroll affordance */}
+          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/60 to-transparent" />
+
+          {/* Breadcrumb */}
+          <div className="relative z-10 border-b border-white/[0.08] pt-[60px] md:pt-[68px]">
+            <div className="mx-auto max-w-7xl px-5 py-3 md:px-8">
+              <nav className="flex flex-wrap items-center gap-1.5 text-[0.58rem] font-bold uppercase tracking-[0.2em] text-white/30">
+                {breadcrumb.map((crumb, i) => (
+                  <span key={crumb.href} className="flex items-center gap-1.5">
+                    {i > 0 && <span className="opacity-40">/</span>}
+                    {i < breadcrumb.length - 1 ? (
+                      <Link href={crumb.href} className="transition-opacity hover:opacity-80">{crumb.label}</Link>
+                    ) : (
+                      <span className="text-white/55">{crumb.label}</span>
+                    )}
+                  </span>
+                ))}
+              </nav>
+            </div>
+          </div>
+
+          {/* Hero text — bottom-left aligned */}
+          <div className="relative z-10 flex min-h-[calc(100vh-52px)] items-end pb-16 md:pb-20 lg:pb-24">
+            <div className="mx-auto w-full max-w-7xl px-5 md:px-8">
+              <div className="max-w-2xl">
+                <span className="mb-4 inline-block rounded-full bg-[#FECE00] px-3 py-1 text-[0.52rem] font-bold uppercase tracking-[0.18em] text-[#0A0A0A]">
+                  {badge}
+                </span>
+                <p className="mb-2 text-[0.6rem] font-bold uppercase tracking-[0.26em] text-white/45">
+                  {eyebrow}
+                </p>
+                <h1 className="font-display text-[clamp(2rem,5vw,3.8rem)] font-black leading-[0.92] tracking-tight text-white">
+                  {headline}{' '}
+                  <span className="text-[#FECE00]">{headlineAccent}</span>
+                </h1>
+                <p className="mt-5 max-w-[500px] text-[0.88rem] leading-relaxed text-white/55">
+                  {subline}
+                </p>
+
+                {/* Stats */}
+                {heroStats && heroStats.length > 0 && (
+                  <div className="mt-7 flex flex-wrap gap-3">
+                    {heroStats.map((s) => (
+                      <div key={s.label} className="rounded-xl border border-white/[0.12] bg-white/[0.06] px-4 py-3 backdrop-blur-sm">
+                        <div className="font-display text-[1.3rem] font-black leading-none text-white">{s.val}</div>
+                        <div className="mt-1 text-[0.58rem] font-bold uppercase tracking-[0.14em] text-white/40">{s.label}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* CTAs */}
+                <div className="mt-8 flex flex-wrap items-center gap-3">
+                  <Link
+                    href={`/contact?product=${enquireSlug}`}
+                    className="rounded-full bg-[#FECE00] px-6 py-2.5 text-[0.65rem] font-bold uppercase tracking-[0.16em] text-[#0A0A0A] transition-opacity hover:opacity-85"
+                  >
+                    Enquire →
+                  </Link>
+                  <Link
+                    href={backHref}
+                    className="rounded-full border border-white/[0.14] px-6 py-2.5 text-[0.65rem] font-bold uppercase tracking-[0.16em] text-white/40 transition-all hover:border-white/[0.3] hover:text-white/65"
+                  >
+                    {backLabel}
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+
       <div className="relative overflow-hidden" style={{ background: secBg('hero') }}>
         {hero ? <LightGridTexture /> : <GridTexture />}
 
@@ -391,7 +521,7 @@ export default function ProductPageTemplate({
         <section className="relative">
         <div className="relative z-10 mx-auto max-w-7xl px-5 py-12 md:py-20 md:px-8 lg:py-28">
 
-          <div className={`grid gap-12 lg:gap-20 ${heroVideoId ? 'items-stretch lg:grid-cols-[1fr_1.3fr]' : 'lg:grid-cols-[1fr_1fr]'}`}>
+          <div className={`grid gap-12 lg:gap-20 ${(heroVideoId || heroVideoSrc) ? 'items-stretch lg:grid-cols-[1fr_1.3fr]' : 'lg:grid-cols-[1fr_1fr]'}`}>
             {/* Left — Text */}
             <div className="flex flex-col justify-center">
               <span
@@ -450,7 +580,49 @@ export default function ProductPageTemplate({
             </div>
 
             {/* Right — Hero image or video */}
-            {heroVideoId ? (
+            {heroVideoSrc ? (
+              <div className="w-full overflow-hidden rounded-[2.2rem]" style={{ aspectRatio: '16/9' }}>
+                <video
+                  src={heroVideoSrc}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  style={{ width: '100%', height: '100%', display: 'block', objectFit: 'fill' }}
+                  ref={(el) => { if (el) el.playbackRate = 1.5; }}
+                />
+              </div>
+            ) : heroVideoId ? (
+              heroVideoPortrait ? (
+                /* Portrait container — for Shorts (9:16) */
+                <div className="flex items-center justify-center">
+                  <div
+                    className="relative w-full max-w-[340px] overflow-hidden rounded-[2.2rem] bg-black"
+                    style={{ aspectRatio: '9/16' }}
+                    onMouseEnter={() => setShowSoundBtn(true)}
+                    onMouseLeave={() => setShowSoundBtn(false)}
+                  >
+                    <iframe
+                      ref={videoRef}
+                      src={`https://www.youtube.com/embed/${heroVideoId}?autoplay=1&mute=1&loop=1&playlist=${heroVideoId}&controls=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&iv_load_policy=3&showinfo=0`}
+                      title={heroImageLabel}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="absolute border-0"
+                      style={{ top: '-18%', left: '-15%', width: '130%', height: '136%', pointerEvents: 'none' }}
+                    />
+                    <div className="absolute inset-0 z-[5]" style={{ pointerEvents: 'all' }} />
+                    <button
+                      onClick={toggleSound}
+                      className={`absolute bottom-3 right-3 z-10 flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[0.6rem] font-bold uppercase tracking-[0.14em] backdrop-blur-sm transition-all duration-200 ${
+                        showSoundBtn ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                      } border-white/20 bg-black/50 text-white/60 hover:border-white/40 hover:text-white/90`}
+                    >
+                      {videoMuted ? '🔇' : '🔊'}
+                    </button>
+                  </div>
+                </div>
+              ) : (
               <div
                 className="relative min-h-[460px] w-full overflow-hidden rounded-[1.1rem] lg:h-full bg-black"
                 onMouseEnter={() => setShowSoundBtn(true)}
@@ -480,6 +652,7 @@ export default function ProductPageTemplate({
                   {videoMuted ? (<><span>🔇</span> Sound off</>) : (<><span>🔊</span> Sound on</>)}
                 </button>
               </div>
+              )
             ) : heroImageSrcs && heroImageSrcs.length > 1 ? (
               <div className="relative w-full overflow-hidden rounded-[1.2rem]">
                 <div className={`relative w-full overflow-hidden ${heroImageAspect ?? 'aspect-[16/9]'}`}>
@@ -522,7 +695,167 @@ export default function ProductPageTemplate({
           </div>
         </div>
         </section>
-      </div>{/* end breadcrumb+hero wrapper */}
+      </div>
+      )}
+
+      {/* ══════════════════════════════════════════════════════
+          S1b — IMAGE SHOWCASE (optional)
+      ══════════════════════════════════════════════════════ */}
+      {showcaseImages && showcaseImages.length >= 3 && (
+        <section className="bg-[#070809] py-12 md:py-16">
+          <div className="mx-auto max-w-7xl px-5 md:px-8">
+            {/* Eyebrow */}
+            <p className="mb-6 text-[0.56rem] font-bold uppercase tracking-[0.22em] text-[#FECE00]/45">
+              Installation Gallery
+            </p>
+            {/* 3-image editorial grid: large left + 2 stacked right */}
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-[1.55fr_1fr]">
+              {/* Left — hero image */}
+              <div className="relative overflow-hidden rounded-[1.4rem] bg-white/[0.04]" style={{ aspectRatio: '16/9' }}>
+                <Image
+                  src={showcaseImages[0].src}
+                  alt={showcaseImages[0].alt ?? 'Installation'}
+                  fill
+                  className="object-cover transition-transform duration-700 hover:scale-[1.03]"
+                  sizes="(max-width: 768px) 100vw, 60vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+              </div>
+              {/* Right — two stacked */}
+              <div className="flex flex-col gap-3">
+                {[showcaseImages[1], showcaseImages[2]].map((img, i) => (
+                  <div key={i} className="relative flex-1 overflow-hidden rounded-[1.4rem] bg-white/[0.04]" style={{ aspectRatio: '16/9' }}>
+                    <Image
+                      src={img.src}
+                      alt={img.alt ?? 'Installation'}
+                      fill
+                      className="object-cover transition-transform duration-700 hover:scale-[1.03]"
+                      sizes="(max-width: 768px) 100vw, 38vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ══════════════════════════════════════════════════════
+          S1b2 — PHOTO GALLERY (optional, labelled grid)
+      ══════════════════════════════════════════════════════ */}
+      {photoGallery && photoGallery.length > 0 && (
+        <section className="bg-[#070809] pb-14 pt-2">
+          <div className="mx-auto max-w-7xl px-5 md:px-8">
+            <div className="mb-6 flex items-center gap-3">
+              <p className="text-[0.56rem] font-bold uppercase tracking-[0.22em] text-[#FECE00]/45">
+                Installation Gallery
+              </p>
+              <div className="h-px flex-1 bg-white/[0.06]" />
+            </div>
+            {/* Top row: featured (2fr) + tall right (1fr) — stretches to match */}
+            <div className="mb-3 grid gap-3 md:grid-cols-[2fr_1fr]" style={{ minHeight: '380px' }}>
+              {photoGallery[0] && (
+                <div className="relative overflow-hidden rounded-[1.2rem] bg-white/[0.04]">
+                  <Image src={photoGallery[0].src} alt={photoGallery[0].label} fill priority className="object-cover transition-transform duration-700 hover:scale-[1.03]" sizes="(max-width: 768px) 100vw, 66vw" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                  <span className="absolute bottom-2.5 left-2.5 rounded-full bg-black/60 px-2.5 py-1 text-[0.48rem] font-bold uppercase tracking-[0.14em] text-white/80 backdrop-blur-sm">{photoGallery[0].label}</span>
+                </div>
+              )}
+              {photoGallery[1] && (
+                <div className="relative overflow-hidden rounded-[1.2rem] bg-white/[0.04]">
+                  <Image src={photoGallery[1].src} alt={photoGallery[1].label} fill className={`${photoGallery[1].fit === 'contain' ? 'object-contain p-4' : 'object-cover'} transition-transform duration-700 hover:scale-[1.03]`} sizes="(max-width: 768px) 100vw, 33vw" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                  <span className="absolute bottom-2.5 left-2.5 rounded-full bg-black/60 px-2.5 py-1 text-[0.48rem] font-bold uppercase tracking-[0.14em] text-white/80 backdrop-blur-sm">{photoGallery[1].label}</span>
+                </div>
+              )}
+            </div>
+            {/* Bottom row: remaining images in 3-col grid */}
+            {photoGallery.length > 2 && (
+              <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+                {photoGallery.slice(2).map((img) => (
+                  <div key={img.src} className="relative overflow-hidden rounded-[1.2rem] bg-white/[0.04]" style={{ aspectRatio: '3/4' }}>
+                    <Image src={img.src} alt={img.label} fill className={`${img.fit === 'contain' ? 'object-contain p-3' : 'object-cover'} transition-transform duration-700 hover:scale-[1.03]`} style={{ objectPosition: img.objectPosition ?? 'center center' }} sizes="(max-width: 768px) 50vw, 33vw" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                    <span className="absolute bottom-2.5 left-2.5 rounded-full bg-black/60 px-2.5 py-1 text-[0.48rem] font-bold uppercase tracking-[0.14em] text-white/80 backdrop-blur-sm">{img.label}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
+      {/* ══════════════════════════════════════════════════════
+          S1c — MEDIA SHOWCASE (stacked sections, one per variant)
+      ══════════════════════════════════════════════════════ */}
+      {mediaShowcase && mediaShowcase.map((v, i) => (
+        <section key={v.id} className="relative overflow-hidden py-14 md:py-20" style={{ background: i % 2 === 0 ? '#f1efea' : '#070809' }}>
+          {i % 2 === 0 ? <LightGridTexture /> : <GridTexture />}
+          <div className="relative z-10 mx-auto max-w-7xl px-5 md:px-8">
+            <div className="mb-7 flex items-center gap-3">
+              <span className={`rounded-full px-3 py-1 text-[0.55rem] font-black uppercase tracking-[0.18em] ${i % 2 === 0 ? 'bg-[#0A0A0A] text-[#FECE00]' : 'bg-[#FECE00] text-[#0A0A0A]'}`}>
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span className={`font-display text-[1.4rem] font-black uppercase tracking-[0.18em] leading-none ${i % 2 === 0 ? 'text-[#0A0A0A]' : 'text-white'}`}>
+                {v.label}
+              </span>
+              <div className={`ml-2 h-px flex-1 ${i % 2 === 0 ? 'bg-[#0A0A0A]/15' : 'bg-white/10'}`} />
+            </div>
+            <div className="grid items-stretch gap-3 md:grid-cols-[1fr_1fr]" style={{ minHeight: '720px' }}>
+              {/* Left — video fills full column height */}
+              <div className="relative min-h-[260px] overflow-hidden rounded-[1.4rem] bg-black md:h-full">
+                {v.videoSrc && (
+                  <video src={v.videoSrc} autoPlay muted loop playsInline className="absolute inset-0 h-full w-full object-cover" />
+                )}
+              </div>
+              {/* Right — 2×2 grid if 4 imgs, else 2+1 layout */}
+              {v.images.length >= 4 ? (
+                <div className="grid grid-cols-2 gap-3">
+                  {v.images.slice(0, 4).map((img, j) => (
+                    <div key={j} className="relative overflow-hidden rounded-[1.4rem] bg-white/[0.04]">
+                      <Image src={img.src} alt={img.alt ?? v.label} fill className="object-cover transition-transform duration-700 hover:scale-[1.03]" style={{ objectPosition: img.objectPosition ?? 'center center' }} sizes="25vw" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                      {img.alt && (
+                        <span className="absolute bottom-2 left-2 rounded-full bg-black/55 px-2.5 py-1 text-[0.48rem] font-bold uppercase tracking-[0.14em] text-white/80 backdrop-blur-sm">
+                          {img.alt}
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="grid gap-3" style={{ gridTemplateRows: '2.5fr 1.5fr' }}>
+                  <div className="grid grid-cols-2 gap-3">
+                    {v.images.slice(0, 2).map((img, j) => (
+                      <div key={j} className="relative overflow-hidden rounded-[1.4rem] bg-white/[0.04]">
+                        <Image src={img.src} alt={img.alt ?? v.label} fill className="object-cover transition-transform duration-700 hover:scale-[1.03]" sizes="25vw" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                        {img.alt && (
+                          <span className="absolute bottom-2 left-2 rounded-full bg-black/55 px-2.5 py-1 text-[0.48rem] font-bold uppercase tracking-[0.14em] text-white/80 backdrop-blur-sm">
+                            {img.alt}
+                          </span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                  {v.images[2] && (
+                    <div className="relative overflow-hidden rounded-[1.4rem] bg-white/[0.04]">
+                      <Image src={v.images[2].src} alt={v.images[2].alt ?? v.label} fill className="object-cover transition-transform duration-700 hover:scale-[1.03]" sizes="(max-width: 768px) 100vw, 38vw" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                      {v.images[2].alt && (
+                        <span className="absolute bottom-2 left-2 rounded-full bg-black/55 px-2.5 py-1 text-[0.48rem] font-bold uppercase tracking-[0.14em] text-white/80 backdrop-blur-sm">
+                          {v.images[2].alt}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+      ))}
 
       {/* ══════════════════════════════════════════════════════
           S2 — PROBLEM / VALUE PROPOSITION
@@ -758,8 +1091,8 @@ export default function ProductPageTemplate({
 
             {/* Active step detail — always dark card */}
             {currStep && (
-              <div className="grid gap-8 rounded-[1.2rem] border border-white/[0.08] bg-[#070809] p-6 md:p-8 lg:grid-cols-[1fr_1.5fr] lg:gap-12">
-                <div>
+              <div className={`grid gap-8 rounded-[1.2rem] border border-white/[0.08] bg-[#070809] p-6 md:p-8 lg:gap-12 ${currStep.videoId ? 'lg:grid-cols-[1fr_320px]' : 'lg:grid-cols-[1fr_1.5fr]'}`}>
+                <div className="flex flex-col justify-center">
                   <div className="mb-3 font-display text-[2rem] font-black leading-none text-white/10 md:text-[3rem]">
                     {currStep.num}
                   </div>
@@ -770,13 +1103,40 @@ export default function ProductPageTemplate({
                     {currStep.body}
                   </p>
                 </div>
-                <ImageViewport
-                  label={currStep.imageLabel ?? `Step ${currStep.num} · ${currStep.title}`}
-                  src={currStep.imageSrc}
-                  isDark={true}
-                  aspect="aspect-[4/3]"
-                  cover
-                />
+                {currStep.videoId ? (
+                  <div className="relative w-full overflow-hidden rounded-[1.1rem] bg-black" style={{ aspectRatio: '9/16' }}>
+                    <iframe
+                      ref={stepVideoRef}
+                      src={`https://www.youtube.com/embed/${currStep.videoId}?autoplay=1&mute=1&loop=1&playlist=${currStep.videoId}&controls=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&iv_load_policy=3&showinfo=0`}
+                      title={currStep.title}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="absolute left-0 border-0"
+                      style={{ top: '-18%', width: '100%', height: '136%', pointerEvents: 'none' }}
+                    />
+                    {/* Transparent overlay — blocks YouTube hover UI */}
+                    <div className="absolute inset-0 z-[5]" style={{ pointerEvents: 'all' }} />
+                    {/* Volume toggle */}
+                    <button
+                      onClick={toggleStepSound}
+                      className={`absolute bottom-3 right-3 z-10 flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[0.6rem] font-bold uppercase tracking-[0.14em] backdrop-blur-sm transition-all duration-200 ${
+                        stepVideoMuted
+                          ? 'border-white/20 bg-black/50 text-white/60 hover:border-white/40 hover:text-white/90'
+                          : 'border-[#FECE00]/40 bg-black/50 text-[#FECE00] hover:border-[#FECE00]/70'
+                      }`}
+                    >
+                      {stepVideoMuted ? '🔇' : '🔊'}
+                    </button>
+                  </div>
+                ) : (
+                  <ImageViewport
+                    label={currStep.imageLabel ?? `Step ${currStep.num} · ${currStep.title}`}
+                    src={currStep.imageSrc}
+                    isDark={true}
+                    aspect="aspect-[4/3]"
+                    cover
+                  />
+                )}
               </div>
             )}
           </div>

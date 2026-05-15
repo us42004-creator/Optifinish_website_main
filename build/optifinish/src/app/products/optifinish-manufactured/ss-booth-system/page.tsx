@@ -27,6 +27,13 @@ export default function SSBoothSystemPage() {
         { val: '0', label: 'Visible exhaust particulate' },
       ]}
       heroImageLabel="SS Booth System · full SS-304 powder coating booth"
+      photoGallery={[
+        { src: '/images/products/optifinish-manufactured/SS_BOOTH/ss-booth-master-shot.png', label: 'SS-304 Booth — Full View' },
+        { src: '/images/products/optifinish-manufactured/SS_BOOTH/automatic-booth-inside.jpeg', label: 'Booth Interior' },
+        { src: '/images/products/optifinish-manufactured/SS_BOOTH/ss-booth.jpeg', label: 'Exterior Build' },
+        { src: '/images/products/optifinish-manufactured/SS_BOOTH/booth-exterior.jpeg', label: 'Booth Exterior' },
+        { src: '/images/products/optifinish-manufactured/SS_BOOTH/manual1.jpg', label: 'Manual Configuration' },
+      ]}
       enquireSlug="ss-booth-system"
       backHref="/products/optifinish-manufactured"
       backLabel="← Back to Manufactured"
@@ -60,6 +67,12 @@ export default function SSBoothSystemPage() {
         'Precision-engineered components for clean environments',
         'Architectural hardware for high-specification projects',
         'Laboratory and scientific equipment finishing',
+      ]}
+      applicationImages={[
+        { src: '/images/products/optifinish-manufactured/SS_BOOTH/application/pharma-sector-machinery.jpg', label: 'Pharma sector machinery' },
+        { src: '/images/products/optifinish-manufactured/SS_BOOTH/application/food-machinery-processing-lines.webp', label: 'Food machinery & processing lines' },
+        { src: '/images/products/optifinish-manufactured/SS_BOOTH/application/lab-scientific-equipment.webp', label: 'Lab & scientific equipment' },
+        { src: '/images/products/optifinish-manufactured/SS_BOOTH/application/architectural-hardware.webp', label: 'Architectural hardware' },
       ]}
 
       compatibilityTags={[

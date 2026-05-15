@@ -17,7 +17,7 @@ const GEMA_SLIDES = [
 const DURR_SLIDES = [
   { src: '/images/products/durr/hvlp-gun/hvlp.png',                               label: 'EcoGun HVLP — Spray Gun', contain: true },
   { src: '/images/products/durr/air-assist-gun/durr-ecogun-aa-auto-01.jpg',        label: 'EcoGun AA — Air Assist Auto' },
-  { src: '/images/products/durr/electrostatic-gun/durr-ecogun-ec-01.webp',         label: 'EcoGun EC — Electrostatic Gun' },
+  { src: '/images/products/durr/electrostatic-gun/durr-ecogun-ec-01.webp',         label: 'EcoGun EC — Electrostatic Gun', contain: true },
   { src: '/images/products/durr/cup-gun/ecogun_910_durr.jpg',                      label: 'EcoGun 910 — Cup Gun' },
   { src: '/images/products/durr/ecopump/csm_duerr-pumps-ecopump-vp.webp',          label: 'EcoPump VP — Pump System' },
   { src: '/images/products/durr/bell-atomiser/durr-ecobell3-01.webp',               label: 'EcoBell3 — Rotary Atomiser' },

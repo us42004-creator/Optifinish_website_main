@@ -27,6 +27,17 @@ export default function CycloneDustCollectorPage() {
         { val: 'CPCB', label: 'Compliant exhaust' },
       ]}
       heroImageLabel="Cyclone & Dust Collector · powder recovery system"
+      heroImageSrc="/images/products/optifinish-manufactured/cyclone-dust-collector/dust-collector-cyclone-01.png"
+      heroImageAspect="aspect-[5/4]"
+      heroImageCover
+      photoGallery={[
+        { src: '/images/products/optifinish-manufactured/cyclone-dust-collector/cyclone-dust-collect.png', label: 'Full Line View' },
+        { src: '/images/products/optifinish-manufactured/cyclone-dust-collector/cyclone001.png', label: 'Compact Setup' },
+        { src: '/images/products/optifinish-manufactured/cyclone-dust-collector/cyclone.png', label: 'Factory Installation' },
+        { src: '/images/products/optifinish-manufactured/cyclone-dust-collector/cyclone-and-dust-collector.png', label: 'Cyclone & Dust Collector', objectPosition: '65% center' },
+        { src: '/images/products/optifinish-manufactured/cyclone-dust-collector/dust-collector.jpeg', label: 'Dust Collector Unit' },
+      ]}
+
       enquireSlug="cyclone-dust-collector"
       backHref="/products/optifinish-manufactured"
       backLabel="← Back to Manufactured"
@@ -60,6 +71,14 @@ export default function CycloneDustCollectorPage() {
         'Retrofit for CPCB-compliant exhaust on older systems',
         'High-volume production lines with large airflow requirements',
         'Operations running metallic or fine-particle powder types',
+      ]}
+      applicationImages={[
+        { src: '/images/products/gema/automatic-gun/application/automotive-components.jpg', label: 'Automotive components' },
+        { src: '/images/products/durr/electrostatic-gun/application/consumer-goods-and-appliances.jpg', label: 'White goods & appliances' },
+        { src: '/images/products/vinayak/liquid-paint/application/furniture.jpg', label: 'Steel & aluminium furniture' },
+        { src: '/images/products/gema/automatic-gun/application/agri-equipment.jpg', label: 'Agricultural & construction equipment' },
+        { src: '/images/products/gema/automatic-gun/application/electrical-equipments.webp', label: 'Electrical enclosures & switchgear' },
+        { src: '/images/products/gema/automatic-gun/application/powder-coated-aluminium-extrusion.webp', label: 'Architectural aluminium profiles' },
       ]}
 
       compatibilityTags={[

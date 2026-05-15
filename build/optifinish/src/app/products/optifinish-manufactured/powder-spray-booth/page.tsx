@@ -27,6 +27,32 @@ export default function PowderSprayBoothPage() {
         { val: 'CPCB', label: 'Compliant exhaust' },
       ]}
       heroImageLabel="Powder Spray Booth · Venturi recovery system"
+      heroVideoId="F6vcqBwbsOQ"
+      heroVideoPortrait
+      mediaShowcase={[
+        {
+          id: 'automatic',
+          label: 'Automatic',
+          videoSrc: '/images/products/spray-booth/automatic/automatic-booth.mp4',
+          images: [
+            { src: '/images/products/spray-booth/automatic/automatic-booth-inside.jpeg', alt: 'Automatic booth interior' },
+            { src: '/images/products/spray-booth/automatic/ss-booth.jpeg', alt: 'SS-304 booth construction' },
+            { src: '/images/products/spray-booth/automatic/plastic-booth-cropped.jpeg', alt: 'Plastic modular booth' },
+            { src: '/images/products/spray-booth/automatic/automatic-booth-guns.jpeg', alt: 'Automatic gun setup' },
+          ],
+        },
+        {
+          id: 'manual',
+          label: 'Manual',
+          videoSrc: '/images/products/spray-booth/manual/manual-booth.mp4',
+          images: [
+            { src: '/images/products/spray-booth/manual/manual1.jpg', alt: 'Manual powder spray booth' },
+            { src: '/images/products/spray-booth/manual/booth-exterior.jpeg', alt: 'Booth exterior view' },
+            { src: '/images/products/spray-booth/manual/car-painting-booth.jpeg', alt: 'Car painting booth' },
+            { src: '/images/products/spray-booth/manual/semi_automatic_booth.jpeg', alt: 'Semi-automatic booth', objectPosition: '20% center' },
+          ],
+        },
+      ]}
       enquireSlug="powder-spray-booth"
       backHref="/products/optifinish-manufactured"
       backLabel="← Back to Manufactured"
@@ -62,6 +88,14 @@ export default function PowderSprayBoothPage() {
         'Architectural aluminium profiles',
         'Custom colour batch operations',
         'Metallic and textured powder applications',
+      ]}
+      applicationImages={[
+        { src: '/images/products/gema/automatic-gun/application/automotive-components.jpg', label: 'Automotive components' },
+        { src: '/images/products/durr/electrostatic-gun/application/consumer-goods-and-appliances.jpg', label: 'White goods & appliances' },
+        { src: '/images/products/vinayak/liquid-paint/application/furniture.jpg', label: 'Steel & aluminium furniture' },
+        { src: '/images/products/gema/automatic-gun/application/agri-equipment.jpg', label: 'Agricultural & construction equipment' },
+        { src: '/images/products/gema/automatic-gun/application/electrical-equipments.webp', label: 'Electrical enclosures & switchgear' },
+        { src: '/images/products/gema/automatic-gun/application/powder-coated-aluminium-extrusion.webp', label: 'Architectural aluminium profiles' },
       ]}
 
       compatibilityTags={[

@@ -27,6 +27,12 @@ export default function PowderCoatingPlantPage() {
         { val: '14+', label: 'Years in production' },
       ]}
       heroImageLabel="Powder Coating Plant · conveyorised line"
+      heroVideoSrc="/images/products/powder-coating-plant/powder-coating-hero.mp4"
+      showcaseImages={[
+        { src: '/images/products/optifinish-manufactured/powder-coating-plant/plant2.jpeg', alt: 'Powder coating plant installation — conveyor line' },
+        { src: '/images/products/optifinish-manufactured/powder-coating-plant/plant1.jpeg', alt: 'Powder coating plant — booth and recovery system' },
+        { src: '/images/products/optifinish-manufactured/powder-coating-plant/plant3.jpeg', alt: 'Powder coating plant — full line overview' },
+      ]}
       enquireSlug="powder-coating-plant"
       backHref="/products/optifinish-manufactured"
       backLabel="← Back to Manufactured"
@@ -54,7 +60,7 @@ export default function PowderCoatingPlantPage() {
           num: '02',
           title: 'Powder application',
           body: 'Dried parts enter the powder spray booth where manual or automatic guns electrostatically apply powder coating. The integrated Venturi recovery system reclaims over-sprayed powder at 92–96% efficiency and returns it to the hopper.',
-          imageLabel: 'Step 02 · powder spray booth — electrostatic gun application',
+          videoId: 'F6vcqBwbsOQ',
         },
         {
           num: '03',
@@ -85,6 +91,14 @@ export default function PowderCoatingPlantPage() {
         'Electrical enclosures and switchgear panels',
         'Architectural aluminium profiles and extrusions',
         'General engineering fabrications',
+      ]}
+      applicationImages={[
+        { src: '/images/products/gema/automatic-gun/application/automotive-components.jpg', label: 'Automotive components' },
+        { src: '/images/products/durr/electrostatic-gun/application/consumer-goods-and-appliances.jpg', label: 'White goods & appliances' },
+        { src: '/images/products/vinayak/liquid-paint/application/furniture.jpg', label: 'Steel & aluminium furniture' },
+        { src: '/images/products/gema/automatic-gun/application/agri-equipment.jpg', label: 'Agricultural & construction equipment' },
+        { src: '/images/products/gema/automatic-gun/application/electrical-equipments.webp', label: 'Electrical enclosures & switchgear' },
+        { src: '/images/products/gema/automatic-gun/application/powder-coated-aluminium-extrusion.webp', label: 'Architectural aluminium profiles' },
       ]}
 
       compatibilityTags={[
