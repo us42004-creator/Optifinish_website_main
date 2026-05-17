@@ -138,12 +138,7 @@ export default function GEMAReciproactorsPage() {
       partnerNote="GEMA reciprocators are supplied and supported in India by OptiFinish. Full line integration design — booth, reciprocator, gun, and control — is handled by the OptiFinish engineering team."
 
       /* S8 — References */
-      references={[
-        {
-          client: 'Amaze Power Pvt Ltd',
-          desc: 'GEMA reciprocator system integrated with automatic gun array in full conveyorised powder coating line — supplied and commissioned by OptiFinish.',
-        },
-      ]}
+      references={[]}
 
       /* S9 — Related */
       related={[

@@ -155,12 +155,7 @@ export default function GEMAAutomaticGunPage() {
       partnerNote="Supplied and supported in India by OptiFinish — authorised GEMA partner. All GEMA guns are covered by GEMA's global warranty programme and supported locally by the OptiFinish service team."
 
       /* S8 — References */
-      references={[
-        {
-          client: 'Amaze Power Pvt Ltd',
-          desc: 'GEMA automatic gun system integrated into full conveyorised powder coating line — supplied and commissioned by OptiFinish.',
-        },
-      ]}
+      references={[]}
 
       /* S9 — Related */
       related={[

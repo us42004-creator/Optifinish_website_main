@@ -108,16 +108,7 @@ export default function PowderSprayBoothPage() {
         'GEMA OC08 OptiCentre',
       ]}
 
-      references={[
-        {
-          client: 'Amaze Power Pvt Ltd',
-          desc: '5000 × 1800 × 2660 mm powder spray booth — 150 Nm³/h airflow, 50kW total installed load. Integrated with conveyorised line and GEMA automatic gun system.',
-        },
-        {
-          client: 'Skand Creations',
-          desc: 'Powder coating plant quotation including booth and cyclone recovery system.',
-        },
-      ]}
+      references={[]}
 
       related={[
         {

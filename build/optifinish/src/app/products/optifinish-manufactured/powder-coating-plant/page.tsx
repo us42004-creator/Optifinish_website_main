@@ -55,6 +55,7 @@ export default function PowderCoatingPlantPage() {
           title: 'Pretreatment',
           body: 'Parts enter the pretreatment tunnel — a multi-stage spray or dip system that cleans, degreases, phosphates, and passivates the substrate. Proper PT is the foundation of coating adhesion. OptiFinish designs PT stages from 3-stage basic iron phosphate to full 7-stage zinc phosphate systems.',
           imageLabel: 'Step 01 · pretreatment tunnel — cleaning and phosphating',
+          imageSrc: '/images/products/optifinish-manufactured/powder-coating-plant/step-01-pretreatment.svg',
         },
         {
           num: '02',
@@ -67,6 +68,7 @@ export default function PowderCoatingPlantPage() {
           title: 'Curing and unloading',
           body: 'Powder-coated parts enter the curing oven at 180–200°C where the powder melts, flows, and cross-links into a hard, durable coating. After the cooling section, parts are unloaded from the conveyor — the full cycle is continuous, automatic, and repeatable at the specified line speed.',
           imageLabel: 'Step 03 · curing oven and part unloading',
+          imageSrc: '/images/products/optifinish-manufactured/powder-coating-plant/step-03-curing-unloading.svg',
         },
       ]}
       howItWorksTitle="PT → Booth → Oven → Unload"
@@ -111,12 +113,7 @@ export default function PowderCoatingPlantPage() {
         'GEMA OC08 OptiCentre',
       ]}
 
-      references={[
-        {
-          client: 'National Steel Products · Sarkar Enterprises · MR Tubes',
-          desc: 'National Steel Products — 5-stage PT, conveyorised line, 1800mm part height, full commissioning. Sarkar Enterprises — 7-stage PT + 2-zone curing oven. MR Tubes, Greater Noida — full plant GA per VACSPL-0062 drawing.',
-        },
-      ]}
+      references={[]}
 
       related={[
         {

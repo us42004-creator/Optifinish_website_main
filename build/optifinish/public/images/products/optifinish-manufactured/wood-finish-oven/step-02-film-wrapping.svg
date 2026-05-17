@@ -1,0 +1,86 @@
+<svg viewBox="0 0 760 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,-apple-system,sans-serif">
+  <defs>
+    <radialGradient id="filmglow02" cx="45%" cy="55%" r="40%">
+      <stop offset="0%" stop-color="#A07035" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#A07035" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="bg02" cx="50%" cy="50%" r="65%">
+      <stop offset="0%" stop-color="#12161a"/>
+      <stop offset="100%" stop-color="#070809"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="760" height="520" fill="url(#bg02)"/>
+
+  <!-- Grid -->
+  <line x1="0"   y1="95"  x2="760" y2="95"  stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="0"   y1="190" x2="760" y2="190" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="0"   y1="285" x2="760" y2="285" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="0"   y1="380" x2="760" y2="380" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="0"   y1="475" x2="760" y2="475" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="95"  y1="0"   x2="95"  y2="520" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="190" y1="0"   x2="190" y2="520" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="285" y1="0"   x2="285" y2="520" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="380" y1="0"   x2="380" y2="520" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="475" y1="0"   x2="475" y2="520" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="570" y1="0"   x2="570" y2="520" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="665" y1="0"   x2="665" y2="520" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+
+  <!-- Warm glow behind profile -->
+  <ellipse cx="350" cy="255" rx="210" ry="115" fill="url(#filmglow02)"/>
+
+  <!-- ═══ FILM ROLL — left, cylindrical side view ═══ -->
+  <rect x="52" y="192" width="52" height="118" rx="5"
+        fill="rgba(155,100,40,0.20)" stroke="rgba(190,130,55,0.50)" stroke-width="1.5"/>
+  <ellipse cx="78" cy="192" rx="26" ry="7"
+           fill="rgba(155,100,40,0.30)" stroke="rgba(190,130,55,0.48)" stroke-width="1.5"/>
+  <ellipse cx="78" cy="310" rx="26" ry="7"
+           fill="rgba(155,100,40,0.22)" stroke="rgba(190,130,55,0.35)" stroke-width="1.5"/>
+  <!-- Grain lines on roll -->
+  <line x1="57" y1="220" x2="99" y2="220" stroke="rgba(160,100,38,0.32)" stroke-width="1"/>
+  <line x1="57" y1="240" x2="99" y2="240" stroke="rgba(160,100,38,0.25)" stroke-width="1"/>
+  <line x1="57" y1="260" x2="99" y2="260" stroke="rgba(160,100,38,0.32)" stroke-width="1"/>
+  <line x1="57" y1="280" x2="99" y2="280" stroke="rgba(160,100,38,0.25)" stroke-width="1"/>
+  <!-- Core -->
+  <rect x="70" y="192" width="16" height="118" rx="3"
+        fill="rgba(90,60,22,0.20)" stroke="rgba(140,90,35,0.28)" stroke-width="1"/>
+
+  <!-- Film feed arrow (roll → profile) -->
+  <path d="M108,251 L183,251" fill="none" stroke="rgba(190,130,55,0.38)" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <polygon points="183,247 192,251 183,255" fill="rgba(190,130,55,0.55)"/>
+
+  <!-- ═══ ALUMINIUM PROFILE — 3/4 perspective ═══ -->
+  <!-- Top face -->
+  <polygon points="200,155 265,115 535,115 470,155"
+           fill="rgba(210,220,235,0.18)" stroke="rgba(210,220,235,0.45)" stroke-width="1.5"/>
+  <!-- Front face -->
+  <rect x="200" y="155" width="270" height="160" rx="2"
+        fill="rgba(145,158,175,0.14)" stroke="rgba(200,212,228,0.38)" stroke-width="1.5"/>
+  <!-- Right face -->
+  <polygon points="470,155 535,115 535,280 470,315"
+           fill="rgba(100,112,128,0.12)" stroke="rgba(200,212,228,0.22)" stroke-width="1.5"/>
+  <!-- Internal channels -->
+  <line x1="315" y1="155" x2="315" y2="315" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="6,5"/>
+  <line x1="395" y1="155" x2="395" y2="315" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="6,5"/>
+
+  <!-- ═══ SUBLIMATION FILM LAYER — dashed amber outline, slightly larger ═══ -->
+  <polygon points="191,145 258,104 548,104 481,145"
+           fill="none" stroke="rgba(195,138,55,0.60)" stroke-width="1.5" stroke-dasharray="9,5"/>
+  <rect x="191" y="145" width="280" height="178" rx="2"
+        fill="rgba(190,130,50,0.05)" stroke="rgba(195,138,55,0.52)" stroke-width="1.5" stroke-dasharray="9,5"/>
+  <polygon points="471,145 548,104 548,323 471,365"
+           fill="none" stroke="rgba(195,138,55,0.30)" stroke-width="1.5" stroke-dasharray="9,5"/>
+
+  <!-- ── ANNOTATION: SUBLIMATION FILM (top, amber) ── -->
+  <line x1="380" y1="102" x2="380" y2="70" stroke="rgba(195,138,55,0.50)" stroke-width="1" stroke-dasharray="4,3"/>
+  <circle cx="380" cy="69" r="2.5" fill="rgba(195,138,55,0.72)"/>
+  <text x="390" y="64" fill="rgba(195,138,55,0.85)" font-size="11" font-weight="600" letter-spacing="0.14em">SUBLIMATION FILM</text>
+
+  <!-- ── ANNOTATION: ALUMINIUM PROFILE (bottom, white) ── -->
+  <line x1="200" y1="340" x2="200" y2="383" stroke="rgba(255,255,255,0.22)" stroke-width="1" stroke-dasharray="4,3"/>
+  <circle cx="200" cy="384" r="2" fill="rgba(255,255,255,0.35)"/>
+  <text x="100" y="406" fill="rgba(255,255,255,0.38)" font-size="10" letter-spacing="0.14em">ALUMINIUM PROFILE</text>
+
+  <!-- Ghost step number -->
+  <text x="540" y="490" fill="rgba(254,206,0,0.055)" font-size="155" font-weight="900" letter-spacing="-0.05em">02</text>
+</svg>

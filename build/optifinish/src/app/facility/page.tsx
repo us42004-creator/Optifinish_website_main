@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 
 /* ─── Photo groups ─── */
 
-// S1 hero — factory floor, dramatic
-const HERO_BG = '/images/facility/facility-44.jpg';
+// S1 hero — building exterior (touchup)
+const HERO_BG = '/images/facility/factory_exterior_touchup.png';
 
 // S2 capabilities — office & meeting rooms (4 distinct shots, no duplicates)
 const OFFICE_GRID = [
@@ -57,7 +57,7 @@ const GALLERY = [
   '/images/facility/facility-30.jpg',  // manufacturing floor with workers
   '/images/facility/facility-65.jpg',  // equipment assembly close-up
   '/images/facility/facility-68.jpg',  // overhead conveyor rail (different angle from MFG_ROW/67)
-  '/images/facility/facility-71.jpg',  // building entrance / stairwell
+  '/images/facility/factory_exterior_touchup.png',  // building exterior — Greater Noida
 ];
 
 const STATS = [
@@ -376,7 +376,7 @@ export default function FacilityPage() {
               <h2 className="font-display text-[clamp(1.8rem,3vw,2.8rem)] font-black leading-[0.92] tracking-[-0.04em] text-[#0A0A0A]">
                 In-house R&amp;D.
                 <br />
-                <span className="text-[#FECE00]" style={{ WebkitTextStroke: '1.5px #0A0A0A' }}>
+                <span className="text-[#FECE00]">
                   Real coating trials.
                 </span>
               </h2>

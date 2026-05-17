@@ -116,12 +116,7 @@ export default function GEMAOptiCentrePage() {
       partnerNote="Supplied and integrated by OptiFinish. Full line design including OC08 integration with booth, cyclone, reciprocator, and gun is handled by the OptiFinish engineering team."
 
       /* S8 — References */
-      references={[
-        {
-          client: 'Amaze Power Pvt Ltd',
-          desc: 'Full GEMA automatic line including OptiGun, ZA reciprocator, and powder management — supplied and commissioned by OptiFinish.',
-        },
-      ]}
+      references={[]}
 
       /* S9 — Related */
       related={[

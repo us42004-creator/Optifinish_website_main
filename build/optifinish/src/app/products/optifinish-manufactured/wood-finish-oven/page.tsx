@@ -27,6 +27,15 @@ export default function WoodFinishOvenPage() {
         { val: '7m', label: 'Standard profile length' },
       ]}
       heroImageLabel="Wood Finish Oven · sublimation transfer chamber"
+      heroImageSrc="/images/products/optifinish-manufactured/wood-finish-oven/img-2.png"
+      heroImageAspect="aspect-[16/9]"
+      heroImageCover
+      photoGallery={[
+        { src: '/images/products/optifinish-manufactured/wood-finish-oven/img_4.png', label: 'Side View — Profile Conveyor' },
+        { src: '/images/products/optifinish-manufactured/wood-finish-oven/img-1.png', label: 'Wood Finish Oven — Full Line', objectPosition: '20% center' },
+        { src: '/images/products/optifinish-manufactured/wood-finish-oven/img-2.png', label: 'Wide Angle — Full Installation' },
+        { src: '/images/products/optifinish-manufactured/wood-finish-oven/image3.png', label: 'Detail — Oven End Section' },
+      ]}
       enquireSlug="wood-finish-oven"
       backHref="/products/optifinish-manufactured"
       backLabel="← Back to Manufactured"
@@ -49,18 +58,21 @@ export default function WoodFinishOvenPage() {
           title: 'Powder coating the profile',
           body: 'The aluminium extrusion is first powder-coated with a base powder (typically white or a specified colour) and cured in the standard powder coating oven. This powder-coated surface is the substrate that receives the sublimation dye — it must be fully cured and of correct quality before wrapping.',
           imageLabel: 'Step 01 · aluminium profile powder coated and cured',
+          imageSrc: '/images/products/optifinish-manufactured/wood-finish-oven/step-01-powder-coating.svg',
         },
         {
           num: '02',
           title: 'Film wrapping and oven loading',
           body: 'The powder-coated profile is tightly wrapped in a sublimation transfer film carrying the printed decorative pattern. The wrapped profile is loaded into the Wood Finish Oven — either as a batch or on a dedicated handling system for long profiles.',
           imageLabel: 'Step 02 · profile wrapped in sublimation film, loaded into oven',
+          imageSrc: '/images/products/optifinish-manufactured/wood-finish-oven/step-02-film-wrapping.svg',
         },
         {
           num: '03',
           title: 'Thermal transfer and finish',
           body: 'The oven heats to 190–220°C — the exact temperature depending on the film specification. Heat causes the dye carrier in the film to sublimate (convert directly to gas), and the dye molecules diffuse into the powder coating surface under heat and pressure. The result: a permanently bonded, photo-realistic decorative finish that\'s integral to the coating.',
           imageLabel: 'Step 03 · dye thermally diffused into powder surface — permanent finish',
+          imageSrc: '/images/products/optifinish-manufactured/wood-finish-oven/step-03-thermal-transfer.svg',
         },
       ]}
       howItWorksTitle="Coat, wrap, transfer"
@@ -79,10 +91,16 @@ export default function WoodFinishOvenPage() {
       applications={[
         'Architectural aluminium doors and windows',
         'Curtain wall profiles and systems',
-        'Aluminium furniture frames and components',
-        'Decorative extrusions for interior design projects',
+        'Aluminium wall profiles and cladding',
         'Architectural hardware requiring wood-grain or stone effect finish',
         'Aluminium composite panel profiles',
+      ]}
+      applicationImages={[
+        { src: '/images/products/optifinish-manufactured/wood-finish-oven/application/wood-finish-aluminium-door.avif', label: 'Architectural aluminium doors & windows' },
+        { src: '/images/products/optifinish-manufactured/wood-finish-oven/application/curtain-wall-profiles.png', label: 'Curtain wall profiles & systems' },
+        { src: '/images/products/optifinish-manufactured/wood-finish-oven/application/aluminium-wall-profile.webp', label: 'Aluminium wall profiles & cladding' },
+        { src: '/images/products/optifinish-manufactured/wood-finish-oven/application/architectural-hardware-wood-grain.webp', label: 'Architectural hardware — wood-grain & stone effects' },
+        { src: '/images/products/optifinish-manufactured/wood-finish-oven/application/aluminium-composite-panel-profiles.webp', label: 'Aluminium composite panel profiles' },
       ]}
 
       compatibilityTags={[

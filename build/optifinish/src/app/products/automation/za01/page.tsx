@@ -99,12 +99,7 @@ export default function ZA01Page() {
       ]}
 
       /* S8 — References */
-      references={[
-        {
-          client: 'OptiFinish Greater Noida',
-          desc: 'Designed and manufactured in-house at OptiFinish\'s Greater Noida R&D facility. Deployed across multiple customer installations alongside OptiFinish booth and oven systems.',
-        },
-      ]}
+      references={[]}
 
       /* S9 — Related */
       related={[

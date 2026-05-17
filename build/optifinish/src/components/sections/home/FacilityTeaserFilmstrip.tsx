@@ -33,7 +33,7 @@ const FACILITY_PHOTOS = [
 
 // Exterior 2×2 grid
 const EXTERIOR_PHOTOS = [
-  { src: '/images/facility/facility-47.jpg', label: 'Facility interior' },
+  { src: '/images/facility/factory_exterior_touchup.png', label: 'Greater Noida facility exterior' },
   { src: '/images/facility/facility-67.jpg', label: 'Facility interior' },
   { src: '/images/facility/facility-19.jpg', label: 'Facility interior' },
   { src: '/images/facility/facility-78.jpg', label: 'Facility interior' },

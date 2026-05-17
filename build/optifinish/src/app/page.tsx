@@ -18,9 +18,11 @@ export default function Home() {
       {/* S2 — Light */}
       <ProprietaryAutomation />
       {/* S3 — Dark */}
-      <Suspense fallback={null}>
-        <WhatWeOffer />
-      </Suspense>
+      <div id="products-section">
+        <Suspense fallback={null}>
+          <WhatWeOffer />
+        </Suspense>
+      </div>
       {/* S4 — Light/warm */}
       <FacilityTeaserFilmstrip />
       {/* S4b — Dark slim — Global multinational narrative */}

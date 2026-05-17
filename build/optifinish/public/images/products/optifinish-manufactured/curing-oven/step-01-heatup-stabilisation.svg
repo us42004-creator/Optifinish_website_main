@@ -1,0 +1,117 @@
+<svg viewBox="0 0 760 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,-apple-system,sans-serif">
+  <defs>
+    <radialGradient id="ovenglow01" cx="38%" cy="55%" r="42%">
+      <stop offset="0%" stop-color="#FF6B20" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#FF6B20" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="co_bg01" cx="50%" cy="50%" r="65%">
+      <stop offset="0%" stop-color="#12161a"/>
+      <stop offset="100%" stop-color="#070809"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="760" height="520" fill="url(#co_bg01)"/>
+
+  <!-- Grid -->
+  <line x1="0"   y1="95"  x2="760" y2="95"  stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="0"   y1="190" x2="760" y2="190" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="0"   y1="285" x2="760" y2="285" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="0"   y1="380" x2="760" y2="380" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="0"   y1="475" x2="760" y2="475" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="95"  y1="0"   x2="95"  y2="520" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="190" y1="0"   x2="190" y2="520" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="285" y1="0"   x2="285" y2="520" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="380" y1="0"   x2="380" y2="520" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="475" y1="0"   x2="475" y2="520" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="570" y1="0"   x2="570" y2="520" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="665" y1="0"   x2="665" y2="520" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+
+  <!-- Heat glow inside oven area -->
+  <ellipse cx="295" cy="290" rx="220" ry="130" fill="url(#ovenglow01)"/>
+
+  <!-- ═══ OVEN FRONT-FACE VIEW ═══ -->
+  <!-- Outer shell -->
+  <rect x="80" y="110" width="430" height="310" rx="8"
+        fill="rgba(28,32,38,0.70)" stroke="rgba(175,185,198,0.30)" stroke-width="2"/>
+  <!-- Insulation band — top -->
+  <rect x="80" y="110" width="430" height="22" rx="8"
+        fill="rgba(50,55,62,0.60)" stroke="rgba(175,185,198,0.22)" stroke-width="1"/>
+  <!-- Insulation band — bottom -->
+  <rect x="80" y="398" width="430" height="22" rx="8"
+        fill="rgba(50,55,62,0.60)" stroke="rgba(175,185,198,0.22)" stroke-width="1"/>
+  <!-- Interior cavity -->
+  <rect x="100" y="132" width="390" height="266" rx="4" fill="rgba(254,100,20,0.04)"/>
+
+  <!-- ═══ BURNER — top mounted ═══ -->
+  <!-- Burner block -->
+  <rect x="130" y="115" width="70" height="14" rx="3"
+        fill="rgba(220,90,25,0.45)" stroke="rgba(240,115,35,0.55)" stroke-width="1"/>
+  <!-- Flame wisps -->
+  <path d="M148,129 Q152,145 148,158" fill="none" stroke="rgba(254,140,30,0.60)" stroke-width="2"/>
+  <path d="M158,129 Q163,148 158,162" fill="none" stroke="rgba(254,160,40,0.55)" stroke-width="2"/>
+  <path d="M168,129 Q172,145 168,158" fill="none" stroke="rgba(254,140,30,0.60)" stroke-width="2"/>
+  <path d="M178,129 Q182,146 178,159" fill="none" stroke="rgba(254,160,40,0.50)" stroke-width="2"/>
+  <path d="M188,129 Q191,144 188,157" fill="none" stroke="rgba(254,140,30,0.55)" stroke-width="2"/>
+
+  <!-- ═══ RECIRCULATION FAN — inside oven, left ═══ -->
+  <circle cx="215" cy="285" r="68"
+          fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="1.5"/>
+  <!-- Fan blades (4 lines) -->
+  <line x1="215" y1="217" x2="215" y2="353" stroke="rgba(200,210,220,0.22)" stroke-width="2"/>
+  <line x1="147" y1="285" x2="283" y2="285" stroke="rgba(200,210,220,0.22)" stroke-width="2"/>
+  <line x1="167" y1="237" x2="263" y2="333" stroke="rgba(200,210,220,0.16)" stroke-width="1.5"/>
+  <line x1="263" y1="237" x2="167" y2="333" stroke="rgba(200,210,220,0.16)" stroke-width="1.5"/>
+  <!-- Fan hub -->
+  <circle cx="215" cy="285" r="10"
+          fill="rgba(80,90,100,0.50)" stroke="rgba(180,185,195,0.38)" stroke-width="1.5"/>
+  <!-- Fan rotation arrow -->
+  <path d="M215,217 Q285,225 283,285" fill="none" stroke="rgba(200,210,220,0.25)" stroke-width="1" stroke-dasharray="5,4"/>
+  <polygon points="280,284 288,290 282,295" fill="rgba(200,210,220,0.30)"/>
+
+  <!-- ═══ HEAT CIRCULATION ARROWS — inside oven ═══ -->
+  <!-- Arrows showing hot air movement right of fan -->
+  <path d="M310,180 Q380,180 395,220" fill="none" stroke="rgba(254,120,30,0.28)" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <polygon points="391,218 398,226 404,219" fill="rgba(254,120,30,0.35)"/>
+  <path d="M310,390 Q380,390 395,355" fill="none" stroke="rgba(254,120,30,0.25)" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <polygon points="391,357 398,349 404,356" fill="rgba(254,120,30,0.30)"/>
+
+  <!-- Heat wave lines inside oven -->
+  <path d="M350,185 Q360,200 350,215 Q340,230 350,245" fill="none" stroke="rgba(254,110,25,0.32)" stroke-width="1.5"/>
+  <path d="M400,185 Q410,200 400,215 Q390,230 400,245" fill="none" stroke="rgba(254,110,25,0.26)" stroke-width="1.5"/>
+  <path d="M450,185 Q460,200 450,215 Q440,230 450,245" fill="none" stroke="rgba(254,110,25,0.30)" stroke-width="1.5"/>
+
+  <!-- ═══ PID CONTROLLER — right of oven ═══ -->
+  <!-- Controller panel -->
+  <rect x="545" y="182" width="148" height="100" rx="6"
+        fill="rgba(28,32,38,0.80)" stroke="rgba(175,185,198,0.35)" stroke-width="1.5"/>
+  <!-- Screen -->
+  <rect x="558" y="194" width="88" height="48" rx="3"
+        fill="rgba(10,14,18,0.85)" stroke="rgba(80,160,80,0.40)" stroke-width="1"/>
+  <!-- Temperature display text -->
+  <text x="566" y="218" fill="rgba(80,200,80,0.80)" font-size="14" font-weight="700" letter-spacing="0.05em">195°C</text>
+  <text x="566" y="234" fill="rgba(80,200,80,0.45)" font-size="9" letter-spacing="0.08em">SETPOINT</text>
+  <!-- Buttons -->
+  <rect x="558" y="250" width="18" height="18" rx="3" fill="rgba(70,80,92,0.55)" stroke="rgba(140,150,165,0.30)" stroke-width="1"/>
+  <rect x="582" y="250" width="18" height="18" rx="3" fill="rgba(70,80,92,0.55)" stroke="rgba(140,150,165,0.30)" stroke-width="1"/>
+  <rect x="606" y="250" width="18" height="18" rx="3" fill="rgba(254,206,0,0.25)" stroke="rgba(254,206,0,0.40)" stroke-width="1"/>
+  <!-- Connection wire from PID to oven -->
+  <path d="M545,232 L510,232" fill="none" stroke="rgba(175,185,198,0.25)" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <circle cx="510" cy="232" r="2" fill="rgba(175,185,198,0.35)"/>
+
+  <!-- ═══ ±5°C BADGE ═══ -->
+  <rect x="310" y="334" width="132" height="26" rx="13"
+        fill="rgba(254,206,0,0.12)" stroke="rgba(254,206,0,0.42)" stroke-width="1.5"/>
+  <text x="324" y="351" fill="rgba(254,206,0,0.85)" font-size="11" font-weight="700" letter-spacing="0.10em">±5°C UNIFORM</text>
+
+  <!-- ── ANNOTATION: ECOFLAME BURNER (top-left, orange) ── -->
+  <line x1="165" y1="128" x2="165" y2="88" stroke="rgba(240,115,35,0.45)" stroke-width="1" stroke-dasharray="4,3"/>
+  <circle cx="165" cy="87" r="2.5" fill="rgba(240,115,35,0.68)"/>
+  <text x="175" y="82" fill="rgba(240,115,35,0.82)" font-size="11" font-weight="600" letter-spacing="0.14em">ECOFLAME BURNER</text>
+
+  <!-- ── ANNOTATION: PID CONTROLLER (right side, yellow) ── -->
+  <text x="648" y="172" fill="rgba(254,206,0,0.60)" font-size="10" font-weight="600" letter-spacing="0.14em">PID</text>
+  <text x="635" y="185" fill="rgba(254,206,0,0.55)" font-size="10" font-weight="600" letter-spacing="0.14em">CONTROLLER</text>
+
+  <!-- Ghost step number -->
+  <text x="540" y="490" fill="rgba(254,206,0,0.055)" font-size="155" font-weight="900" letter-spacing="-0.05em">01</text>
+</svg>

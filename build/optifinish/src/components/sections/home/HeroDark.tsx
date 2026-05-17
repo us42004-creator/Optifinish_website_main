@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import Link from 'next/link';
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -102,10 +101,16 @@ export default function HeroDark() {
             className="mt-16 flex justify-center"
             style={{ animation: 'hero-item-in 0.55s cubic-bezier(0.22,1,0.36,1) 0.38s both' }}
           >
-            <Link href="/products" className="panel-button dynamic-button dynamic-button-yellow">
+            <button
+              type="button"
+              onClick={() =>
+                document.getElementById('products-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+              }
+              className="panel-button dynamic-button dynamic-button-yellow"
+            >
               <span>Explore Products</span>
               <div className="dynamic-button-glow" />
-            </Link>
+            </button>
           </div>
 
           {/* Global provenance — muted flag strip */}

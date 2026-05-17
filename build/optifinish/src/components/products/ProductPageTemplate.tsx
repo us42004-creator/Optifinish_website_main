@@ -27,6 +27,7 @@ export interface Step {
   title: string;
   body: string;
   imageLabel?: string;
+  imageSrc?: string;
   videoId?: string;
 }
 
@@ -72,7 +73,9 @@ export interface ProductPageTemplateProps {
   heroVideoSrc?: string;
   heroVideoFull?: boolean;
   showcaseImages?: { src: string; alt?: string }[];
-  photoGallery?: { src: string; label: string; fit?: 'cover' | 'contain'; objectPosition?: string }[];
+  photoGallery?: { src: string; label: string; fit?: 'cover' | 'contain'; objectPosition?: string; aspectRatio?: string }[];
+  galleryLayout?: 'default' | 'bento';
+  galleryBottomSplit?: number; // how many images go in the first bottom row (e.g. 3 → 3-col, rest below)
   mediaShowcase?: MediaShowcaseVariant[];
   enquireSlug: string;
   backHref: string;
@@ -262,6 +265,8 @@ export default function ProductPageTemplate({
   heroVideoFull = false,
   showcaseImages,
   photoGallery,
+  galleryLayout = 'default',
+  galleryBottomSplit,
   mediaShowcase,
   enquireSlug,
   backHref,
@@ -753,34 +758,110 @@ export default function ProductPageTemplate({
               </p>
               <div className="h-px flex-1 bg-white/[0.06]" />
             </div>
-            {/* Top row: featured (2fr) + tall right (1fr) — stretches to match */}
-            <div className="mb-3 grid gap-3 md:grid-cols-[2fr_1fr]" style={{ minHeight: '380px' }}>
-              {photoGallery[0] && (
-                <div className="relative overflow-hidden rounded-[1.2rem] bg-white/[0.04]">
-                  <Image src={photoGallery[0].src} alt={photoGallery[0].label} fill priority className="object-cover transition-transform duration-700 hover:scale-[1.03]" sizes="(max-width: 768px) 100vw, 66vw" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                  <span className="absolute bottom-2.5 left-2.5 rounded-full bg-black/60 px-2.5 py-1 text-[0.48rem] font-bold uppercase tracking-[0.14em] text-white/80 backdrop-blur-sm">{photoGallery[0].label}</span>
-                </div>
-              )}
-              {photoGallery[1] && (
-                <div className="relative overflow-hidden rounded-[1.2rem] bg-white/[0.04]">
-                  <Image src={photoGallery[1].src} alt={photoGallery[1].label} fill className={`${photoGallery[1].fit === 'contain' ? 'object-contain p-4' : 'object-cover'} transition-transform duration-700 hover:scale-[1.03]`} sizes="(max-width: 768px) 100vw, 33vw" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                  <span className="absolute bottom-2.5 left-2.5 rounded-full bg-black/60 px-2.5 py-1 text-[0.48rem] font-bold uppercase tracking-[0.14em] text-white/80 backdrop-blur-sm">{photoGallery[1].label}</span>
-                </div>
-              )}
-            </div>
-            {/* Bottom row: remaining images in 3-col grid */}
-            {photoGallery.length > 2 && (
-              <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-                {photoGallery.slice(2).map((img) => (
-                  <div key={img.src} className="relative overflow-hidden rounded-[1.2rem] bg-white/[0.04]" style={{ aspectRatio: '3/4' }}>
-                    <Image src={img.src} alt={img.label} fill className={`${img.fit === 'contain' ? 'object-contain p-3' : 'object-cover'} transition-transform duration-700 hover:scale-[1.03]`} style={{ objectPosition: img.objectPosition ?? 'center center' }} sizes="(max-width: 768px) 50vw, 33vw" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                    <span className="absolute bottom-2.5 left-2.5 rounded-full bg-black/60 px-2.5 py-1 text-[0.48rem] font-bold uppercase tracking-[0.14em] text-white/80 backdrop-blur-sm">{img.label}</span>
+            {galleryLayout === 'bento' ? (
+              /* ── BENTO: 2 hero cols + 1 support col ── */
+              <div className="grid items-stretch gap-3 md:grid-cols-3" style={{ height: '700px' }}>
+
+                {/* Col 1 — Hero image, full height, object-cover */}
+                {photoGallery[0] && (
+                  <div className="relative overflow-hidden rounded-[1.2rem] bg-white/[0.06] h-full">
+                    <Image src={photoGallery[0].src} alt={photoGallery[0].label} fill priority
+                      className="object-cover transition-transform duration-700 hover:scale-[1.02]"
+                      style={{ objectPosition: photoGallery[0].objectPosition ?? 'center top' }}
+                      sizes="(max-width: 768px) 100vw, 35vw" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none" />
+                    <span className="absolute bottom-3 left-3 rounded-full bg-black/60 px-2.5 py-1 text-[0.48rem] font-bold uppercase tracking-[0.14em] text-white/80 backdrop-blur-sm">{photoGallery[0].label}</span>
                   </div>
-                ))}
+                )}
+
+                {/* Col 2 — Hero image, full height, object-cover */}
+                {photoGallery[1] && (
+                  <div className="relative overflow-hidden rounded-[1.2rem] bg-white/[0.04] h-full">
+                    <Image src={photoGallery[1].src} alt={photoGallery[1].label} fill priority
+                      className="object-cover transition-transform duration-700 hover:scale-[1.03]"
+                      style={{ objectPosition: photoGallery[1].objectPosition ?? 'center 8%' }}
+                      sizes="(max-width: 768px) 100vw, 35vw" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                    <span className="absolute bottom-3 left-3 rounded-full bg-black/60 px-2.5 py-1 text-[0.48rem] font-bold uppercase tracking-[0.14em] text-white/80 backdrop-blur-sm">{photoGallery[1].label}</span>
+                  </div>
+                )}
+
+                {/* Col 3 — Full height support image */}
+                {photoGallery[2] && (
+                  <div className="relative h-full overflow-hidden rounded-[1.2rem] bg-[#e6e6ea]">
+                    <Image src={photoGallery[2].src} alt={photoGallery[2].label} fill
+                      className={`${photoGallery[2].fit === 'contain' ? 'object-contain' : 'object-cover'} transition-transform duration-700 hover:scale-[1.03]`}
+                      style={{ objectPosition: photoGallery[2].objectPosition ?? 'center center' }}
+                      sizes="(max-width: 768px) 100vw, 33vw" />
+                    <span className="absolute bottom-3 left-3 rounded-full bg-black/60 px-2.5 py-1 text-[0.48rem] font-bold uppercase tracking-[0.14em] text-white/80 backdrop-blur-sm">{photoGallery[2].label}</span>
+                  </div>
+                )}
               </div>
+            ) : (
+              <>
+                {/* Top row: featured (2fr) + tall right (1fr) — stretches to match */}
+                <div className="mb-3 grid gap-3 md:grid-cols-[2fr_1fr]" style={{ minHeight: '480px' }}>
+                  {photoGallery[0] && (
+                    <div className="relative overflow-hidden rounded-[1.2rem] bg-white/[0.04]">
+                      <Image src={photoGallery[0].src} alt={photoGallery[0].label} fill priority className="object-cover transition-transform duration-700 hover:scale-[1.03]" sizes="(max-width: 768px) 100vw, 66vw" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                      <span className="absolute bottom-2.5 left-2.5 rounded-full bg-black/60 px-2.5 py-1 text-[0.48rem] font-bold uppercase tracking-[0.14em] text-white/80 backdrop-blur-sm">{photoGallery[0].label}</span>
+                    </div>
+                  )}
+                  {photoGallery[1] && (
+                    <div className="relative overflow-hidden rounded-[1.2rem] bg-white/[0.04]">
+                      <Image src={photoGallery[1].src} alt={photoGallery[1].label} fill className={`${photoGallery[1].fit === 'contain' ? 'object-contain p-4' : 'object-cover'} transition-transform duration-700 hover:scale-[1.03]`} style={{ objectPosition: photoGallery[1].objectPosition ?? 'center center' }} sizes="(max-width: 768px) 100vw, 33vw" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                      <span className="absolute bottom-2.5 left-2.5 rounded-full bg-black/60 px-2.5 py-1 text-[0.48rem] font-bold uppercase tracking-[0.14em] text-white/80 backdrop-blur-sm">{photoGallery[1].label}</span>
+                    </div>
+                  )}
+                </div>
+                {/* Bottom rows: split if galleryBottomSplit set, else auto 2-col/3-col */}
+                {photoGallery.length > 2 && (() => {
+                  const bottomImgs = photoGallery.slice(2);
+                  const renderCell = (img: typeof bottomImgs[0]) => (
+                    <div key={img.src} className="relative overflow-hidden rounded-[1.2rem] bg-white/[0.04]" style={{ aspectRatio: img.aspectRatio ?? '3/4' }}>
+                      <Image src={img.src} alt={img.label} fill quality={90} className={`${img.fit === 'contain' ? 'object-contain p-3' : 'object-cover'} transition-transform duration-700 hover:scale-[1.03]`} style={{ objectPosition: img.objectPosition ?? 'center center' }} sizes="(max-width: 768px) 100vw, 33vw" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                      <span className="absolute bottom-2.5 left-2.5 rounded-full bg-black/60 px-2.5 py-1 text-[0.48rem] font-bold uppercase tracking-[0.14em] text-white/80 backdrop-blur-sm">{img.label}</span>
+                    </div>
+                  );
+                  if (galleryBottomSplit) {
+                    const firstRow = bottomImgs.slice(0, galleryBottomSplit);
+                    const restRows = bottomImgs.slice(galleryBottomSplit);
+                    return (
+                      <>
+                        <div className={`grid gap-3 grid-cols-2 md:grid-cols-${galleryBottomSplit}`}>
+                          {firstRow.map(renderCell)}
+                        </div>
+                        {restRows.length > 0 && (
+                          <div className={`grid gap-3 grid-cols-2 ${restRows.length === 4 ? 'md:grid-cols-2' : restRows.length === 1 ? 'md:grid-cols-1' : 'md:grid-cols-3'}`}>
+                            {restRows.map(renderCell)}
+                          </div>
+                        )}
+                      </>
+                    );
+                  }
+                  if (bottomImgs.length === 2) {
+                    return (
+                      <div className="grid grid-cols-2 gap-3 md:grid-cols-[1fr_2fr]" style={{ minHeight: '480px' }}>
+                        {bottomImgs.map((img) => (
+                          <div key={img.src} className="relative overflow-hidden rounded-[1.2rem] bg-white/[0.04]">
+                            <Image src={img.src} alt={img.label} fill quality={90} className={`${img.fit === 'contain' ? 'object-contain p-3' : 'object-cover'} transition-transform duration-700 hover:scale-[1.03]`} style={{ objectPosition: img.objectPosition ?? 'center center' }} sizes="(max-width: 768px) 100vw, 50vw" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                            <span className="absolute bottom-2.5 left-2.5 rounded-full bg-black/60 px-2.5 py-1 text-[0.48rem] font-bold uppercase tracking-[0.14em] text-white/80 backdrop-blur-sm">{img.label}</span>
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  }
+                  return (
+                    <div className={`grid grid-cols-2 gap-3 ${bottomImgs.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-3'}`} style={{ minHeight: '480px' }}>
+                      {bottomImgs.map(renderCell)}
+                    </div>
+                  );
+                })()}
+              </>
             )}
           </div>
         </section>
@@ -982,69 +1063,75 @@ export default function ProductPageTemplate({
 
             {/* Active variant detail — card always dark */}
             {currVariant && (
-              <div className="grid gap-8 rounded-[1.2rem] border border-white/[0.08] bg-[#070809] p-6 md:p-8 lg:grid-cols-[1.2fr_1fr] lg:gap-12">
-                <div>
-                  <span className="mb-3 inline-block rounded-full bg-[#FECE00]/10 px-3 py-1 text-[0.52rem] font-bold uppercase tracking-[0.14em] text-[#FECE00]/80">
-                    {currVariant.tag}
-                  </span>
-                  <h3 className="font-display text-[1.5rem] font-black leading-tight tracking-tight text-white">
-                    {currVariant.headline}
-                  </h3>
-                  <p className="mt-3 text-[0.84rem] leading-relaxed text-white/55">
-                    {currVariant.body}
-                  </p>
-                  <ul className="mt-4 flex flex-col gap-2.5 border-t border-white/[0.08] pt-4">
-                    {currVariant.specs.map((sp) => (
-                      <li
-                        key={sp.l}
-                        className="flex justify-between gap-6 text-[0.72rem] text-white/55"
-                      >
-                        <span className="opacity-70">{sp.l}</span>
-                        <span className="text-right font-semibold text-white">{sp.v}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                {currVariant.videoId ? (
-                  <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[1.1rem] bg-black">
-                    <iframe
-                      src={`https://www.youtube.com/embed/${currVariant.videoId}?autoplay=1&mute=1&loop=1&playlist=${currVariant.videoId}&controls=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&iv_load_policy=3&showinfo=0`}
-                      title={currVariant.imageLabel}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      className="border-0"
-                      style={{ position: 'absolute', top: '-16%', left: '0', width: '100%', height: '132%' }}
+              <div className="rounded-[1.2rem] border border-white/[0.08] bg-[#070809] p-6 md:p-8">
+                {/* SVG diagram — full width when present */}
+                {currVariant.imageSrc && !currVariant.videoId && (
+                  <div className="relative mb-6 overflow-hidden rounded-[0.9rem] bg-[#070809]">
+                    <div className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_70%_70%_at_50%_50%,rgba(254,206,0,0.04)_0%,transparent_70%)]" />
+                    <Image
+                      src={currVariant.imageSrc}
+                      alt={currVariant.imageLabel}
+                      width={760}
+                      height={480}
+                      quality={92}
+                      className="relative z-[2] w-full h-auto"
                     />
-                    <div className="absolute inset-0 z-[5]" />
                   </div>
-                ) : currVariant.imageSrc ? (
-                  <div className="relative flex items-center justify-center overflow-hidden rounded-[1.1rem] bg-[#0c0c0e] py-8 md:py-10">
-                    <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_50%,rgba(254,206,0,0.055)_0%,transparent_70%)]" />
-                    <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_40%_40%_at_50%_50%,rgba(255,255,255,0.03)_0%,transparent_60%)]" />
-                    <div className="relative mx-auto w-[58%] max-w-[280px]">
-                      <div className="relative aspect-square w-full">
-                        <Image
-                          src={currVariant.imageSrc}
-                          alt={currVariant.imageLabel}
-                          fill
-                          quality={92}
-                          className="object-contain drop-shadow-[0_8px_40px_rgba(0,0,0,0.55)]"
-                          sizes="320px"
-                        />
-                      </div>
-                    </div>
-                    <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#0c0c0e]/60 to-transparent" />
-                  </div>
-                ) : (
-                  <ImageViewport
-                    label={currVariant.imageLabel}
-                    src={currVariant.imageSrc}
-                    isDark={true}
-                    aspect="aspect-[4/3]"
-                    cover={variantImageCover}
-                    noBg
-                  />
                 )}
+
+                {/* Text + specs row */}
+                <div className={currVariant.imageSrc && !currVariant.videoId ? 'grid gap-6 border-t border-white/[0.06] pt-6 lg:grid-cols-[1.3fr_1fr] lg:gap-10' : 'grid gap-8 lg:grid-cols-[1.2fr_1fr] lg:gap-12'}>
+                  <div>
+                    <span className="mb-3 inline-block rounded-full bg-[#FECE00]/10 px-3 py-1 text-[0.52rem] font-bold uppercase tracking-[0.14em] text-[#FECE00]/80">
+                      {currVariant.tag}
+                    </span>
+                    <h3 className="font-display text-[1.5rem] font-black leading-tight tracking-tight text-white">
+                      {currVariant.headline}
+                    </h3>
+                    <p className="mt-3 text-[0.84rem] leading-relaxed text-white/55">
+                      {currVariant.body}
+                    </p>
+                  </div>
+                  <div>
+                    <ul className="flex flex-col gap-2.5 border-t border-white/[0.08] pt-4 lg:border-t-0 lg:pt-0">
+                      {currVariant.specs.map((sp) => (
+                        <li
+                          key={sp.l}
+                          className="flex justify-between gap-6 text-[0.72rem] text-white/55"
+                        >
+                          <span className="opacity-70">{sp.l}</span>
+                          <span className="text-right font-semibold text-white">{sp.v}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Video or placeholder — only shown when no imageSrc */}
+                  {!currVariant.imageSrc && (
+                    currVariant.videoId ? (
+                      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[1.1rem] bg-black">
+                        <iframe
+                          src={`https://www.youtube.com/embed/${currVariant.videoId}?autoplay=1&mute=1&loop=1&playlist=${currVariant.videoId}&controls=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&iv_load_policy=3&showinfo=0`}
+                          title={currVariant.imageLabel}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          className="border-0"
+                          style={{ position: 'absolute', top: '-16%', left: '0', width: '100%', height: '132%' }}
+                        />
+                        <div className="absolute inset-0 z-[5]" />
+                      </div>
+                    ) : (
+                      <ImageViewport
+                        label={currVariant.imageLabel}
+                        src={currVariant.imageSrc}
+                        isDark={true}
+                        aspect="aspect-[4/3]"
+                        cover={variantImageCover}
+                        noBg
+                      />
+                    )
+                  )}
+                </div>
               </div>
             )}
           </div>

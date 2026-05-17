@@ -57,6 +57,7 @@ export default function PTLinePage() {
             { l: 'Best for', v: 'Clean steel; indoor or mild environment applications' },
           ],
           imageLabel: '3-stage PT line · basic iron phosphate',
+          imageSrc: '/images/products/optifinish-manufactured/pt-line/variant-3stage.svg',
         },
         {
           id: 'stage5',
@@ -72,6 +73,7 @@ export default function PTLinePage() {
             { l: 'Stage 5', v: 'DI water rinse' },
           ],
           imageLabel: '5-stage PT line · derusting and passivation',
+          imageSrc: '/images/products/optifinish-manufactured/pt-line/variant-5stage.svg',
         },
         {
           id: 'stage7',
@@ -86,6 +88,7 @@ export default function PTLinePage() {
             { l: 'Best for', v: 'Automotive, infrastructure, heavy engineering' },
           ],
           imageLabel: '7-stage zinc phosphate PT line',
+          imageSrc: '/images/products/optifinish-manufactured/pt-line/variant-7stage.svg',
         },
       ]}
       variantsSectionTitle="Select the right PT process for your application"
@@ -109,6 +112,14 @@ export default function PTLinePage() {
         'Architectural aluminium profiles (anodise-quality pretreatment)',
         'Conveyorised and batch production lines',
       ]}
+      applicationImages={[
+        { src: '/images/products/optifinish-manufactured/pt-line/application/structural-steel-fabrication.jpg', label: 'Steel fabrications & architectural structures' },
+        { src: '/images/products/optifinish-manufactured/pt-line/application/automotive-components.jpg', label: 'Automotive components — high corrosion protection' },
+        { src: '/images/products/optifinish-manufactured/pt-line/application/agricultural-machinery.jpg', label: 'Agricultural machinery & outdoor equipment' },
+        { src: '/images/products/optifinish-manufactured/pt-line/application/electrical-enclosures.webp', label: 'Electrical panels & switchgear enclosures' },
+        { src: '/images/products/optifinish-manufactured/pt-line/application/aluminium-profiles.jpg', label: 'Architectural aluminium profiles' },
+        { src: '/images/products/optifinish-manufactured/pt-line/application/conveyor-coating-line.jpg', label: 'Conveyorised & batch production lines' },
+      ]}
 
       compatibilityTags={[
         'All OptiFinish powder spray booths',
@@ -117,12 +128,7 @@ export default function PTLinePage() {
         'Any powder coating gun system',
       ]}
 
-      references={[
-        {
-          client: 'National Steel Products · Hotage Overseas',
-          desc: 'National Steel Products — 5-stage PT line with spray tunnel, integrated into full conveyorised line. Hotage Overseas — PT line integrated with CED system for automotive body parts.',
-        },
-      ]}
+      references={[]}
 
       related={[
         {

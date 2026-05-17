@@ -27,6 +27,13 @@ export default function PlasticBoothPage() {
         { val: '1–3', label: 'Gun operation range' },
       ]}
       heroImageLabel="Plastic / PP Booth · polypropylene construction"
+      photoGallery={[
+        { src: '/images/products/optifinish-manufactured/plastic-booth/pp_booth.png', label: 'PP Booth — Full Installation' },
+        { src: '/images/products/optifinish-manufactured/plastic-booth/img_plastic.jpeg', label: 'Plastic Booth — Interior View' },
+        { src: '/images/products/optifinish-manufactured/plastic-booth/plastic-booth-cropped.jpeg', label: 'Plastic Booth — Exterior View' },
+        { src: '/images/products/optifinish-manufactured/plastic-booth/plastic_gema_1.jpeg', label: 'Interior — Gun & Recovery System' },
+        { src: '/images/products/optifinish-manufactured/plastic-booth/plas.png', label: 'Booth with GEMA Gun Setup' },
+      ]}
       enquireSlug="plastic-booth"
       backHref="/products/optifinish-manufactured"
       backLabel="← Back to Manufactured"
@@ -60,6 +67,14 @@ export default function PlasticBoothPage() {
         'Decorative powder coating and architectural metalwork',
         'Educational and training facilities',
         'Operations starting with manual coating before scaling to automation',
+      ]}
+      applicationImages={[
+        { src: '/images/products/optifinish-manufactured/plastic-booth/application/almirah.webp', label: 'Steel almirahs & furniture' },
+        { src: '/images/products/optifinish-manufactured/plastic-booth/application/furniture.jpg', label: 'Furniture & decorative components' },
+        { src: '/images/products/optifinish-manufactured/plastic-booth/application/metal-gates.jpg', label: 'Metal gates & grilles' },
+        { src: '/images/products/optifinish-manufactured/plastic-booth/application/kitchen-cabinets.jpg', label: 'Kitchen cabinets & interiors' },
+        { src: '/images/products/optifinish-manufactured/plastic-booth/application/electrical-enclosures.webp', label: 'Electrical enclosures' },
+        { src: '/images/products/optifinish-manufactured/plastic-booth/application/metal-fabrication.jpg', label: 'Small fabricated components' },
       ]}
 
       compatibilityTags={[

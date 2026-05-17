@@ -27,6 +27,12 @@ export default function LiquidSprayBoothPage() {
         { val: 'Custom', label: 'Dimensions available' },
       ]}
       heroImageLabel="Liquid Spray Booth · downdraft design"
+      galleryLayout="bento"
+      photoGallery={[
+        { src: '/images/products/optifinish-manufactured/liquid-spray-booth/car-painting-booth.jpg', label: 'Car Painting Booth' },
+        { src: '/images/products/optifinish-manufactured/liquid-spray-booth/liquid-single-operator-booth.png', label: 'Single Operator Booth', objectPosition: 'center 8%' },
+        { src: '/images/products/optifinish-manufactured/liquid-spray-booth/cartridge-filter-booth.png', label: 'Cartridge Filter Booth', fit: 'contain' },
+      ]}
       enquireSlug="liquid-spray-booth"
       backHref="/products/optifinish-manufactured"
       backLabel="← Back to Manufactured"
@@ -56,12 +62,20 @@ export default function LiquidSprayBoothPage() {
       ]}
 
       applications={[
-        'Liquid topcoat application for automotive, furniture, and industrial parts',
-        'Touch-up and repair spray operations',
-        'Primer application before powder coating',
-        'Wood lacquering and furniture finishing',
-        'High-volume solvent-based paint application',
-        'Water-based paint application for low-VOC requirements',
+        'Automotive body & component painting',
+        'Wood lacquering & solid furniture finishing',
+        'Industrial parts liquid topcoat application',
+        'High-build industrial topcoat',
+        'Appliance & consumer goods coating lines',
+        'High-production paint lines',
+      ]}
+      applicationImages={[
+        { src: '/images/products/optifinish-manufactured/liquid-spray-booth/application/car-spray.jpeg', label: 'Automotive body & component painting' },
+        { src: '/images/products/optifinish-manufactured/liquid-spray-booth/application/solid-wood-lacquer.webp', label: 'Wood lacquering & furniture finishing' },
+        { src: '/images/products/optifinish-manufactured/liquid-spray-booth/application/industrial-metal-parts-coating.jpg', label: 'Industrial parts liquid topcoat' },
+        { src: '/images/products/optifinish-manufactured/liquid-spray-booth/application/high-build-industrial-top-coat.jpeg', label: 'High-build industrial topcoat' },
+        { src: '/images/products/optifinish-manufactured/liquid-spray-booth/application/appliance-coating-line.jpg', label: 'Appliance & consumer goods coating' },
+        { src: '/images/products/optifinish-manufactured/liquid-spray-booth/application/high-production-paint-line.webp', label: 'High-production paint lines' },
       ]}
 
       compatibilityTags={[
@@ -71,12 +85,7 @@ export default function LiquidSprayBoothPage() {
         'All standard liquid spray gun brands',
       ]}
 
-      references={[
-        {
-          client: 'Steelux Furniture Pvt Ltd',
-          desc: 'Dry booth 2450 × 1500 × 1800 mm, 7000 CMH, 5HP suction motor — including lighting and full electrical. Total system cost ₹3.3 L.',
-        },
-      ]}
+      references={[]}
 
       related={[
         {

@@ -27,6 +27,14 @@ export default function CuringOvenPage() {
         { val: 'Custom', label: 'Dimensioned to your line' },
       ]}
       heroImageLabel="Curing Oven · gas-fired tunnel oven"
+      galleryBottomSplit={3}
+      photoGallery={[
+        { src: '/images/products/optifinish-manufactured/curing-oven/industrial_oven.png', label: 'Curing Oven — Full Build' },
+        { src: '/images/products/optifinish-manufactured/curing-oven/oven-nic.png', label: 'Oven Detail' },
+        { src: '/images/products/optifinish-manufactured/curing-oven/yellow-oven-lighting.png', label: 'Interior — Heat Chamber' },
+        { src: '/images/products/optifinish-manufactured/curing-oven/oven-cleaned.png', label: 'Curing Oven — Exterior View' },
+        { src: '/images/products/optifinish-manufactured/curing-oven/oven-inside.png', label: 'Chamber Interior' },
+      ]}
       enquireSlug="curing-oven"
       backHref="/products/optifinish-manufactured"
       backLabel="← Back to Manufactured"
@@ -49,18 +57,21 @@ export default function CuringOvenPage() {
           title: 'Heat-up and stabilisation',
           body: 'The Ecoflame gas burner or electric element brings the oven to the set temperature. The 5HP recirculation fan circulates hot air through the distribution plenum — the PID controller stabilises the chamber temperature to within ±5°C of setpoint before production begins.',
           imageLabel: 'Step 01 · oven heat-up and temperature stabilisation',
+          imageSrc: '/images/products/optifinish-manufactured/curing-oven/step-01-heatup-stabilisation.svg',
         },
         {
           num: '02',
           title: 'Part entry and cure',
           body: 'Powder-coated parts enter the oven on the conveyor (tunnel oven) or are loaded directly (batch oven). At 180–200°C, the powder coating melts, flows, and begins cross-linking. The digital controller maintains temperature throughout the cure cycle — typically 15–20 minutes at temperature for standard polyester powder.',
           imageLabel: 'Step 02 · parts entering curing oven at temperature',
+          imageSrc: '/images/products/optifinish-manufactured/curing-oven/step-02-part-entry-cure.svg',
         },
         {
           num: '03',
           title: 'Cooling and unloading',
           body: 'Fully cured parts exit the oven into the cooling section. The over-temperature safety cutoff monitors the chamber continuously — protecting parts from accidental over-cure. Cured parts are hard, cross-linked, and ready for unloading and inspection.',
           imageLabel: 'Step 03 · cured parts exiting oven into cooling section',
+          imageSrc: '/images/products/optifinish-manufactured/curing-oven/step-03-cooling-unloading.svg',
         },
       ]}
       howItWorksTitle="Heat, cure, cool"
@@ -84,6 +95,13 @@ export default function CuringOvenPage() {
         'Sublimation transfer (wood-grain finish on aluminium profiles)',
         'Paint baking and heat-curing of adhesives',
       ]}
+      applicationImages={[
+        { src: '/images/products/optifinish-manufactured/curing-oven/application/powder-coating-cure.webp', label: 'Powder coating cure — polyester, epoxy, PU' },
+        { src: '/images/products/optifinish-manufactured/curing-oven/application/conveyor-line-dry-off.jpg', label: 'Pretreatment line dry-off & pre-heating' },
+        { src: '/images/products/optifinish-manufactured/curing-oven/application/automotive-ecoat-cure.jpg', label: 'E-coat (electrocoat) cure' },
+        { src: '/images/products/optifinish-manufactured/curing-oven/application/aluminium-sublimation-transfer.jpg', label: 'Sublimation transfer — wood-grain on aluminium' },
+        { src: '/images/products/optifinish-manufactured/curing-oven/application/adhesive-heat-cure.jpg', label: 'Paint baking & adhesive heat-curing' },
+      ]}
 
       compatibilityTags={[
         'All OptiFinish powder spray booths',
@@ -93,12 +111,7 @@ export default function CuringOvenPage() {
         'All GEMA gun and reciprocator systems',
       ]}
 
-      references={[
-        {
-          client: 'Kesar Engineering · Amaze Power',
-          desc: 'Kesar Engineering — batch oven for steel fabrications. Amaze Power — single-zone tunnel oven integrated with conveyorised automatic line.',
-        },
-      ]}
+      references={[]}
 
       related={[
         {

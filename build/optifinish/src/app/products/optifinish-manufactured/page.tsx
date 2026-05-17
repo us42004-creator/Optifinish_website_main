@@ -43,6 +43,12 @@ const PRODUCTS = [
     ],
     enquireSlug: 'curing-oven',
     learnMoreHref: '/products/optifinish-manufactured/curing-oven',
+    imageSrcs: [
+      { src: '/images/products/optifinish-manufactured/curing-oven/industrial_oven.png', label: 'Curing Oven — Full Build' },
+      { src: '/images/products/optifinish-manufactured/curing-oven/oven-nic.png', label: 'Oven Detail' },
+      { src: '/images/products/optifinish-manufactured/curing-oven/yellow-oven-lighting.png', label: 'Interior — Heat Chamber' },
+      { src: '/images/products/optifinish-manufactured/curing-oven/oven-cleaned.png', label: 'Curing Oven — Exterior View' },
+    ],
   },
   {
     name: 'Powder Spray Booth',
@@ -73,10 +79,15 @@ const PRODUCTS = [
       'Internal dimensions: 2450 × 1500 × 1800 mm (custom available)',
       '7000 CMH airflow; 5HP suction; MS sheet construction',
       'Water wash or dry filter for paint mist capture',
-      'Suitable for Dürr liquid coating guns and general spray applications',
+      'Automotive, wood lacquering, industrial parts, and high-production paint lines',
     ],
     enquireSlug: 'liquid-spray-booth',
     learnMoreHref: '/products/optifinish-manufactured/liquid-spray-booth',
+    imageSrcs: [
+      { src: '/images/products/optifinish-manufactured/liquid-spray-booth/car-painting-booth.jpg', label: 'Car painting booth' },
+      { src: '/images/products/optifinish-manufactured/liquid-spray-booth/liquid-single-operator-booth.png', label: 'Single operator booth' },
+      { src: '/images/products/optifinish-manufactured/liquid-spray-booth/cartridge-filter-booth.png', label: 'Cartridge filter booth' },
+    ],
   },
   {
     name: 'SS Booth System',
@@ -111,6 +122,12 @@ const PRODUCTS = [
     ],
     enquireSlug: 'plastic-booth',
     learnMoreHref: '/products/optifinish-manufactured/plastic-booth',
+    imageSrcs: [
+      { src: '/images/products/optifinish-manufactured/plastic-booth/pp_booth.png', label: 'PP Booth — Full Installation' },
+      { src: '/images/products/optifinish-manufactured/plastic-booth/img_plastic.jpeg', label: 'Plastic Booth — Interior View' },
+      { src: '/images/products/optifinish-manufactured/plastic-booth/plas.png', label: 'Booth with GEMA Gun Setup' },
+      { src: '/images/products/optifinish-manufactured/plastic-booth/plastic-booth-cropped.jpeg', label: 'Plastic Booth — Exterior View' },
+    ],
   },
   {
     name: 'Cyclone & Dust Collector',
@@ -159,6 +176,14 @@ const PRODUCTS = [
     ],
     enquireSlug: 'wood-finish-oven',
     learnMoreHref: '/products/optifinish-manufactured/wood-finish-oven',
+    imageSrcs: [
+      { src: '/images/products/optifinish-manufactured/wood-finish-oven/img_4.png', label: 'Side View — Profile Conveyor' },
+      { src: '/images/products/optifinish-manufactured/wood-finish-oven/img-1.png', label: 'Wood Finish Oven — Full Line' },
+      { src: '/images/products/optifinish-manufactured/wood-finish-oven/application/architectural-hardware-wood-grain.webp', label: 'Architectural Hardware — Wood-Grain & Stone Effects' },
+      { src: '/images/products/optifinish-manufactured/wood-finish-oven/application/aluminium-wall-profile.webp', label: 'Aluminium Wall Profiles & Cladding' },
+      { src: '/images/products/optifinish-manufactured/wood-finish-oven/img-2.png', label: 'Wide Angle — Full Installation' },
+      { src: '/images/products/optifinish-manufactured/wood-finish-oven/image3.png', label: 'Detail — Oven End Section' },
+    ],
   },
 ];
 
@@ -178,6 +203,8 @@ export default function OptiFinishManufacturedPage() {
         ]}
         theme="dark"
         breadcrumbLabel="OptiFinish Manufactured"
+        imageSrc="/images/products/optifinish-manufactured/powder-coating-plant/plant2.jpeg"
+        imageAlt="OptiFinish powder coating plant — manufactured in Greater Noida"
       />
 
       {/* Product Grid */}

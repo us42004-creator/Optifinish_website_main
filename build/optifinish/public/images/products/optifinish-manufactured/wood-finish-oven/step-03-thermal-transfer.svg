@@ -1,0 +1,99 @@
+<svg viewBox="0 0 760 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,-apple-system,sans-serif">
+  <defs>
+    <radialGradient id="heatglow03" cx="50%" cy="55%" r="42%">
+      <stop offset="0%" stop-color="#C07030" stop-opacity="0.13"/>
+      <stop offset="100%" stop-color="#C07030" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="bg03" cx="50%" cy="50%" r="65%">
+      <stop offset="0%" stop-color="#12161a"/>
+      <stop offset="100%" stop-color="#070809"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="760" height="520" fill="url(#bg03)"/>
+
+  <!-- Grid -->
+  <line x1="0"   y1="95"  x2="760" y2="95"  stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="0"   y1="190" x2="760" y2="190" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="0"   y1="285" x2="760" y2="285" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="0"   y1="380" x2="760" y2="380" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="0"   y1="475" x2="760" y2="475" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="95"  y1="0"   x2="95"  y2="520" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="190" y1="0"   x2="190" y2="520" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="285" y1="0"   x2="285" y2="520" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="380" y1="0"   x2="380" y2="520" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="475" y1="0"   x2="475" y2="520" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="570" y1="0"   x2="570" y2="520" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+  <line x1="665" y1="0"   x2="665" y2="520" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+
+  <!-- Heat glow behind profile -->
+  <ellipse cx="360" cy="255" rx="215" ry="120" fill="url(#heatglow03)"/>
+
+  <!-- ═══ ALUMINIUM PROFILE — 3/4 perspective, wood-grain surface ═══ -->
+  <!-- Top face — warm amber tint (wood colour) -->
+  <polygon points="155,160 220,120 520,120 455,160"
+           fill="rgba(175,118,48,0.22)" stroke="rgba(190,132,52,0.52)" stroke-width="1.5"/>
+  <!-- Front face -->
+  <rect x="155" y="160" width="300" height="158" rx="2"
+        fill="rgba(148,108,52,0.14)" stroke="rgba(190,138,58,0.42)" stroke-width="1.5"/>
+  <!-- Right face -->
+  <polygon points="455,160 520,120 520,282 455,318"
+           fill="rgba(122,88,42,0.12)" stroke="rgba(190,138,58,0.26)" stroke-width="1.5"/>
+
+  <!-- Wood grain lines on front face -->
+  <line x1="160" y1="180" x2="450" y2="180" stroke="rgba(145,95,38,0.30)" stroke-width="1"/>
+  <line x1="160" y1="196" x2="450" y2="196" stroke="rgba(165,110,44,0.20)" stroke-width="0.8"/>
+  <line x1="160" y1="212" x2="450" y2="212" stroke="rgba(145,95,38,0.28)" stroke-width="1"/>
+  <line x1="160" y1="228" x2="450" y2="228" stroke="rgba(165,110,44,0.18)" stroke-width="0.8"/>
+  <line x1="160" y1="244" x2="450" y2="244" stroke="rgba(145,95,38,0.30)" stroke-width="1"/>
+  <line x1="160" y1="260" x2="450" y2="260" stroke="rgba(165,110,44,0.20)" stroke-width="0.8"/>
+  <line x1="160" y1="276" x2="450" y2="276" stroke="rgba(145,95,38,0.26)" stroke-width="1"/>
+  <line x1="160" y1="292" x2="450" y2="292" stroke="rgba(165,110,44,0.16)" stroke-width="0.8"/>
+  <!-- Channel markers (distinct from grain) -->
+  <line x1="295" y1="160" x2="295" y2="318" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="6,5"/>
+  <line x1="380" y1="160" x2="380" y2="318" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="6,5"/>
+
+  <!-- ═══ FADING FILM LAYER — very low opacity dashed outline ═══ -->
+  <polygon points="146,151 213,110 533,110 466,151"
+           fill="none" stroke="rgba(195,138,55,0.18)" stroke-width="1" stroke-dasharray="10,6"/>
+  <rect x="146" y="151" width="311" height="175" rx="2"
+        fill="none" stroke="rgba(195,138,55,0.15)" stroke-width="1" stroke-dasharray="10,6"/>
+  <polygon points="457,151 533,110 533,326 457,362"
+           fill="none" stroke="rgba(195,138,55,0.10)" stroke-width="1" stroke-dasharray="10,6"/>
+
+  <!-- ═══ DYE SUBLIMATION ARROWS — inward from film to profile surface ═══ -->
+  <!-- Arrows from top film face downward into profile -->
+  <line x1="255" y1="105" x2="255" y2="123" stroke="rgba(200,140,58,0.45)" stroke-width="1.5"/>
+  <polygon points="251,122 255,130 259,122" fill="rgba(200,140,58,0.55)"/>
+  <line x1="340" y1="105" x2="340" y2="123" stroke="rgba(200,140,58,0.42)" stroke-width="1.5"/>
+  <polygon points="336,122 340,130 344,122" fill="rgba(200,140,58,0.52)"/>
+  <line x1="425" y1="105" x2="425" y2="123" stroke="rgba(200,140,58,0.45)" stroke-width="1.5"/>
+  <polygon points="421,122 425,130 429,122" fill="rgba(200,140,58,0.55)"/>
+  <!-- Arrows from left film face inward into profile -->
+  <line x1="140" y1="210" x2="158" y2="210" stroke="rgba(200,140,58,0.40)" stroke-width="1.5"/>
+  <polygon points="158,206 166,210 158,214" fill="rgba(200,140,58,0.50)"/>
+  <line x1="140" y1="255" x2="158" y2="255" stroke="rgba(200,140,58,0.38)" stroke-width="1.5"/>
+  <polygon points="158,251 166,255 158,259" fill="rgba(200,140,58,0.48)"/>
+
+  <!-- ═══ TEMPERATURE BADGE ═══ -->
+  <rect x="565" y="192" width="142" height="28" rx="14"
+        fill="rgba(200,80,20,0.18)" stroke="rgba(220,100,30,0.50)" stroke-width="1.5"/>
+  <text x="576" y="211" fill="rgba(235,120,50,0.92)" font-size="11" font-weight="700" letter-spacing="0.10em">190 – 220 °C</text>
+  <!-- Heat waves under badge -->
+  <path d="M598,232 Q606,222 598,212" fill="none" stroke="rgba(220,100,30,0.28)" stroke-width="1.5"/>
+  <path d="M618,232 Q626,222 618,212" fill="none" stroke="rgba(220,100,30,0.22)" stroke-width="1.5"/>
+  <path d="M638,232 Q646,222 638,212" fill="none" stroke="rgba(220,100,30,0.20)" stroke-width="1.5"/>
+
+  <!-- ── ANNOTATION: DYE SUBLIMATION (top, amber) ── -->
+  <line x1="340" y1="118" x2="340" y2="82" stroke="rgba(200,140,58,0.45)" stroke-width="1" stroke-dasharray="4,3"/>
+  <circle cx="340" cy="81" r="2.5" fill="rgba(200,140,58,0.68)"/>
+  <text x="350" y="75" fill="rgba(200,140,58,0.82)" font-size="11" font-weight="600" letter-spacing="0.14em">DYE SUBLIMATION</text>
+
+  <!-- ── ANNOTATION: PERMANENT WOOD-GRAIN BOND (bottom, warm amber) ── -->
+  <line x1="310" y1="318" x2="310" y2="360" stroke="rgba(190,132,52,0.42)" stroke-width="1" stroke-dasharray="4,3"/>
+  <circle cx="310" cy="361" r="2.5" fill="rgba(190,132,52,0.62)"/>
+  <text x="188" y="382" fill="rgba(190,132,52,0.72)" font-size="11" font-weight="600" letter-spacing="0.14em">PERMANENT WOOD-GRAIN BOND</text>
+
+  <!-- Ghost step number -->
+  <text x="540" y="490" fill="rgba(254,206,0,0.055)" font-size="155" font-weight="900" letter-spacing="-0.05em">03</text>
+</svg>
