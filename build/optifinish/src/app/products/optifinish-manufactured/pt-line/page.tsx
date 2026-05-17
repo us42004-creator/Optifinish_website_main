@@ -89,6 +89,8 @@ export default function PTLinePage() {
           ],
           imageLabel: '7-stage zinc phosphate PT line',
           imageSrc: '/images/products/optifinish-manufactured/pt-line/variant-7stage.svg',
+          imageWidth: 1120,
+          imageHeight: 400,
         },
       ]}
       variantsSectionTitle="Select the right PT process for your application"

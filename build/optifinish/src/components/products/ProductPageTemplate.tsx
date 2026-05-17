@@ -19,6 +19,8 @@ export interface Variant {
   specs: SpecRow[];
   imageLabel: string;
   imageSrc?: string;
+  imageWidth?: number;
+  imageHeight?: number;
   videoId?: string;
 }
 
@@ -1063,37 +1065,37 @@ export default function ProductPageTemplate({
 
             {/* Active variant detail — card always dark */}
             {currVariant && (
-              <div className="rounded-[1.2rem] border border-white/[0.08] bg-[#070809] p-6 md:p-8">
+              <div className="rounded-[1.2rem] border border-white/[0.08] bg-[#070809] p-4 md:p-6">
                 {/* SVG diagram — full width when present */}
                 {currVariant.imageSrc && !currVariant.videoId && (
-                  <div className="relative mb-6 overflow-hidden rounded-[0.9rem] bg-[#070809]">
+                  <div className="relative mb-4 overflow-hidden rounded-[0.75rem] bg-[#070809]">
                     <div className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_70%_70%_at_50%_50%,rgba(254,206,0,0.04)_0%,transparent_70%)]" />
                     <Image
                       src={currVariant.imageSrc}
                       alt={currVariant.imageLabel}
-                      width={760}
-                      height={480}
+                      width={currVariant.imageWidth ?? 760}
+                      height={currVariant.imageHeight ?? 480}
                       quality={92}
-                      className="relative z-[2] w-full h-auto"
+                      className="relative z-[2] w-full h-auto max-h-[340px] object-contain"
                     />
                   </div>
                 )}
 
                 {/* Text + specs row */}
-                <div className={currVariant.imageSrc && !currVariant.videoId ? 'grid gap-6 border-t border-white/[0.06] pt-6 lg:grid-cols-[1.3fr_1fr] lg:gap-10' : 'grid gap-8 lg:grid-cols-[1.2fr_1fr] lg:gap-12'}>
+                <div className={currVariant.imageSrc && !currVariant.videoId ? 'grid gap-4 border-t border-white/[0.06] pt-4 lg:grid-cols-[1.3fr_1fr] lg:gap-8' : 'grid gap-8 lg:grid-cols-[1.2fr_1fr] lg:gap-12'}>
                   <div>
-                    <span className="mb-3 inline-block rounded-full bg-[#FECE00]/10 px-3 py-1 text-[0.52rem] font-bold uppercase tracking-[0.14em] text-[#FECE00]/80">
+                    <span className="mb-2 inline-block rounded-full bg-[#FECE00]/10 px-3 py-1 text-[0.52rem] font-bold uppercase tracking-[0.14em] text-[#FECE00]/80">
                       {currVariant.tag}
                     </span>
-                    <h3 className="font-display text-[1.5rem] font-black leading-tight tracking-tight text-white">
+                    <h3 className="font-display text-[1.25rem] font-black leading-tight tracking-tight text-white">
                       {currVariant.headline}
                     </h3>
-                    <p className="mt-3 text-[0.84rem] leading-relaxed text-white/55">
+                    <p className="mt-2 text-[0.8rem] leading-relaxed text-white/55">
                       {currVariant.body}
                     </p>
                   </div>
                   <div>
-                    <ul className="flex flex-col gap-2.5 border-t border-white/[0.08] pt-4 lg:border-t-0 lg:pt-0">
+                    <ul className="flex flex-col gap-2 border-t border-white/[0.08] pt-3 lg:border-t-0 lg:pt-0">
                       {currVariant.specs.map((sp) => (
                         <li
                           key={sp.l}
