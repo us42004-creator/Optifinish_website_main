@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -295,6 +296,7 @@ export default function ProductPageTemplate({
   ctaAccent,
   ctaBody,
 }: ProductPageTemplateProps) {
+  const router = useRouter();
   const [activeVariant, setActiveVariant] = useState(0);
   const [activeStep, setActiveStep] = useState(0);
   const [heroImgIdx, setHeroImgIdx] = useState(0);
@@ -1525,12 +1527,10 @@ export default function ProductPageTemplate({
                     </h3>
                   </div>
                   <div
-                    onClick={(e) => e.preventDefault()}
                     className={`mt-auto flex gap-2 border-t pt-3 ${cBdr(rltd)}`}
                   >
-                    <Link
-                      href={`/contact?product=${item.enquireSlug}`}
-                      onClick={(e) => e.stopPropagation()}
+                    <button
+                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); router.push(`/contact?product=${item.enquireSlug}`); }}
                       className={`rounded-full px-4 py-1.5 text-[0.6rem] font-bold uppercase tracking-[0.14em] transition-all ${
                         rltd
                           ? 'bg-[#0A0A0A] text-white hover:bg-[#FECE00] hover:text-[#0A0A0A]'
@@ -1538,10 +1538,9 @@ export default function ProductPageTemplate({
                       }`}
                     >
                       Enquire
-                    </Link>
-                    <Link
-                      href={item.href}
-                      onClick={(e) => e.stopPropagation()}
+                    </button>
+                    <button
+                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); router.push(item.href); }}
                       className={`rounded-full border px-4 py-1.5 text-[0.6rem] font-bold uppercase tracking-[0.14em] transition-all ${
                         rltd
                           ? 'border-black/[0.12] text-[#0A0A0A]/40 hover:border-black/[0.24] hover:text-[#0A0A0A]/65'
@@ -1549,7 +1548,7 @@ export default function ProductPageTemplate({
                       }`}
                     >
                       Learn more
-                    </Link>
+                    </button>
                   </div>
                 </div>
               </Link>
