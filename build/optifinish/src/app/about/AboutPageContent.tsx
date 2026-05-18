@@ -120,7 +120,7 @@ const FOUNDERS = [
     credentials: 'B.Sc. + MBA — Rohilkhand University',
     bio: 'Early career at Vardhaman Spinning Mills before discovering the coating industry in 1999. He has spent the last 25 years working every angle of it — sales, procurement, plant commissioning, and product development. Leads manufacturing strategy and key client relationships at VACSPL.',
     initials: 'HS',
-    photo: '/images/Team/harish_sharma_portrait.jpg',
+    photo: '/images/Team/harish_sharma_founder.jpg',
   },
   {
     name: 'Lalit Tayal',
