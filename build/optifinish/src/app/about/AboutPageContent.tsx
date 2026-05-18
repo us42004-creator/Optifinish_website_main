@@ -120,6 +120,7 @@ const FOUNDERS = [
     credentials: 'B.Sc. + MBA — Rohilkhand University',
     bio: 'Early career at Vardhaman Spinning Mills before discovering the coating industry in 1999. He has spent the last 25 years working every angle of it — sales, procurement, plant commissioning, and product development. Leads manufacturing strategy and key client relationships at VACSPL.',
     initials: 'HS',
+    photo: '/images/Team/harish_sharma_portrait.jpg',
   },
   {
     name: 'Lalit Tayal',
@@ -127,6 +128,7 @@ const FOUNDERS = [
     credentials: 'B.Sc. + MBA — Shiva Institute of Management Studies',
     bio: "Came to the coating industry from Ayur Herbals. Since 1999, he has built and run the commercial and distribution side of the business — from Vinayak Agencies' first powder sale to Dürr's product range landing under the OptiFinish umbrella. Leads business development, partnerships, and regional expansion.",
     initials: 'LT',
+    photo: null,
   },
 ];
 
@@ -511,10 +513,20 @@ export default function AboutPageContent() {
                 itemScope
                 itemType="https://schema.org/Person"
               >
-                <div className="flex h-20 w-20 items-center justify-center rounded-full border border-[#FECE00]/20 bg-white/[0.06]">
-                  <span className="font-display text-[1.1rem] font-black text-[#FECE00]/40">
-                    {f.initials}
-                  </span>
+                <div className="relative h-20 w-20 overflow-hidden rounded-full border-2 border-[#FECE00]/30 bg-white/[0.06]">
+                  {f.photo ? (
+                    <Image
+                      src={f.photo}
+                      alt={f.name}
+                      fill
+                      className="object-cover object-top"
+                      sizes="80px"
+                    />
+                  ) : (
+                    <span className="absolute inset-0 flex items-center justify-center font-display text-[1.1rem] font-black text-[#FECE00]/40">
+                      {f.initials}
+                    </span>
+                  )}
                 </div>
 
                 <div>
