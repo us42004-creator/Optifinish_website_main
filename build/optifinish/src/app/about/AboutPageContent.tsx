@@ -121,7 +121,7 @@ const FOUNDERS = [
     bio: 'Early career at Vardhaman Spinning Mills before discovering the coating industry in 1999. He has spent the last 25 years working every angle of it — sales, procurement, plant commissioning, and product development. Leads manufacturing strategy and key client relationships at VACSPL.',
     initials: 'HS',
     photo: '/images/team/harish_sharma_v2.jpg',
-    photoPosition: '50% 10%',
+    photoPosition: '60% 10%',
     photoBg: '#aca3a1',
   },
   {
@@ -131,7 +131,7 @@ const FOUNDERS = [
     bio: "Came to the coating industry from Ayur Herbals. Since 1999, he has built and run the commercial and distribution side of the business — from Vinayak Agencies' first powder sale to Dürr's product range landing under the OptiFinish umbrella. Leads business development, partnerships, and regional expansion.",
     initials: 'LT',
     photo: '/images/team/lalit_tayal_v2.jpg',
-    photoPosition: '50% 15%',
+    photoPosition: '50% 35%',
     photoBg: '#797674',
   },
 ];
