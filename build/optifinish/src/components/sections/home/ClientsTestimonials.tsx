@@ -220,20 +220,20 @@ export default function ClientsTestimonials() {
                 onClick={prev}
                 disabled={activeIndex === 0}
                 aria-label="Previous testimonial"
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-ink/[0.12] bg-white/70 text-ink/50 transition-all hover:border-ink/30 hover:text-ink disabled:opacity-25"
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-[#FECE00] text-[#0a0a0a] shadow-sm transition-all hover:bg-[#f0c200] disabled:opacity-30"
               >
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                  <path d="M9 11L5 7l4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M9 11L5 7l4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </button>
               <button
                 onClick={next}
                 disabled={activeIndex >= maxIndex}
                 aria-label="Next testimonial"
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-ink/[0.12] bg-white/70 text-ink/50 transition-all hover:border-ink/30 hover:text-ink disabled:opacity-25"
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-[#FECE00] text-[#0a0a0a] shadow-sm transition-all hover:bg-[#f0c200] disabled:opacity-30"
               >
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                  <path d="M5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M5 3l4 4-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </button>
             </div>
