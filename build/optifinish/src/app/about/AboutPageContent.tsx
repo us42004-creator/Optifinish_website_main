@@ -122,6 +122,7 @@ const FOUNDERS = [
     initials: 'HS',
     photo: '/images/team/harish_sharma_v2.jpg',
     photoPosition: '50% 10%',
+    photoBg: '#aca3a1',
   },
   {
     name: 'Lalit Tayal',
@@ -132,6 +133,7 @@ const FOUNDERS = [
     photo: '/images/team/lalit_tayal_v2.jpg',
     photoPosition: '50% 25%',
     photoScale: '0.8',
+    photoBg: '#797674',
   },
 ];
 
@@ -516,7 +518,7 @@ export default function AboutPageContent() {
                 itemScope
                 itemType="https://schema.org/Person"
               >
-                <div className="relative h-20 w-20 overflow-hidden rounded-full border-2 border-[#FECE00]/30 bg-white/[0.06]">
+                <div className="relative h-20 w-20 overflow-hidden rounded-full border-2 border-[#FECE00]/30" style={{ background: f.photoBg ?? 'rgba(255,255,255,0.06)' }}>
                   {f.photo ? (
                     <Image
                       src={f.photo}
