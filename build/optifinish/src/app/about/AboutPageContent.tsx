@@ -132,7 +132,6 @@ const FOUNDERS = [
     initials: 'LT',
     photo: '/images/team/lalit_tayal_v2.jpg',
     photoPosition: '50% 25%',
-    photoScale: '0.8',
     photoBg: '#797674',
   },
 ];
