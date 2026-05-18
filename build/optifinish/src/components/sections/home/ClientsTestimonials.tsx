@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import { useHeadingAnimation } from '@/hooks/useHeadingAnimation';
 
@@ -27,34 +27,124 @@ const STATS = [
 
 const TESTIMONIALS = [
   {
-    quote: 'Testimonial placeholder — client quote will go here once collected.',
-    name: 'Client Name',
-    role: 'Designation · Company',
+    quote: 'The powder spray booth, curing oven, and GEMA gun system OptiFinish supplied have been running consistently since commissioning. Output quality on our e-rickshaw frames is exactly what we needed — adhesion is solid and the line rarely stops. Good people to work with.',
+    name: 'Nitin Sharma',
+    company: 'Badshah E-Rickshaw / Tiger',
+    products: 'Powder Booth · Curing Oven · GEMA Gun',
+    initials: 'NS',
+    avatarFrom: '#FECE00',
+    avatarTo: '#f59e0b',
+    textColor: '#0a0a0a',
   },
   {
-    quote: 'Testimonial placeholder — client quote will go here once collected.',
-    name: 'Client Name',
-    role: 'Designation · Company',
+    quote: 'We needed a liquid spray booth that could handle production volumes with clean air filtration — OptiFinish understood the requirement and delivered. The gun they recommended has made a real difference to transfer efficiency. Practical advice, no overselling.',
+    name: 'Rakesh Singh',
+    company: 'Creator System',
+    products: 'Liquid Painting Booth · Spray Gun',
+    initials: 'RS',
+    avatarFrom: '#3b82f6',
+    avatarTo: '#6366f1',
+    textColor: '#ffffff',
   },
   {
-    quote: 'Testimonial placeholder — client quote will go here once collected.',
-    name: 'Client Name',
-    role: 'Designation · Company',
+    quote: 'The curing oven and booth OptiFinish built for us runs clean through two shifts. The gun configuration they set up works well for our substrate. We have been with them a few years now and the support has been consistent throughout.',
+    name: 'Moti Ram Sharma',
+    company: '',
+    products: 'Curing Oven · Powder Booth · Gun',
+    initials: 'MS',
+    avatarFrom: '#22c55e',
+    avatarTo: '#16a34a',
+    textColor: '#ffffff',
+  },
+  {
+    quote: 'Before the automatic oven and gun system OptiFinish installed, we were losing time on rework and uneven curing. Since commissioning, we have been running two shifts with minimal downtime. The team was thorough during setup and stayed until everything was dialled in.',
+    name: 'Kesar Dagar',
+    company: 'Kesar Engineering',
+    products: 'Automatic Oven · Powder Booth · Gun',
+    initials: 'KD',
+    avatarFrom: '#f97316',
+    avatarTo: '#ef4444',
+    textColor: '#ffffff',
+  },
+  {
+    quote: 'We coat MDF and wood components for furniture and interiors — not the standard application. OptiFinish took time to understand what we needed: the right liquid booth with proper downdraft and a gun tuned for our viscosity range. The finish quality on our MDF has been consistently clean.',
+    name: 'Vikas Singhal',
+    company: 'Dev Enterprises',
+    products: 'MDF / Liquid Coating Booth · Gun',
+    initials: 'VS',
+    avatarFrom: '#a855f7',
+    avatarTo: '#7c3aed',
+    textColor: '#ffffff',
   },
 ];
 
-export default function ClientsTestimonials() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const eyebrowRef = useRef<HTMLSpanElement>(null);
-  const line1Ref   = useRef<HTMLSpanElement>(null);
-  const line2Ref   = useRef<HTMLSpanElement>(null);
+const VISIBLE_LG = 3;
+const VISIBLE_SM = 1;
+const GAP = 16;
 
-  useHeadingAnimation({
-    trigger: sectionRef,
-    eyebrow: eyebrowRef,
-    line1: line1Ref,
-    line2: line2Ref,
-  });
+function Avatar({ initials, avatarFrom, avatarTo, textColor, src, name }: {
+  initials: string;
+  avatarFrom: string;
+  avatarTo: string;
+  textColor: string;
+  src?: string;
+  name: string;
+}) {
+  return (
+    <div
+      className="relative flex h-11 w-11 flex-shrink-0 items-center justify-center overflow-hidden rounded-full ring-2 ring-white/[0.12]"
+      style={{ background: `linear-gradient(135deg, ${avatarFrom}, ${avatarTo})` }}
+    >
+      {src ? (
+        <Image src={src} alt={name} fill className="object-cover" />
+      ) : (
+        <span className="text-[0.65rem] font-black tracking-tight" style={{ color: textColor }}>
+          {initials}
+        </span>
+      )}
+    </div>
+  );
+}
+
+export default function ClientsTestimonials() {
+  const sectionRef  = useRef<HTMLElement>(null);
+  const eyebrowRef  = useRef<HTMLSpanElement>(null);
+  const line1Ref    = useRef<HTMLSpanElement>(null);
+  const line2Ref    = useRef<HTMLSpanElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [containerWidth, setContainerWidth] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+
+  useHeadingAnimation({ trigger: sectionRef, eyebrow: eyebrowRef, line1: line1Ref, line2: line2Ref });
+
+  // measure container for card width calculation
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const ro = new ResizeObserver(([entry]) => setContainerWidth(entry.contentRect.width));
+    ro.observe(containerRef.current);
+    return () => ro.disconnect();
+  }, []);
+
+  const visibleCount = containerWidth >= 1024 ? VISIBLE_LG : VISIBLE_SM;
+  const maxIndex = TESTIMONIALS.length - visibleCount;
+  const cardWidth = containerWidth > 0
+    ? (containerWidth - GAP * (visibleCount - 1)) / visibleCount
+    : 0;
+  const translateX = activeIndex * (cardWidth + GAP);
+
+  const prev = useCallback(() => setActiveIndex(i => Math.max(0, i - 1)), []);
+  const next = useCallback(() => setActiveIndex(i => Math.min(maxIndex, i + 1)), [maxIndex]);
+
+  // auto-advance
+  useEffect(() => {
+    if (isPaused) return;
+    const id = setInterval(() => {
+      setActiveIndex(i => (i >= maxIndex ? 0 : i + 1));
+    }, 5500);
+    return () => clearInterval(id);
+  }, [isPaused, maxIndex]);
 
   return (
     <section ref={sectionRef} className="relative overflow-hidden bg-[#f1efea] py-20 md:py-28">
@@ -63,20 +153,16 @@ export default function ClientsTestimonials() {
       <div
         className="pointer-events-none absolute inset-0 grid-drift opacity-[0.62] mix-blend-multiply"
         style={{
-          backgroundImage: `
-            linear-gradient(rgba(201,165,0,0.22) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(201,165,0,0.22) 1px, transparent 1px)
-          `,
+          backgroundImage: `linear-gradient(rgba(201,165,0,0.22) 1px, transparent 1px),
+                            linear-gradient(90deg, rgba(201,165,0,0.22) 1px, transparent 1px)`,
           backgroundSize: '88px 88px',
         }}
       />
       <div
         className="pointer-events-none absolute inset-0 grid-drift opacity-[0.32] mix-blend-multiply"
         style={{
-          backgroundImage: `
-            linear-gradient(rgba(255,243,163,0.5) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,243,163,0.5) 1px, transparent 1px)
-          `,
+          backgroundImage: `linear-gradient(rgba(255,243,163,0.5) 1px, transparent 1px),
+                            linear-gradient(90deg, rgba(255,243,163,0.5) 1px, transparent 1px)`,
           backgroundSize: '264px 264px',
         }}
       />
@@ -86,24 +172,16 @@ export default function ClientsTestimonials() {
         {/* Header */}
         <div className="mb-12">
           <div className="overflow-hidden pb-[0.15em]">
-            <span
-              ref={eyebrowRef}
-              className="mb-3 block text-[0.56rem] font-bold uppercase tracking-[0.22em] text-ink/40"
-              style={{ willChange: 'transform, opacity' }}
-            >
+            <span ref={eyebrowRef} className="mb-3 block text-[0.56rem] font-bold uppercase tracking-[0.22em] text-ink/40" style={{ willChange: 'transform, opacity' }}>
               Our Clients
             </span>
           </div>
           <h2 className="font-display text-[clamp(1.65rem,4vw,3.5rem)] font-black leading-[0.92] tracking-[-0.04em] text-ink">
             <div className="overflow-hidden pb-[0.15em]">
-              <span ref={line1Ref} className="block" style={{ willChange: 'transform, opacity' }}>
-                Trusted by India&apos;s
-              </span>
+              <span ref={line1Ref} className="block" style={{ willChange: 'transform, opacity' }}>Trusted by India&apos;s</span>
             </div>
             <div className="overflow-hidden pb-[0.15em]">
-              <span ref={line2Ref} className="block" style={{ willChange: 'transform, opacity', color: '#FECE00' }}>
-                leading manufacturers.
-              </span>
+              <span ref={line2Ref} className="block" style={{ willChange: 'transform, opacity', color: '#FECE00' }}>leading manufacturers.</span>
             </div>
           </h2>
         </div>
@@ -121,43 +199,108 @@ export default function ClientsTestimonials() {
         {/* Client logos grid */}
         <div className="mb-14 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6">
           {CLIENT_LOGOS.map((logo) => (
-            <div
-              key={logo.name}
-              className="relative flex h-24 items-center justify-center rounded-[0.8rem] border border-ink/[0.07] bg-white overflow-hidden"
-            >
+            <div key={logo.name} className="relative flex h-24 items-center justify-center overflow-hidden rounded-[0.8rem] border border-ink/[0.07] bg-white">
               <div className={`absolute inset-0 ${logo.pad ?? 'p-6'}`}>
                 <div className="relative h-full w-full">
-                  <Image
-                    src={logo.src}
-                    alt={logo.name}
-                    fill
-                    className="object-contain"
-                    unoptimized
-                  />
+                  <Image src={logo.src} alt={logo.name} fill className="object-contain" unoptimized />
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Testimonials */}
+        {/* ── Testimonials carousel ── */}
         <div>
-          <span className="mb-6 block text-[0.56rem] font-bold uppercase tracking-[0.22em] text-ink/40">
-            Testimonials
-          </span>
-          <div className="grid gap-4 md:grid-cols-3">
-            {TESTIMONIALS.map((t, i) => (
-              <div
-                key={i}
-                className="flex flex-col gap-4 rounded-[1.2rem] border border-white/[0.06] bg-[#0a0a0a] p-6"
+          <div className="mb-6 flex items-center justify-between">
+            <span className="text-[0.56rem] font-bold uppercase tracking-[0.22em] text-ink/40">Testimonials</span>
+
+            {/* Arrows */}
+            <div className="flex gap-2">
+              <button
+                onClick={prev}
+                disabled={activeIndex === 0}
+                aria-label="Previous testimonial"
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-ink/[0.12] bg-white/70 text-ink/50 transition-all hover:border-ink/30 hover:text-ink disabled:opacity-25"
               >
-                <span className="text-[2rem] leading-none text-[#FECE00]/25 md:text-[2.5rem]">&ldquo;</span>
-                <p className="text-[0.8rem] italic leading-relaxed text-white/40">{t.quote}</p>
-                <div className="mt-auto border-t border-white/[0.07] pt-4">
-                  <p className="text-[0.72rem] font-bold text-white/55">{t.name}</p>
-                  <p className="text-[0.65rem] text-white/30">{t.role}</p>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path d="M9 11L5 7l4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+              <button
+                onClick={next}
+                disabled={activeIndex >= maxIndex}
+                aria-label="Next testimonial"
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-ink/[0.12] bg-white/70 text-ink/50 transition-all hover:border-ink/30 hover:text-ink disabled:opacity-25"
+              >
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path d="M5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          {/* Track */}
+          <div
+            ref={containerRef}
+            className="overflow-hidden"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+          >
+            <div
+              className="flex"
+              style={{
+                gap: `${GAP}px`,
+                transform: `translateX(-${translateX}px)`,
+                transition: 'transform 0.45s cubic-bezier(0.4, 0, 0.2, 1)',
+              }}
+            >
+              {TESTIMONIALS.map((t, i) => (
+                <div
+                  key={i}
+                  className="flex flex-shrink-0 flex-col gap-4 rounded-[1.2rem] border border-white/[0.06] bg-[#0a0a0a] p-6 transition-opacity duration-300"
+                  style={{
+                    width: cardWidth > 0 ? `${cardWidth}px` : '100%',
+                    opacity: (i >= activeIndex && i < activeIndex + visibleCount) ? 1 : 0.35,
+                  }}
+                >
+                  <span className="text-[2rem] leading-none text-[#FECE00]/25 md:text-[2.5rem]">&ldquo;</span>
+                  <p className="flex-1 text-[0.8rem] leading-relaxed text-white/60">{t.quote}</p>
+                  <div className="border-t border-white/[0.07] pt-4">
+                    <div className="mb-3 text-[0.58rem] font-semibold uppercase tracking-[0.14em] text-white/25">{t.products}</div>
+                    <div className="flex items-center gap-3">
+                      <Avatar
+                        initials={t.initials}
+                        avatarFrom={t.avatarFrom}
+                        avatarTo={t.avatarTo}
+                        textColor={t.textColor}
+                        name={t.name}
+                      />
+                      <div>
+                        <p className="text-[0.75rem] font-bold leading-tight text-white/80">{t.name}</p>
+                        {t.company && (
+                          <p className="text-[0.65rem] text-white/35">{t.company}</p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Dot indicators */}
+          <div className="mt-5 flex justify-center gap-1.5">
+            {Array.from({ length: maxIndex + 1 }).map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveIndex(i)}
+                aria-label={`Go to testimonial ${i + 1}`}
+                className="h-1.5 rounded-full transition-all duration-300"
+                style={{
+                  width: i === activeIndex ? '24px' : '6px',
+                  background: i === activeIndex ? '#FECE00' : 'rgba(10,10,10,0.2)',
+                }}
+              />
             ))}
           </div>
         </div>
