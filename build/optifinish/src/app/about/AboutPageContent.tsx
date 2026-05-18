@@ -519,7 +519,8 @@ export default function AboutPageContent() {
                       src={f.photo}
                       alt={f.name}
                       fill
-                      className="object-cover object-center"
+                      className="object-cover"
+                      style={{ objectPosition: '50% 10%' }}
                       sizes="80px"
                     />
                   ) : (
