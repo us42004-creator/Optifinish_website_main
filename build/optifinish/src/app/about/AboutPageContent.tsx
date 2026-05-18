@@ -130,7 +130,7 @@ const FOUNDERS = [
     bio: "Came to the coating industry from Ayur Herbals. Since 1999, he has built and run the commercial and distribution side of the business — from Vinayak Agencies' first powder sale to Dürr's product range landing under the OptiFinish umbrella. Leads business development, partnerships, and regional expansion.",
     initials: 'LT',
     photo: '/images/team/lalit_tayal_v2.jpg',
-    photoPosition: '50% 5%',
+    photoPosition: '50% 25%',
   },
 ];
 
