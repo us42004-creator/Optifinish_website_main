@@ -131,6 +131,7 @@ const FOUNDERS = [
     initials: 'LT',
     photo: '/images/team/lalit_tayal_v2.jpg',
     photoPosition: '50% 25%',
+    photoScale: '1.15',
   },
 ];
 
@@ -522,7 +523,7 @@ export default function AboutPageContent() {
                       alt={f.name}
                       fill
                       className="object-cover"
-                      style={{ objectPosition: f.photoPosition ?? '50% 10%' }}
+                      style={{ objectPosition: f.photoPosition ?? '50% 10%', transform: `scale(${f.photoScale ?? 1})`, transformOrigin: f.photoPosition ?? '50% 10%' }}
                       sizes="80px"
                     />
                   ) : (
