@@ -120,7 +120,8 @@ const FOUNDERS = [
     credentials: 'B.Sc. + MBA — Rohilkhand University',
     bio: 'Early career at Vardhaman Spinning Mills before discovering the coating industry in 1999. He has spent the last 25 years working every angle of it — sales, procurement, plant commissioning, and product development. Leads manufacturing strategy and key client relationships at VACSPL.',
     initials: 'HS',
-    photo: '/images/Team/harish_sharma_founder.jpg',
+    photo: '/images/team/harish_sharma_v2.jpg',
+    photoPosition: '50% 10%',
   },
   {
     name: 'Lalit Tayal',
@@ -128,7 +129,8 @@ const FOUNDERS = [
     credentials: 'B.Sc. + MBA — Shiva Institute of Management Studies',
     bio: "Came to the coating industry from Ayur Herbals. Since 1999, he has built and run the commercial and distribution side of the business — from Vinayak Agencies' first powder sale to Dürr's product range landing under the OptiFinish umbrella. Leads business development, partnerships, and regional expansion.",
     initials: 'LT',
-    photo: null,
+    photo: '/images/team/lalit_tayal_v2.jpg',
+    photoPosition: '50% 10%',
   },
 ];
 
@@ -520,7 +522,7 @@ export default function AboutPageContent() {
                       alt={f.name}
                       fill
                       className="object-cover"
-                      style={{ objectPosition: '50% 10%' }}
+                      style={{ objectPosition: f.photoPosition ?? '50% 10%' }}
                       sizes="80px"
                     />
                   ) : (
