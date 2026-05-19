@@ -1,14 +1,73 @@
+import type { Metadata } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import { metadataBase, defaultOpenGraph, defaultTwitter, productSchema, breadcrumbSchema, faqSchema, SITE } from '@/lib/seo';
 
-export const metadata = {
-  title: 'GEMA Reciprocators & Automation Axes | OptiFinish',
+export const metadata: Metadata = {
+  metadataBase,
+  title: 'GEMA Reciprocators — ZA Series Automation Axes | OptiFinish',
   description:
-    'GEMA ZA series reciprocators and XT/UA/YT axis systems for automated powder coating gun traversal. Dynamic Contour Detection, MagicControl 4.0 integration. Supplied by OptiFinish.',
+    'GEMA ZA Series reciprocators and automation axes — supplied by OptiFinish, authorised GEMA partner India. Motorised vertical gun traversal for automatic powder coating lines — precise, programmable, consistent coverage.',
+  keywords: [
+    'GEMA reciprocator India',
+    'ZA Series reciprocator India',
+    'powder coating reciprocator India',
+    'automatic gun reciprocator India',
+    'GEMA automation axis India',
+    'OptiFinish GEMA reciprocator',
+    'automatic powder coating line India',
+  ],
+  alternates: { canonical: `${SITE.url}/products/gema/reciprocators` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'GEMA Reciprocators — ZA Series Automation Axes | OptiFinish',
+    description: 'GEMA ZA Series reciprocators — motorised vertical gun traversal for automatic powder coating lines. Supplied by OptiFinish, authorised GEMA partner India.',
+    url: `${SITE.url}/products/gema/reciprocators`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'GEMA ZA Series Reciprocators | OptiFinish India',
+    description: 'GEMA ZA Series reciprocators — precise, programmable automatic gun traversal. Supplied by OptiFinish, authorised GEMA partner India.',
+  },
 };
+
+const productLD = productSchema({
+  name: 'GEMA ZA Series Reciprocator',
+  description: 'GEMA ZA Series motorised automation axes for vertical gun traversal in automatic powder coating lines — programmable stroke length, gun count, and traversal speed.',
+  url: '/products/gema/reciprocators',
+  category: 'Powder Coating Automation',
+  brand: 'GEMA',
+  keywords: ['GEMA reciprocator', 'ZA Series', 'powder coating reciprocator India', 'automation axis'],
+});
+
+const breadcrumbLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'GEMA', href: '/products/gema' },
+  { name: 'Reciprocators', href: '/products/gema/reciprocators' },
+]);
+
+const faqLD = faqSchema([
+  {
+    q: 'What is a powder coating reciprocator?',
+    a: 'A powder coating reciprocator is a motorised vertical traversal unit that moves automatic guns up and down at a programmed speed and stroke length — replacing the manual sprayer and delivering consistent, repeatable gun coverage on every part.',
+  },
+  {
+    q: 'What is the GEMA ZA Series reciprocator?',
+    a: 'The GEMA ZA Series is a range of motorised automation axes designed for use with GEMA automatic guns (OptiGun) in automatic powder coating lines. They offer programmable stroke length, gun count, and traversal speed — supplied in India by OptiFinish.',
+  },
+  {
+    q: 'Can a GEMA reciprocator be integrated with existing powder coating lines?',
+    a: 'Yes. GEMA ZA Series reciprocators can be retrofitted to existing manual booths or integrated into new automatic line installations. OptiFinish provides commissioning support for all GEMA reciprocator integrations.',
+  },
+]);
 
 export default function GEMAReciproactorsPage() {
   return (
-    <ProductPageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />
+      <ProductPageTemplate
       theme="light"
 
       /* S1 — Hero */
@@ -161,6 +220,7 @@ export default function GEMAReciproactorsPage() {
           category: 'OptiFinish Automation',
           href: '/products/automation/za01',
           enquireSlug: 'za01',
+          imageSrc: '/images/products/gema/reciprocators/gema-za10-01.jpg',
         },
       ]}
 
@@ -169,5 +229,6 @@ export default function GEMAReciproactorsPage() {
       ctaAccent="We'll specify the right model."
       ctaBody="Tell us about your line — part height, conveyor speed, gun count, and booth width. OptiFinish will specify the right ZA model and axis configuration."
     />
+    </>
   );
 }

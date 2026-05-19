@@ -1,14 +1,75 @@
+import type { Metadata } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import { metadataBase, defaultOpenGraph, defaultTwitter, productSchema, breadcrumbSchema, faqSchema, SITE } from '@/lib/seo';
 
-export const metadata = {
-  title: 'PU Enamel & Synthetic Enamel | Nerolac | OptiFinish',
+export const metadata: Metadata = {
+  metadataBase,
+  title: 'PU Enamel — Polyurethane Industrial Enamel | Vinayak Agencies',
   description:
-    'Nerolac PU Enamel 10-in-1, Hi-Gloss Synthetic Enamel, and Satin Enamel — premium decorative and industrial enamel finishes. Supplied by Vinayak Agencies.',
+    'PU enamel and synthetic enamel supplied by Vinayak Agencies — Kansai Nerolac polyurethane industrial coatings for high-durability, high-gloss metal, machinery, and infrastructure applications.',
+  keywords: [
+    'PU enamel India',
+    'polyurethane enamel India',
+    'industrial PU coating India',
+    'Nerolac PU enamel India',
+    'Vinayak PU enamel',
+    'high gloss industrial paint India',
+    '2K PU coating India',
+    'durable metal enamel India',
+  ],
+  alternates: { canonical: `${SITE.url}/products/vinayak/pu-enamel` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'PU Enamel — Polyurethane Industrial Enamel | Vinayak Agencies',
+    description: 'Kansai Nerolac polyurethane industrial coatings — high-durability, high-gloss enamel for metal, machinery, and infrastructure.',
+    url: `${SITE.url}/products/vinayak/pu-enamel`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'PU Enamel — Polyurethane Industrial | Vinayak Agencies',
+    description: 'Nerolac PU enamel — high-durability, high-gloss polyurethane industrial coatings from Vinayak Agencies.',
+  },
 };
+
+const productLD = productSchema({
+  name: 'PU Enamel — Polyurethane Industrial Enamel',
+  description: 'PU enamel and synthetic enamel supplied by Vinayak Agencies — Kansai Nerolac polyurethane industrial coatings for high-durability, high-gloss metal, machinery, and infrastructure applications.',
+  url: '/products/vinayak/pu-enamel',
+  brand: 'Kansai Nerolac',
+  manufacturer: 'Vinayak Agencies',
+  category: 'Industrial Liquid Coatings',
+  keywords: ['PU enamel India', 'polyurethane enamel', '2K PU coating', 'high gloss industrial paint'],
+});
+
+const breadcrumbLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'Vinayak Agencies', href: '/products/vinayak' },
+  { name: 'PU Enamel', href: '/products/vinayak/pu-enamel' },
+]);
+
+const faqLD = faqSchema([
+  {
+    q: 'What is PU enamel and where is it used?',
+    a: 'PU (polyurethane) enamel is a two-component liquid coating offering superior hardness, chemical resistance, and gloss retention compared to standard alkyd enamels — used on industrial machinery, vehicles, structural steel, and high-value fabrications where long-term appearance and durability are critical.',
+  },
+  {
+    q: 'What is the difference between PU enamel and synthetic enamel?',
+    a: 'Synthetic (alkyd) enamel is a single-component air-drying paint offering good durability at lower cost. PU enamel is a 2K (two-component) system requiring a hardener — significantly higher durability, chemical resistance, and UV stability, justified for demanding industrial applications.',
+  },
+  {
+    q: 'Does Vinayak supply 2K PU coating systems?',
+    a: 'Yes. Vinayak Agencies supplies Kansai Nerolac 2K polyurethane coating systems — compatible with Dürr EcoDose 2K dosing systems (also available from OptiFinish) for automated, ratio-controlled 2K application.',
+  },
+]);
 
 export default function VinayakPuEnamelPage() {
   return (
-    <ProductPageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />
+      <ProductPageTemplate
       theme="light"
 
       breadcrumb={[
@@ -159,5 +220,6 @@ export default function VinayakPuEnamelPage() {
       ctaAccent="PU, Hi-Gloss, or Satin — Vinayak stocks all three."
       ctaBody="Talk to OptiFinish about your substrate, finish requirement, and application volume — we'll specify the right Nerolac enamel grade through Vinayak Agencies."
     />
+    </>
   );
 }

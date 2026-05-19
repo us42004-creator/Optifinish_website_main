@@ -1,14 +1,72 @@
+import type { Metadata } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import { metadataBase, defaultOpenGraph, defaultTwitter, productSchema, breadcrumbSchema, faqSchema, SITE } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Pretreatment Line (PT Line) | OptiFinish Manufactured',
+export const metadata: Metadata = {
+  metadataBase,
+  title: 'Pretreatment Line — Iron Phosphating & Multi-Stage Systems | OptiFinish',
   description:
-    'Multi-stage pretreatment systems from 3-stage basic iron phosphate to 7-stage zinc phosphate. Spray tunnel or dip tank. 500+ hrs salt spray (7-stage). Custom dimensioned.',
+    'Pretreatment lines manufactured by OptiFinish — iron phosphating and multi-stage spray/dip systems for steel, aluminium, and galvanised substrates. Critical surface preparation before powder and liquid coating.',
+  keywords: [
+    'pretreatment line manufacturer India',
+    'iron phosphating system India',
+    'PT line powder coating India',
+    'surface pretreatment line India',
+    'spray pretreatment system India',
+    'OptiFinish PT line',
+    'coating pretreatment Greater Noida',
+  ],
+  alternates: { canonical: `${SITE.url}/products/optifinish-manufactured/pt-line` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'Pretreatment Line — Iron Phosphating & Multi-Stage Systems | OptiFinish',
+    description: 'Iron phosphating and multi-stage pretreatment lines for steel, aluminium, and galvanised substrates. Spray and dip configurations. Manufactured by OptiFinish.',
+    url: `${SITE.url}/products/optifinish-manufactured/pt-line`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'Pretreatment Line — Iron Phosphating | OptiFinish',
+    description: 'Multi-stage PT lines — iron phosphating, spray/dip, steel and aluminium substrates. Manufactured in Greater Noida.',
+  },
 };
+
+const productLD = productSchema({
+  name: 'Pretreatment Line (PT Line)',
+  description: 'Pretreatment lines manufactured by OptiFinish — iron phosphating and multi-stage spray/dip systems for steel, aluminium, and galvanised substrates. Critical surface preparation before powder and liquid coating.',
+  url: '/products/optifinish-manufactured/pt-line',
+  category: 'Surface Pretreatment Equipment',
+  keywords: ['pretreatment line', 'iron phosphating system', 'PT line powder coating', 'surface pretreatment India'],
+});
+
+const breadcrumbLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'OptiFinish Manufactured', href: '/products/optifinish-manufactured' },
+  { name: 'PT Line', href: '/products/optifinish-manufactured/pt-line' },
+]);
+
+const faqLD = faqSchema([
+  {
+    q: 'What is a pretreatment line in powder coating?',
+    a: 'A pretreatment (PT) line prepares metal surfaces before powder or liquid coating — removing oil, rust, and mill scale through degreasing and phosphating stages to ensure strong coating adhesion and corrosion resistance.',
+  },
+  {
+    q: 'What types of pretreatment systems does OptiFinish manufacture?',
+    a: 'OptiFinish manufactures iron phosphating and multi-stage pretreatment systems in both spray and dip configurations, designed for steel, aluminium, and galvanised substrates.',
+  },
+  {
+    q: 'Why is a pretreatment line essential before powder coating?',
+    a: 'Pretreatment is critical for powder coating quality and longevity — it removes surface contaminants that would cause adhesion failure and provides a phosphate conversion coating that dramatically improves corrosion protection and coating life.',
+  },
+]);
 
 export default function PTLinePage() {
   return (
-    <ProductPageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />
+      <ProductPageTemplate
       theme="dark"
 
       breadcrumb={[
@@ -157,5 +215,6 @@ export default function PTLinePage() {
       ctaAccent="Adhesion is the foundation."
       ctaBody="Tell OptiFinish your substrate, corrosion requirements, and throughput — we'll specify the right number of stages and system type for your application."
     />
+    </>
   );
 }

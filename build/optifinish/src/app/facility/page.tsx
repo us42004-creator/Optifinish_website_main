@@ -2,12 +2,39 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import HomeCTA from '@/components/sections/home/HomeCTA';
+import { metadataBase, defaultOpenGraph, defaultTwitter, breadcrumbSchema, SITE } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Facility | OptiFinish — Greater Noida Manufacturing & R&D',
+  metadataBase,
+  title: 'Facility — Greater Noida Manufacturing & R&D | OptiFinish',
   description:
-    'OptiFinish Greater Noida manufacturing and R&D facility — where powder coating plants, curing ovens, Z-TAP, and ZA01 are designed, built, tested, and commissioned.',
+    'OptiFinish\'s Greater Noida manufacturing and R&D facility — where powder coating plants, curing ovens, Z-TAP automation robots, and ZA01 reciprocators are designed, built, tested, and commissioned for Indian industry.',
+  keywords: [
+    'OptiFinish manufacturing facility Greater Noida',
+    'powder coating plant manufacturing facility India',
+    'coating equipment manufacturer Greater Noida',
+    'industrial manufacturing facility Greater Noida',
+    'VACSPL factory Greater Noida',
+    'coating automation R&D India',
+  ],
+  alternates: { canonical: `${SITE.url}/facility` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'OptiFinish Facility — Greater Noida Manufacturing & R&D',
+    description: 'The Greater Noida facility where OptiFinish designs, builds, and commissions powder coating plants, curing ovens, and proprietary automation systems.',
+    url: `${SITE.url}/facility`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'OptiFinish Facility — Greater Noida',
+    description: 'Manufacturing and R&D facility in Greater Noida — where powder coating plants and automation systems are built.',
+  },
 };
+
+const breadcrumbLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Facility', href: '/facility' },
+]);
 
 /* ─── Photo groups ─── */
 
@@ -100,6 +127,8 @@ const LIGHT_GRID_STYLE = {
 
 export default function FacilityPage() {
   return (
+    <>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
     <main className="min-h-screen overflow-hidden">
 
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -613,5 +642,6 @@ export default function FacilityPage() {
       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <HomeCTA />
     </main>
+    </>
   );
 }

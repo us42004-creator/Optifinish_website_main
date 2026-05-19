@@ -1,14 +1,75 @@
+import type { Metadata } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import { metadataBase, defaultOpenGraph, defaultTwitter, productSchema, breadcrumbSchema, faqSchema, SITE } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Powder Coating Plant | OptiFinish Manufactured',
+export const metadata: Metadata = {
+  metadataBase,
+  title: 'Powder Coating Plant — Turnkey Conveyorised Lines | OptiFinish',
   description:
-    'Complete turnkey powder coating plant — manual batch or fully conveyorised automatic. 700+ plants installed. Custom engineered and commissioned from OptiFinish\'s Greater Noida facility.',
+    'Complete turnkey powder coating plant — manual batch or fully conveyorised automatic. 700+ plants installed across India. Custom engineered, manufactured, and commissioned from our Greater Noida facility.',
+  keywords: [
+    'powder coating plant India',
+    'turnkey powder coating plant',
+    'conveyorised powder coating line',
+    'powder coating plant manufacturer India',
+    'powder coating plant manufacturer Greater Noida',
+    'automatic powder coating plant India',
+    'manual powder coating plant India',
+    'powder coating plant price India',
+    'industrial powder coating plant',
+    'OptiFinish powder coating plant',
+  ],
+  alternates: { canonical: `${SITE.url}/products/optifinish-manufactured/powder-coating-plant` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'Powder Coating Plant — Turnkey Conveyorised Lines | OptiFinish',
+    description: 'Turnkey powder coating plants — manual batch or fully conveyorised. 700+ installations across India. Custom engineered from OptiFinish, Greater Noida.',
+    url: `${SITE.url}/products/optifinish-manufactured/powder-coating-plant`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'Powder Coating Plant — Turnkey Lines | OptiFinish',
+    description: '700+ powder coating plants installed across India. Turnkey, conveyorised, custom-engineered.',
+  },
 };
+
+const productLD = productSchema({
+  name: 'Powder Coating Plant',
+  description: 'Complete turnkey powder coating plant — manual batch or fully conveyorised automatic lines. Custom engineered, manufactured, and commissioned by OptiFinish from Greater Noida, India.',
+  url: '/products/optifinish-manufactured/powder-coating-plant',
+  category: 'Industrial Coating Equipment',
+  keywords: ['powder coating plant', 'conveyorised coating line', 'turnkey coating plant', 'powder coating equipment India'],
+});
+
+const breadcrumbLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'OptiFinish Manufactured', href: '/products/optifinish-manufactured' },
+  { name: 'Powder Coating Plant', href: '/products/optifinish-manufactured/powder-coating-plant' },
+]);
+
+const faqLD = faqSchema([
+  {
+    q: 'What is the cost of a powder coating plant in India?',
+    a: 'The cost of a powder coating plant in India varies based on line length, capacity, level of automation, and substrate requirements. OptiFinish manufactures both manual batch plants and fully conveyorised automatic lines — contact us at +91-96434-03374 or optifinish.in/contact for a customised quote.',
+  },
+  {
+    q: 'Does OptiFinish provide turnkey powder coating plant installation?',
+    a: 'Yes. OptiFinish provides complete turnkey powder coating plant solutions — including design, fabrication, installation, commissioning, and post-commissioning support — from our Greater Noida manufacturing facility.',
+  },
+  {
+    q: 'What types of powder coating plants does OptiFinish manufacture?',
+    a: 'OptiFinish manufactures manual batch plants, semi-automatic, and fully conveyorised powder coating plants integrating pretreatment, powder booth, curing oven, and conveyor systems tailored to production requirements.',
+  },
+]);
 
 export default function PowderCoatingPlantPage() {
   return (
-    <ProductPageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />
+      <ProductPageTemplate
       theme="dark"
 
       breadcrumb={[
@@ -121,18 +182,21 @@ export default function PowderCoatingPlantPage() {
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/curing-oven',
           enquireSlug: 'curing-oven',
+          imageSrc: '/images/products/optifinish-manufactured/curing-oven/oven-cleaned.png',
         },
         {
           name: 'Powder Spray Booth',
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/powder-spray-booth',
           enquireSlug: 'powder-spray-booth',
+          imageSrc: '/images/products/optifinish-manufactured/SS_BOOTH/ss-booth-master-shot.png',
         },
         {
-          name: 'Pretreatment Line (PT Line)',
+          name: 'Cyclone & Dust Collector',
           category: 'OptiFinish Manufactured',
-          href: '/products/optifinish-manufactured/pt-line',
-          enquireSlug: 'pt-line',
+          href: '/products/optifinish-manufactured/cyclone-dust-collector',
+          enquireSlug: 'cyclone-dust-collector',
+          imageSrc: '/images/products/optifinish-manufactured/cyclone-dust-collector/cyclone-dust-collect.png',
         },
       ]}
 
@@ -140,5 +204,6 @@ export default function PowderCoatingPlantPage() {
       ctaAccent="We'll build it."
       ctaBody="Give us your part size, throughput requirement, substrate, and floor dimensions — OptiFinish will design, quote, and deliver the complete line."
     />
+    </>
   );
 }

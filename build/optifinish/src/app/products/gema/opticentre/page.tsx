@@ -1,14 +1,73 @@
+import type { Metadata } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import { metadataBase, defaultOpenGraph, defaultTwitter, productSchema, breadcrumbSchema, faqSchema, SITE } from '@/lib/seo';
 
-export const metadata = {
-  title: 'GEMA OptiCentre OC08 Powder Management | OptiFinish',
+export const metadata: Metadata = {
+  metadataBase,
+  title: 'GEMA OptiCentre OC08 — Fully Automatic Powder Management | OptiFinish',
   description:
-    'GEMA OptiCentre OC08 — fully automatic powder management centre with precision load cell tracking, automatic cleaning cycle, and GemaConnect integration. Supplied by OptiFinish.',
+    'GEMA OptiCentre OC08 automatic powder centre — supplied by OptiFinish, authorised GEMA partner India. Fully automated powder feed, colour change, and recovery management for high-volume powder coating lines.',
+  keywords: [
+    'GEMA OptiCentre India',
+    'GEMA OC08 India',
+    'automatic powder centre India',
+    'powder management system India',
+    'GEMA powder feed India',
+    'OptiFinish GEMA OptiCentre',
+    'automatic colour change powder coating India',
+  ],
+  alternates: { canonical: `${SITE.url}/products/gema/opticentre` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'GEMA OptiCentre OC08 — Fully Automatic Powder Management | OptiFinish',
+    description: 'GEMA OptiCentre OC08 automatic powder centre — supplied by OptiFinish, authorised GEMA partner India. Fully automated powder feed, colour change, and recovery management.',
+    url: `${SITE.url}/products/gema/opticentre`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'GEMA OptiCentre OC08 — Automatic Powder Management | OptiFinish',
+    description: 'GEMA OptiCentre OC08 — fully automated powder feed, colour change, and recovery. Supplied by OptiFinish, authorised GEMA partner India.',
+  },
 };
+
+const productLD = productSchema({
+  name: 'GEMA OptiCentre OC08',
+  description: 'GEMA OptiCentre OC08 fully automatic powder management centre — handling hopper filling, sieving, level monitoring, cleaning, and per-batch consumption tracking for high-volume powder coating lines.',
+  url: '/products/gema/opticentre',
+  category: 'Powder Management System',
+  brand: 'GEMA',
+  keywords: ['GEMA OptiCentre', 'OC08', 'automatic powder centre', 'powder management system India'],
+});
+
+const breadcrumbLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'GEMA', href: '/products/gema' },
+  { name: 'OptiCentre OC08', href: '/products/gema/opticentre' },
+]);
+
+const faqLD = faqSchema([
+  {
+    q: 'What is the GEMA OptiCentre OC08?',
+    a: 'The GEMA OptiCentre OC08 is a fully automatic powder management centre that handles powder feed, colour change, and recovery in a single integrated unit — minimising changeover time and powder waste in high-volume production lines.',
+  },
+  {
+    q: 'How fast is colour change with the GEMA OptiCentre?',
+    a: 'The GEMA OptiCentre enables rapid colour change — the OC08 is designed for automated flushing and colour changeover in minutes rather than the manual process that can take 20–30 minutes per change.',
+  },
+  {
+    q: 'Is the GEMA OptiCentre compatible with automatic powder coating guns?',
+    a: 'Yes. The GEMA OptiCentre OC08 is designed to work with GEMA OptiGun automatic guns and ZA Series reciprocators, all of which are supplied and serviced by OptiFinish as an authorised GEMA partner in India.',
+  },
+]);
 
 export default function GEMAOptiCentrePage() {
   return (
-    <ProductPageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />
+      <ProductPageTemplate
       theme="light"
 
       /* S1 — Hero */
@@ -148,5 +207,6 @@ export default function GEMAOptiCentrePage() {
       ctaAccent="We'll design the system."
       ctaBody="Talk to OptiFinish about integrating the GEMA OptiCentre OC08 into your automatic line — new installation or retrofit onto an existing booth and reciprocator setup."
     />
+    </>
   );
 }

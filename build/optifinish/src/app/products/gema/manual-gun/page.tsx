@@ -484,7 +484,7 @@ const MODELS = [
   },
 ];
 
-const HOW_IT_WORKS = [
+const HOW_IT_WORKS: { n: string; title: string; body: string; imageSrc: string; objectFit?: 'cover' | 'contain' }[] = [
   {
     n: '01',
     title: 'Powder fed via Venturi',

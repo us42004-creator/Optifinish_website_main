@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import ServicePageTemplate from '@/components/services/ServicePageTemplate';
+import { serviceSchema, breadcrumbSchema } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Trials, Testing & Review | OptiFinish Services',
@@ -7,9 +8,25 @@ export const metadata: Metadata = {
     'Coating trials on sample parts at our Greater Noida facility — substrate testing, powder evaluation, colour matching, adhesion testing, and full written process reports.',
 };
 
+const serviceLD = serviceSchema({
+  name: 'Coating Trials, Testing & Review',
+  description: 'Coating trials on sample parts at our Greater Noida facility — substrate testing, powder evaluation, colour matching, adhesion testing, and full written process reports.',
+  url: '/services/ttr',
+  serviceType: 'Industrial Coating Trial and Testing',
+});
+
+const bcLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Services', href: '/services' },
+  { name: 'Trials, Testing & Review', href: '/services/ttr' },
+]);
+
 export default function TTRPage() {
   return (
-    <ServicePageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(bcLD) }} />
+      <ServicePageTemplate
       breadcrumbLabel="Trials, Testing & Review"
       tag="Coating Trials Service"
       eyebrow="OptiFinish Services · Trials"
@@ -132,5 +149,6 @@ export default function TTRPage() {
         },
       ]}
     />
+    </>
   );
 }

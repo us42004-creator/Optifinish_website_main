@@ -1,14 +1,75 @@
+import type { Metadata } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import { metadataBase, defaultOpenGraph, defaultTwitter, productSchema, breadcrumbSchema, faqSchema, SITE } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Powder Coating Paints | Nerolac, Prominent, Paramount | OptiFinish',
+export const metadata: Metadata = {
+  metadataBase,
+  title: 'Powder Coatings — Kansai Nerolac Industrial Range | Vinayak Agencies',
   description:
-    'Powder coating paints from Nerolac, Prominent, and Paramount — supplied by Vinayak Agencies. Epoxy, polyester, and hybrid formulations for industrial and architectural applications.',
+    'Vinayak Agencies stocks and supplies Kansai Nerolac powder coatings — one of India\'s largest authorised Nerolac industrial dealers. Full range of polyester, epoxy, hybrid, and special-effect powder coatings, always in stock.',
+  keywords: [
+    'Nerolac powder coating India',
+    'Kansai Nerolac powder coating dealer India',
+    'powder coating paint India',
+    'industrial powder coating India',
+    'polyester powder coating India',
+    'epoxy powder coating India',
+    'Vinayak Agencies powder paint',
+    'powder coating supplier Greater Noida',
+  ],
+  alternates: { canonical: `${SITE.url}/products/vinayak/powder-paints` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'Powder Coatings — Kansai Nerolac Industrial Range | Vinayak Agencies',
+    description: 'Authorised Kansai Nerolac powder coating dealer — full range always in stock at Greater Noida.',
+    url: `${SITE.url}/products/vinayak/powder-paints`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'Kansai Nerolac Powder Coatings | Vinayak Agencies',
+    description: 'Full range of Nerolac industrial powder coatings — polyester, epoxy, hybrid, always in stock.',
+  },
 };
+
+const productLD = productSchema({
+  name: 'Kansai Nerolac Powder Coatings',
+  description: 'Vinayak Agencies stocks and supplies Kansai Nerolac powder coatings — full range of polyester, epoxy, hybrid, and special-effect powder coatings, always in stock at Greater Noida.',
+  url: '/products/vinayak/powder-paints',
+  brand: 'Kansai Nerolac',
+  manufacturer: 'Vinayak Agencies',
+  category: 'Powder Coating Materials',
+  keywords: ['Nerolac powder coating', 'powder coating paint India', 'polyester powder coating', 'epoxy powder coating'],
+});
+
+const breadcrumbLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'Vinayak Agencies', href: '/products/vinayak' },
+  { name: 'Powder Coatings', href: '/products/vinayak/powder-paints' },
+]);
+
+const faqLD = faqSchema([
+  {
+    q: 'What powder coating brands does Vinayak Agencies supply?',
+    a: 'Vinayak Agencies is one of India\'s largest authorised Kansai Nerolac industrial dealers — supplying the full range of Nerolac powder coatings including polyester, epoxy-polyester hybrid, pure epoxy, TGIC-free, and special-effect finishes.',
+  },
+  {
+    q: 'Does Vinayak Agencies keep powder coatings in stock?',
+    a: 'Yes. Vinayak Agencies maintains a large ready-stock inventory of Kansai Nerolac powder coatings at the Greater Noida facility — enabling same-day or next-day supply for urgent production requirements.',
+  },
+  {
+    q: 'What is the minimum order quantity for powder coatings from Vinayak?',
+    a: 'Vinayak Agencies supplies powder coatings in standard 20 kg boxes with no restrictive minimum order — contact us at +91-96434-03374 or info@optifinish.in for pricing and availability.',
+  },
+]);
 
 export default function VinayakPowderPaintsPage() {
   return (
-    <ProductPageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />
+      <ProductPageTemplate
       theme="light"
 
       breadcrumb={[
@@ -109,7 +170,7 @@ export default function VinayakPowderPaintsPage() {
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/powder-spray-booth',
           enquireSlug: 'powder-spray-booth',
-          imageSrc: '/images/products/optifinish-manufactured/powder-spray-booth/optifinish-powder-spray-booth-01.jpg',
+          imageSrc: '/images/products/optifinish-manufactured/SS_BOOTH/ss-booth-master-shot.png',
         },
       ]}
 
@@ -117,5 +178,6 @@ export default function VinayakPowderPaintsPage() {
       ctaAccent="Vinayak Agencies stocks what you need."
       ctaBody="Talk to OptiFinish about your substrate, finish grade, and colour requirements — we'll specify the right powder formulation and brand from the Vinayak Agencies range."
     />
+    </>
   );
 }

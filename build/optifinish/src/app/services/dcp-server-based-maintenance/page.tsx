@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import HomeCTA from '@/components/sections/home/HomeCTA';
+import { serviceSchema, breadcrumbSchema } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'DCP Server-Based Maintenance | OptiFinish Services',
@@ -85,9 +86,25 @@ const FEATURE_PREVIEWS = [
   },
 ];
 
+const serviceLD = serviceSchema({
+  name: 'DCP Server-Based Predictive Maintenance',
+  description: 'Remote diagnostics and server-based predictive maintenance for connected powder coating lines from OptiFinish.',
+  url: '/services/dcp-server-based-maintenance',
+  serviceType: 'Predictive Maintenance Service',
+});
+
+const bcLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Services', href: '/services' },
+  { name: 'DCP Server Maintenance', href: '/services/dcp-server-based-maintenance' },
+]);
+
 export default function DCPMaintenancePage() {
   return (
-    <main className="min-h-screen">
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(bcLD) }} />
+      <main className="min-h-screen">
 
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
           Hero — Coming Soon (dark)
@@ -224,5 +241,6 @@ export default function DCPMaintenancePage() {
       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <HomeCTA />
     </main>
+    </>
   );
 }

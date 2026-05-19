@@ -1,14 +1,74 @@
+import type { Metadata } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import { metadataBase, defaultOpenGraph, defaultTwitter, productSchema, breadcrumbSchema, faqSchema, SITE } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Touch-up Paints | Nerolac Tansy & Paramount | OptiFinish',
+export const metadata: Metadata = {
+  metadataBase,
+  title: 'Touch-Up Paints — Industrial & Automotive Touch-Up | Vinayak Agencies',
   description:
-    'Touch-up liquid paints from Nerolac Tansy and Paramount — for post-assembly repair, handling damage, and spot correction on powder-coated and liquid-painted metal surfaces. Vinayak Agencies.',
+    'Touch-up paints supplied by Vinayak Agencies — Kansai Nerolac industrial touch-up range in spray cans, brush-apply, and bulk formats for powder coating repair, automotive, and metal surface touch-ups.',
+  keywords: [
+    'touch up paint India',
+    'industrial touch up paint India',
+    'powder coating touch up paint',
+    'Nerolac touch up India',
+    'Vinayak touch up paint',
+    'metal touch up paint India',
+    'coating repair paint India',
+  ],
+  alternates: { canonical: `${SITE.url}/products/vinayak/touchup-paints` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'Touch-Up Paints — Industrial & Automotive Touch-Up | Vinayak Agencies',
+    description: 'Kansai Nerolac industrial touch-up range — spray cans, brush-apply, and bulk formats for metal and powder coat repair.',
+    url: `${SITE.url}/products/vinayak/touchup-paints`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'Industrial Touch-Up Paints | Vinayak Agencies',
+    description: 'Nerolac touch-up paints for powder coating repair, metal surfaces, and automotive touch-up.',
+  },
 };
+
+const productLD = productSchema({
+  name: 'Industrial Touch-Up Paints',
+  description: 'Touch-up paints supplied by Vinayak Agencies — Kansai Nerolac industrial touch-up range in spray cans, brush-apply, and bulk formats for powder coating repair, automotive, and metal surface touch-ups.',
+  url: '/products/vinayak/touchup-paints',
+  brand: 'Kansai Nerolac',
+  manufacturer: 'Vinayak Agencies',
+  category: 'Touch-Up Coating Materials',
+  keywords: ['touch up paint India', 'powder coating touch up', 'industrial touch up paint', 'metal touch up paint'],
+});
+
+const breadcrumbLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'Vinayak Agencies', href: '/products/vinayak' },
+  { name: 'Touch-Up Paints', href: '/products/vinayak/touchup-paints' },
+]);
+
+const faqLD = faqSchema([
+  {
+    q: 'What touch-up paints does Vinayak Agencies supply?',
+    a: 'Vinayak Agencies supplies Kansai Nerolac industrial touch-up paints in spray can, brush-apply, and bulk formats — for repairing powder coating damage, metal surface scratches, and production line touch-up work.',
+  },
+  {
+    q: 'Can touch-up paint match existing powder coating colours?',
+    a: 'Nerolac offers colour-matched touch-up formulations for many standard powder coating colours. For custom colour matching, contact Vinayak Agencies at +91-96434-03374 with a sample or the original powder coating code.',
+  },
+  {
+    q: 'What is the difference between touch-up paint and powder coating?',
+    a: 'Touch-up paint is a liquid coating applied to small areas for repair — it does not require an oven and is used for localised damage after powder coating. It cannot replicate the full durability and texture of a factory powder coat but is the practical solution for on-site repair.',
+  },
+]);
 
 export default function VinayakTouchupPaintsPage() {
   return (
-    <ProductPageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />
+      <ProductPageTemplate
       theme="light"
 
       breadcrumb={[
@@ -108,5 +168,6 @@ export default function VinayakTouchupPaintsPage() {
       ctaAccent="No re-spray needed."
       ctaBody="Talk to OptiFinish about your production finish colour and substrate — we'll specify the right Nerolac Tansy or Paramount touch-up formulation through Vinayak Agencies."
     />
+    </>
   );
 }

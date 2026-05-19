@@ -1,14 +1,73 @@
+import type { Metadata } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import { metadataBase, defaultOpenGraph, defaultTwitter, productSchema, breadcrumbSchema, faqSchema, SITE } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Auto Spray Optimisation System | OptiFinish',
+export const metadata: Metadata = {
+  metadataBase,
+  title: 'Auto Spray Optimisation — Intelligent Coating Control | OptiFinish',
   description:
-    'Auto Spray Optimisation — integrated gun trigger control and conveyor sync that eliminates powder waste during gaps between parts. Retrofittable onto existing automatic lines.',
+    'OptiFinish Auto Spray Optimisation system — intelligent process control for automatic powder coating lines. Synchronises gun triggering, conveyor speed, and spray parameters to eliminate waste and ensure consistent film build.',
+  keywords: [
+    'auto spray optimisation India',
+    'powder coating process control India',
+    'automatic coating control system',
+    'gun triggering system India',
+    'OptiFinish auto spray',
+    'coating line optimisation India',
+    'powder coating automation India',
+  ],
+  alternates: { canonical: `${SITE.url}/products/automation/auto-spray-optimisation` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'Auto Spray Optimisation — Intelligent Coating Control | OptiFinish',
+    description: 'Intelligent process control for automatic powder coating lines — synchronises gun triggering and conveyor speed to eliminate waste.',
+    url: `${SITE.url}/products/automation/auto-spray-optimisation`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'Auto Spray Optimisation | OptiFinish',
+    description: 'Gun triggering and conveyor sync for automatic powder coating lines — eliminate waste, ensure consistent film build.',
+  },
 };
+
+const productLD = productSchema({
+  name: 'Auto Spray Optimisation System',
+  description: 'OptiFinish Auto Spray Optimisation system — intelligent process control for automatic powder coating lines. Synchronises gun triggering, conveyor speed, and spray parameters to eliminate waste and ensure consistent film build.',
+  url: '/products/automation/auto-spray-optimisation',
+  brand: 'OptiFinish',
+  category: 'Powder Coating Automation',
+  keywords: ['auto spray optimisation', 'gun triggering system', 'powder coating process control', 'coating line automation India'],
+});
+
+const breadcrumbLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'OptiFinish Automation', href: '/products/automation' },
+  { name: 'Auto Spray Optimisation', href: '/products/automation/auto-spray-optimisation' },
+]);
+
+const faqLD = faqSchema([
+  {
+    q: 'What is auto spray optimisation in powder coating?',
+    a: 'Auto spray optimisation synchronises gun triggering with part detection and conveyor speed — guns fire only when a part is present and adjust spray parameters based on part geometry and line speed, eliminating powder wasted on empty hooks and gaps between parts.',
+  },
+  {
+    q: 'How much powder can auto spray optimisation save?',
+    a: 'By eliminating spray on empty hooks and optimising gun-to-part distance and triggering, auto spray optimisation systems typically reduce powder consumption by 15–30% depending on the loading density and production mix.',
+  },
+  {
+    q: 'Does auto spray optimisation work with existing automatic lines?',
+    a: 'Yes. OptiFinish auto spray optimisation can be integrated with existing automatic powder coating lines as a retrofit — adding part detection sensors, a control unit, and gun triggering interfaces without requiring a full line replacement.',
+  },
+]);
 
 export default function AutoSprayOptimisationPage() {
   return (
-    <ProductPageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />
+      <ProductPageTemplate
       theme="dark"
 
       /* S1 — Hero */
@@ -108,18 +167,21 @@ export default function AutoSprayOptimisationPage() {
           category: 'OptiFinish Automation',
           href: '/products/automation/za01',
           enquireSlug: 'za01',
+          imageSrc: '/images/products/gema/reciprocators/gema-za10-01.jpg',
         },
         {
           name: 'Automatic Powder Coating Gun',
           category: 'GEMA',
           href: '/products/gema/automatic-gun',
           enquireSlug: 'gema-automatic-gun',
+          imageSrc: '/images/products/gema/automatic-gun/optigun-ga04.png',
         },
         {
           name: 'Powder Spray Booth',
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/powder-spray-booth',
           enquireSlug: 'powder-spray-booth',
+          imageSrc: '/images/products/optifinish-manufactured/SS_BOOTH/ss-booth-master-shot.png',
         },
       ]}
 
@@ -128,5 +190,6 @@ export default function AutoSprayOptimisationPage() {
       ctaAccent="Retrofit ready."
       ctaBody="Talk to OptiFinish about adding Auto Spray Optimisation to your existing automatic line — we'll assess your conveyor layout, part spacing, and gun configuration to size the system correctly."
     />
+    </>
   );
 }

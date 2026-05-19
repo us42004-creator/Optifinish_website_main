@@ -1,14 +1,72 @@
+import type { Metadata } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import { metadataBase, defaultOpenGraph, defaultTwitter, productSchema, breadcrumbSchema, faqSchema, SITE } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Liquid Spray Booth | OptiFinish Manufactured',
+export const metadata: Metadata = {
+  metadataBase,
+  title: 'Liquid Spray Booth — MS Construction, Wet Paint | OptiFinish',
   description:
-    'MS liquid spray booth for solvent-based and water-based paint applications. 7000 CMH airflow, 5HP suction motor. Water wash or dry filter options. CPCB compliant. Custom dimensions.',
+    'Liquid spray booths manufactured by OptiFinish in MS construction for wet paint applications — cross-draft and downdraft configurations, exhaust filtration, custom-dimensioned to your production requirements.',
+  keywords: [
+    'liquid spray booth India',
+    'wet paint spray booth manufacturer India',
+    'liquid paint spray booth Greater Noida',
+    'MS spray booth India',
+    'industrial spray booth manufacturer India',
+    'OptiFinish liquid spray booth',
+    'cross-draft spray booth India',
+  ],
+  alternates: { canonical: `${SITE.url}/products/optifinish-manufactured/liquid-spray-booth` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'Liquid Spray Booth — MS Construction, Wet Paint | OptiFinish',
+    description: 'Liquid spray booths in MS construction — cross-draft and downdraft, exhaust filtration, custom-dimensioned. Manufactured by OptiFinish Greater Noida.',
+    url: `${SITE.url}/products/optifinish-manufactured/liquid-spray-booth`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'Liquid Spray Booth — MS Construction | OptiFinish',
+    description: 'MS liquid spray booths — cross-draft and downdraft, exhaust filtration, custom-dimensioned for wet paint applications.',
+  },
 };
+
+const productLD = productSchema({
+  name: 'Liquid Spray Booth',
+  description: 'Liquid spray booths manufactured by OptiFinish in MS construction for wet paint applications — cross-draft and downdraft configurations, exhaust filtration, custom-dimensioned to your production requirements.',
+  url: '/products/optifinish-manufactured/liquid-spray-booth',
+  category: 'Industrial Spray Booth',
+  keywords: ['liquid spray booth', 'wet paint spray booth', 'MS spray booth India', 'industrial spray booth manufacturer'],
+});
+
+const breadcrumbLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'OptiFinish Manufactured', href: '/products/optifinish-manufactured' },
+  { name: 'Liquid Spray Booth', href: '/products/optifinish-manufactured/liquid-spray-booth' },
+]);
+
+const faqLD = faqSchema([
+  {
+    q: 'What is a liquid spray booth?',
+    a: 'A liquid spray booth is an enclosed environment for applying wet paint or liquid coatings — providing controlled airflow, overspray containment, and exhaust filtration to ensure finish quality and operator safety.',
+  },
+  {
+    q: 'What configurations does OptiFinish manufacture liquid spray booths in?',
+    a: 'OptiFinish manufactures liquid spray booths in cross-draft and downdraft configurations, in MS construction, custom-dimensioned to match your part size and throughput requirements.',
+  },
+  {
+    q: 'What paint types can be applied in an OptiFinish liquid spray booth?',
+    a: 'OptiFinish liquid spray booths are suitable for solvent-based paints, water-based paints, PU enamels, and 2K/3K coating systems — compatible with Dürr EcoGun spray guns supplied by OptiFinish.',
+  },
+]);
 
 export default function LiquidSprayBoothPage() {
   return (
-    <ProductPageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />
+      <ProductPageTemplate
       theme="dark"
 
       breadcrumb={[
@@ -93,18 +151,21 @@ export default function LiquidSprayBoothPage() {
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/powder-spray-booth',
           enquireSlug: 'powder-spray-booth',
+          imageSrc: '/images/products/optifinish-manufactured/SS_BOOTH/ss-booth-master-shot.png',
         },
         {
           name: 'Cup Gun',
           category: 'Dürr',
           href: '/products/durr/cup-gun',
           enquireSlug: 'durr-cup-gun',
+          imageSrc: '/images/products/durr/cup-gun/ecogun_910_durr.jpg',
         },
         {
           name: 'HVLP Spray Gun',
           category: 'Dürr',
           href: '/products/durr/hvlp-gun',
           enquireSlug: 'durr-hvlp-gun',
+          imageSrc: '/images/products/durr/hvlp-gun/hvlp.png',
         },
       ]}
 
@@ -112,5 +173,6 @@ export default function LiquidSprayBoothPage() {
       ctaAccent="We'll design the extraction right."
       ctaBody="Talk to OptiFinish about your paint type, part size, and volume — we'll design the airflow, mist capture system, and booth dimensions for your application."
     />
+    </>
   );
 }

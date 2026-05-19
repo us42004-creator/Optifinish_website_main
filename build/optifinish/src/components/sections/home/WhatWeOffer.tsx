@@ -6,6 +6,16 @@ import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { useHeadingAnimation } from '@/hooks/useHeadingAnimation';
 
+const MANUFACTURED_SLIDES = [
+  { src: '/images/products/optifinish-manufactured/powder-coating-plant/plant2.jpeg',                             label: 'Conveyorised Powder Coating Line' },
+  { src: '/images/products/optifinish-manufactured/curing-oven/industrial_oven.png',                              label: 'Gas-Fired Curing Oven' },
+  { src: '/images/products/spray-booth/automatic/automatic-booth-inside.jpeg',                                    label: 'Automatic Spray Booth — Interior' },
+  { src: '/images/products/optifinish-manufactured/SS_BOOTH/ss-booth-master-shot.png',                            label: 'SS-304 Pollution-Free Booth' },
+  { src: '/images/products/optifinish-manufactured/liquid-spray-booth/car-painting-booth.jpg',                    label: 'Liquid Spray Booth' },
+  { src: '/images/products/optifinish-manufactured/cyclone-dust-collector/dust-collector-cyclone-01.png',         label: 'Cyclone & Dust Collector' },
+  { src: '/images/products/optifinish-manufactured/curing-oven/yellow-oven-lighting.png',                         label: 'Curing Oven — Heat Chamber' },
+];
+
 const GEMA_SLIDES = [
   { src: '/images/products/gema/manual-gun/homepage-img.jpg',                          label: 'OptiFlex Pro — Manual Gun' },
   { src: '/images/products/gema/automatic-gun/optigun-ga04.png',                       label: 'OptiGun GA04 — Automatic Gun' },
@@ -39,7 +49,8 @@ const TOP_GROUPS = [
     tag: 'In-house',
     flag: '🇮🇳',
     desc: 'Complete powder coating lines and equipment designed and manufactured at our Greater Noida facility.',
-    items: ['Powder Coating Plants', 'Curing Ovens', 'Spray Booths', 'SS Booth Systems'],
+    items: ['Powder Coating Plants', 'Curing Ovens', 'Powder & Liquid Spray Booths', 'SS Booth Systems', 'PT Lines & Dust Collectors'],
+    slides: MANUFACTURED_SLIDES,
     mediaLabel: 'Manufactured equipment · image',
   },
   {
@@ -62,8 +73,8 @@ const BOTTOM_GROUPS = [
     tag: 'Authorised Partner',
     flag: '🇨🇭',
     logo: '/images/logos/gema_logo.png',
-    subheading: 'World-leading powder coating equipment — guns, booths, reciprocators, and OptiCenter systems.',
-    items: ['Manual Powder Guns', 'Automatic Guns', 'OptiCenter Systems', 'Reciprocators'],
+    subheading: 'World-leading powder coating equipment — guns, PP booths, reciprocators, and OptiCenter systems.',
+    items: ['Manual Powder Guns', 'Automatic Guns', 'OptiCenter Systems', 'Reciprocators', 'Plastic / PP Booth'],
     slides: GEMA_SLIDES,
   },
   {
@@ -97,10 +108,18 @@ export default function WhatWeOffer() {
   const searchParams = useSearchParams();
 
   const [slides, setSlides] = useState(() => BOTTOM_GROUPS.map(() => 0));
+  const [topSlides, setTopSlides] = useState(() => TOP_GROUPS.map(() => 0));
+
   useEffect(() => {
     const t = setInterval(() => {
       setSlides((prev) =>
         prev.map((idx, gi) => (idx + 1) % BOTTOM_GROUPS[gi].slides.length)
+      );
+      setTopSlides((prev) =>
+        prev.map((idx, gi) => {
+          const s = TOP_GROUPS[gi].slides;
+          return s ? (idx + 1) % s.length : 0;
+        })
       );
     }, 3200);
     return () => clearInterval(t);
@@ -188,7 +207,7 @@ export default function WhatWeOffer() {
 
         {/* Top row */}
         <div className="mb-4 grid gap-4 md:grid-cols-2">
-          {TOP_GROUPS.map((g) => (
+          {TOP_GROUPS.map((g, gi) => (
             <Link
               key={g.href}
               href={g.href}
@@ -234,11 +253,48 @@ export default function WhatWeOffer() {
                 </div>
               </div>
               <div className="relative mt-auto overflow-hidden">
-                <div className="flex aspect-[16/9] w-full items-center justify-center bg-[#FECE00]/[0.04] border-t border-[#FECE00]/[0.1]">
-                  <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-white/40">
-                    {g.mediaLabel}
-                  </span>
-                </div>
+                {g.slides ? (
+                  <div className="relative aspect-[16/9] w-full overflow-hidden border-t border-[#FECE00]/[0.1]">
+                    {g.slides.map((slide, i) => (
+                      <div
+                        key={i}
+                        className="absolute inset-0 transition-opacity duration-700"
+                        style={{ opacity: i === topSlides[gi] ? 1 : 0, backgroundColor: '#0a0a0a' }}
+                      >
+                        <Image
+                          src={slide.src}
+                          alt={slide.label}
+                          fill
+                          className="object-cover object-center"
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                          priority={gi === 0 && i === 0}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                      </div>
+                    ))}
+                    <div className="absolute bottom-2 left-3 z-10">
+                      <span className="rounded-full bg-black/35 px-2 py-0.5 text-[0.48rem] font-bold uppercase tracking-[0.16em] text-white/80 backdrop-blur-sm">
+                        {g.slides[topSlides[gi]].label}
+                      </span>
+                    </div>
+                    <div className="absolute bottom-2 right-3 z-10 flex gap-1">
+                      {g.slides.map((_, i) => (
+                        <span
+                          key={i}
+                          className={`block h-1 rounded-full transition-all duration-300 ${
+                            i === topSlides[gi] ? 'w-3 bg-white' : 'w-1 bg-white/35'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex aspect-[16/9] w-full items-center justify-center bg-[#FECE00]/[0.04] border-t border-[#FECE00]/[0.1]">
+                    <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-white/40">
+                      {g.mediaLabel}
+                    </span>
+                  </div>
+                )}
               </div>
             </Link>
           ))}
@@ -301,13 +357,13 @@ export default function WhatWeOffer() {
                     <div
                       key={i}
                       className="absolute inset-0 transition-opacity duration-700"
-                      style={{ opacity: i === slides[gi] ? 1 : 0, backgroundColor: slide.bg ?? '#0a0a0a' }}
+                      style={{ opacity: i === slides[gi] ? 1 : 0, backgroundColor: (slide as { bg?: string }).bg ?? '#0a0a0a' }}
                     >
                       <Image
                         src={slide.src}
                         alt={slide.label}
                         fill
-                        className={slide.contain ? 'object-contain p-4' : 'object-cover object-center'}
+                        className={(slide as { contain?: boolean }).contain ? 'object-contain p-4' : 'object-cover object-center'}
                         sizes="(max-width: 768px) 100vw, 33vw"
                         priority={gi === 0 && i === 0}
                       />

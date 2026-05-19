@@ -1,14 +1,65 @@
+import type { Metadata } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import { metadataBase, defaultOpenGraph, defaultTwitter, productSchema, breadcrumbSchema, faqSchema, SITE } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Dürr 3K Dosing System | EcoDose 3K | OptiFinish',
+export const metadata: Metadata = {
+  metadataBase,
+  title: 'Dürr EcoDose 3K — Three-Component Electronic Dosing System | OptiFinish',
   description:
-    'Dürr EcoDose 3K electronic three-component dosing system. Three independent metered streams for base, catalyst, and additive. Pot life monitoring per component. Supplied by OptiFinish.',
+    'Dürr EcoDose 3K electronic three-component dosing — precise metering of base coat, hardener, and thinner for complex 3K liquid coating formulations. Supplied by OptiFinish, authorised Dürr distributor India.',
+  keywords: ['Durr EcoDose 3K India','3K dosing system India','three component mixing India','3K coating system India','Durr 3K India','OptiFinish Durr 3K','multi component paint dosing India'],
+  alternates: { canonical: `${SITE.url}/products/durr/ecodose-3k` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'Dürr EcoDose 3K — Three-Component Electronic Dosing System | OptiFinish',
+    description: 'Dürr EcoDose 3K electronic three-component dosing — precise metering of base coat, hardener, and thinner for complex 3K liquid coating formulations. Supplied by OptiFinish, authorised Dürr distributor India.',
+    url: `${SITE.url}/products/durr/ecodose-3k`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'Dürr EcoDose 3K — Three-Component Dosing | OptiFinish',
+    description: 'Dürr EcoDose 3K electronic 3K dosing — precise metering of three coating components. Supplied by OptiFinish India.',
+  },
 };
+
+const productLD = productSchema({
+  name: 'Dürr EcoDose 3K Three-Component Dosing System',
+  description: 'Dürr EcoDose 3K electronic three-component dosing — precise metering of base coat, hardener, and thinner for complex 3K liquid coating formulations. Supplied by OptiFinish, authorised Dürr distributor India.',
+  url: '/products/durr/ecodose-3k',
+  brand: 'Dürr',
+  category: 'Liquid Coating Equipment',
+  keywords: ['Durr EcoDose 3K India', '3K dosing system India', 'three component mixing India', '3K coating system India'],
+});
+
+const breadcrumbLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'Dürr', href: '/products/durr' },
+  { name: 'EcoDose 3K', href: '/products/durr/ecodose-3k' },
+]);
+
+const faqLD = faqSchema([
+  {
+    q: 'What is a 3K dosing system and how is it different from 2K?',
+    a: 'A 3K dosing system mixes three components — typically base coat, hardener, and thinner or effect additive — electronically in precise ratios. It enables more complex coating formulations than 2K systems, with tighter control over viscosity, gloss, and chemical properties.',
+  },
+  {
+    q: 'When is a 3K system required instead of 2K?',
+    a: '3K systems are specified when a coating formulation requires a separate thinner or effect component that must be added in a controlled ratio — such as metallic effect coatings, speciality automotive finishes, and high-performance industrial coatings where viscosity must be precisely controlled.',
+  },
+  {
+    q: 'Is the Dürr EcoDose 3K available in India?',
+    a: 'Yes. OptiFinish supplies the Dürr EcoDose 3K in India as an authorised Dürr distributor, with full commissioning, integration with Dürr spray guns and EcoPump systems, and ongoing technical support.',
+  },
+]);
 
 export default function DurrEcoDose3KPage() {
   return (
-    <ProductPageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />
+      <ProductPageTemplate
       theme="light"
 
       breadcrumb={[
@@ -136,5 +187,6 @@ export default function DurrEcoDose3KPage() {
       ctaAccent="EcoDose 3K handles every stream."
       ctaBody="Talk to OptiFinish about your 3K paint system, component flow rates, and colour change frequency — we'll specify the right EcoDose 3K configuration for your line."
     />
+    </>
   );
 }

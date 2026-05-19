@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import ServicePageTemplate from '@/components/services/ServicePageTemplate';
+import { serviceSchema, breadcrumbSchema } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Testing & Commissioning | OptiFinish Services',
@@ -7,9 +8,25 @@ export const metadata: Metadata = {
     'Commissioning service for newly installed powder coating lines — site readiness inspection, full system validation, trial production run, and operator handover with documentation.',
 };
 
+const serviceLD = serviceSchema({
+  name: 'Testing & Commissioning',
+  description: 'Commissioning service for newly installed powder coating lines — site readiness inspection, full system validation, trial production run, and operator handover.',
+  url: '/services/testing-commissioning',
+  serviceType: 'Industrial Plant Commissioning',
+});
+
+const bcLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Services', href: '/services' },
+  { name: 'Testing & Commissioning', href: '/services/testing-commissioning' },
+]);
+
 export default function TestingCommissioningPage() {
   return (
-    <ServicePageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(bcLD) }} />
+      <ServicePageTemplate
       breadcrumbLabel="Testing & Commissioning"
       tag="Commissioning Service"
       eyebrow="OptiFinish Services · Installation"
@@ -132,5 +149,6 @@ export default function TestingCommissioningPage() {
         },
       ]}
     />
+    </>
   );
 }

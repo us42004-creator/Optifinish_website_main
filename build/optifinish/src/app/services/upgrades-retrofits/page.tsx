@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import ServicePageTemplate from '@/components/services/ServicePageTemplate';
+import { serviceSchema, breadcrumbSchema } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Upgrades & Retrofits | OptiFinish Services',
@@ -7,9 +8,25 @@ export const metadata: Metadata = {
     'Extend the life and capability of your existing coating line — automation integration, GEMA gun upgrades, oven modernisation, and conveyor retrofits with minimal production downtime.',
 };
 
+const serviceLD = serviceSchema({
+  name: 'Coating Line Upgrades & Retrofits',
+  description: 'Extend the life and capability of your existing coating line — automation integration, GEMA gun upgrades, oven modernisation, and conveyor retrofits.',
+  url: '/services/upgrades-retrofits',
+  serviceType: 'Industrial Equipment Upgrade and Retrofit',
+});
+
+const bcLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Services', href: '/services' },
+  { name: 'Upgrades & Retrofits', href: '/services/upgrades-retrofits' },
+]);
+
 export default function UpgradesRetrofitsPage() {
   return (
-    <ServicePageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(bcLD) }} />
+      <ServicePageTemplate
       breadcrumbLabel="Upgrades & Retrofits"
       tag="Line Modernisation"
       eyebrow="OptiFinish Services · Upgrades"
@@ -132,5 +149,6 @@ export default function UpgradesRetrofitsPage() {
         },
       ]}
     />
+    </>
   );
 }

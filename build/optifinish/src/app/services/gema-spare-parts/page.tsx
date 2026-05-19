@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import ServicePageTemplate from '@/components/services/ServicePageTemplate';
+import { serviceSchema, breadcrumbSchema } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'GEMA Spare Parts | OptiFinish Services',
@@ -7,9 +8,25 @@ export const metadata: Metadata = {
     'Genuine OEM GEMA spare parts supply — wear parts, consumables, gun components, and complete assemblies for all current and legacy GEMA powder coating equipment models.',
 };
 
+const serviceLD = serviceSchema({
+  name: 'GEMA Spare Parts Supply',
+  description: 'Genuine OEM GEMA spare parts supply — wear parts, consumables, gun components, and complete assemblies for all GEMA powder coating equipment models.',
+  url: '/services/gema-spare-parts',
+  serviceType: 'Industrial Equipment Spare Parts Supply',
+});
+
+const bcLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Services', href: '/services' },
+  { name: 'GEMA Spare Parts', href: '/services/gema-spare-parts' },
+]);
+
 export default function GEMASparePartsPage() {
   return (
-    <ServicePageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(bcLD) }} />
+      <ServicePageTemplate
       breadcrumbLabel="GEMA Spare Parts"
       tag="Genuine Parts Supply"
       eyebrow="OptiFinish Services · Parts"
@@ -132,5 +149,6 @@ export default function GEMASparePartsPage() {
         },
       ]}
     />
+    </>
   );
 }

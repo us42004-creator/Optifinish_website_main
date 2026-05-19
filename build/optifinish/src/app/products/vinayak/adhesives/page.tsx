@@ -1,14 +1,74 @@
+import type { Metadata } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import { metadataBase, defaultOpenGraph, defaultTwitter, productSchema, breadcrumbSchema, faqSchema, SITE } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Industrial Adhesives | Nerolac NeroFix & NeroFix Aqua Smart | OptiFinish',
+export const metadata: Metadata = {
+  metadataBase,
+  title: 'Industrial Adhesives — NeroFix & Construction Adhesives | Vinayak Agencies',
   description:
-    'Nerolac NeroFix fast drying strong adhesive and NeroFix Aqua Smart waterproof woodworking adhesive — strong bond in 2 hours. Supplied by Vinayak Agencies.',
+    'Industrial adhesives supplied by Vinayak Agencies — NeroFix construction and industrial adhesives for bonding metal, glass, rubber, and composite materials in fabrication, assembly, and construction applications.',
+  keywords: [
+    'NeroFix adhesive India',
+    'industrial adhesive India',
+    'construction adhesive India',
+    'Vinayak adhesive supplier',
+    'metal bonding adhesive India',
+    'Nerolac adhesive India',
+    'structural adhesive India',
+  ],
+  alternates: { canonical: `${SITE.url}/products/vinayak/adhesives` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'Industrial Adhesives — NeroFix & Construction Adhesives | Vinayak Agencies',
+    description: 'NeroFix industrial and construction adhesives — bonding metal, glass, rubber, and composites. Supplied by Vinayak Agencies.',
+    url: `${SITE.url}/products/vinayak/adhesives`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'NeroFix Industrial Adhesives | Vinayak Agencies',
+    description: 'Construction and industrial adhesives for metal, glass, rubber, and composite bonding — Vinayak Agencies.',
+  },
 };
+
+const productLD = productSchema({
+  name: 'NeroFix Industrial Adhesives',
+  description: 'Industrial adhesives supplied by Vinayak Agencies — NeroFix construction and industrial adhesives for bonding metal, glass, rubber, and composite materials in fabrication, assembly, and construction applications.',
+  url: '/products/vinayak/adhesives',
+  brand: 'Kansai Nerolac',
+  manufacturer: 'Vinayak Agencies',
+  category: 'Industrial Adhesives',
+  keywords: ['NeroFix adhesive', 'industrial adhesive India', 'construction adhesive India', 'metal bonding adhesive'],
+});
+
+const breadcrumbLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'Vinayak Agencies', href: '/products/vinayak' },
+  { name: 'Adhesives', href: '/products/vinayak/adhesives' },
+]);
+
+const faqLD = faqSchema([
+  {
+    q: 'What adhesives does Vinayak Agencies supply?',
+    a: 'Vinayak Agencies supplies the Kansai Nerolac NeroFix range of construction and industrial adhesives — for bonding metal, glass, ceramic, rubber, and composite materials in fabrication, assembly, and construction applications.',
+  },
+  {
+    q: 'What is NeroFix adhesive used for?',
+    a: 'NeroFix adhesives are used for structural bonding in metal fabrication, panel mounting, construction joint sealing, and assembly applications where high-strength, durable bonding without mechanical fasteners is required.',
+  },
+  {
+    q: 'Can I order NeroFix adhesives alongside coating materials from Vinayak?',
+    a: 'Yes. Vinayak Agencies supplies adhesives, powder coatings, liquid paints, touch-up paints, and PU enamels together — simplifying procurement for fabricators and coating contractors who need both materials from a single trusted supplier.',
+  },
+]);
 
 export default function VinayakAdhesivesPage() {
   return (
-    <ProductPageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />
+      <ProductPageTemplate
       theme="light"
 
       breadcrumb={[
@@ -146,5 +206,6 @@ export default function VinayakAdhesivesPage() {
       ctaAccent="Vinayak Agencies stocks both."
       ctaBody="Talk to OptiFinish about your assembly and finishing requirements — we'll supply the right Nerolac adhesive alongside your coating specification through Vinayak Agencies."
     />
+    </>
   );
 }

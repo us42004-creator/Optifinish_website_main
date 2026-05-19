@@ -1,14 +1,72 @@
+import type { Metadata } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import { metadataBase, defaultOpenGraph, defaultTwitter, productSchema, breadcrumbSchema, faqSchema, SITE } from '@/lib/seo';
 
-export const metadata = {
-  title: 'SS Booth System | OptiFinish Manufactured',
+export const metadata: Metadata = {
+  metadataBase,
+  title: 'SS-304 Booth System — Pollution-Free Powder Coating Booth | OptiFinish',
   description:
-    'Full SS-304 powder coating booth for pharmaceutical, food, and precision environments. 92–96% recovery, zero visible exhaust, rounded internal corners for easy cleandown. Pollution-free design.',
+    'SS-304 stainless steel booth systems manufactured by OptiFinish — fully pollution-free construction, easy-clean surfaces, suitable for food, pharmaceutical, and precision powder coating applications.',
+  keywords: [
+    'SS-304 powder coating booth India',
+    'stainless steel booth manufacturer India',
+    'pollution-free powder coating booth',
+    'SS booth system India',
+    'SS304 spray booth India',
+    'OptiFinish SS booth',
+    'food grade coating booth India',
+  ],
+  alternates: { canonical: `${SITE.url}/products/optifinish-manufactured/ss-booth-system` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'SS-304 Booth System — Pollution-Free Powder Coating Booth | OptiFinish',
+    description: 'Full SS-304 powder coating booth — pollution-free, easy-clean, suitable for pharmaceutical, food, and precision environments. Manufactured by OptiFinish.',
+    url: `${SITE.url}/products/optifinish-manufactured/ss-booth-system`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'SS-304 Booth System — Pollution-Free | OptiFinish',
+    description: 'Full SS-304 powder coating booth — pollution-free construction, 92–96% recovery, pharmaceutical and food grade.',
+  },
 };
+
+const productLD = productSchema({
+  name: 'SS-304 Booth System',
+  description: 'SS-304 stainless steel booth systems manufactured by OptiFinish — fully pollution-free construction, easy-clean surfaces, suitable for food, pharmaceutical, and precision powder coating applications.',
+  url: '/products/optifinish-manufactured/ss-booth-system',
+  category: 'Industrial Spray Booth',
+  keywords: ['SS-304 powder coating booth', 'stainless steel booth', 'pollution-free powder coating booth', 'SS booth system'],
+});
+
+const breadcrumbLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'OptiFinish Manufactured', href: '/products/optifinish-manufactured' },
+  { name: 'SS Booth System', href: '/products/optifinish-manufactured/ss-booth-system' },
+]);
+
+const faqLD = faqSchema([
+  {
+    q: 'What is an SS-304 booth system?',
+    a: 'An SS-304 booth system is a powder coating spray booth constructed entirely from SS-304 stainless steel — offering corrosion resistance, contamination-free surfaces, easy cleaning, and compliance with stringent hygiene and quality requirements.',
+  },
+  {
+    q: 'When should I choose an SS-304 booth over MS?',
+    a: 'SS-304 booths are specified when contamination control is critical — such as in food processing equipment, pharmaceutical machinery, medical devices, or precision components where any rust contamination of the powder is unacceptable.',
+  },
+  {
+    q: 'Does OptiFinish manufacture SS-304 booths in custom sizes?',
+    a: 'Yes. OptiFinish manufactures SS-304 booth systems custom-dimensioned to your part size, conveyor type, and throughput requirements — contact us at +91-96434-03374 for a custom specification.',
+  },
+]);
 
 export default function SSBoothSystemPage() {
   return (
-    <ProductPageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />
+      <ProductPageTemplate
       theme="dark"
 
       breadcrumb={[
@@ -90,18 +148,21 @@ export default function SSBoothSystemPage() {
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/powder-spray-booth',
           enquireSlug: 'powder-spray-booth',
+          imageSrc: '/images/products/optifinish-manufactured/SS_BOOTH/ss-booth-master-shot.png',
         },
         {
           name: 'Plastic / PP Booth',
-          category: 'OptiFinish Manufactured',
-          href: '/products/optifinish-manufactured/plastic-booth',
+          category: 'GEMA',
+          href: '/products/gema/plastic-pp-booth',
           enquireSlug: 'plastic-booth',
+          imageSrc: '/images/products/gema/plastic-pp-booth/plastic-booth-cropped.jpeg',
         },
         {
           name: 'Cyclone & Dust Collector',
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/cyclone-dust-collector',
           enquireSlug: 'cyclone-dust-collector',
+          imageSrc: '/images/products/optifinish-manufactured/cyclone-dust-collector/cyclone-dust-collect.png',
         },
       ]}
 
@@ -109,5 +170,6 @@ export default function SSBoothSystemPage() {
       ctaAccent="Built for demanding environments."
       ctaBody="Talk to OptiFinish about your hygiene, corrosion, and colour change requirements — we'll design the SS booth system to your environment and part specifications."
     />
+    </>
   );
 }

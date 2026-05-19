@@ -1,14 +1,65 @@
+import type { Metadata } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import { metadataBase, defaultOpenGraph, defaultTwitter, productSchema, breadcrumbSchema, faqSchema, SITE } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Dürr 2K Dosing System | EcoDose 2K | OptiFinish',
+export const metadata: Metadata = {
+  metadataBase,
+  title: 'Dürr EcoDose 2K — Two-Component Electronic Dosing System | OptiFinish',
   description:
-    'Dürr EcoDose 2K electronic two-component dosing system. 40–4000 cc/min flow range. Coriolis or gear flowmeter precision. Pot life monitoring. Supplied by OptiFinish.',
+    'Dürr EcoDose 2K electronic two-component dosing system — precise, programmable mixing of base coat and hardener for 2K liquid coating applications. Supplied by OptiFinish, authorised Dürr distributor India.',
+  keywords: ['Durr EcoDose 2K India','2K dosing system India','two component mixing system India','2K coating dosing India','Durr 2K system India','liquid 2K coating India','OptiFinish Durr EcoDose','two component paint mixing India'],
+  alternates: { canonical: `${SITE.url}/products/durr/ecodose-2k` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'Dürr EcoDose 2K — Two-Component Electronic Dosing System | OptiFinish',
+    description: 'Dürr EcoDose 2K electronic two-component dosing system — precise, programmable mixing of base coat and hardener for 2K liquid coating applications. Supplied by OptiFinish, authorised Dürr distributor India.',
+    url: `${SITE.url}/products/durr/ecodose-2k`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'Dürr EcoDose 2K — Two-Component Dosing | OptiFinish',
+    description: 'Dürr EcoDose 2K electronic 2K dosing — precise base coat and hardener mixing. Supplied by OptiFinish India.',
+  },
 };
+
+const productLD = productSchema({
+  name: 'Dürr EcoDose 2K Two-Component Dosing System',
+  description: 'Dürr EcoDose 2K electronic two-component dosing system — precise, programmable mixing of base coat and hardener for 2K liquid coating applications. Supplied by OptiFinish, authorised Dürr distributor India.',
+  url: '/products/durr/ecodose-2k',
+  brand: 'Dürr',
+  category: 'Liquid Coating Equipment',
+  keywords: ['Durr EcoDose 2K India', '2K dosing system India', 'two component mixing system India', '2K coating dosing India'],
+});
+
+const breadcrumbLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'Dürr', href: '/products/durr' },
+  { name: 'EcoDose 2K', href: '/products/durr/ecodose-2k' },
+]);
+
+const faqLD = faqSchema([
+  {
+    q: 'What is a 2K dosing system?',
+    a: 'A 2K (two-component) dosing system electronically meters and mixes a base coat and hardener in the correct ratio before application — eliminating manual mixing errors, ensuring consistent mix ratio, and extending the working life of 2K coatings by mixing only what is needed.',
+  },
+  {
+    q: 'What are the advantages of electronic dosing over manual 2K mixing?',
+    a: 'Electronic dosing eliminates human error in mix ratios, reduces waste from over-mixed material, provides a digital record of every mix, and is essential for automated production lines where manual mixing is impractical.',
+  },
+  {
+    q: 'What industries use 2K coating systems?',
+    a: '2K coating systems are used in automotive OEM and refinishing, industrial machinery, aerospace components, heavy equipment, and any application requiring maximum durability, chemical resistance, or specific hardener-to-base ratios.',
+  },
+]);
 
 export default function DurrEcoDose2KPage() {
   return (
-    <ProductPageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />
+      <ProductPageTemplate
       theme="light"
 
       breadcrumb={[
@@ -134,5 +185,6 @@ export default function DurrEcoDose2KPage() {
       ctaAccent="EcoDose handles the consistency."
       ctaBody="Talk to OptiFinish about your 2K paint system, flow rate requirements, and colour change frequency — we'll specify the right EcoDose 2K configuration."
     />
+    </>
   );
 }

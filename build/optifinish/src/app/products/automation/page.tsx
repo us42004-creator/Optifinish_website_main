@@ -3,16 +3,48 @@ import CategoryHero from '@/components/products/CategoryHero';
 import ProductCard from '@/components/products/ProductCard';
 import CrossCategoryNav from '@/components/products/CrossCategoryNav';
 import HomeCTA from '@/components/sections/home/HomeCTA';
+import { metadataBase, defaultOpenGraph, defaultTwitter, breadcrumbSchema, SITE } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'OptiFinish Automation — Z-TAP, ZA01, Sieve Machine | OptiFinish',
+  metadataBase,
+  title: 'OptiFinish Automation — Z-TAP Robot, ZA01 Reciprocator & Sieve Machine',
   description:
-    'Proprietary automation products developed entirely in-house — Z-TAP powder coating robot, ZA01 vertical reciprocator, and PS Vibratory Sieve Machine.',
+    'Proprietary powder coating automation systems developed entirely in-house by OptiFinish — Z-TAP coating automation robot, ZA01 vertical automatic reciprocator, and PS Vibratory Sieve Machine for powder recovery.',
+  keywords: [
+    'Z-TAP powder coating robot India',
+    'ZA01 automatic reciprocator India',
+    'powder coating automation system India',
+    'automatic powder coating machine India',
+    'coating automation robot India',
+    'powder sieve machine India',
+    'OptiFinish automation products',
+    'proprietary coating automation',
+    'powder coating reciprocator India',
+  ],
+  alternates: { canonical: `${SITE.url}/products/automation` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'OptiFinish Automation — Z-TAP Robot, ZA01 Reciprocator & Sieve Machine',
+    description: 'Proprietary powder coating automation systems — Z-TAP robot, ZA01 reciprocator, and sieve machine — developed in-house by OptiFinish.',
+    url: `${SITE.url}/products/automation`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'OptiFinish Automation — Z-TAP Robot, ZA01 Reciprocator & Sieve Machine',
+    description: 'Proprietary powder coating automation — Z-TAP robot, ZA01 reciprocator, sieve machine by OptiFinish.',
+  },
 };
+
+const breadcrumb = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'OptiFinish Automation', href: '/products/automation' },
+]);
 
 export default function AutomationPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
       <CategoryHero
         eyebrow="Proprietary Technology — Built In-house"
         tag="Proprietary Technology"

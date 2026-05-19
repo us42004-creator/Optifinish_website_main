@@ -113,7 +113,18 @@ const TIMELINE: { year: string; title: string; body: string; logos?: TimelineLog
   },
 ];
 
-const FOUNDERS = [
+const FOUNDERS: {
+  name: string;
+  role: string;
+  credentials: string;
+  bio: string;
+  initials: string;
+  photo: string;
+  photoPosition: string;
+  photoBg: string;
+  photoFit?: 'cover' | 'contain';
+  photoScale?: number;
+}[] = [
   {
     name: 'Harish Sharma',
     role: 'Co-Founder & Director',
@@ -169,13 +180,13 @@ const GRID_DARK = {
 };
 
 export default function AboutPageContent() {
-  const timelineRef        = useRef<HTMLElement>(null);
+  const timelineRef        = useRef<HTMLDivElement>(null);
   const timelineEyebrowRef = useRef<HTMLSpanElement>(null);
   const timelineHeadRef    = useRef<HTMLSpanElement>(null);
 
   const foundersRef        = useRef<HTMLElement>(null);
   const foundersEyebrowRef = useRef<HTMLSpanElement>(null);
-  const foundersHeadRef    = useRef<HTMLSpanElement>(null);
+  const foundersHeadRef    = useRef<HTMLHeadingElement>(null);
 
   useHeadingAnimation({
     trigger: foundersRef,

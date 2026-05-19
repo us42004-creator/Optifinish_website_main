@@ -1,14 +1,65 @@
+import type { Metadata } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import { metadataBase, defaultOpenGraph, defaultTwitter, productSchema, breadcrumbSchema, faqSchema, SITE } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Dürr Air Assist Spray Gun | EcoGun 2100 / EcoGun AA | OptiFinish',
+export const metadata: Metadata = {
+  metadataBase,
+  title: 'Dürr Air-Assist Airless Spray Gun — Balanced Finish Quality | OptiFinish',
   description:
-    'Dürr EcoGun 2100 (manual) and EcoGun AA (automatic) air-assist spray guns — combining airless fluid delivery with secondary air atomisation for superior finish quality on furniture and high-build coatings.',
+    'Dürr EcoGun AA air-assist airless spray gun — combines hydraulic atomisation with low-volume air assist for improved atomisation quality at lower pressure. Supplied by OptiFinish, authorised Dürr distributor India.',
+  keywords: ['Durr air assist gun India','air assist airless gun India','air-assisted spray gun India','Durr EcoGun AA India','industrial coating gun India','OptiFinish Durr spray gun','liquid coating equipment India'],
+  alternates: { canonical: `${SITE.url}/products/durr/air-assist-gun` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'Dürr Air-Assist Airless Spray Gun — Balanced Finish Quality | OptiFinish',
+    description: 'Dürr EcoGun AA air-assist airless spray gun — combines hydraulic atomisation with low-volume air assist for improved atomisation quality at lower pressure. Supplied by OptiFinish, authorised Dürr distributor India.',
+    url: `${SITE.url}/products/durr/air-assist-gun`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'Dürr Air-Assist Airless Spray Gun — Balanced Finish | OptiFinish',
+    description: 'Dürr EcoGun AA air-assist airless spray gun — hydraulic atomisation + air assist for superior finish quality. Supplied by OptiFinish India.',
+  },
 };
+
+const productLD = productSchema({
+  name: 'Dürr EcoGun AA Air-Assist Spray Gun',
+  description: 'Dürr EcoGun AA air-assist airless spray gun — combines hydraulic atomisation with low-volume air assist for improved atomisation quality at lower pressure. Supplied by OptiFinish, authorised Dürr distributor India.',
+  url: '/products/durr/air-assist-gun',
+  brand: 'Dürr',
+  category: 'Liquid Coating Equipment',
+  keywords: ['Durr air assist gun India', 'air assist airless gun India', 'air-assisted spray gun India', 'Durr EcoGun AA India'],
+});
+
+const breadcrumbLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'Dürr', href: '/products/durr' },
+  { name: 'Air-Assist Spray Gun', href: '/products/durr/air-assist-gun' },
+]);
+
+const faqLD = faqSchema([
+  {
+    q: 'What is an air-assist airless spray gun?',
+    a: 'An air-assist airless gun combines hydraulic atomisation (like an airless gun) with a small amount of compressed air at the air cap to soften the spray and improve atomisation quality — delivering better finish quality than pure airless while maintaining higher application speed than HVLP.',
+  },
+  {
+    q: 'What applications suit air-assist airless guns?',
+    a: 'Air-assist airless guns are ideal for medium-viscosity coatings, industrial topcoats, and applications where you need a balance between application speed and finish quality — such as metal fabrication, automotive components, and industrial machinery.',
+  },
+  {
+    q: 'How does air-assist differ from HVLP?',
+    a: 'Air-assist uses hydraulic pressure as the primary atomisation force with air as a secondary assist, while HVLP uses only high-volume air. Air-assist handles higher-viscosity materials and applies paint faster than HVLP, making it suited to industrial production environments.',
+  },
+]);
 
 export default function DurrAirAssistGunPage() {
   return (
-    <ProductPageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />
+      <ProductPageTemplate
       theme="light"
 
       breadcrumb={[
@@ -133,7 +184,7 @@ export default function DurrAirAssistGunPage() {
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/liquid-spray-booth',
           enquireSlug: 'liquid-spray-booth',
-          imageSrc: '/images/products/optifinish-manufactured/liquid-spray-booth/optifinish-liquid-spray-booth-01.jpg',
+          imageSrc: '/images/products/optifinish-manufactured/liquid-spray-booth/liquid-single-operator-booth.png',
         },
       ]}
 
@@ -141,5 +192,6 @@ export default function DurrAirAssistGunPage() {
       ctaAccent="EcoGun 2100 or AA — your call."
       ctaBody="Talk to OptiFinish about your material viscosity, output requirements, and whether you need manual or automated application — we'll specify the right model and EcoPump fluid supply."
     />
+    </>
   );
 }

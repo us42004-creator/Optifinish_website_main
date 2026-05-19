@@ -3,12 +3,45 @@ import CategoryHero from '@/components/products/CategoryHero';
 import ProductCard from '@/components/products/ProductCard';
 import CrossCategoryNav from '@/components/products/CrossCategoryNav';
 import HomeCTA from '@/components/sections/home/HomeCTA';
+import { metadataBase, defaultOpenGraph, defaultTwitter, breadcrumbSchema, SITE } from '@/lib/seo';
 
 export const metadata: Metadata = {
+  metadataBase,
   title: 'Dürr Liquid Coating Equipment — Authorised Distributor India | OptiFinish',
   description:
-    'OptiFinish supplies Dürr liquid coating equipment in India — EcoGun spray guns, EcoPump systems, and EcoDose 2K/3K electronic dosing for demanding paint applications.',
+    'OptiFinish is an authorised Dürr liquid coating distributor in India. HVLP, airless, air-assist, electrostatic guns, bell atomisers, EcoPump, and EcoDose 2K/3K dosing systems — supplied and serviced.',
+  keywords: [
+    'DÜRR liquid coating systems India',
+    'Durr EcoGun HVLP India',
+    'Durr airless spray gun India',
+    'Durr electrostatic gun India',
+    'Durr bell atomiser India',
+    'Durr EcoPump India',
+    'Durr EcoDose 2K India',
+    'Durr EcoDose 3K India',
+    'liquid coating equipment supplier India',
+    'OptiFinish DURR distributor',
+    'industrial spray gun supplier India',
+  ],
+  alternates: { canonical: `${SITE.url}/products/durr` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'Dürr Liquid Coating Equipment — Authorised Distributor India | OptiFinish',
+    description: 'Authorised Dürr distributor in India — HVLP, airless, electrostatic guns, bell atomisers, EcoPump, and EcoDose dosing systems supplied and serviced by OptiFinish.',
+    url: `${SITE.url}/products/durr`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'Dürr Liquid Coating Equipment — Authorised Distributor India | OptiFinish',
+    description: 'Authorised Dürr distributor in India — spray guns, EcoPump, EcoDose 2K/3K dosing systems.',
+  },
 };
+
+const breadcrumb = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'Dürr', href: '/products/durr' },
+]);
 
 const GUNS = [
   {
@@ -171,6 +204,7 @@ const PUMPS_DOSING = [
 export default function DurrPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
       <CategoryHero
         eyebrow="Authorised Distributor — Dürr Group"
         tag="Authorised Distributor"

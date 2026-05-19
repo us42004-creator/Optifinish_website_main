@@ -1,14 +1,65 @@
+import type { Metadata } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import { metadataBase, defaultOpenGraph, defaultTwitter, productSchema, breadcrumbSchema, faqSchema, SITE } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Dürr HVLP Spray Gun | EcoGun AS MAN | OptiFinish',
+export const metadata: Metadata = {
+  metadataBase,
+  title: 'Dürr HVLP Spray Gun — High Transfer Efficiency Liquid Coating | OptiFinish',
   description:
-    'Dürr EcoGun AS MAN HVLP variant — high transfer efficiency, low overspray for topcoats and clear coats. Reduces material consumption. Supplied by OptiFinish.',
+    'Dürr EcoGun AS MAN HVLP spray gun — supplied by OptiFinish, authorised Dürr distributor India. High Volume Low Pressure atomisation for premium topcoats, clear coats, and low-VOC water-based paints with significantly reduced overspray.',
+  keywords: ['Durr HVLP gun India','HVLP spray gun India','high transfer efficiency spray gun','low overspray spray gun India','Durr EcoGun HVLP India','OptiFinish Durr gun','liquid coating gun India'],
+  alternates: { canonical: `${SITE.url}/products/durr/hvlp-gun` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'Dürr HVLP Spray Gun — High Transfer Efficiency Liquid Coating | OptiFinish',
+    description: 'Dürr EcoGun AS MAN HVLP spray gun — supplied by OptiFinish, authorised Dürr distributor India. High Volume Low Pressure atomisation for premium topcoats, clear coats, and low-VOC water-based paints with significantly reduced overspray.',
+    url: `${SITE.url}/products/durr/hvlp-gun`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'Dürr HVLP Spray Gun — High Transfer Efficiency | OptiFinish',
+    description: 'Dürr EcoGun AS MAN HVLP spray gun — high transfer efficiency, low overspray. Supplied by OptiFinish, authorised Dürr distributor India.',
+  },
 };
+
+const productLD = productSchema({
+  name: 'Dürr EcoGun HVLP Spray Gun',
+  description: 'Dürr EcoGun AS MAN HVLP spray gun — High Volume Low Pressure atomisation for premium topcoats, clear coats, and low-VOC water-based paints with significantly reduced overspray.',
+  url: '/products/durr/hvlp-gun',
+  brand: 'Dürr',
+  category: 'Liquid Coating Equipment',
+  keywords: ['Durr HVLP gun India', 'HVLP spray gun India', 'high transfer efficiency spray gun', 'low overspray spray gun India'],
+});
+
+const breadcrumbLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'Dürr', href: '/products/durr' },
+  { name: 'HVLP Spray Gun', href: '/products/durr/hvlp-gun' },
+]);
+
+const faqLD = faqSchema([
+  {
+    q: 'What is an HVLP spray gun?',
+    a: 'HVLP (High Volume Low Pressure) spray guns atomise paint at low pressure — typically 0.1–0.7 bar at the air cap — producing a soft, low-velocity spray that dramatically reduces overspray bounce-back and paint waste compared to conventional high-pressure guns.',
+  },
+  {
+    q: 'What transfer efficiency does an HVLP gun achieve?',
+    a: 'HVLP guns typically achieve 65–75% transfer efficiency, compared to 25–40% for conventional air spray guns — meaning significantly less paint wasted as overspray, lower material cost, and reduced VOC emissions.',
+  },
+  {
+    q: 'What coatings can be applied with a Dürr HVLP gun?',
+    a: 'Dürr HVLP guns are suited to premium topcoats, clear coats, fine-finish lacquers, and water-based paints on furniture, cabinetry, automotive components, and any application where surface quality and material efficiency are priorities.',
+  },
+]);
 
 export default function DurrHVLPGunPage() {
   return (
-    <ProductPageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />
+      <ProductPageTemplate
       theme="light"
 
       breadcrumb={[
@@ -40,8 +91,6 @@ export default function DurrHVLPGunPage() {
         'Lower paint mist burden on the booth extraction system — extends filter life',
         'Part of the Dürr EcoGun AS MAN platform — consistent ergonomics across the gun range',
       ]}
-
-      applicationImageSrc="/images/products/durr/hvlp-gun/durr-hvlp-inuse-01.jpg"
 
       specRows={[
         { l: 'Atomisation type', v: 'HVLP — High Volume Low Pressure' },
@@ -108,5 +157,6 @@ export default function DurrHVLPGunPage() {
       ctaAccent="HVLP does the work."
       ctaBody="Talk to OptiFinish about whether the EcoGun HVLP variant is right for your paint type, substrate, and application volume."
     />
+    </>
   );
 }

@@ -1,14 +1,72 @@
+import type { Metadata } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import { metadataBase, defaultOpenGraph, defaultTwitter, productSchema, breadcrumbSchema, faqSchema, SITE } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Wood Finish Oven | OptiFinish Manufactured',
+export const metadata: Metadata = {
+  metadataBase,
+  title: 'Wood Finish Oven — Sublimation Transfer for Aluminium Profiles | OptiFinish',
   description:
-    'Specialist sublimation transfer oven for wood-grain and decorative pattern finishing on powder-coated aluminium profiles. 190–220°C. Custom chamber for 6.5m–7m profiles.',
+    'Wood finish ovens manufactured by OptiFinish for sublimation heat transfer on aluminium profiles — producing realistic wood-grain, marble, and pattern finishes at temperatures up to 210°C.',
+  keywords: [
+    'wood finish oven India',
+    'sublimation oven aluminium India',
+    'wood grain powder coating oven',
+    'heat transfer oven India',
+    'aluminium profile wood finish',
+    'OptiFinish wood finish oven',
+    'sublimation transfer oven manufacturer India',
+  ],
+  alternates: { canonical: `${SITE.url}/products/optifinish-manufactured/wood-finish-oven` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'Wood Finish Oven — Sublimation Transfer for Aluminium Profiles | OptiFinish',
+    description: 'Sublimation transfer ovens for wood-grain and decorative finishes on aluminium profiles — up to 210°C, ±5°C uniformity. Manufactured by OptiFinish.',
+    url: `${SITE.url}/products/optifinish-manufactured/wood-finish-oven`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'Wood Finish Oven — Sublimation Transfer | OptiFinish',
+    description: 'Wood finish sublimation ovens for aluminium profiles — wood grain, marble, stone finishes up to 210°C.',
+  },
 };
+
+const productLD = productSchema({
+  name: 'Wood Finish Oven',
+  description: 'Wood finish ovens manufactured by OptiFinish for sublimation heat transfer on aluminium profiles — producing realistic wood-grain, marble, and pattern finishes at temperatures up to 210°C.',
+  url: '/products/optifinish-manufactured/wood-finish-oven',
+  category: 'Industrial Finishing Equipment',
+  keywords: ['wood finish oven', 'sublimation oven aluminium', 'wood grain powder coating oven', 'heat transfer oven India'],
+});
+
+const breadcrumbLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'OptiFinish Manufactured', href: '/products/optifinish-manufactured' },
+  { name: 'Wood Finish Oven', href: '/products/optifinish-manufactured/wood-finish-oven' },
+]);
+
+const faqLD = faqSchema([
+  {
+    q: 'What is a wood finish oven?',
+    a: 'A wood finish oven uses sublimation heat transfer to bond decorative film patterns (wood grain, marble, stone) onto powder-coated aluminium profiles — producing highly realistic decorative finishes for architectural and interior applications.',
+  },
+  {
+    q: 'What temperature does a wood finish sublimation oven operate at?',
+    a: 'Wood finish sublimation ovens typically operate between 180°C and 210°C depending on the film type and profile geometry — OptiFinish designs the oven to achieve uniform temperature distribution for consistent pattern transfer.',
+  },
+  {
+    q: 'What profiles can be processed in an OptiFinish wood finish oven?',
+    a: 'OptiFinish wood finish ovens are designed primarily for aluminium architectural profiles — window frames, door sections, curtain wall components, and decorative trims — for the construction and interior design industries.',
+  },
+]);
 
 export default function WoodFinishOvenPage() {
   return (
-    <ProductPageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />
+      <ProductPageTemplate
       theme="dark"
 
       breadcrumb={[
@@ -117,18 +175,21 @@ export default function WoodFinishOvenPage() {
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/curing-oven',
           enquireSlug: 'curing-oven',
+          imageSrc: '/images/products/optifinish-manufactured/curing-oven/oven-cleaned.png',
         },
         {
           name: 'Powder Coating Plant',
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/powder-coating-plant',
           enquireSlug: 'powder-coating-plant',
+          imageSrc: '/images/products/optifinish-manufactured/powder-coating-plant/optifinish-powder-coating-plant-01.jpg',
         },
         {
           name: 'Powder Spray Booth',
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/powder-spray-booth',
           enquireSlug: 'powder-spray-booth',
+          imageSrc: '/images/products/optifinish-manufactured/SS_BOOTH/ss-booth-master-shot.png',
         },
       ]}
 
@@ -136,5 +197,6 @@ export default function WoodFinishOvenPage() {
       ctaAccent="We'll design the oven stage."
       ctaBody="Talk to OptiFinish about your profile lengths, batch size, and pattern requirements — we'll dimension the Wood Finish Oven and integrate it with your existing powder coating line."
     />
+    </>
   );
 }

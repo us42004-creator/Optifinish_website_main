@@ -311,7 +311,7 @@ export default function ContactPage() {
                 <div className="flex flex-col gap-4">
                   {/* Phone */}
                   <a
-                    href="tel:+919999999999"
+                    href="tel:+918929408691"
                     className="group flex items-center gap-4 rounded-[1rem] border border-white/[0.06] bg-white/[0.02] px-5 py-4 transition-colors hover:border-white/[0.12] hover:bg-white/[0.04]"
                   >
                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/[0.06]">
@@ -321,13 +321,13 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <p className="text-[0.6rem] font-bold uppercase tracking-[0.16em] text-white/30">Call us</p>
-                      <p className="text-[0.85rem] font-semibold text-white/70">+91 XXXXX XXXXX</p>
+                      <p className="text-[0.85rem] font-semibold text-white/70">+91 89294 08691</p>
                     </div>
                   </a>
 
                   {/* WhatsApp */}
                   <a
-                    href="https://wa.me/919999999999"
+                    href="https://wa.me/918929408691"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group flex items-center gap-4 rounded-[1rem] border border-white/[0.06] bg-white/[0.02] px-5 py-4 transition-colors hover:border-[#25D366]/25 hover:bg-[#25D366]/[0.04]"

@@ -1,14 +1,73 @@
+import type { Metadata } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import { metadataBase, defaultOpenGraph, defaultTwitter, productSchema, breadcrumbSchema, faqSchema, SITE } from '@/lib/seo';
 
-export const metadata = {
-  title: 'PS Vibratory Sieve Machine | OptiFinish',
+export const metadata: Metadata = {
+  metadataBase,
+  title: 'PS Vibratory Sieve Machine — Powder Recovery & Recycling | OptiFinish',
   description:
-    'PS Vibratory Sieve Machine — proprietary OptiFinish vibratory sieving unit for recovered powder processing. Removes agglomerates before hopper re-entry. Easy colour change cleaning.',
+    'OptiFinish PS Vibratory Sieve Machine — reconditions and recycles recovered powder coating material. Removes agglomerates and contamination before recirculation, maintaining powder quality and reducing material waste.',
+  keywords: [
+    'powder sieve machine India',
+    'vibratory sieve powder coating',
+    'powder recovery machine India',
+    'powder recycling machine India',
+    'powder coating sieve India',
+    'OptiFinish sieve machine',
+    'powder agglomerate removal India',
+  ],
+  alternates: { canonical: `${SITE.url}/products/automation/sieve-machine` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'PS Vibratory Sieve Machine — Powder Recovery & Recycling | OptiFinish',
+    description: 'Reconditions recovered powder coating material — removes agglomerates and contamination before recirculation.',
+    url: `${SITE.url}/products/automation/sieve-machine`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'PS Vibratory Sieve Machine | OptiFinish',
+    description: 'Vibratory sieve for powder coating recovery — removes agglomerates, reduces material waste.',
+  },
 };
+
+const productLD = productSchema({
+  name: 'PS Vibratory Sieve Machine',
+  description: 'OptiFinish PS Vibratory Sieve Machine — reconditions and recycles recovered powder coating material. Removes agglomerates and contamination before recirculation, maintaining powder quality and reducing material waste.',
+  url: '/products/automation/sieve-machine',
+  brand: 'OptiFinish',
+  category: 'Powder Coating Automation',
+  keywords: ['powder sieve machine', 'vibratory sieve powder coating', 'powder recovery', 'agglomerate removal'],
+});
+
+const breadcrumbLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'OptiFinish Automation', href: '/products/automation' },
+  { name: 'Sieve Machine', href: '/products/automation/sieve-machine' },
+]);
+
+const faqLD = faqSchema([
+  {
+    q: 'What does a powder sieve machine do?',
+    a: 'A powder sieve machine reconditions recovered powder coating material from the cyclone/filter system — vibrating it through a fine mesh screen to break up agglomerates, remove debris, and ensure only consistent particle-size powder is recirculated to the gun. This maintains coating quality while recovering maximum powder value.',
+  },
+  {
+    q: 'Why is sieving important in a powder coating line?',
+    a: 'Without sieving, agglomerated or contaminated recovered powder can cause coating defects — rough texture, fish eyes, or thin spots. Sieving ensures recovered powder meets the same quality standard as virgin material before reuse.',
+  },
+  {
+    q: 'Is the OptiFinish sieve machine compatible with GEMA OptiCentre?',
+    a: 'Yes. The PS Vibratory Sieve Machine integrates into the powder recovery and feed circuit alongside GEMA OptiCentre OC08 powder management systems and standalone cyclone recovery units — all available from OptiFinish.',
+  },
+]);
 
 export default function SieveMachinePage() {
   return (
-    <ProductPageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />
+      <ProductPageTemplate
       theme="dark"
 
       /* S1 — Hero */
@@ -103,6 +162,7 @@ export default function SieveMachinePage() {
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/cyclone-dust-collector',
           enquireSlug: 'cyclone-dust-collector',
+          imageSrc: '/images/products/optifinish-manufactured/cyclone-dust-collector/cyclone-dust-collect.png',
         },
         {
           name: 'OptiCentre Powder Management',
@@ -116,6 +176,7 @@ export default function SieveMachinePage() {
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/powder-spray-booth',
           enquireSlug: 'powder-spray-booth',
+          imageSrc: '/images/products/optifinish-manufactured/SS_BOOTH/ss-booth-master-shot.png',
         },
       ]}
 
@@ -126,5 +187,6 @@ export default function SieveMachinePage() {
       ctaAccent="Cleaner powder, better finish."
       ctaBody="Talk to OptiFinish about integrating the PS Vibratory Sieve Machine into your powder recovery system — new installation or retrofit."
     />
+    </>
   );
 }

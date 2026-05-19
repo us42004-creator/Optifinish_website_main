@@ -1,14 +1,65 @@
+import type { Metadata } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import { metadataBase, defaultOpenGraph, defaultTwitter, productSchema, breadcrumbSchema, faqSchema, SITE } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Dürr Electrostatic Spray Gun | EcoGun AS MAN DC/EC | OptiFinish',
+export const metadata: Metadata = {
+  metadataBase,
+  title: 'Dürr Electrostatic Spray Gun — Rotary & Corona Liquid Coating | OptiFinish',
   description:
-    'Dürr EcoGun AS MAN electrostatic spray guns — DC variant for solvent-based, EC variant for water-based paints. Electrostatic wrap-around, reduced overspray. Supplied by OptiFinish.',
+    'Dürr EcoGun AS DC/EC electrostatic spray guns — electrostatic charging for wrap-around effect and dramatically improved transfer efficiency in liquid coating. Supplied by OptiFinish, authorised Dürr distributor India.',
+  keywords: ['Durr electrostatic spray gun India','electrostatic liquid coating gun India','corona spray gun India','electrostatic coating equipment India','Durr EcoGun electrostatic India','OptiFinish Durr electrostatic','high transfer efficiency gun India'],
+  alternates: { canonical: `${SITE.url}/products/durr/electrostatic-gun` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'Dürr Electrostatic Spray Gun — Rotary & Corona Liquid Coating | OptiFinish',
+    description: 'Dürr EcoGun AS DC/EC electrostatic spray guns — electrostatic charging for wrap-around effect and dramatically improved transfer efficiency in liquid coating. Supplied by OptiFinish, authorised Dürr distributor India.',
+    url: `${SITE.url}/products/durr/electrostatic-gun`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'Dürr Electrostatic Spray Gun — Wrap-Around Coating | OptiFinish',
+    description: 'Dürr EcoGun AS DC/EC electrostatic spray guns — wrap-around effect, high transfer efficiency. Supplied by OptiFinish India.',
+  },
 };
+
+const productLD = productSchema({
+  name: 'Dürr EcoGun Electrostatic Spray Gun',
+  description: 'Dürr EcoGun AS DC/EC electrostatic spray guns — electrostatic charging for wrap-around effect and dramatically improved transfer efficiency in liquid coating. Supplied by OptiFinish, authorised Dürr distributor India.',
+  url: '/products/durr/electrostatic-gun',
+  brand: 'Dürr',
+  category: 'Liquid Coating Equipment',
+  keywords: ['Durr electrostatic spray gun India', 'electrostatic liquid coating gun India', 'corona spray gun India', 'electrostatic coating equipment India'],
+});
+
+const breadcrumbLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'Dürr', href: '/products/durr' },
+  { name: 'Electrostatic Spray Gun', href: '/products/durr/electrostatic-gun' },
+]);
+
+const faqLD = faqSchema([
+  {
+    q: 'What is an electrostatic spray gun for liquid coating?',
+    a: 'An electrostatic spray gun applies a high-voltage charge to paint particles as they leave the gun — the charged particles are attracted to the grounded workpiece, producing a wrap-around effect that coats edges and recesses, and dramatically increasing transfer efficiency to 70–85%.',
+  },
+  {
+    q: 'What transfer efficiency does electrostatic liquid coating achieve?',
+    a: 'Electrostatic liquid coating guns typically achieve 70–85% transfer efficiency compared to 25–40% for conventional guns — reducing paint consumption, overspray, and VOC emissions significantly.',
+  },
+  {
+    q: 'What is the difference between DC and EC variants of Dürr electrostatic guns?',
+    a: 'DC (direct charge) guns charge the fluid directly, suited to conductive materials. EC (external charge) guns charge the atomised spray externally, suited to a wider range of coating materials including waterborne and solvent-based paints.',
+  },
+]);
 
 export default function DurrElectrostaticGunPage() {
   return (
-    <ProductPageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />
+      <ProductPageTemplate
       theme="light"
 
       breadcrumb={[
@@ -137,5 +188,6 @@ export default function DurrElectrostaticGunPage() {
       ctaAccent="Specify DC or EC for your paint."
       ctaBody="Talk to OptiFinish about your paint formulation and whether DC or EC is the right electrostatic variant for your application."
     />
+    </>
   );
 }

@@ -5,13 +5,37 @@ import { ArrowUpRight, Clock3 } from 'lucide-react';
 import postsData from '@/content/blog/index.json';
 import { getAllHtmlPosts } from '@/lib/blog-html';
 import BlogGrid from './BlogGrid';
+import { metadataBase, defaultOpenGraph, defaultTwitter, breadcrumbSchema, faqSchema, SITE } from '@/lib/seo';
 
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Blog | OptiFinish',
+  metadataBase,
+  title: 'Blog — Powder Coating Guides, Equipment & Automation | OptiFinish',
   description:
-    'Guides, comparisons, and technical resources on powder coating plants, GEMA equipment, automation, and industrial finishing from OptiFinish India.',
+    'Technical guides, comparisons, and resources on powder coating plants, curing ovens, GEMA equipment, Z-TAP automation, and industrial surface finishing — from OptiFinish India.',
+  keywords: [
+    'powder coating guide India',
+    'powder coating plant tips',
+    'GEMA gun guide India',
+    'powder coating automation blog',
+    'industrial coating blog India',
+    'curing oven guide',
+    'surface finishing resources India',
+    'OptiFinish blog',
+  ],
+  alternates: { canonical: `${SITE.url}/resources/blog` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'Blog — Powder Coating Guides & Resources | OptiFinish',
+    description: 'Technical guides, comparisons, and resources on powder coating plants, GEMA equipment, and coating automation from OptiFinish India.',
+    url: `${SITE.url}/resources/blog`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'OptiFinish Blog — Powder Coating Guides',
+    description: 'Technical articles on powder coating plants, GEMA equipment, curing ovens, and coating automation from OptiFinish India.',
+  },
 };
 
 type RawPost = {
@@ -124,7 +148,31 @@ export default function BlogListingPage() {
 
   const lead = htmlPosts.length > 0 ? allPosts[0] : (allPosts.find((p) => p.slug.includes('opticenter')) ?? allPosts[0]);
 
+  const blogBC = breadcrumbSchema([
+    { name: 'Home', href: '/' },
+    { name: 'Resources', href: '/resources' },
+    { name: 'Blog', href: '/resources/blog' },
+  ]);
+
+  const blogFaqs = faqSchema([
+    {
+      q: 'What topics does the OptiFinish blog cover?',
+      a: 'The OptiFinish blog covers powder coating plant selection, curing oven guides, GEMA gun operation and maintenance, Z-TAP and ZA01 automation systems, pretreatment line setup, liquid coating equipment, Dürr product guides, and general surface finishing best practices for Indian manufacturers.',
+    },
+    {
+      q: 'Who writes the OptiFinish blog?',
+      a: 'All articles are written by the OptiFinish technical team — engineers and application specialists with hands-on experience in powder coating plant installation, commissioning, and operation across India.',
+    },
+    {
+      q: 'Can I get OptiFinish blog posts by email?',
+      a: 'Yes. Contact OptiFinish at info@optifinish.in to subscribe to the newsletter and receive new guides and technical articles as they are published.',
+    },
+  ]);
+
   return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogBC) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogFaqs) }} />
     <div className="overflow-hidden bg-[#f1efea] text-ink">
 
       {/* ── Dark hero ── */}
@@ -138,19 +186,11 @@ export default function BlogListingPage() {
           <div className="py-8 text-center lg:py-12">
             <p className="card-accent-label card-accent-label-light justify-center">Industrial Finishing Journal</p>
             <h1 className="mx-auto mt-7 max-w-6xl font-serif text-[4.4rem] font-semibold leading-[0.86] tracking-[-0.055em] text-white sm:text-[7rem] lg:text-[9.2rem]">
-              Notes for better coating lines.
+              Guides for better<br /><span className="text-[#FECE00]">coating</span> decisions.
             </h1>
             <p className="mx-auto mt-7 max-w-2xl text-base font-medium leading-7 text-white/62 sm:text-lg">
-              Guides, comparisons, and technical references for teams buying, running, or upgrading powder coating plants in India.
+              Guides, comparisons, and technical references for teams buying, running, or upgrading industrial coating and finishing lines in India.
             </p>
-            <div className="mx-auto mt-8 grid max-w-xl grid-cols-3 border-y border-white/10 py-5 text-left">
-              {[`${allPosts.length} Articles`, 'India-Focused', 'GEMA & Dürr'].map((item, index) => (
-                <div key={item} className={index === 0 ? '' : 'border-l border-white/10 pl-4'}>
-                  <span className="font-mono text-xs font-bold text-yellow">0{index + 1}</span>
-                  <p className="mt-2 text-[10px] font-black uppercase tracking-[0.18em] text-white/42">{item}</p>
-                </div>
-              ))}
-            </div>
           </div>
 
           {/* Lead article */}
@@ -191,5 +231,6 @@ export default function BlogListingPage() {
       </section>
 
     </div>
+    </>
   );
 }

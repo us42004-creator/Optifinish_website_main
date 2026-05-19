@@ -1,16 +1,113 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Clock3, ArrowLeft, CalendarDays } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { marked } from 'marked';
+import matter from 'gray-matter';
 import { getHtmlPostBySlug } from '@/lib/blog-html';
 import postsData from '@/content/blog/index.json';
+import { metadataBase, defaultOpenGraph, defaultTwitter, articleSchema, breadcrumbSchema, faqSchema, SITE } from '@/lib/seo';
 import fs from 'fs';
 import path from 'path';
+
+// Configure marked for clean, semantic HTML output
+marked.setOptions({ gfm: true, breaks: false });
+
+type MdxFrontmatter = {
+  title: string;
+  slug: string;
+  date: string;
+  excerpt: string;
+  tags: string[];
+  readingTime: number;
+  coverImage?: string | null;
+  faqs?: { q: string; a: string }[];
+  metaTitle?: string;
+  metaDescription?: string;
+};
 
 // Force dynamic so new HTML files appear without a rebuild
 export const dynamic = 'force-dynamic';
 
 type Props = { params: Promise<{ slug: string }> };
+
+type PostData = { title: string; slug: string; date: string; excerpt: string; tags: string[]; readingTime: number; coverImage?: string | null };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+
+  // Try HTML posts first
+  const htmlResult = getHtmlPostBySlug(slug);
+  if (htmlResult) {
+    const { post } = htmlResult;
+    const ogImage = post.coverImage ?? SITE.ogImage;
+    return {
+      metadataBase,
+      title: post.title,
+      description: post.excerpt,
+      alternates: { canonical: `${SITE.url}/resources/blog/${post.slug}` },
+      openGraph: {
+        ...defaultOpenGraph,
+        title: post.title,
+        description: post.excerpt,
+        url: `${SITE.url}/resources/blog/${post.slug}`,
+        type: 'article',
+        images: [{ url: ogImage, width: 1200, height: 630, alt: post.title }],
+        publishedTime: post.date,
+      },
+      twitter: {
+        ...defaultTwitter,
+        title: post.title,
+        description: post.excerpt,
+        images: [ogImage],
+      },
+    };
+  }
+
+  // Try MDX posts — use gray-matter to get richer frontmatter (metaTitle, metaDescription, tags)
+  const mdxPost = (postsData as PostData[]).find((p) => p.slug === slug);
+  if (mdxPost) {
+    // Read frontmatter for metaTitle / metaDescription overrides
+    let fm: MdxFrontmatter | null = null;
+    try {
+      const mdxPath = path.join(process.cwd(), 'src/content/blog', `${slug}.mdx`);
+      if (fs.existsSync(mdxPath)) {
+        fm = matter(fs.readFileSync(mdxPath, 'utf-8')).data as MdxFrontmatter;
+      }
+    } catch {}
+
+    const title       = fm?.metaTitle ?? fm?.title ?? mdxPost.title;
+    const description = fm?.metaDescription ?? fm?.excerpt ?? mdxPost.excerpt;
+    const keywords    = fm?.tags ?? mdxPost.tags ?? [];
+    const ogImage     = fm?.coverImage ?? mdxPost.coverImage ?? SITE.ogImage;
+
+    return {
+      metadataBase,
+      title,
+      description,
+      keywords,
+      alternates: { canonical: `${SITE.url}/resources/blog/${mdxPost.slug}` },
+      openGraph: {
+        ...defaultOpenGraph,
+        title,
+        description,
+        url: `${SITE.url}/resources/blog/${mdxPost.slug}`,
+        type: 'article',
+        images: [{ url: ogImage, width: 1200, height: 630, alt: title }],
+        publishedTime: fm?.date ?? mdxPost.date,
+      },
+      twitter: {
+        ...defaultTwitter,
+        title,
+        description,
+        images: [ogImage],
+      },
+    };
+  }
+
+  return { title: 'Post Not Found | OptiFinish Blog' };
+}
 
 function formatDate(date: string) {
   return new Intl.DateTimeFormat('en', {
@@ -27,35 +124,83 @@ export default async function BlogPostPage({ params }: Props) {
   const htmlResult = getHtmlPostBySlug(slug);
   if (htmlResult) {
     const { post, body } = htmlResult;
-    return <PostLayout post={post} body={body} />;
+    const articleLD = articleSchema({
+      title: post.title,
+      description: post.excerpt,
+      url: `/resources/blog/${post.slug}`,
+      image: post.coverImage ?? undefined,
+      datePublished: post.date,
+    });
+    const bcLD = breadcrumbSchema([
+      { name: 'Home', href: '/' },
+      { name: 'Blog', href: '/resources/blog' },
+      { name: post.title, href: `/resources/blog/${post.slug}` },
+    ]);
+    return (
+      <>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLD) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(bcLD) }} />
+        <PostLayout post={post} body={body} />
+      </>
+    );
   }
 
   // 2. Fall back to MDX index.json posts (legacy/polished posts)
-  const mdxPost = (postsData as { title: string; slug: string; date: string; excerpt: string; tags: string[]; readingTime: number; coverImage?: string | null }[])
-    .find((p) => p.slug === slug);
+  const mdxPost = (postsData as PostData[]).find((p) => p.slug === slug);
 
   if (mdxPost) {
-    // Try to read the .mdx file body
     const mdxPath = path.join(process.cwd(), 'src/content/blog', `${slug}.mdx`);
     let body = '';
+    let fm: MdxFrontmatter | null = null;
+
     if (fs.existsSync(mdxPath)) {
       const raw = fs.readFileSync(mdxPath, 'utf-8');
-      // Strip frontmatter block
-      body = raw.replace(/^---[\s\S]*?---\n?/, '').trim();
+      // Parse frontmatter (captures faqs, metaTitle, metaDescription, etc.)
+      const parsed = matter(raw);
+      fm = parsed.data as MdxFrontmatter;
+      // Parse markdown body → HTML
+      body = marked(parsed.content.trim()) as string;
     }
+
+    // Prefer richer frontmatter fields if present, fall back to index.json
+    const title      = fm?.metaTitle ?? fm?.title ?? mdxPost.title;
+    const excerpt    = fm?.metaDescription ?? fm?.excerpt ?? mdxPost.excerpt;
+    const coverImage = fm?.coverImage ?? mdxPost.coverImage ?? null;
 
     const post = {
       source: 'mdx' as const,
-      title: mdxPost.title,
+      title: fm?.title ?? mdxPost.title,
       slug: mdxPost.slug,
-      date: mdxPost.date,
-      category: (mdxPost.tags?.[0] ?? 'General'),
-      excerpt: mdxPost.excerpt,
-      readingTime: mdxPost.readingTime,
-      coverImage: mdxPost.coverImage ?? null,
+      date: fm?.date ?? mdxPost.date,
+      category: (fm?.tags?.[0] ?? mdxPost.tags?.[0] ?? 'General'),
+      excerpt,
+      readingTime: fm?.readingTime ?? mdxPost.readingTime,
+      coverImage,
     };
 
-    return <PostLayout post={post} body={body} isMdx />;
+    const articleLD = articleSchema({
+      title,
+      description: excerpt,
+      url: `/resources/blog/${mdxPost.slug}`,
+      image: coverImage ?? undefined,
+      datePublished: fm?.date ?? mdxPost.date,
+    });
+    const bcLD = breadcrumbSchema([
+      { name: 'Home', href: '/' },
+      { name: 'Blog', href: '/resources/blog' },
+      { name: fm?.title ?? mdxPost.title, href: `/resources/blog/${mdxPost.slug}` },
+    ]);
+    // Inject FAQ schema if post frontmatter has faqs array
+    const faqLD = (fm?.faqs && fm.faqs.length > 0) ? faqSchema(fm.faqs) : null;
+
+    return (
+      <>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLD) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(bcLD) }} />
+        {faqLD && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />}
+        <PostLayout post={post} body={body} isMdx />
+      </>
+    );
   }
 
   notFound();

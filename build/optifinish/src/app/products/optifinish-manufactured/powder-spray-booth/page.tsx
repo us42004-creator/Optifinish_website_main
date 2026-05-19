@@ -1,14 +1,72 @@
+import type { Metadata } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import { metadataBase, defaultOpenGraph, defaultTwitter, productSchema, breadcrumbSchema, faqSchema, SITE } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Powder Spray Booth | OptiFinish Manufactured',
+export const metadata: Metadata = {
+  metadataBase,
+  title: 'Powder Spray Booth — MS, SS-304 & Plastic Configurations | OptiFinish',
   description:
-    'MS and SS-304 powder spray booths with 92–96% Venturi cyclone recovery. CPCB-compliant secondary bag filter. 20HP suction motor. Custom dimensions. Manufactured in Greater Noida.',
+    'Powder spray booths manufactured by OptiFinish — MS, SS-304, and plastic construction for manual and automatic powder coating lines. Custom-dimensioned, designed for GEMA and automatic gun compatibility.',
+  keywords: [
+    'powder spray booth manufacturer India',
+    'powder coating booth India',
+    'MS powder coating booth',
+    'SS powder coating booth India',
+    'automatic powder coating booth India',
+    'OptiFinish powder booth',
+    'powder booth manufacturer Greater Noida',
+  ],
+  alternates: { canonical: `${SITE.url}/products/optifinish-manufactured/powder-spray-booth` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'Powder Spray Booth — MS, SS-304 & Plastic Configurations | OptiFinish',
+    description: 'MS, SS-304, and plastic powder spray booths for manual and automatic powder coating lines. Custom-dimensioned. Manufactured by OptiFinish.',
+    url: `${SITE.url}/products/optifinish-manufactured/powder-spray-booth`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'Powder Spray Booth — MS, SS-304 & Plastic | OptiFinish',
+    description: 'Powder spray booths in MS, SS-304, and plastic — manual and automatic lines, custom dimensions, GEMA compatible.',
+  },
 };
+
+const productLD = productSchema({
+  name: 'Powder Spray Booth',
+  description: 'Powder spray booths manufactured by OptiFinish — MS, SS-304, and plastic construction for manual and automatic powder coating lines. Custom-dimensioned, designed for GEMA and automatic gun compatibility.',
+  url: '/products/optifinish-manufactured/powder-spray-booth',
+  category: 'Industrial Spray Booth',
+  keywords: ['powder spray booth', 'powder coating booth India', 'MS powder coating booth', 'automatic powder coating booth'],
+});
+
+const breadcrumbLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'OptiFinish Manufactured', href: '/products/optifinish-manufactured' },
+  { name: 'Powder Spray Booth', href: '/products/optifinish-manufactured/powder-spray-booth' },
+]);
+
+const faqLD = faqSchema([
+  {
+    q: 'What materials does OptiFinish manufacture powder spray booths in?',
+    a: 'OptiFinish manufactures powder spray booths in three construction types: mild steel (MS), SS-304 stainless steel, and polypropylene (plastic) — each suited to different powder types, cleaning requirements, and quick colour-change needs.',
+  },
+  {
+    q: 'Is the OptiFinish powder spray booth compatible with GEMA guns?',
+    a: 'Yes. OptiFinish powder spray booths are designed to integrate with GEMA OptiFlex Pro manual guns and GEMA OptiGun automatic guns, which are also supplied by OptiFinish as an authorised GEMA partner.',
+  },
+  {
+    q: 'Can OptiFinish supply a booth for an automatic powder coating line?',
+    a: 'Yes. OptiFinish manufactures booths for both manual and fully automatic powder coating lines, including configurations for reciprocators, Z-TAP automation robots, and GEMA automatic gun systems.',
+  },
+]);
 
 export default function PowderSprayBoothPage() {
   return (
-    <ProductPageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />
+      <ProductPageTemplate
       theme="dark"
 
       breadcrumb={[
@@ -116,18 +174,21 @@ export default function PowderSprayBoothPage() {
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/cyclone-dust-collector',
           enquireSlug: 'cyclone-dust-collector',
+          imageSrc: '/images/products/optifinish-manufactured/cyclone-dust-collector/cyclone-dust-collect.png',
         },
         {
           name: 'SS Booth System',
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/ss-booth-system',
           enquireSlug: 'ss-booth-system',
+          imageSrc: '/images/products/optifinish-manufactured/SS_BOOTH/booth-exterior.jpeg',
         },
         {
           name: 'Manual Powder Coating Gun',
           category: 'GEMA',
           href: '/products/gema/manual-gun',
           enquireSlug: 'gema-manual-gun',
+          imageSrc: '/images/products/gema/manual-gun/optiflex_pro_manual_gun.jpg',
         },
       ]}
 
@@ -135,5 +196,6 @@ export default function PowderSprayBoothPage() {
       ctaAccent="92–96% recovery, built in."
       ctaBody="Give OptiFinish your part dimensions, gun count, and throughput requirements — we'll design the booth with correct airflow, Venturi sizing, and motor specification."
     />
+    </>
   );
 }

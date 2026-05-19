@@ -241,9 +241,10 @@ The `Products` section is the main portfolio architecture and should be grouped 
 - Curing Ovens
 - Manual Powder Spray Booth
 - Pollution-Free SS Booth System
-- Quick Color Change Plastic Booth System
 
 This group is crucial because it establishes OptiFinish as a manufacturer, not just a distributor or automation brand.
+
+> **Note:** The Plastic / PP Booth has been moved to the GEMA section (`/products/gema/plastic-pp-booth`) as it is sold and supported through the GEMA partner channel and pairs directly with GEMA manual guns. It no longer appears in the OptiFinish Manufactured hub or sitemap branch.
 
 ### 8.2 OptiFinish Automation
 
@@ -258,7 +259,7 @@ This group represents proprietary and higher-differentiation product storytellin
 - Manual Powder Coating Gun
 - Automatic Gun
 - OptiCenter / Magic Systems
-- Booth / Plant Solutions
+- Plastic / PP Booth (`/products/gema/plastic-pp-booth`) — quick colour-change polypropylene booth; sold and supported through the GEMA partner channel, pairs directly with GEMA manual guns. Images live at `public/images/products/gema/plastic-pp-booth/`.
 - Reciprocators
 - Spare Parts
 
@@ -372,6 +373,11 @@ This also supports LinkedIn and broader distribution strategy.
 |   |-- /products/optifinish-manufactured
 |   |-- /products/automation
 |   |-- /products/gema
+|   |   |-- /products/gema/manual-gun
+|   |   |-- /products/gema/automatic-gun
+|   |   |-- /products/gema/reciprocators
+|   |   |-- /products/gema/opticentre
+|   |   |-- /products/gema/plastic-pp-booth
 |   |-- /products/durr
 |   |-- /products/vinayak
 |

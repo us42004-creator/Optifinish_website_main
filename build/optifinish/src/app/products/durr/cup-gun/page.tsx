@@ -1,14 +1,65 @@
+import type { Metadata } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import { metadataBase, defaultOpenGraph, defaultTwitter, productSchema, breadcrumbSchema, faqSchema, SITE } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Dürr Cup Gun | EcoGun 116 / 910 | OptiFinish',
+export const metadata: Metadata = {
+  metadataBase,
+  title: 'Dürr Cup Gun — EcoGun 116 / 910 Gravity Feed Spray Gun | OptiFinish',
   description:
-    'Dürr EcoGun 116 and EcoGun 910 gravity-feed cup guns for touch-up, furniture lacquering, and precision area application. Solvent and water-based compatible. Supplied by OptiFinish.',
+    'Dürr EcoGun 116 and EcoGun 910 gravity-feed cup guns — compact, versatile spray guns for touch-up, small batch, and detail liquid coating work. Supplied by OptiFinish, authorised Dürr distributor India.',
+  keywords: ['Durr cup gun India','gravity feed spray gun India','Durr EcoGun 116 India','Durr EcoGun 910 India','touch up spray gun India','small batch spray gun India','OptiFinish Durr cup gun','detail coating gun India'],
+  alternates: { canonical: `${SITE.url}/products/durr/cup-gun` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'Dürr Cup Gun — EcoGun 116 / 910 Gravity Feed Spray Gun | OptiFinish',
+    description: 'Dürr EcoGun 116 and EcoGun 910 gravity-feed cup guns — compact, versatile spray guns for touch-up, small batch, and detail liquid coating work. Supplied by OptiFinish, authorised Dürr distributor India.',
+    url: `${SITE.url}/products/durr/cup-gun`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'Dürr Cup Gun — EcoGun 116 / 910 Gravity Feed | OptiFinish',
+    description: 'Dürr EcoGun 116 and EcoGun 910 gravity-feed cup guns for touch-up and detail coating. Supplied by OptiFinish India.',
+  },
 };
+
+const productLD = productSchema({
+  name: 'Dürr EcoGun Cup Gun',
+  description: 'Dürr EcoGun 116 and EcoGun 910 gravity-feed cup guns — compact, versatile spray guns for touch-up, small batch, and detail liquid coating work. Supplied by OptiFinish, authorised Dürr distributor India.',
+  url: '/products/durr/cup-gun',
+  brand: 'Dürr',
+  category: 'Liquid Coating Equipment',
+  keywords: ['Durr cup gun India', 'gravity feed spray gun India', 'Durr EcoGun 116 India', 'Durr EcoGun 910 India'],
+});
+
+const breadcrumbLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'Dürr', href: '/products/durr' },
+  { name: 'Cup Gun', href: '/products/durr/cup-gun' },
+]);
+
+const faqLD = faqSchema([
+  {
+    q: 'What is a cup gun used for in liquid coating?',
+    a: 'A cup gun (gravity-feed spray gun) uses a top-mounted cup to gravity-feed paint into the gun — ideal for touch-up work, small batch production, colour sampling, prototype coating, and detailed areas that pressure-feed systems cannot access easily.',
+  },
+  {
+    q: 'What is the difference between the Dürr EcoGun 116 and EcoGun 910?',
+    a: 'The EcoGun 116 is a compact, lightweight cup gun suited to fine detail and touch-up work, while the EcoGun 910 is a full-size gravity-feed HVLP gun for higher-volume small-batch production — both supplied by OptiFinish as authorised Dürr distributor.',
+  },
+  {
+    q: 'Does OptiFinish supply spare parts for Dürr cup guns?',
+    a: 'Yes. OptiFinish stocks and supplies spare parts and consumables for Dürr EcoGun cup guns in India, including air caps, fluid needles, and nozzle sets — contact +91-96434-03374 or info@optifinish.in.',
+  },
+]);
 
 export default function DurrCupGunPage() {
   return (
-    <ProductPageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />
+      <ProductPageTemplate
       theme="light"
 
       breadcrumb={[
@@ -130,7 +181,7 @@ export default function DurrCupGunPage() {
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/liquid-spray-booth',
           enquireSlug: 'liquid-spray-booth',
-          imageSrc: '/images/products/optifinish-manufactured/liquid-spray-booth/optifinish-liquid-spray-booth-01.jpg',
+          imageSrc: '/images/products/optifinish-manufactured/liquid-spray-booth/liquid-single-operator-booth.png',
         },
       ]}
 
@@ -138,5 +189,6 @@ export default function DurrCupGunPage() {
       ctaAccent="We'll match it to your application."
       ctaBody="Talk to OptiFinish about your paint type, substrate, and finish requirement — we'll recommend the right Dürr EcoGun model and nozzle configuration."
     />
+    </>
   );
 }

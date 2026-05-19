@@ -1,14 +1,72 @@
+import type { Metadata } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import { metadataBase, defaultOpenGraph, defaultTwitter, productSchema, breadcrumbSchema, faqSchema, SITE } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Cyclone & Dust Collector | OptiFinish Manufactured',
+export const metadata: Metadata = {
+  metadataBase,
+  title: 'Cyclone & Dust Collector — 92–96% Powder Recovery | OptiFinish',
   description:
-    'Modular powder recovery and filtration system. 92–96% cyclone recovery, 3000–32000 CMH airflow range. Secondary bag filter for CPCB compliance. MS or SS-304 construction.',
+    'Modular cyclone and dust collector systems manufactured by OptiFinish — 92–96% first-pass powder recovery, 3,000–32,000 CMH airflow, MS or SS-304 construction, secondary bag filter for CPCB compliance.',
+  keywords: [
+    'cyclone dust collector India',
+    'powder recovery system India',
+    'cyclone separator powder coating',
+    'bag filter powder coating India',
+    'CPCB compliant dust collector',
+    'OptiFinish cyclone',
+    'powder coating recovery system manufacturer',
+  ],
+  alternates: { canonical: `${SITE.url}/products/optifinish-manufactured/cyclone-dust-collector` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'Cyclone & Dust Collector — 92–96% Powder Recovery | OptiFinish',
+    description: 'Modular cyclone and dust collector — 92–96% first-pass powder recovery, 3,000–32,000 CMH, CPCB compliant. Manufactured by OptiFinish.',
+    url: `${SITE.url}/products/optifinish-manufactured/cyclone-dust-collector`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'Cyclone & Dust Collector — 92–96% Recovery | OptiFinish',
+    description: 'Cyclone and dust collector: 92–96% powder recovery, 3,000–32,000 CMH airflow, CPCB compliant secondary bag filter.',
+  },
 };
+
+const productLD = productSchema({
+  name: 'Cyclone & Dust Collector',
+  description: 'Modular cyclone and dust collector systems manufactured by OptiFinish — 92–96% first-pass powder recovery, 3,000–32,000 CMH airflow, MS or SS-304 construction, secondary bag filter for CPCB compliance.',
+  url: '/products/optifinish-manufactured/cyclone-dust-collector',
+  category: 'Industrial Filtration Equipment',
+  keywords: ['cyclone dust collector', 'powder recovery system', 'cyclone separator', 'bag filter powder coating', 'CPCB dust collector'],
+});
+
+const breadcrumbLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'OptiFinish Manufactured', href: '/products/optifinish-manufactured' },
+  { name: 'Cyclone & Dust Collector', href: '/products/optifinish-manufactured/cyclone-dust-collector' },
+]);
+
+const faqLD = faqSchema([
+  {
+    q: "What recovery rate does OptiFinish's cyclone dust collector achieve?",
+    a: 'OptiFinish cyclone dust collectors achieve 92–96% first-pass powder recovery. A secondary bag filter captures residual fines, making the system fully CPCB compliant.',
+  },
+  {
+    q: 'What airflow range does the cyclone system cover?',
+    a: 'OptiFinish cyclone systems are available from 3,000 CMH to 32,000 CMH, configured to match booth size and powder throughput requirements.',
+  },
+  {
+    q: 'Can the cyclone be used with any powder coating booth?',
+    a: 'Yes. OptiFinish cyclone and dust collector systems are modular and can be integrated with new powder coating booths or retrofitted to existing installations.',
+  },
+]);
 
 export default function CycloneDustCollectorPage() {
   return (
-    <ProductPageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />
+      <ProductPageTemplate
       theme="dark"
 
       breadcrumb={[
@@ -97,18 +155,21 @@ export default function CycloneDustCollectorPage() {
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/powder-spray-booth',
           enquireSlug: 'powder-spray-booth',
+          imageSrc: '/images/products/optifinish-manufactured/SS_BOOTH/ss-booth-master-shot.png',
         },
         {
           name: 'PS Vibratory Sieve Machine',
           category: 'OptiFinish Automation',
           href: '/products/automation/sieve-machine',
           enquireSlug: 'sieve-machine',
+          imageSrc: '/images/products/sieve-machine/sieve-machine-02.jpg',
         },
         {
           name: 'SS Booth System',
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/ss-booth-system',
           enquireSlug: 'ss-booth-system',
+          imageSrc: '/images/products/optifinish-manufactured/SS_BOOTH/booth-exterior.jpeg',
         },
       ]}
 
@@ -116,5 +177,6 @@ export default function CycloneDustCollectorPage() {
       ctaAccent="92–96% recovery, CPCB compliant."
       ctaBody="Talk to OptiFinish about your booth dimensions, powder type, and airflow requirements — we'll specify the right cyclone and bag filter configuration."
     />
+    </>
   );
 }

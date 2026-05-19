@@ -1,14 +1,65 @@
+import type { Metadata } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import { metadataBase, defaultOpenGraph, defaultTwitter, productSchema, breadcrumbSchema, faqSchema, SITE } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Dürr Bell Atomiser | Rotary Electrostatic | OptiFinish',
+export const metadata: Metadata = {
+  metadataBase,
+  title: 'Dürr Bell Atomiser — Rotary Electrostatic for Automatic Lines | OptiFinish',
   description:
-    'Dürr Bell Atomiser — high-speed rotary electrostatic applicator for automotive body panels. Ultra-fine, uniform droplet distribution for premium finish quality on automatic production lines.',
+    'Dürr EcoBell3 rotary bell atomiser — high-speed rotary electrostatic atomisation for automatic liquid coating lines. Exceptional transfer efficiency, fine atomisation, and consistent film build. Supplied by OptiFinish, authorised Dürr distributor India.',
+  keywords: ['Durr bell atomiser India','rotary bell atomiser India','EcoBell3 India','rotary atomiser liquid coating India','automatic liquid coating India','Durr EcoBell India','OptiFinish Durr bell atomiser'],
+  alternates: { canonical: `${SITE.url}/products/durr/bell-atomiser` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'Dürr Bell Atomiser — Rotary Electrostatic for Automatic Lines | OptiFinish',
+    description: 'Dürr EcoBell3 rotary bell atomiser — high-speed rotary electrostatic atomisation for automatic liquid coating lines. Exceptional transfer efficiency, fine atomisation, and consistent film build. Supplied by OptiFinish, authorised Dürr distributor India.',
+    url: `${SITE.url}/products/durr/bell-atomiser`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'Dürr Bell Atomiser — Rotary Electrostatic Coating | OptiFinish',
+    description: 'Dürr EcoBell3 rotary bell atomiser — high-speed rotary electrostatic atomisation. Exceptional transfer efficiency. Supplied by OptiFinish India.',
+  },
 };
+
+const productLD = productSchema({
+  name: 'Dürr EcoBell3 Rotary Bell Atomiser',
+  description: 'Dürr EcoBell3 rotary bell atomiser — high-speed rotary electrostatic atomisation for automatic liquid coating lines. Exceptional transfer efficiency, fine atomisation, and consistent film build.',
+  url: '/products/durr/bell-atomiser',
+  brand: 'Dürr',
+  category: 'Liquid Coating Equipment',
+  keywords: ['Durr bell atomiser India', 'rotary bell atomiser India', 'EcoBell3 India', 'rotary atomiser liquid coating India'],
+});
+
+const breadcrumbLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'Dürr', href: '/products/durr' },
+  { name: 'Bell Atomiser', href: '/products/durr/bell-atomiser' },
+]);
+
+const faqLD = faqSchema([
+  {
+    q: 'What is a rotary bell atomiser?',
+    a: 'A rotary bell atomiser uses a high-speed spinning bell-shaped disc (20,000–60,000 RPM) to atomise paint by centrifugal force combined with electrostatic charging — producing extremely fine, uniform droplets for the highest quality finish in automatic liquid coating lines.',
+  },
+  {
+    q: 'What production volumes justify a bell atomiser?',
+    a: 'Bell atomisers are used in high-volume automatic production — typically automotive, major appliances, and large industrial OEM lines — where throughput and finish quality requirements justify the higher capital investment versus spray gun systems.',
+  },
+  {
+    q: 'What transfer efficiency does a Dürr bell atomiser achieve?',
+    a: 'Dürr EcoBell atomisers achieve 85–95% transfer efficiency through combined rotary atomisation and electrostatic charging — the highest transfer efficiency available in liquid coating, reducing paint cost and environmental impact significantly.',
+  },
+]);
 
 export default function DurrBellAtomiserPage() {
   return (
-    <ProductPageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />
+      <ProductPageTemplate
       theme="light"
 
       breadcrumb={[
@@ -134,5 +185,6 @@ export default function DurrBellAtomiserPage() {
       ctaAccent="Bell atomiser grade finish."
       ctaBody="Talk to OptiFinish about bell atomiser integration into your production line — we'll assess your paint system, production volume, and finish requirement."
     />
+    </>
   );
 }

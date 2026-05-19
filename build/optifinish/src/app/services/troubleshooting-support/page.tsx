@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import ServicePageTemplate from '@/components/services/ServicePageTemplate';
+import { serviceSchema, breadcrumbSchema } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Troubleshooting & Support | OptiFinish Services',
@@ -7,9 +8,25 @@ export const metadata: Metadata = {
     'Remote and on-site coating line troubleshooting — defect diagnosis, equipment fault-finding, root cause analysis, and corrective recommendations across all makes and models.',
 };
 
+const serviceLD = serviceSchema({
+  name: 'Coating Line Troubleshooting & Support',
+  description: 'Remote and on-site coating line troubleshooting — defect diagnosis, equipment fault-finding, root cause analysis, and corrective recommendations.',
+  url: '/services/troubleshooting-support',
+  serviceType: 'Industrial Equipment Troubleshooting',
+});
+
+const bcLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Services', href: '/services' },
+  { name: 'Troubleshooting & Support', href: '/services/troubleshooting-support' },
+]);
+
 export default function TroubleshootingSupportPage() {
   return (
-    <ServicePageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(bcLD) }} />
+      <ServicePageTemplate
       breadcrumbLabel="Troubleshooting & Support"
       tag="On-site & Remote Support"
       eyebrow="OptiFinish Services · Technical Support"
@@ -132,5 +149,6 @@ export default function TroubleshootingSupportPage() {
         },
       ]}
     />
+    </>
   );
 }

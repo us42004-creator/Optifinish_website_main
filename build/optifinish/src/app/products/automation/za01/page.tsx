@@ -1,14 +1,73 @@
+import type { Metadata } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import { metadataBase, defaultOpenGraph, defaultTwitter, productSchema, breadcrumbSchema, faqSchema, SITE } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Opti Recip ZA01 Vertical Reciprocator | OptiFinish',
+export const metadata: Metadata = {
+  metadataBase,
+  title: 'ZA01 Vertical Reciprocator — Automatic Powder Coating Line | OptiFinish',
   description:
-    'Opti Recip ZA01 — proprietary slim-column vertical reciprocator built in-house by OptiFinish. Mounts up to 6 automatic guns. Designed for space-efficient production line automation.',
+    'Opti Recip ZA01 — OptiFinish proprietary slim-column vertical reciprocator. Mounts up to 6 automatic guns. Space-efficient design for new and retrofit automatic powder coating lines. Built in-house, Greater Noida.',
+  keywords: [
+    'ZA01 reciprocator India',
+    'vertical reciprocator powder coating',
+    'automatic powder coating reciprocator India',
+    'powder coating line automation',
+    'OptiFinish ZA01',
+    'ZA01 powder coating robot',
+    'automatic gun traversal India',
+  ],
+  alternates: { canonical: `${SITE.url}/products/automation/za01` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'ZA01 Vertical Reciprocator — Automatic Powder Coating Line | OptiFinish',
+    description: 'Opti Recip ZA01 — slim-column vertical reciprocator, up to 6 guns. Built in-house at OptiFinish Greater Noida.',
+    url: `${SITE.url}/products/automation/za01`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'ZA01 Vertical Reciprocator | OptiFinish',
+    description: 'Proprietary slim-column vertical reciprocator. Up to 6 automatic guns. New and retrofit powder coating lines.',
+  },
 };
+
+const productLD = productSchema({
+  name: 'Opti Recip ZA01 Vertical Reciprocator',
+  description: 'OptiFinish proprietary slim-column vertical reciprocator. Mounts up to 6 automatic guns. Space-efficient design for new and retrofit automatic powder coating lines. Built in-house, Greater Noida.',
+  url: '/products/automation/za01',
+  brand: 'OptiFinish',
+  category: 'Powder Coating Automation',
+  keywords: ['ZA01 reciprocator', 'vertical reciprocator', 'automatic gun traversal', 'powder coating automation India'],
+});
+
+const breadcrumbLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'OptiFinish Automation', href: '/products/automation' },
+  { name: 'ZA01 Reciprocator', href: '/products/automation/za01' },
+]);
+
+const faqLD = faqSchema([
+  {
+    q: 'What is the ZA01 vertical reciprocator?',
+    a: 'The ZA01 is OptiFinish\'s proprietary slim-column vertical reciprocator — it moves automatic powder coating guns up and down at a programmed traverse speed and stroke, replacing manual sprayers and delivering consistent, repeatable gun coverage. It mounts up to 6 automatic guns and is built in-house at the Greater Noida facility.',
+  },
+  {
+    q: 'How does the ZA01 differ from the GEMA ZA Series reciprocators?',
+    a: 'The ZA01 is a proprietary in-house design by OptiFinish — optimised for space-efficiency and retrofit applications. GEMA ZA Series reciprocators are GEMA-manufactured and designed for integration with the full GEMA gun and control ecosystem. Both are supplied by OptiFinish.',
+  },
+  {
+    q: 'Can the ZA01 be retrofitted to an existing powder coating line?',
+    a: 'Yes. The ZA01 is specifically designed for easy integration into both new automatic lines and retrofit installations — OptiFinish handles the mechanical integration, gun mounting, and commissioning as part of the supply.',
+  },
+]);
 
 export default function ZA01Page() {
   return (
-    <ProductPageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />
+      <ProductPageTemplate
       theme="dark"
 
       /* S1 — Hero */
@@ -108,18 +167,21 @@ export default function ZA01Page() {
           category: 'OptiFinish Automation',
           href: '/products/automation/auto-spray-optimisation',
           enquireSlug: 'auto-spray-optimisation',
+          imageSrc: '/images/products/gema/reciprocators/gema-reciprocator-inuse-01.jpg',
         },
         {
           name: 'Automatic Powder Coating Gun',
           category: 'GEMA',
           href: '/products/gema/automatic-gun',
           enquireSlug: 'gema-automatic-gun',
+          imageSrc: '/images/products/gema/automatic-gun/optigun-ga04.png',
         },
         {
           name: 'Powder Spray Booth',
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/powder-spray-booth',
           enquireSlug: 'powder-spray-booth',
+          imageSrc: '/images/products/optifinish-manufactured/SS_BOOTH/ss-booth-master-shot.png',
         },
       ]}
 
@@ -128,5 +190,6 @@ export default function ZA01Page() {
       ctaAccent="We'll design the integration."
       ctaBody="Talk to OptiFinish about integrating the ZA01 with your booth and gun setup — new line or retrofit into an existing installation."
     />
+    </>
   );
 }

@@ -1,13 +1,73 @@
+import type { Metadata } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import { metadataBase, defaultOpenGraph, defaultTwitter, productSchema, breadcrumbSchema, faqSchema, SITE } from '@/lib/seo';
 
-export const metadata = {
-  title: 'GEMA Automatic Powder Coating Gun | OptiFinish',
+export const metadata: Metadata = {
+  metadataBase,
+  title: 'GEMA Automatic Powder Coating Gun — OptiGun PowerBoost® | OptiFinish',
   description:
-    'GEMA OptiGun with PowerBoost® — 110 kV electrostatic charging, Faraday cage penetration, and Digital Volume Control for automatic powder coating lines. Supplied by OptiFinish, authorised GEMA partner.',
+    'GEMA OptiGun automatic powder coating gun with PowerBoost® — 110 kV electrostatic charging, superior Faraday cage penetration, and Digital Volume Control. Supplied and serviced by OptiFinish, authorised GEMA partner in India.',
+  keywords: [
+    'GEMA automatic powder coating gun India',
+    'GEMA OptiGun India',
+    'GEMA OptiGun PowerBoost India',
+    'automatic powder coating gun India',
+    'electrostatic powder coating gun India',
+    'GEMA gun supplier India',
+    'automatic powder coating equipment India',
+    'OptiFinish GEMA automatic gun',
+  ],
+  alternates: { canonical: `${SITE.url}/products/gema/automatic-gun` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'GEMA Automatic Powder Coating Gun — OptiGun PowerBoost® | OptiFinish',
+    description: 'GEMA OptiGun with PowerBoost® — 110 kV charging, Faraday cage penetration, Digital Volume Control. Supplied by OptiFinish, authorised GEMA India.',
+    url: `${SITE.url}/products/gema/automatic-gun`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'GEMA OptiGun Automatic Gun | OptiFinish India',
+    description: 'GEMA OptiGun PowerBoost® automatic powder coating gun — authorised supply by OptiFinish India.',
+  },
 };
+
+const productLD = productSchema({
+  name: 'GEMA Automatic Powder Coating Gun — OptiGun',
+  description: 'GEMA OptiGun automatic powder coating gun with PowerBoost® technology — 110 kV electrostatic charging, Faraday cage penetration, and Digital Volume Control for high-volume automatic powder coating lines.',
+  url: '/products/gema/automatic-gun',
+  category: 'Powder Coating Equipment',
+  brand: 'GEMA',
+  keywords: ['GEMA OptiGun', 'automatic powder coating gun', 'electrostatic gun', 'PowerBoost'],
+});
+
+const breadcrumbLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'GEMA', href: '/products/gema' },
+  { name: 'Automatic Gun', href: '/products/gema/automatic-gun' },
+]);
+
+const faqLD = faqSchema([
+  {
+    q: 'What is the GEMA OptiGun automatic powder coating gun?',
+    a: 'The GEMA OptiGun is an automatic electrostatic powder coating gun with PowerBoost® technology — delivering 110 kV charging voltage, superior Faraday cage penetration, and Digital Volume Control for consistent film build in automatic production lines.',
+  },
+  {
+    q: 'What is the difference between GEMA manual and automatic guns?',
+    a: 'Manual guns (OptiFlex Pro) are operated by hand for flexible, job-shop production. Automatic guns (OptiGun) are mounted on reciprocators or Z-TAP robots for high-volume, automated production lines where consistency and speed are critical.',
+  },
+  {
+    q: 'Does OptiFinish supply and service GEMA automatic guns in India?',
+    a: 'Yes. OptiFinish is an authorised GEMA partner in India — supplying OptiGun automatic guns, providing commissioning support, operator training, and ongoing spare parts and service for GEMA equipment.',
+  },
+]);
 
 export default function GEMAAutomaticGunPage() {
   return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
     <ProductPageTemplate
       theme="light"
 
@@ -178,6 +238,7 @@ export default function GEMAAutomaticGunPage() {
           category: 'OptiFinish Automation',
           href: '/products/automation/za01',
           enquireSlug: 'za01',
+          imageSrc: '/images/products/gema/reciprocators/gema-za10-01.jpg',
         },
       ]}
 
@@ -186,5 +247,6 @@ export default function GEMAAutomaticGunPage() {
       ctaAccent="We'll build the case."
       ctaBody="Talk to OptiFinish about the right GEMA automatic gun for your line — production volume, part geometry, colour change frequency, and integration with your existing reciprocator or booth."
     />
+    </>
   );
 }

@@ -1,12 +1,41 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import HomeCTA from '@/components/sections/home/HomeCTA';
+import { metadataBase, defaultOpenGraph, defaultTwitter, breadcrumbSchema, SITE } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Services | OptiFinish — After-Sales, Maintenance & Support',
+  metadataBase,
+  title: 'Services — AMC, Commissioning, Spare Parts & Support | OptiFinish',
   description:
-    'Comprehensive after-sales services for powder coating lines — AMC contracts, commissioning, troubleshooting, spare parts, upgrades, and coating trials across India.',
+    'Comprehensive after-sales services for powder coating plants — AMC contracts, testing & commissioning, GEMA spare parts, troubleshooting, upgrades, retrofits, and coating trials. Pan-India service by OptiFinish.',
+  keywords: [
+    'powder coating plant AMC India',
+    'coating plant maintenance India',
+    'GEMA spare parts India',
+    'powder coating troubleshooting India',
+    'coating plant commissioning India',
+    'coating equipment upgrades India',
+    'OptiFinish services',
+    'powder coating support India',
+  ],
+  alternates: { canonical: `${SITE.url}/services` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'Services — AMC, Commissioning, GEMA Spare Parts & Support | OptiFinish',
+    description: 'After-sales services: AMC, commissioning, GEMA spare parts, troubleshooting, upgrades, coating trials. Pan-India coverage by OptiFinish.',
+    url: `${SITE.url}/services`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'OptiFinish Services | AMC, Support & Spare Parts',
+    description: 'AMC, commissioning, GEMA spare parts, and coating plant support across India.',
+  },
 };
+
+const breadcrumbLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Services', href: '/services' },
+]);
 
 const SERVICES = [
   {
@@ -75,6 +104,8 @@ const TRUST_STATS = [
 
 export default function ServicesPage() {
   return (
+    <>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
     <main className="min-h-screen">
 
       {/* ── Hero (dark) ── */}
@@ -264,5 +295,6 @@ export default function ServicesPage() {
 
       <HomeCTA />
     </main>
+    </>
   );
 }

@@ -9,13 +9,13 @@ const FOUNDERS = [
     name: 'Harish Sharma',
     role: 'Director & Co-Founder',
     bio: 'Bio placeholder — background, expertise, vision.',
-    src: '/images/team/harish-sharma-alt.png',
+    src: '/images/team/harish_new.jpg',
   },
   {
     name: 'Lalit Tayal',
     role: 'Director & Co-Founder',
     bio: 'Bio placeholder — background, expertise, vision.',
-    src: '/images/team/lalit-tayal.jpg',
+    src: '/images/team/lalit_tayal_v2.jpg',
   },
 ];
 

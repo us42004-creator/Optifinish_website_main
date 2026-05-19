@@ -1,14 +1,65 @@
+import type { Metadata } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import { metadataBase, defaultOpenGraph, defaultTwitter, productSchema, breadcrumbSchema, faqSchema, SITE } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Dürr EcoPump Systems | HP / HPE / VP / VPS / AD | OptiFinish',
+export const metadata: Metadata = {
+  metadataBase,
+  title: 'Dürr EcoPump — Fluid Handling for Liquid Paint Shops | OptiFinish',
   description:
-    'Dürr EcoPump fluid handling systems — HP, HPE, VP, VPS, AD variants plus pre-assembled Package modules for paint circulation, airless delivery, and viscous material transfer. Supplied by OptiFinish.',
+    'Dürr EcoPump fluid transfer and circulation systems — designed for reliable, low-pulsation paint supply in industrial liquid coating lines. Supplied by OptiFinish, authorised Dürr distributor India.',
+  keywords: ['Durr EcoPump India','paint pump India','industrial paint pump India','fluid handling liquid coating India','Durr pump India','paint circulation system India','OptiFinish Durr pump','liquid coating fluid supply India'],
+  alternates: { canonical: `${SITE.url}/products/durr/ecopump` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'Dürr EcoPump — Fluid Handling for Liquid Paint Shops | OptiFinish',
+    description: 'Dürr EcoPump fluid transfer and circulation systems — designed for reliable, low-pulsation paint supply in industrial liquid coating lines. Supplied by OptiFinish, authorised Dürr distributor India.',
+    url: `${SITE.url}/products/durr/ecopump`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'Dürr EcoPump — Fluid Handling for Paint Shops | OptiFinish',
+    description: 'Dürr EcoPump fluid transfer and circulation systems — reliable, low-pulsation paint supply. Supplied by OptiFinish India.',
+  },
 };
+
+const productLD = productSchema({
+  name: 'Dürr EcoPump Fluid Handling System',
+  description: 'Dürr EcoPump fluid transfer and circulation systems — designed for reliable, low-pulsation paint supply in industrial liquid coating lines. Supplied by OptiFinish, authorised Dürr distributor India.',
+  url: '/products/durr/ecopump',
+  brand: 'Dürr',
+  category: 'Liquid Coating Equipment',
+  keywords: ['Durr EcoPump India', 'paint pump India', 'industrial paint pump India', 'fluid handling liquid coating India'],
+});
+
+const breadcrumbLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'Dürr', href: '/products/durr' },
+  { name: 'EcoPump', href: '/products/durr/ecopump' },
+]);
+
+const faqLD = faqSchema([
+  {
+    q: 'What is the Dürr EcoPump used for?',
+    a: 'The Dürr EcoPump is a diaphragm or piston pump system for transferring and circulating liquid paint in industrial coating lines — providing consistent, low-pulsation fluid supply to spray guns, bell atomisers, and dosing systems.',
+  },
+  {
+    q: 'What paint materials is EcoPump compatible with?',
+    a: 'Dürr EcoPumps are compatible with solvent-based paints, water-based paints, 2K and 3K coating materials, adhesives, and sealants — covering the full range of industrial liquid coating materials.',
+  },
+  {
+    q: 'Can EcoPump be integrated with Dürr dosing systems?',
+    a: 'Yes. Dürr EcoPump is designed to integrate with Dürr EcoDose 2K and 3K electronic dosing systems, forming a complete fluid handling and mixing solution for industrial paint shops — all supplied by OptiFinish.',
+  },
+]);
 
 export default function DurrEcoPumpPage() {
   return (
-    <ProductPageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />
+      <ProductPageTemplate
       theme="light"
 
       breadcrumb={[
@@ -219,5 +270,6 @@ export default function DurrEcoPumpPage() {
       ctaAccent="Pressure, flow, and material matched."
       ctaBody="Talk to OptiFinish about your paint type, viscosity, gun system, and required output — we'll select the right EcoPump variant and size for your installation."
     />
+    </>
   );
 }

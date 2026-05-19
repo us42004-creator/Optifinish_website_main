@@ -1,14 +1,70 @@
+import type { Metadata } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import { metadataBase, defaultOpenGraph, defaultTwitter, productSchema, breadcrumbSchema, faqSchema, SITE } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Curing Oven | OptiFinish Manufactured',
+export const metadata: Metadata = {
+  metadataBase,
+  title: 'Curing Oven — Gas-Fired & Electric Powder Coating Ovens | OptiFinish',
   description:
-    'Gas-fired and electric curing ovens manufactured in-house. Batch and conveyorised configurations. ±5°C temperature uniformity. Custom dimensioned to your line. Greater Noida.',
+    'Gas-fired and electric powder coating curing ovens manufactured in-house by OptiFinish. Batch and conveyorised configurations. ±5°C temperature uniformity. Custom-dimensioned to your production line.',
+  keywords: [
+    'curing oven manufacturer India',
+    'powder coating curing oven India',
+    'gas fired curing oven India',
+    'electric curing oven India',
+    'industrial curing oven Greater Noida',
+    'conveyorised curing oven India',
+    'batch curing oven India',
+    'powder coating oven manufacturer',
+    'OptiFinish curing oven',
+  ],
+  alternates: { canonical: `${SITE.url}/products/optifinish-manufactured/curing-oven` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'Curing Oven — Gas-Fired & Electric Powder Coating Ovens | OptiFinish',
+    description: 'Gas-fired and electric curing ovens — batch and conveyorised. ±5°C uniformity. Custom-built at OptiFinish Greater Noida.',
+    url: `${SITE.url}/products/optifinish-manufactured/curing-oven`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'Curing Oven — Gas-Fired & Electric | OptiFinish',
+    description: 'Gas-fired and electric curing ovens, batch and conveyorised. ±5°C uniformity. Manufactured in Greater Noida.',
+  },
 };
+
+const productLD = productSchema({
+  name: 'Curing Oven',
+  description: 'Gas-fired and electric curing ovens for powder coating — batch and conveyorised configurations. ±5°C temperature uniformity. Custom-dimensioned and manufactured by OptiFinish, Greater Noida.',
+  url: '/products/optifinish-manufactured/curing-oven',
+  category: 'Industrial Heating Equipment',
+  keywords: ['curing oven', 'powder coating oven', 'gas curing oven', 'electric curing oven', 'industrial oven India'],
+});
+
+const breadcrumbLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'OptiFinish Manufactured', href: '/products/optifinish-manufactured' },
+  { name: 'Curing Oven', href: '/products/optifinish-manufactured/curing-oven' },
+]);
+
+const faqLD = faqSchema([
+  {
+    q: 'What types of curing ovens does OptiFinish manufacture?',
+    a: 'OptiFinish manufactures gas-fired and electric curing ovens in both batch and conveyorised configurations. Ovens are custom-dimensioned to fit your part size, throughput, and line layout.',
+  },
+  {
+    q: 'What temperature uniformity do OptiFinish curing ovens achieve?',
+    a: 'OptiFinish curing ovens achieve ±5°C temperature uniformity across the oven chamber — critical for consistent powder coating cure quality.',
+  },
+]);
 
 export default function CuringOvenPage() {
   return (
-    <ProductPageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />
+      <ProductPageTemplate
       theme="dark"
 
       breadcrumb={[
@@ -119,18 +175,21 @@ export default function CuringOvenPage() {
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/powder-coating-plant',
           enquireSlug: 'powder-coating-plant',
+          imageSrc: '/images/products/optifinish-manufactured/powder-coating-plant/optifinish-powder-coating-plant-01.jpg',
         },
         {
           name: 'Powder Spray Booth',
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/powder-spray-booth',
           enquireSlug: 'powder-spray-booth',
+          imageSrc: '/images/products/optifinish-manufactured/SS_BOOTH/ss-booth-master-shot.png',
         },
         {
           name: 'Wood Finish Oven',
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/wood-finish-oven',
           enquireSlug: 'wood-finish-oven',
+          imageSrc: '/images/products/optifinish-manufactured/wood-finish-oven/img-1.png',
         },
       ]}
 
@@ -138,5 +197,6 @@ export default function CuringOvenPage() {
       ctaAccent="We'll dimension it to your line."
       ctaBody="Give us your part dimensions, throughput, and substrate — OptiFinish will design the oven chamber, specify the heating system, and quote the full installation."
     />
+    </>
   );
 }

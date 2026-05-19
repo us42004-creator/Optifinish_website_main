@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import ServicePageTemplate from '@/components/services/ServicePageTemplate';
+import { serviceSchema, breadcrumbSchema } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Plant AMC — Annual Maintenance Contract | OptiFinish Services',
@@ -7,9 +8,25 @@ export const metadata: Metadata = {
     'Annual Maintenance Contracts for installed powder coating lines — scheduled preventive maintenance, 48-hour breakdown response, and full line coverage across India.',
 };
 
+const serviceLD = serviceSchema({
+  name: 'Plant AMC — Annual Maintenance Contract',
+  description: 'Annual Maintenance Contracts for installed powder coating lines — preventive maintenance, 48-hour breakdown response, and full line coverage across India.',
+  url: '/services/plant-amc',
+  serviceType: 'Powder Coating Plant Annual Maintenance',
+});
+
+const bcLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Services', href: '/services' },
+  { name: 'Plant AMC', href: '/services/plant-amc' },
+]);
+
 export default function PlantAMCPage() {
   return (
-    <ServicePageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(bcLD) }} />
+      <ServicePageTemplate
       breadcrumbLabel="Plant AMC"
       tag="Annual Maintenance Contract"
       eyebrow="OptiFinish Services · After-Sales"
@@ -132,5 +149,6 @@ export default function PlantAMCPage() {
         },
       ]}
     />
+    </>
   );
 }

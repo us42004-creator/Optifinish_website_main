@@ -1,14 +1,65 @@
+import type { Metadata } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import { metadataBase, defaultOpenGraph, defaultTwitter, productSchema, breadcrumbSchema, faqSchema, SITE } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Dürr Airless Spray Gun | EcoGun AL MAN / AL AUTO | OptiFinish',
+export const metadata: Metadata = {
+  metadataBase,
+  title: 'Dürr Airless Spray Gun — High-Pressure Liquid Coating | OptiFinish',
   description:
-    'Dürr EcoGun AL MAN and EcoGun AL AUTO airless spray guns for anti-corrosion primers, epoxies, and structural steel coating. High-pressure hydraulic atomisation. Reversible tip system.',
+    'Dürr EcoGun AL MAN/AUTO airless spray guns — high-pressure hydraulic atomisation for fast, high-build liquid coating applications. Supplied by OptiFinish, authorised Dürr distributor India.',
+  keywords: ['Durr airless spray gun India','airless spray gun India','hydraulic atomisation spray gun','high pressure spray gun India','Durr EcoGun airless India','industrial airless spray gun India','OptiFinish Durr airless gun'],
+  alternates: { canonical: `${SITE.url}/products/durr/airless-gun` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'Dürr Airless Spray Gun — High-Pressure Liquid Coating | OptiFinish',
+    description: 'Dürr EcoGun AL MAN/AUTO airless spray guns — high-pressure hydraulic atomisation for fast, high-build liquid coating applications. Supplied by OptiFinish, authorised Dürr distributor India.',
+    url: `${SITE.url}/products/durr/airless-gun`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'Dürr Airless Spray Gun — High-Pressure Liquid Coating | OptiFinish',
+    description: 'Dürr EcoGun AL MAN/AUTO airless spray guns — high-pressure hydraulic atomisation. Supplied by OptiFinish, authorised Dürr distributor India.',
+  },
 };
+
+const productLD = productSchema({
+  name: 'Dürr EcoGun Airless Spray Gun',
+  description: 'Dürr EcoGun AL MAN/AUTO airless spray guns — high-pressure hydraulic atomisation for fast, high-build liquid coating applications. Supplied by OptiFinish, authorised Dürr distributor India.',
+  url: '/products/durr/airless-gun',
+  brand: 'Dürr',
+  category: 'Liquid Coating Equipment',
+  keywords: ['Durr airless spray gun India', 'airless spray gun India', 'hydraulic atomisation spray gun', 'high pressure spray gun India'],
+});
+
+const breadcrumbLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'Dürr', href: '/products/durr' },
+  { name: 'Airless Spray Gun', href: '/products/durr/airless-gun' },
+]);
+
+const faqLD = faqSchema([
+  {
+    q: 'What is an airless spray gun?',
+    a: 'An airless spray gun atomises paint by forcing it through a small tip orifice at high hydraulic pressure (typically 50–250 bar) — producing a fan-shaped spray pattern without using compressed air for atomisation. This enables fast, high-build coating application.',
+  },
+  {
+    q: 'When is an airless gun preferred over HVLP?',
+    a: 'Airless guns are preferred for thick coatings, high-build primers, and large surface areas where speed of application matters more than fine surface finish. They are faster than HVLP but produce more overspray — suited to structural steel, heavy fabrications, and anti-corrosion applications.',
+  },
+  {
+    q: 'Does OptiFinish supply Dürr airless guns in India?',
+    a: 'Yes. OptiFinish is an authorised Dürr distributor in India, supplying EcoGun AL manual and automatic airless spray guns with commissioning, training, and after-sales support.',
+  },
+]);
 
 export default function DurrAirlessGunPage() {
   return (
-    <ProductPageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />
+      <ProductPageTemplate
       theme="light"
 
       breadcrumb={[
@@ -133,7 +184,7 @@ export default function DurrAirlessGunPage() {
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/liquid-spray-booth',
           enquireSlug: 'liquid-spray-booth',
-          imageSrc: '/images/products/optifinish-manufactured/liquid-spray-booth/optifinish-liquid-spray-booth-01.jpg',
+          imageSrc: '/images/products/optifinish-manufactured/liquid-spray-booth/liquid-single-operator-booth.png',
         },
       ]}
 
@@ -141,5 +192,6 @@ export default function DurrAirlessGunPage() {
       ctaAccent="Gun, pump, and booth together."
       ctaBody="Talk to OptiFinish about your coating material, substrate, and coverage area — we'll specify the right EcoGun AL model, tip size, and EcoPump configuration."
     />
+    </>
   );
 }

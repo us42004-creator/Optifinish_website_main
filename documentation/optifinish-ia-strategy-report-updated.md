@@ -94,7 +94,7 @@ The `Products` section is the main portfolio architecture and should be grouped 
 - Curing Ovens
 - Manual Powder Spray Booth
 - Pollution-Free SS Booth System
-- Quick Color Change Plastic Booth System
+- ~~Quick Color Change Plastic Booth System~~ → moved to GEMA (`/products/gema/plastic-pp-booth`)
 
 #### OptiFinish Automation
 
@@ -104,11 +104,11 @@ The `Products` section is the main portfolio architecture and should be grouped 
 
 #### GEMA
 
-- Manual Powder Coating Gun
-- Automatic Gun
-- OptiCenter / Magic Systems
-- Booth / Plant Solutions
-- Reciprocators
+- Manual Powder Coating Gun — `/products/gema/manual-gun`
+- Automatic Gun — `/products/gema/automatic-gun`
+- OptiCenter / Magic Systems — `/products/gema/opticentre`
+- Plastic / PP Booth — `/products/gema/plastic-pp-booth` *(quick colour-change polypropylene booth; sold and supported through GEMA partner channel; pairs with GEMA manual guns)*
+- Reciprocators — `/products/gema/reciprocators`
 - Spare Parts
 
 #### DURR

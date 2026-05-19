@@ -3,12 +3,44 @@ import CategoryHero from '@/components/products/CategoryHero';
 import ProductCard from '@/components/products/ProductCard';
 import CrossCategoryNav from '@/components/products/CrossCategoryNav';
 import HomeCTA from '@/components/sections/home/HomeCTA';
+import { metadataBase, defaultOpenGraph, defaultTwitter, breadcrumbSchema, SITE } from '@/lib/seo';
 
 export const metadata: Metadata = {
+  metadataBase,
   title: 'GEMA Powder Coating Equipment — Authorised Partner India | OptiFinish',
   description:
-    'OptiFinish is an authorised GEMA partner in India. Supply and support for manual guns, automatic guns, reciprocators, and OptiCentre powder management systems.',
+    'OptiFinish is an authorised GEMA partner in India. Supply, commissioning, and after-sales support for GEMA manual guns, OptiGun automatic guns, reciprocators, OptiCentre OC08, and PP booths.',
+  keywords: [
+    'GEMA authorised distributor India',
+    'GEMA powder coating gun India',
+    'GEMA OptiFlex Pro India',
+    'GEMA OptiGun India',
+    'GEMA OptiCentre OC08',
+    'GEMA reciprocator India',
+    'GEMA plastic PP booth India',
+    'powder coating gun supplier India',
+    'automatic powder coating gun India',
+    'OptiFinish GEMA partner',
+  ],
+  alternates: { canonical: `${SITE.url}/products/gema` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'GEMA Powder Coating Equipment — Authorised Partner India | OptiFinish',
+    description: 'Authorised GEMA partner in India — guns, reciprocators, OptiCentre powder management, and PP booths supplied and serviced by OptiFinish.',
+    url: `${SITE.url}/products/gema`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'GEMA Powder Coating Equipment — Authorised Partner India | OptiFinish',
+    description: 'Authorised GEMA partner in India — guns, reciprocators, OptiCentre powder management, and PP booths.',
+  },
 };
+
+const breadcrumb = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'GEMA', href: '/products/gema' },
+]);
 
 const PRODUCTS = [
   {
@@ -43,7 +75,7 @@ const PRODUCTS = [
     learnMoreHref: '/products/gema/automatic-gun',
     imageBgDark: true,
     imageSrcs: [
-      { src: '/images/products/gema/automatic-gun/optigun-ga04.png', label: 'OptiGun GA04 automatic gun', fit: 'contain' },
+      { src: '/images/products/gema/automatic-gun/optigun-ga04.png', label: 'OptiGun GA04 automatic gun', fit: 'contain' as const },
       { src: '/images/products/gema/automatic-gun/gema-automatic-gun.jpg', label: 'GEMA automatic gun in use' },
     ],
   },
@@ -60,7 +92,7 @@ const PRODUCTS = [
     enquireSlug: 'gema-reciprocators',
     learnMoreHref: '/products/gema/reciprocators',
     imageSrcs: [
-      { src: '/images/products/gema/reciprocators/recip1.jpg', label: 'ZA Series reciprocator', fit: 'contain' },
+      { src: '/images/products/gema/reciprocators/recip1.jpg', label: 'ZA Series reciprocator', fit: 'contain' as const },
       { src: '/images/products/gema/reciprocators/recip4.webp', label: 'Aluminium profile coating' },
       { src: '/images/products/gema/reciprocators/gema-reciprocator-01.jpg', label: 'GEMA reciprocator system' },
       { src: '/images/products/gema/reciprocators/gema-za15-01.jpg', label: 'ZA15 reciprocator' },
@@ -84,11 +116,30 @@ const PRODUCTS = [
       { src: '/images/products/gema/opticentre/gema-opticenter-oc07-oc08-01.jpg', label: 'Powder management system' },
     ],
   },
+  {
+    name: 'Plastic / PP Booth',
+    subtitle: 'Polypropylene Quick Colour-Change Booth',
+    description:
+      'A fully polypropylene-constructed spray booth for operations requiring rapid colour changes with zero cross-contamination — lightweight, corrosion-free, and easy to wipe clean between batches.',
+    specs: [
+      'Full PP panels and frame — no metal substrate, no rust, no contamination',
+      'Wipe-clean surfaces — fastest manual colour changeover available',
+      'Compatible with GEMA OptiFlex Pro manual guns (all models)',
+    ],
+    enquireSlug: 'plastic-booth',
+    learnMoreHref: '/products/gema/plastic-pp-booth',
+    imageSrcs: [
+      { src: '/images/products/gema/plastic-pp-booth/pp_booth.png', label: 'PP Booth — Full Installation' },
+      { src: '/images/products/gema/plastic-pp-booth/plastic_gema_1.jpeg', label: 'Interior — Gun & Recovery System' },
+      { src: '/images/products/gema/plastic-pp-booth/plas.png', label: 'Booth with GEMA Gun Setup' },
+    ],
+  },
 ];
 
 export default function GemaPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
       <CategoryHero
         eyebrow="Authorised Partner — GEMA Switzerland"
         tag="Authorised Partner"

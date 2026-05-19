@@ -44,6 +44,7 @@ export interface RelatedItem {
   category: string;
   href: string;
   enquireSlug: string;
+  imageSrc?: string;
 }
 
 export interface MediaShowcaseVariant {

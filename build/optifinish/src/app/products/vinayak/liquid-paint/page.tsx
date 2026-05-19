@@ -1,14 +1,74 @@
+import type { Metadata } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import { metadataBase, defaultOpenGraph, defaultTwitter, productSchema, breadcrumbSchema, faqSchema, SITE } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Liquid Industrial Paints | Kansai Nerolac & Paramount | OptiFinish',
+export const metadata: Metadata = {
+  metadataBase,
+  title: 'Industrial Liquid Paints — Kansai Nerolac Range | Vinayak Agencies',
   description:
-    'Liquid industrial paints from Kansai Nerolac and Paramount Tansy — primers, topcoats, and enamel formulations for industrial metal coating. Supplied by Vinayak Agencies.',
+    'Vinayak Agencies supplies Kansai Nerolac industrial liquid paints — synthetic enamels, primers, metal paints, and protective coatings for heavy industry, infrastructure, and general metal fabrication applications.',
+  keywords: [
+    'Nerolac industrial paint India',
+    'liquid paint supplier India',
+    'industrial metal paint India',
+    'Nerolac enamel paint India',
+    'Vinayak liquid paint',
+    'industrial coating supplier Greater Noida',
+    'metal paint dealer India',
+  ],
+  alternates: { canonical: `${SITE.url}/products/vinayak/liquid-paint` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'Industrial Liquid Paints — Kansai Nerolac Range | Vinayak Agencies',
+    description: 'Kansai Nerolac industrial liquid paints — synthetic enamels, primers, and protective coatings for metal fabrication.',
+    url: `${SITE.url}/products/vinayak/liquid-paint`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'Kansai Nerolac Industrial Liquid Paints | Vinayak Agencies',
+    description: 'Synthetic enamels, primers, and metal paints from Kansai Nerolac — supplied by Vinayak Agencies.',
+  },
 };
+
+const productLD = productSchema({
+  name: 'Kansai Nerolac Industrial Liquid Paints',
+  description: 'Vinayak Agencies supplies Kansai Nerolac industrial liquid paints — synthetic enamels, primers, metal paints, and protective coatings for heavy industry, infrastructure, and general metal fabrication applications.',
+  url: '/products/vinayak/liquid-paint',
+  brand: 'Kansai Nerolac',
+  manufacturer: 'Vinayak Agencies',
+  category: 'Industrial Liquid Coatings',
+  keywords: ['Nerolac industrial paint', 'liquid paint supplier India', 'industrial metal paint', 'synthetic enamel India'],
+});
+
+const breadcrumbLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'Vinayak Agencies', href: '/products/vinayak' },
+  { name: 'Liquid Industrial Paints', href: '/products/vinayak/liquid-paint' },
+]);
+
+const faqLD = faqSchema([
+  {
+    q: 'What industrial liquid paints does Vinayak Agencies supply?',
+    a: 'Vinayak Agencies supplies the Kansai Nerolac industrial liquid paint range — including synthetic enamels, alkyd primers, metal paints, machinery enamels, and protective coatings for structural steel, heavy equipment, and general fabrication.',
+  },
+  {
+    q: 'Is Vinayak Agencies an authorised Nerolac dealer?',
+    a: 'Yes. Vinayak Agencies is one of India\'s largest authorised Kansai Nerolac industrial dealers, with direct supply relationships and large stock holdings at the Greater Noida facility.',
+  },
+  {
+    q: 'Can Vinayak supply industrial paints for spray booth application?',
+    a: 'Yes. Vinayak Agencies supplies liquid paints compatible with the full Dürr EcoGun spray gun range — also available from OptiFinish — making it a complete source for both liquid coating equipment and materials.',
+  },
+]);
 
 export default function VinayakLiquidPaintPage() {
   return (
-    <ProductPageTemplate
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />
+      <ProductPageTemplate
       theme="light"
 
       breadcrumb={[
@@ -101,7 +161,7 @@ export default function VinayakLiquidPaintPage() {
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/liquid-spray-booth',
           enquireSlug: 'liquid-spray-booth',
-          imageSrc: '/images/products/optifinish-manufactured/liquid-spray-booth/optifinish-liquid-spray-booth-01.jpg',
+          imageSrc: '/images/products/optifinish-manufactured/liquid-spray-booth/liquid-single-operator-booth.png',
         },
       ]}
 
@@ -109,5 +169,6 @@ export default function VinayakLiquidPaintPage() {
       ctaAccent="Vinayak Agencies stocks both brands."
       ctaBody="Talk to OptiFinish about your substrate, service environment, and application method — we'll specify the right primer and topcoat from the Kansai Nerolac and Paramount Tansy ranges."
     />
+    </>
   );
 }

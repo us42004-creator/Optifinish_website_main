@@ -3,12 +3,46 @@ import CategoryHero from '@/components/products/CategoryHero';
 import ProductCard from '@/components/products/ProductCard';
 import CrossCategoryNav from '@/components/products/CrossCategoryNav';
 import HomeCTA from '@/components/sections/home/HomeCTA';
+import { metadataBase, defaultOpenGraph, defaultTwitter, breadcrumbSchema, SITE } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'OptiFinish Manufactured — Powder Coating Plants, Ovens & Booths | OptiFinish',
+  metadataBase,
+  title: 'OptiFinish Manufactured — Powder Coating Plants, Ovens & Booths',
   description:
-    'Complete powder coating lines, curing ovens, spray booths, and pretreatment systems — designed and manufactured at our Greater Noida facility.',
+    'Complete powder coating lines, curing ovens, spray booths, cyclone dust collectors, PT lines, and pretreatment systems — designed and manufactured at our Greater Noida facility. Get a custom quote.',
+  keywords: [
+    'powder coating plant manufacturer India',
+    'curing oven manufacturer India',
+    'powder spray booth manufacturer',
+    'pretreatment line manufacturer India',
+    'conveyorised powder coating line',
+    'SS booth system manufacturer',
+    'cyclone dust collector India',
+    'PT line manufacturer Greater Noida',
+    'wood finish oven India',
+    'industrial coating plant Greater Noida',
+    'OptiFinish manufactured products',
+    'VACSPL coating equipment',
+  ],
+  alternates: { canonical: `${SITE.url}/products/optifinish-manufactured` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'OptiFinish Manufactured — Powder Coating Plants, Ovens & Booths',
+    description: 'Complete powder coating lines, curing ovens, spray booths, and pretreatment systems — manufactured in Greater Noida, India.',
+    url: `${SITE.url}/products/optifinish-manufactured`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'OptiFinish Manufactured — Powder Coating Plants, Ovens & Booths',
+    description: 'Complete powder coating lines, curing ovens, spray booths, and pretreatment systems — manufactured in Greater Noida, India.',
+  },
 };
+
+const breadcrumb = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'OptiFinish Manufactured', href: '/products/optifinish-manufactured' },
+]);
 
 const PRODUCTS = [
   {
@@ -110,26 +144,6 @@ const PRODUCTS = [
     ],
   },
   {
-    name: 'Plastic / PP Booth',
-    subtitle: 'Quick Colour Change — Small Batch',
-    description:
-      'A polypropylene (PP) constructed spray booth for operations requiring rapid colour changes — lightweight, corrosion-resistant, and easy to clean, ideal for custom coating shops and small-batch production.',
-    specs: [
-      'Full PP construction — no rust, no contamination risk',
-      'Fast clean-out for colour changes without cross-contamination',
-      'Compact footprint for smaller production floors',
-      'Integrated suction and recovery; compatible with standard manual guns',
-    ],
-    enquireSlug: 'plastic-booth',
-    learnMoreHref: '/products/optifinish-manufactured/plastic-booth',
-    imageSrcs: [
-      { src: '/images/products/optifinish-manufactured/plastic-booth/pp_booth.png', label: 'PP Booth — Full Installation' },
-      { src: '/images/products/optifinish-manufactured/plastic-booth/img_plastic.jpeg', label: 'Plastic Booth — Interior View' },
-      { src: '/images/products/optifinish-manufactured/plastic-booth/plas.png', label: 'Booth with GEMA Gun Setup' },
-      { src: '/images/products/optifinish-manufactured/plastic-booth/plastic-booth-cropped.jpeg', label: 'Plastic Booth — Exterior View' },
-    ],
-  },
-  {
     name: 'Cyclone & Dust Collector',
     subtitle: '92–96% Recovery — 3,000 to 32,000 CMH',
     description:
@@ -190,6 +204,7 @@ const PRODUCTS = [
 export default function OptiFinishManufacturedPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
       <CategoryHero
         eyebrow="In-house Manufactured — Greater Noida"
         tag="In-house Manufactured"
