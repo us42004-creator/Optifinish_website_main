@@ -378,3 +378,78 @@ Operationally, Z-TAP should remain both:
 - the main design and technical reference point for broader site implementation
 
 The finalized IA in this update should be treated as the structural base for the next stages of planning, content modeling, and build execution.
+
+---
+
+## 15. Implementation Status — May 2026
+
+### Site Live
+
+The OptiFinish website launched on **May 20, 2026** at **https://optifinish.in**.
+
+- Hosted on Vercel; connected to GitHub; auto-deploys on push to `main`
+- DNS configured on GoDaddy: A record `@` → 216.198.79.1, CNAME `www` → Vercel
+- SSL auto-provisioned by Vercel for both `optifinish.in` and `ztap.optifinish.in`
+- Old WordPress site archived at `old.optifinish.in`
+
+### Z-TAP
+
+Z-TAP is live as a separate Vercel project at **https://ztap.optifinish.in** (CNAME `ztap` → optifinish-web.vercel.app). It is referenced from the main site's automation section and homepage.
+
+### All Product Groups Fully Built
+
+All five product groups are live with individual product pages:
+
+| Group | Hub | Product Pages |
+|---|---|---|
+| OptiFinish Manufactured | `/products/optifinish-manufactured` | 9 pages |
+| OptiFinish Automation | `/products/automation` | 4 pages |
+| GEMA | `/products/gema` | 5 pages |
+| DÜRR | `/products/durr` | 9 pages |
+| Vinayak Agencies | `/products/vinayak` | 5 pages |
+
+Total: 29 individual product pages + 5 group hubs + 1 top-level hub = **35 product routes live**.
+
+### Services Fully Built
+
+All 7 service pages are live:
+
+- `/services/plant-amc`
+- `/services/testing-commissioning`
+- `/services/gema-spare-parts`
+- `/services/troubleshooting-support`
+- `/services/upgrades-retrofits`
+- `/services/ttr`
+- `/services/dcp-server-based-maintenance`
+
+### Zoho CRM Wired
+
+Contact form at `/contact` is fully integrated with Zoho CRM via OAuth2. Leads push directly to the Zoho CRM Leads module. Refresh token stored in `.env.local` (gitignored) and Vercel environment variables. Phone: +91 89294 08691, WhatsApp: wa.me/918929408691.
+
+### SEO and Schema Done
+
+- `robots.ts`, `sitemap.ts` (93 URLs), `manifest.ts`, `og-default.jpg` (1200×630px) all created
+- Google Search Console verified via TXT record; sitemap submitted; 93 pages discovered
+- FAQ + Article + BreadcrumbList schema on all 23 blog posts
+- Service schema on all 7 service pages; HowTo schema on Z-TAP page
+- `organizationSchema` areaServed covers 15 Indian cities; `foundingDate: 1999` consistent across all schemas
+- Viewport fixed (removed `userScalable: false`)
+
+### Blog Live
+
+23 MDX posts live at `/resources/blog`. Blog listing page has category filters and live search. All posts have `metaTitle`, `metaDescription`, and `faqs` frontmatter. Markdown rendered via `marked` library.
+
+### What Remains
+
+| Item | Status |
+|---|---|
+| `/resources/newsroom` | ❌ Not yet built |
+| `/resources/videos` | ❌ Not yet built |
+| `/resources/downloads` | ❌ Not yet built |
+| `/resources/troubleshooting` | ❌ Not yet built |
+| Real case studies on `/our-work` | ⚠️ Stub only — "Portfolio Coming Soon" |
+| Blog cover images | ⚠️ 13 of 23 posts use placeholder tile |
+| Facility exterior photos | ⚠️ 8 placeholder slots in FacilityTeaserFilmstrip.tsx |
+| Blog body content | ⚠️ Some posts show "Post content coming soon" |
+| Bing Webmaster Tools | ❌ Not yet registered |
+| Google Analytics / Vercel Analytics | ❌ Not yet set up |

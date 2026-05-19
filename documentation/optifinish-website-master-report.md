@@ -592,7 +592,9 @@ This allows the IA itself to function as the organizing system for future planni
 
 ---
 
-## 20. Build Progress — April 2026
+## 20. Build Progress — Updated May 20, 2026
+
+> **Go-Live Status:** The OptiFinish website launched on **May 20, 2026** at **https://optifinish.in**. Hosted on Vercel with auto-deploy from the `main` branch. Z-TAP live at **https://ztap.optifinish.in**. Google Search Console verified with 93 pages indexed.
 
 This section tracks what has been built in the live Next.js codebase under `build/optifinish/`.
 
@@ -603,7 +605,10 @@ This section tracks what has been built in the live Next.js codebase under `buil
 - Framer Motion (scroll-driven sticky sections)
 - GSAP 3 (cursor animation, magnetic hover)
 - Lenis (smooth scroll)
+- `marked` library — Markdown rendering for blog posts
+- `gray-matter` — frontmatter parsing for MDX blog metadata and FAQ schema
 - pnpm package manager
+- Vercel (hosting, auto-deploy on push to `main`)
 
 ### Design System
 
@@ -618,16 +623,16 @@ Extracted from Z-TAP and adapted for the full site:
 
 | Section | Component | Status |
 |---|---|---|
-| Hero | `Hero.tsx` | Built — full-bleed dark, serif headline, yellow CTA |
-| Portfolio Map | inline in `page.tsx` | Built — product group grid |
-| Proprietary Automation | `ProprietaryAutomation.tsx` | Built — Z-TAP / ZA01 / Sieve Machine sticky scroll |
-| Facility Teaser | `FacilityTeaserFilmstrip.tsx` | Built — filmstrip photo grid (awaiting exterior photos) |
-| Our Team | `OurTeam.tsx` | Built — 10×9 bento grid, 81 member cells, 75+ stat |
-| What We Offer | `WhatWeOffer.tsx` | Built |
-| Our Work Preview | `OurWorkPreview.tsx` | Built |
-| Clients / Testimonials | `ClientsTestimonials.tsx` | Built |
-| Home CTA | `HomeCTA.tsx` | Built |
-| Partners Bar | inline | Built |
+| Hero | `Hero.tsx` | ✅ Built — full-bleed dark, serif headline, yellow CTA |
+| Portfolio Map | inline in `page.tsx` | ✅ Built — product group grid |
+| Proprietary Automation | `ProprietaryAutomation.tsx` | ✅ Built — Z-TAP / ZA01 / Sieve Machine sticky scroll |
+| Facility Teaser | `FacilityTeaserFilmstrip.tsx` | ✅ Built — filmstrip photo grid (awaiting real exterior photos) |
+| Our Team | `OurTeam.tsx` | ✅ Built — 10×9 bento grid, 81 member cells, 75+ stat |
+| What We Offer | `WhatWeOffer.tsx` | ✅ Built — all 5 product groups |
+| Our Work Preview | `OurWorkPreview.tsx` | ✅ Built |
+| Clients / Testimonials | `ClientsTestimonials.tsx` | ✅ Built |
+| Home CTA | `HomeCTA.tsx` | ✅ Built |
+| Partners Bar | inline | ✅ Built |
 
 ### Blog / Resources (`src/app/resources/blog/`)
 
@@ -640,17 +645,23 @@ Two-source blog system — no single CMS dependency:
 
 **Pages built:**
 
-- `/resources/blog` — dark hero + featured lead article + `BlogGrid` client component
+- `/resources/blog` — dark hero + "Guides for better coating decisions." heading ("coating" in yellow) + `BlogGrid` client component
 - `/resources/blog/[slug]` — individual post layout with cover image, typography prose body, CTA footer
 - `BlogGrid.tsx` — masonry 3-column layout (CSS `columns`), category filter pills with post counts, live search (title + excerpt + category), dark editorial card with search input injected at position 3 in the masonry flow
 
-**Images:** 10 real cover images downloaded from the old WordPress site to `public/images/blog/`. 13 posts use a minimal placeholder tile.
+**SEO schema on all 23 blog posts:**
+- FAQ schema (via `gray-matter` frontmatter `faqs` field)
+- Article schema
+- BreadcrumbList schema
+- `metaTitle` and `metaDescription` frontmatter required on all posts
+
+**Images:** 10 real cover images in `public/images/blog/`. 13 posts use a minimal placeholder tile.
 
 **Remaining blog work:**
 
 - Source or create cover images for 13 remaining posts
 - Write `.mdx` body files for posts that currently show "Post content coming soon"
-- Add newsroom section (separate from blog)
+- Add newsroom section (separate from blog — not yet built)
 
 ### Facility Exterior Photos
 
@@ -660,13 +671,52 @@ Two-source blog system — no single CMS dependency:
 
 `Navbar.tsx` — glass-morphism sticky bar, yellow "Get in Touch" CTA. Links wired for all 8 top-level sections.
 
+### What Is Built (Complete List as of May 20, 2026)
+
+**Product pages (29 product pages + 5 group hubs):**
+- `/products` (hub)
+- `/products/optifinish-manufactured` (hub) + powder-coating-plant, curing-oven, powder-spray-booth, liquid-spray-booth, ss-booth-system, plastic-booth, cyclone-dust-collector, pt-line, wood-finish-oven
+- `/products/automation` (hub) + z-tap, za01, sieve-machine, auto-spray-optimisation
+- `/products/gema` (hub) + manual-gun, automatic-gun, opticentre, reciprocators, plastic-pp-booth
+- `/products/durr` (hub) + hvlp-gun, airless-gun, air-assist-gun, electrostatic-gun, bell-atomiser, ecopump, ecodose-2k, ecodose-3k, cup-gun
+- `/products/vinayak` (hub) + powder-paints, touchup-paints, liquid-paint, pu-enamel, adhesives
+
+**Service pages (7 service pages + hub):**
+- `/services` (hub) + plant-amc, testing-commissioning, gema-spare-parts, troubleshooting-support, upgrades-retrofits, ttr, dcp-server-based-maintenance
+
+**Other pages:**
+- `/` (homepage — all sections built)
+- `/facility`
+- `/about`
+- `/contact` (Zoho CRM OAuth2 integration complete)
+- `/our-work` (stub — "Portfolio Coming Soon")
+- `/privacy-policy`
+- `/terms`
+- `/resources/blog` (listing page)
+- `/resources/blog/[slug]` (23 individual posts)
+
+**SEO and technical infrastructure:**
+- `robots.ts` — allows all crawlers (GPTBot, CCBot, Google-Extended, Meta-ExternalAgent, anthropic-ai, PerplexityBot)
+- `sitemap.ts` — dynamic, covers all 93 URLs
+- `manifest.ts` — PWA manifest
+- `og-default.jpg` — 1200×630px
+- `foundingDate: 1999` consistent across all schemas
+- `organizationSchema` areaServed expanded to 15 Indian cities
+- Service schema on all 7 service pages
+- HowTo schema on Z-TAP page
+- FAQ + Article + BreadcrumbList schema on all 23 blog posts
+- Google Search Console verified (TXT record), sitemap submitted, 93 pages indexed
+
+**Cross-linking:** All related product carousels fixed across 16 product pages. 146 unused images deleted (~41.7 MB).
+
 ### What Is Not Yet Built
 
-- `/products` — all sub-pages (GEMA, Dürr, Z-TAP, ZA01, manufactured plants, ovens, booths)
-- `/services` — AMC, commissioning, support pages
-- `/facility` — standalone facility page
-- `/our-work` — case studies, installation gallery
-- `/about` — company, VACSPL, Vinayak Agencies, leadership
-- `/contact` — lead capture form (Zoho CRM endpoint)
 - `/resources/newsroom` — launch announcements, exhibitions
+- `/resources/videos` — product demo and facility videos
+- `/resources/downloads` — brochures, spec sheets, CAD files
+- `/resources/troubleshooting` — common issues and fixes
+- Real case studies on `/our-work` (stub only)
+- Blog cover images for 13 posts
+- `.mdx` body content for blog posts showing "Post content coming soon"
+- Facility exterior photos (8 placeholder slots)
 - Backend / employee portal — deferred
