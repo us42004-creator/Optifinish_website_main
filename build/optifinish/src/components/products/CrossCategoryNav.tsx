@@ -35,7 +35,7 @@ const CATEGORIES = [
     label: 'Vinayak Agencies',
     tag: 'Sister Concern',
     desc: 'Paints, powders, adhesives',
-    image: '/images/products/vinayak/liquid-paint/nerolac-industrial-paint-banner.jpg',
+    image: '/images/products/vinayak/applicator.jpg',
   },
 ];
 
