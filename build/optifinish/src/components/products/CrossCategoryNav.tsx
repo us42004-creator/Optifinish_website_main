@@ -7,7 +7,7 @@ const CATEGORIES = [
     label: 'OptiFinish Manufactured',
     tag: 'In-house',
     desc: 'Plants, ovens & booths',
-    image: '/images/products/optifinish-manufactured/powder-coating-plant/optifinish-powder-coating-plant-01.jpg',
+    image: '/images/products/optifinish-manufactured/curing-oven/oven-cleaned.png',
   },
   {
     slug: 'automation',
