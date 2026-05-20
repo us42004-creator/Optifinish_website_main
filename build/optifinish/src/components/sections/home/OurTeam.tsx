@@ -83,7 +83,7 @@ export default function OurTeam() {
               </div>
 
               {/* Right — rectangular portrait */}
-              <div className="relative h-28 w-20 shrink-0 overflow-hidden rounded-lg border border-white/[0.08] sm:h-36 sm:w-24">
+              <div className="relative h-48 w-36 shrink-0 overflow-hidden rounded-lg border border-white/[0.08] sm:h-64 sm:w-48">
                 <Image
                   src={founder.src}
                   alt={founder.name}
