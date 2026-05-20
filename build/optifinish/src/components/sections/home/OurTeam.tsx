@@ -74,7 +74,7 @@ export default function OurTeam() {
                 <p className="mb-1 text-[0.55rem] font-bold uppercase tracking-[0.24em] text-[#FECE00]/60">
                   {founder.role}
                 </p>
-                <p className="font-display text-[clamp(1.6rem,4vw,2.6rem)] font-black leading-[0.9] tracking-[-0.04em] text-white">
+                <p className="font-display text-[clamp(2.2rem,5vw,3.8rem)] font-black leading-[0.9] tracking-[-0.04em] text-white">
                   {founder.name}
                 </p>
                 <p className="mt-3 max-w-md text-[0.78rem] leading-relaxed text-white/35">
