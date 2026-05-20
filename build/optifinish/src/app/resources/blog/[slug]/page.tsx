@@ -46,6 +46,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       metadataBase,
       title: post.title,
       description: post.excerpt,
+      keywords: post.tags,
       alternates: { canonical: `${SITE.url}/resources/blog/${post.slug}` },
       openGraph: {
         ...defaultOpenGraph,
@@ -136,10 +137,12 @@ export default async function BlogPostPage({ params }: Props) {
       { name: 'Blog', href: '/resources/blog' },
       { name: post.title, href: `/resources/blog/${post.slug}` },
     ]);
+    const faqLD = post.faqs && post.faqs.length > 0 ? faqSchema(post.faqs) : null;
     return (
       <>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLD) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(bcLD) }} />
+        {faqLD && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />}
         <PostLayout post={post} body={body} />
       </>
     );

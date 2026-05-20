@@ -10,6 +10,8 @@
  *   <meta name="category"    content="Equipment">
  *   <meta name="excerpt"     content="Card summary (max 200 chars)">
  *   <meta name="readingTime" content="6">
+ *   <meta name="keywords"    content="powder coating,GEMA,India">
+ *   <meta name="faqs"        content='[{"q":"Question?","a":"Answer."}]'>
  *   <meta property="og:image" content="/images/blog/cover.jpg">
  *
  * Body content is everything inside <body>...</body>.
@@ -27,9 +29,27 @@ export type HtmlPost = {
   excerpt: string;
   readingTime: number;
   coverImage: string | null;
+  tags: string[];
+  faqs: { q: string; a: string }[];
 };
 
 const HTML_DIR = path.join(process.cwd(), 'src/content/blog-html');
+
+function extractTags(html: string): string[] {
+  const raw = extractMeta(html, 'keywords');
+  if (!raw) return [];
+  return raw.split(',').map((t) => t.trim()).filter(Boolean);
+}
+
+function extractFaqs(html: string): { q: string; a: string }[] {
+  const raw = extractMeta(html, 'faqs');
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) return parsed;
+  } catch {}
+  return [];
+}
 
 function extractMeta(html: string, name: string): string {
   // Matches both name= and property= meta tags
@@ -77,6 +97,8 @@ export function getAllHtmlPosts(): HtmlPost[] {
         excerpt: extractMeta(html, 'excerpt') || '',
         readingTime: readingTimeRaw ? parseInt(readingTimeRaw, 10) : 5,
         coverImage,
+        tags: extractTags(html),
+        faqs: extractFaqs(html),
       };
     })
     .filter((p): p is HtmlPost => p !== null)
@@ -104,6 +126,8 @@ export function getHtmlPostBySlug(slug: string): { post: HtmlPost; body: string 
         excerpt: extractMeta(html, 'excerpt') || '',
         readingTime: readingTimeRaw ? parseInt(readingTimeRaw, 10) : 5,
         coverImage: extractMeta(html, 'og:image') || null,
+        tags: extractTags(html),
+        faqs: extractFaqs(html),
       },
       body: extractBody(html),
     };
