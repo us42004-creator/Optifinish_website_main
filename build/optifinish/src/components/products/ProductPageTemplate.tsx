@@ -185,21 +185,12 @@ function ImageViewport({
         }}
       />
       {isDark && <div className="absolute left-0 right-0 top-0 h-[2px] bg-[#FECE00]/25" />}
-      <div
-        className={`absolute left-4 top-4 rounded-full border px-2.5 py-1 text-[0.5rem] font-bold uppercase tracking-[0.18em] ${
-          isDark
-            ? 'border-white/[0.1] bg-white/[0.05] text-white/30'
-            : 'border-[#0A0A0A]/[0.08] bg-white/80 text-[#0A0A0A]/40'
-        }`}
-      >
-        Image viewport
-      </div>
       <span
-        className={`relative text-[0.65rem] font-medium uppercase tracking-[0.2em] ${
-          isDark ? 'text-white/18' : 'text-[#0A0A0A]/20'
+        className={`relative text-[0.65rem] font-semibold uppercase tracking-[0.2em] ${
+          isDark ? 'text-white/25' : 'text-[#0A0A0A]/25'
         }`}
       >
-        {label}
+        Coming Soon
       </span>
     </div>
   );

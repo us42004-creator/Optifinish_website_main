@@ -96,7 +96,7 @@ export default function OurWorkPreview() {
                       <span className="text-white/20">⊡</span>
                     </div>
                     <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-white/18">
-                      Installation photo
+                      Coming Soon
                     </span>
                   </div>
                 </div>

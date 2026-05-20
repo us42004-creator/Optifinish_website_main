@@ -59,14 +59,16 @@ function MasonryCard({ post, tall }: { post: Post; tall?: boolean }) {
             </span>
           </div>
         ) : (
-          <div className="relative flex items-end overflow-hidden bg-[#e9e6de] px-5 pb-5 pt-8">
+          <div className="relative flex aspect-[16/9] items-center justify-center overflow-hidden bg-[#e9e6de]">
             {/* subtle grid texture */}
             <div className="pointer-events-none absolute inset-0 opacity-[0.22] [background-image:linear-gradient(rgba(0,0,0,0.15)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.12)_1px,transparent_1px)] [background-size:24px_24px]" />
             {/* yellow top bar */}
             <div className="absolute left-0 top-0 h-0.5 w-12 bg-yellow" />
-            <span className="relative text-[9px] font-black uppercase tracking-[0.22em] text-black/28">
-              {post.category}
-            </span>
+            <div className="relative text-center">
+              <span className="block text-[9px] font-black uppercase tracking-[0.22em] text-black/28">
+                Coming Soon
+              </span>
+            </div>
           </div>
         )}
 

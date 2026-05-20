@@ -240,7 +240,7 @@ export default function ProprietaryAutomation() {
                         <Image src={product.heroImage} alt={product.name} fill className="object-cover" style={{ objectPosition: 'center 25%' }} sizes="(max-width: 768px) 100vw, 55vw" />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center bg-ink/[0.03]">
-                          <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-ink/20">Image placeholder</span>
+                          <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-ink/20">Coming Soon</span>
                         </div>
                       )}
                     </div>
@@ -260,7 +260,7 @@ export default function ProprietaryAutomation() {
                             <Image src={product[key]!} alt={label} fill className="object-cover object-center" sizes="(max-width: 768px) 50vw, 27vw" />
                           ) : (
                             <div className="flex h-full w-full items-center justify-center bg-ink/[0.03]">
-                              <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-ink/20">{label}</span>
+                              <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-ink/20">Coming Soon</span>
                             </div>
                           )}
                         </div>
