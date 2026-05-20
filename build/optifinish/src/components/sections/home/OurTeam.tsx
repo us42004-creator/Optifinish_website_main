@@ -34,7 +34,7 @@ export default function OurTeam() {
         }}
       />
 
-      <div className="relative mx-auto max-w-4xl px-6">
+      <div className="relative mx-auto max-w-6xl px-6 lg:px-12">
 
         {/* Header row */}
         <motion.div
