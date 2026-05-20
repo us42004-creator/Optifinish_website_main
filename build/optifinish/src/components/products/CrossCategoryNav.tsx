@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 const CATEGORIES = [
   {
@@ -6,35 +7,35 @@ const CATEGORIES = [
     label: 'OptiFinish Manufactured',
     tag: 'In-house',
     desc: 'Plants, ovens & booths',
-    imageLabel: 'Manufactured equipment',
+    image: '/images/products/optifinish-manufactured/powder-coating-plant/optifinish-powder-coating-plant-01.jpg',
   },
   {
     slug: 'automation',
     label: 'Automation',
     tag: 'Proprietary',
     desc: 'Z-TAP, ZA01, Sieve',
-    imageLabel: 'Automation products',
+    image: '/images/products/sieve-machine/sieve-machine-02.jpg',
   },
   {
     slug: 'gema',
     label: 'GEMA',
     tag: 'Partner',
     desc: 'Guns, reciprocators, OptiCentre',
-    imageLabel: 'GEMA equipment',
+    image: '/images/products/gema/manual-gun/homepage-img.jpg',
   },
   {
     slug: 'durr',
     label: 'Dürr',
     tag: 'Distributor',
     desc: 'Liquid guns, pumps, dosing',
-    imageLabel: 'Dürr systems',
+    image: '/images/products/durr/durr-homepage.jpeg',
   },
   {
     slug: 'vinayak',
     label: 'Vinayak Agencies',
     tag: 'Sister Concern',
     desc: 'Paints, powders, adhesives',
-    imageLabel: 'Vinayak products',
+    image: '/images/products/vinayak/powder-paints/nerolac-powder-coating-01.png',
   },
 ];
 
@@ -64,22 +65,18 @@ export default function CrossCategoryNav({ currentSlug }: CrossCategoryNavProps)
               className="group flex flex-col overflow-hidden rounded-[1.1rem] border border-[#FECE00]/[0.07] bg-[#141414] transition-all duration-300 hover:-translate-y-1 hover:border-[#FECE00]/[0.18] hover:bg-[#181818]"
             >
               {/* Image area */}
-              <div className="relative flex aspect-[4/3] w-full items-center justify-center overflow-hidden bg-[#0f0f0f]">
-                {/* Grid texture */}
-                <div
-                  className="pointer-events-none absolute inset-0"
-                  style={{
-                    backgroundImage:
-                      'linear-gradient(rgba(254,206,0,1) 1px, transparent 1px), linear-gradient(90deg, rgba(254,206,0,1) 1px, transparent 1px)',
-                    backgroundSize: '32px 32px',
-                    opacity: 0.11,
-                  }}
+              <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#0f0f0f]">
+                <Image
+                  src={cat.image}
+                  alt={cat.label}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  unoptimized
                 />
                 {/* Top accent bar */}
                 <div className="absolute left-0 right-0 top-0 h-[2px] bg-[#FECE00]/35" />
-                <span className="relative text-[8px] font-semibold uppercase tracking-[0.2em] text-white/18">
-                  {cat.imageLabel} · image
-                </span>
+                {/* Bottom scrim */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
               </div>
 
               {/* Content */}
