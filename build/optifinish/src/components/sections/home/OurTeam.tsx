@@ -34,69 +34,74 @@ export default function OurTeam() {
         }}
       />
 
-      <div className="relative mx-auto max-w-5xl px-6">
+      <div className="relative mx-auto max-w-4xl px-6">
 
-        {/* Section label + heading */}
+        {/* Header row */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.7, ease }}
-          className="mb-14 text-center"
+          transition={{ duration: 0.6, ease }}
+          className="mb-2"
         >
-          <span className="mb-3 block text-[0.55rem] font-bold uppercase tracking-[0.28em] text-[#FECE00]/60">
+          <span className="text-[0.55rem] font-bold uppercase tracking-[0.28em] text-[#FECE00]/60">
             Our Founders
           </span>
-          <h2 className="font-display text-[clamp(2rem,5vw,3.2rem)] font-black leading-[0.9] tracking-[-0.04em] text-white">
-            Faces behind the finish.
-          </h2>
         </motion.div>
 
-        {/* Founder cards */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-          {FOUNDERS.map((founder, i) => (
-            <motion.div
-              key={founder.name}
-              initial={{ opacity: 0, y: 32 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.7, ease, delay: i * 0.12 }}
-              className="group relative overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.02]"
-            >
-              {/* Photo */}
-              <div className="relative aspect-[4/5] w-full overflow-hidden">
-                <Image
-                  src={founder.src}
-                  alt={founder.name}
-                  fill
-                  className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                  unoptimized
-                  priority={i === 0}
-                />
-                {/* Yellow tint */}
-                <div className="absolute inset-0 bg-[#FECE00]/10 mix-blend-multiply" />
-                {/* Bottom scrim */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#070809] via-[#070809]/30 to-transparent" />
-              </div>
+        {/* Top rule */}
+        <motion.div
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.7, ease, delay: 0.1 }}
+          className="mb-0 h-px origin-left bg-white/10"
+        />
 
-              {/* Info */}
-              <div className="px-7 py-6">
-                <p className="font-display text-[1.2rem] font-black tracking-tight text-white">
-                  {founder.name}
-                </p>
-                <p className="mt-0.5 text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-[#FECE00]/70">
+        {/* Founder rows */}
+        {FOUNDERS.map((founder, i) => (
+          <motion.div
+            key={founder.name}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.65, ease, delay: i * 0.1 + 0.15 }}
+          >
+            <div className="group flex items-center justify-between gap-8 py-8 sm:py-10">
+
+              {/* Left — text */}
+              <div className="flex-1 min-w-0">
+                <p className="mb-1 text-[0.55rem] font-bold uppercase tracking-[0.24em] text-[#FECE00]/60">
                   {founder.role}
                 </p>
-                <p className="mt-3 text-[0.78rem] leading-relaxed text-white/40">
+                <p className="font-display text-[clamp(1.6rem,4vw,2.6rem)] font-black leading-[0.9] tracking-[-0.04em] text-white">
+                  {founder.name}
+                </p>
+                <p className="mt-3 max-w-md text-[0.78rem] leading-relaxed text-white/35">
                   {founder.bio}
                 </p>
               </div>
 
-              {/* Yellow accent line at bottom */}
-              <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-[#FECE00] transition-all duration-500 group-hover:w-full" />
-            </motion.div>
-          ))}
-        </div>
+              {/* Right — circular portrait */}
+              <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-full border border-white/[0.08] sm:h-24 sm:w-24">
+                <Image
+                  src={founder.src}
+                  alt={founder.name}
+                  fill
+                  className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                  unoptimized
+                  priority={i === 0}
+                />
+                <div className="absolute inset-0 rounded-full bg-[#FECE00]/10 mix-blend-multiply" />
+              </div>
+
+            </div>
+
+            {/* Divider */}
+            <div className="h-px bg-white/[0.07]" />
+          </motion.div>
+        ))}
+
       </div>
     </section>
   );
