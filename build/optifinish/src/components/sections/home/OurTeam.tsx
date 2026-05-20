@@ -7,13 +7,13 @@ const FOUNDERS = [
   {
     name: 'Harish Sharma',
     role: 'Director & Co-Founder',
-    bio: 'Bio placeholder — background, expertise, vision.',
+    bio: 'B.Sc. + MBA, Rohilkhand University. Early career at Vardhaman Spinning Mills before discovering the coating industry in 1999. He has spent the last 25 years working every angle of it — sales, procurement, plant commissioning, and product development. He leads manufacturing strategy and key client relationships at VACSPL.',
     src: '/images/team/harish_new.jpg',
   },
   {
     name: 'Lalit Tayal',
     role: 'Director & Co-Founder',
-    bio: 'Bio placeholder — background, expertise, vision.',
+    bio: 'B.Sc. + MBA, Shiva Institute of Management Studies. Came to the coating industry from Ayur Herbals. Since 1999, he has built and run the commercial and distribution side of the business — from Vinayak Agencies\' first powder sale to Dürr\'s product range landing under the OptiFinish umbrella. He leads business development, partnerships, and regional expansion.',
     src: '/images/team/lalit_tayal_v2.jpg',
   },
 ];
