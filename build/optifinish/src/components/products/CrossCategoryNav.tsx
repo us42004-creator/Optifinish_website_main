@@ -7,7 +7,7 @@ const CATEGORIES = [
     label: 'OptiFinish Manufactured',
     tag: 'In-house',
     desc: 'Plants, ovens & booths',
-    image: '/images/products/optifinish-manufactured/curing-oven/oven-cleaned.png',
+    image: '/images/products/optifinish-manufactured/SS_BOOTH/ss-booth-master-shot.png',
   },
   {
     slug: 'automation',
