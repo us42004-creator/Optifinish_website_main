@@ -14,6 +14,7 @@ const MANUFACTURED_SLIDES = [
   { src: '/images/products/optifinish-manufactured/liquid-spray-booth/car-painting-booth.jpg',                    label: 'Liquid Spray Booth' },
   { src: '/images/products/optifinish-manufactured/cyclone-dust-collector/dust-collector-cyclone-01.png',         label: 'Cyclone & Dust Collector' },
   { src: '/images/products/optifinish-manufactured/curing-oven/yellow-oven-lighting.png',                         label: 'Curing Oven — Heat Chamber' },
+  { src: '/images/products/optifinish-manufactured/pt-line/product-shots/pt_line1.png',                           label: 'Pretreatment Line — Full Installation' },
 ];
 
 const GEMA_SLIDES = [

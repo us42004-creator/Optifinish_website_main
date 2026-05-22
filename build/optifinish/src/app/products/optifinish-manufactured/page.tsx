@@ -175,6 +175,13 @@ const PRODUCTS = [
     ],
     enquireSlug: 'pt-line',
     learnMoreHref: '/products/optifinish-manufactured/pt-line',
+    imageSrcs: [
+      { src: '/images/products/optifinish-manufactured/pt-line/product-shots/pt_line1.png', label: 'Full Line View' },
+      { src: '/images/products/optifinish-manufactured/pt-line/product-shots/pt_line2.png', label: 'Multi-Stage Tunnel' },
+      { src: '/images/products/optifinish-manufactured/pt-line/product-shots/pt_line3.png', label: 'Tank & Tunnel Assembly' },
+      { src: '/images/products/optifinish-manufactured/pt-line/product-shots/pt_line4.png', label: 'PT Line — Side View' },
+      { src: '/images/products/optifinish-manufactured/pt-line/product-shots/pt_line05.png', label: 'Production Floor Installation' },
+    ],
   },
   {
     name: 'Wood Finish Oven',
