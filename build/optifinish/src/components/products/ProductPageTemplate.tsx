@@ -271,7 +271,7 @@ function InstallationCarousel({ images }: { images: { src: string; label: string
             <button
               onClick={() => go(active - 1)}
               aria-label="Previous image"
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/[0.1] bg-white/[0.04] text-white/60 transition hover:border-[#FECE00]/40 hover:bg-[#FECE00]/10 hover:text-[#FECE00]"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-white/[0.1] bg-white/[0.04] text-white/60 transition hover:border-[#FECE00]/40 hover:bg-[#FECE00]/10 hover:text-[#FECE00]"
             >
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <path d="M9 2L4 7l5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -280,7 +280,7 @@ function InstallationCarousel({ images }: { images: { src: string; label: string
             <button
               onClick={() => go(active + 1)}
               aria-label="Next image"
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/[0.1] bg-white/[0.04] text-white/60 transition hover:border-[#FECE00]/40 hover:bg-[#FECE00]/10 hover:text-[#FECE00]"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-white/[0.1] bg-white/[0.04] text-white/60 transition hover:border-[#FECE00]/40 hover:bg-[#FECE00]/10 hover:text-[#FECE00]"
             >
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <path d="M5 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>

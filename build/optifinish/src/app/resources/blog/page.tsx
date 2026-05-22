@@ -185,7 +185,7 @@ export default function BlogListingPage() {
           </div>
           <div className="py-8 text-center lg:py-12">
             <p className="card-accent-label card-accent-label-light justify-center">Industrial Finishing Journal</p>
-            <h1 className="mx-auto mt-7 max-w-6xl font-serif text-[4.4rem] font-semibold leading-[0.86] tracking-[-0.055em] text-white sm:text-[7rem] lg:text-[9.2rem]">
+            <h1 className="mx-auto mt-7 max-w-6xl font-serif text-[2.8rem] font-semibold leading-[0.86] tracking-[-0.055em] text-white sm:text-[4.4rem] md:text-[7rem] lg:text-[9.2rem]">
               Guides for better<br /><span className="text-[#FECE00]">coating</span> decisions.
             </h1>
             <p className="mx-auto mt-7 max-w-2xl text-base font-medium leading-7 text-white/62 sm:text-lg">
@@ -210,7 +210,7 @@ export default function BlogListingPage() {
                 <p className="mt-5 max-w-2xl text-sm font-medium leading-6 text-white/58 sm:text-base">{lead.excerpt}</p>
               </div>
               <div className="flex items-end border-t border-white/10 p-6 lg:border-l lg:border-t-0 lg:p-8">
-                <Link href={`/resources/blog/${lead.slug}`} className="inline-flex w-fit items-center gap-2 rounded-full bg-yellow px-5 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-ink transition-colors hover:bg-white">
+                <Link href={`/resources/blog/${lead.slug}`} className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-yellow px-5 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-ink transition-colors hover:bg-white sm:w-fit sm:justify-start">
                   Read feature <ArrowUpRight size={14} />
                 </Link>
               </div>
