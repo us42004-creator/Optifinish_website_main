@@ -115,6 +115,9 @@ export interface ProductPageTemplateProps {
   compatibilityTags: string[];
   partnerNote?: string;
 
+  /* S1c — Installation Carousel (optional) */
+  installationCarousel?: { src: string; label: string }[];
+
   /* S8 — References */
   references: Reference[];
 
@@ -235,6 +238,108 @@ function LightGridTexture() {
 }
 
 /* ─────────────────────────────────────────────────────────────
+   INSTALLATION CAROUSEL
+───────────────────────────────────────────────────────────── */
+
+function InstallationCarousel({ images }: { images: { src: string; label: string }[] }) {
+  const [active, setActive] = useState(0);
+  const [animating, setAnimating] = useState(false);
+  const total = images.length;
+
+  const go = (next: number) => {
+    if (animating) return;
+    setAnimating(true);
+    setActive((next + total) % total);
+    setTimeout(() => setAnimating(false), 420);
+  };
+
+  return (
+    <section className="bg-[#070809] py-12 md:py-16">
+      <div className="mx-auto max-w-7xl px-5 md:px-8">
+        {/* Header */}
+        <div className="mb-6 flex items-center justify-between">
+          <div>
+            <p className="mb-1.5 text-[0.56rem] font-bold uppercase tracking-[0.22em] text-[#FECE00]/45">
+              Installation Gallery
+            </p>
+            <h2 className="font-display text-[clamp(1.1rem,2vw,1.5rem)] font-black uppercase tracking-[-0.03em] text-white">
+              Built & Installed by Us
+            </h2>
+          </div>
+          {/* Prev / Next */}
+          <div className="flex gap-2">
+            <button
+              onClick={() => go(active - 1)}
+              aria-label="Previous image"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/[0.1] bg-white/[0.04] text-white/60 transition hover:border-[#FECE00]/40 hover:bg-[#FECE00]/10 hover:text-[#FECE00]"
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M9 2L4 7l5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            <button
+              onClick={() => go(active + 1)}
+              aria-label="Next image"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/[0.1] bg-white/[0.04] text-white/60 transition hover:border-[#FECE00]/40 hover:bg-[#FECE00]/10 hover:text-[#FECE00]"
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M5 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Main image */}
+        <div className="relative mb-3 overflow-hidden rounded-[1.4rem] bg-white/[0.04]" style={{ aspectRatio: '16/7' }}>
+          {images.map((img, i) => (
+            <div
+              key={img.src}
+              className="absolute inset-0 transition-opacity duration-[420ms]"
+              style={{ opacity: i === active ? 1 : 0, pointerEvents: i === active ? 'auto' : 'none' }}
+            >
+              <Image
+                src={img.src}
+                alt={img.label}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 90vw"
+                priority={i === 0}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+            </div>
+          ))}
+          {/* Label */}
+          <span className="absolute bottom-4 left-4 z-10 rounded-full bg-black/60 px-3 py-1.5 text-[0.52rem] font-bold uppercase tracking-[0.18em] text-white/85 backdrop-blur-sm">
+            {images[active]?.label}
+          </span>
+          {/* Counter */}
+          <span className="absolute bottom-4 right-4 z-10 rounded-full bg-black/60 px-3 py-1.5 text-[0.52rem] font-bold uppercase tracking-[0.18em] text-white/60 backdrop-blur-sm">
+            {active + 1} / {total}
+          </span>
+        </div>
+
+        {/* Thumbnail strip */}
+        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+          {images.map((img, i) => (
+            <button
+              key={img.src}
+              onClick={() => go(i)}
+              className={`relative h-16 w-24 flex-shrink-0 overflow-hidden rounded-[0.65rem] transition-all duration-200 ${
+                i === active
+                  ? 'ring-2 ring-[#FECE00] ring-offset-2 ring-offset-[#070809]'
+                  : 'opacity-40 hover:opacity-70'
+              }`}
+            >
+              <Image src={img.src} alt={img.label} fill className="object-cover" sizes="96px" />
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
    MAIN COMPONENT
 ───────────────────────────────────────────────────────────── */
 
@@ -263,6 +368,7 @@ export default function ProductPageTemplate({
   galleryLayout = 'default',
   galleryBottomSplit,
   mediaShowcase,
+  installationCarousel,
   enquireSlug,
   backHref,
   backLabel,
@@ -697,6 +803,13 @@ export default function ProductPageTemplate({
         </div>
         </section>
       </div>
+      )}
+
+      {/* ══════════════════════════════════════════════════════
+          S1c — INSTALLATION CAROUSEL (optional)
+      ══════════════════════════════════════════════════════ */}
+      {installationCarousel && installationCarousel.length > 0 && (
+        <InstallationCarousel images={installationCarousel} />
       )}
 
       {/* ══════════════════════════════════════════════════════
