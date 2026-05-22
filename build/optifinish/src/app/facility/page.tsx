@@ -129,12 +129,12 @@ export default function FacilityPage() {
   return (
     <>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
-    <main className="min-h-screen overflow-hidden">
+    <main className="min-h-svh overflow-hidden">
 
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
           S1 — FULL-VIEWPORT HERO
       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
-      <section className="relative flex min-h-screen flex-col overflow-hidden">
+      <section className="relative flex min-h-svh flex-col overflow-hidden">
 
         {/* Background photo */}
         <div className="absolute inset-0">
@@ -182,16 +182,16 @@ export default function FacilityPage() {
             </p>
 
             {/* CTA */}
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 rounded-full bg-[#FECE00] px-6 py-3 text-[0.68rem] font-bold uppercase tracking-[0.18em] text-[#0A0A0A] transition-opacity hover:opacity-85"
+                className="flex items-center justify-center gap-2 rounded-full bg-[#FECE00] px-6 py-3 text-[0.68rem] font-bold uppercase tracking-[0.18em] text-[#0A0A0A] transition-opacity hover:opacity-85 sm:inline-flex"
               >
                 Plan a visit <span>→</span>
               </Link>
               <Link
                 href="/services/ttr"
-                className="inline-flex items-center gap-2 rounded-full border border-white/[0.18] bg-white/[0.06] px-6 py-3 text-[0.68rem] font-bold uppercase tracking-[0.18em] text-white/75 backdrop-blur-sm transition-all hover:border-white/30 hover:text-white"
+                className="flex items-center justify-center gap-2 rounded-full border border-white/[0.18] bg-white/[0.06] px-6 py-3 text-[0.68rem] font-bold uppercase tracking-[0.18em] text-white/75 backdrop-blur-sm transition-all hover:border-white/30 hover:text-white sm:inline-flex"
               >
                 Book a coating trial
               </Link>

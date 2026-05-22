@@ -227,7 +227,7 @@ function PostLayout({
   isMdx?: boolean;
 }) {
   return (
-    <div className="min-h-screen bg-[#f1efea] text-ink">
+    <div className="min-h-svh bg-[#f1efea] text-ink">
 
       {/* Back nav */}
       <div className="border-b border-black/10 bg-[#f1efea]/80 backdrop-blur">

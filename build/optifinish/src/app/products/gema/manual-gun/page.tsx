@@ -552,7 +552,7 @@ export default function GemaManualGunPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f1efea]">
+    <div className="min-h-svh bg-[#f1efea]">
 
       {/* ══════════════════════════════════════════════════════
           S1 — PRODUCT HERO

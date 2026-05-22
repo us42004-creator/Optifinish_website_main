@@ -253,7 +253,10 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 navbar-enter">
+      <header
+        className="fixed top-0 left-0 right-0 z-50 navbar-enter"
+        style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
+      >
         {/* Outer row — pill centred, hamburger sits outside pill as absolute sibling */}
         <div className="relative flex justify-center px-3 pt-2.5 md:px-4 md:pt-4">
           <motion.div
@@ -647,6 +650,7 @@ export default function Navbar() {
           className="fixed inset-0 z-[60] flex flex-col bg-[#080808] lg:hidden"
           style={{
             animation: 'mobile-menu-enter 0.22s cubic-bezier(0.22,1,0.36,1) both',
+            paddingTop: 'env(safe-area-inset-top, 0px)',
             paddingBottom: 'env(safe-area-inset-bottom, 1.5rem)',
           }}
         >

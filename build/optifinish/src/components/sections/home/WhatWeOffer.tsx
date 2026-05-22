@@ -300,13 +300,13 @@ export default function WhatWeOffer() {
           ))}
         </div>
 
-        {/* Bottom row */}
-        <div className="grid gap-4 md:grid-cols-3">
+        {/* Bottom row — horizontal snap-scroll on mobile, 3-col grid on desktop */}
+        <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory md:grid md:grid-cols-3 md:overflow-visible md:pb-0" style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none' }}>
           {BOTTOM_GROUPS.map((g, gi) => (
             <Link
               key={g.href}
               href={g.href}
-              className="group flex flex-col overflow-hidden rounded-[1.2rem] border border-white/[0.14] bg-white/[0.06] transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.22] hover:bg-white/[0.09]"
+              className="group flex flex-col overflow-hidden rounded-[1.2rem] border border-white/[0.14] bg-white/[0.06] transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.22] hover:bg-white/[0.09] w-[80vw] flex-shrink-0 snap-start md:w-auto md:flex-shrink"
             >
               <div className="flex flex-col gap-3 p-5">
                 <div className="flex items-center justify-between">

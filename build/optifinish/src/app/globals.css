@@ -22,7 +22,10 @@
 }
 
 @layer base {
-  *, *::before, *::after { box-sizing: border-box; }
+  *, *::before, *::after {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
 
   html {
     scroll-behavior: auto; /* Lenis handles smooth scroll */
@@ -37,9 +40,27 @@
     overflow-x: hidden;
   }
 
+  /* Prevent iOS Safari auto-zoom on input focus */
+  input, textarea, select {
+    font-size: max(16px, 1rem);
+  }
+
+  /* Global touch-action on interactive elements */
+  button, a, [role="button"] {
+    touch-action: manipulation;
+  }
+
   .cursor-none,
   .cursor-none * {
     cursor: none !important;
+  }
+
+  /* On pure-touch devices, never show pointer cursor */
+  @media (hover: none) and (pointer: coarse) {
+    .cursor-none,
+    .cursor-none * {
+      cursor: auto !important;
+    }
   }
 
   a {
@@ -329,9 +350,21 @@
   ::-webkit-scrollbar-thumb:hover { background: rgba(254,206,0,0.6); }
 
   /* ── Mobile carousel track ── */
-  .carousel-track { -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
+  .carousel-track {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    touch-action: pan-x;          /* allow horizontal swipe without blocking vertical scroll */
+    overscroll-behavior-x: contain;
+  }
   .carousel-track::-webkit-scrollbar { display: none; }
   .carousel-track { scrollbar-width: none; -ms-overflow-style: none; }
+
+  /* Allow vertical carousels / app-image sections to pan-y safely */
+  .carousel-track-y {
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    overscroll-behavior-y: contain;
+  }
 
   /* ── Mobile nav link ── */
   .mobile-nav-link {
@@ -388,7 +421,22 @@
   }
 
   /* ── Mobile safe-area ── */
-  .pb-safe { padding-bottom: env(safe-area-inset-bottom, 1.5rem); }
+  .pb-safe  { padding-bottom: env(safe-area-inset-bottom, 1.5rem); }
+  .pt-safe  { padding-top:    env(safe-area-inset-top,    0px);    }
+  .pl-safe  { padding-left:   env(safe-area-inset-left,   0px);    }
+  .pr-safe  { padding-right:  env(safe-area-inset-right,  0px);    }
+
+  /* ── 100svh — real viewport on iOS Safari (excludes address bar) ── */
+  .h-svh     { height:     100svh; }
+  .min-h-svh { min-height: 100svh; }
+  .max-h-svh { max-height: 100svh; }
+
+  /* ── Hide interactive cursor on touch devices ── */
+  @media (hover: none) and (pointer: coarse) {
+    [data-cursor], .interactive-cursor {
+      display: none !important;
+    }
+  }
 }
 
 /* ── Navbar entrance — CSS animation so it's visible before JS hydration ── */

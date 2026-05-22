@@ -26,7 +26,7 @@ const STATS = [
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen overflow-hidden bg-[#f1efea]">
+    <section className="relative min-h-svh overflow-hidden bg-[#f1efea]">
 
       {/* Background grid */}
       <div
@@ -43,7 +43,7 @@ export default function Hero() {
       <div className="pointer-events-none absolute -left-40 bottom-0 h-[400px] w-[400px] rounded-full bg-[#FECE00]/[0.04] blur-[100px]" />
 
       {/* Centring shell */}
-      <div className="relative mx-auto flex min-h-screen max-w-[1440px] flex-col items-center justify-center px-5 py-24 md:px-10 lg:px-12">
+      <div className="relative mx-auto flex min-h-svh max-w-[1440px] flex-col items-center justify-center px-5 py-24 md:px-10 lg:px-12">
 
         {/* ── Hero card — copy + authority together ── */}
         <motion.div

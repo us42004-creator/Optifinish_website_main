@@ -30,7 +30,7 @@ export default function AutomationHighlight() {
       <div className="mx-auto max-w-7xl px-5 md:px-8">
 
         {/* Header */}
-        <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div className="mb-8 flex flex-col gap-5 md:mb-12 md:flex-row md:items-end md:justify-between">
           <div>
             <span className="tech-kicker mb-3 block">OptiFinish Automation</span>
             <h2 className="font-display desktop-section-heading mobile-hero-ratio-title font-black text-white">
@@ -40,20 +40,20 @@ export default function AutomationHighlight() {
           </div>
           <Link
             href="/products/automation"
-            className="panel-button dynamic-button dynamic-button-light text-ink self-start"
+            className="panel-button dynamic-button dynamic-button-light text-ink self-start w-full justify-center sm:w-auto md:self-auto"
           >
             <span>View all automation</span>
             <div className="dynamic-button-glow" />
           </Link>
         </div>
 
-        {/* Cards */}
-        <div className="grid gap-4 md:grid-cols-3">
+        {/* Cards — horizontal snap-scroll on mobile, 3-col grid on desktop */}
+        <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory md:grid md:grid-cols-3 md:overflow-visible md:pb-0" style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none' }}>
           {PRODUCTS.map((p) => (
             <Link
               key={p.href}
               href={p.href}
-              className="section-frame group flex flex-col gap-5 p-6 transition-all duration-300 hover:-translate-y-1"
+              className="section-frame group flex flex-col gap-5 p-6 transition-all duration-300 hover:-translate-y-1 w-[80vw] flex-shrink-0 snap-start md:w-auto md:flex-shrink"
             >
               {/* Tag + name */}
               <div className="flex items-start justify-between gap-3">

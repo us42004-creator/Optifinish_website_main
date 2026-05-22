@@ -30,6 +30,7 @@ function CardImageCarousel({
   return (
     <div
       className="relative h-full w-full"
+      style={{ touchAction: 'pan-y' }}
       onMouseEnter={() => { paused.current = true; }}
       onMouseLeave={() => { paused.current = false; }}
     >

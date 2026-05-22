@@ -31,7 +31,7 @@ export default function PrivacyPolicyPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
 
-      <main className="min-h-screen bg-white text-[#070809]">
+      <main className="min-h-svh bg-white text-[#070809]">
         <section className="mx-auto max-w-3xl px-6 pt-32 pb-20">
           <h1 className="font-display text-[clamp(2rem,5vw,3.5rem)] font-black tracking-[-0.04em] text-[#070809]">
             Privacy Policy

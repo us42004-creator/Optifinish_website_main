@@ -241,7 +241,7 @@ function ContactForm() {
       <button
         type="submit"
         disabled={submitting}
-        className="mt-1 rounded-full bg-[#FECE00] px-7 py-3 text-[0.68rem] font-bold uppercase tracking-[0.18em] text-[#0A0A0A] transition-opacity hover:opacity-85 disabled:opacity-50 sm:self-start"
+        className="mt-1 flex h-14 w-full items-center justify-center rounded-full bg-[#FECE00] px-7 text-[0.68rem] font-bold uppercase tracking-[0.18em] text-[#0A0A0A] transition-opacity hover:opacity-85 disabled:opacity-50 sm:h-auto sm:w-auto sm:py-3 sm:self-start"
       >
         {submitting ? 'Sending…' : 'Send enquiry →'}
       </button>
@@ -252,7 +252,7 @@ function ContactForm() {
 /* ─── Page ─────────────────────────────── */
 export default function ContactPage() {
   return (
-    <main className="min-h-screen bg-[#070809]">
+    <main className="min-h-svh bg-[#070809]">
 
       {/* Grid texture */}
       <div
@@ -287,8 +287,8 @@ export default function ContactPage() {
           <div className="mx-auto max-w-7xl px-5 md:px-8">
             <div className="grid gap-16 lg:grid-cols-[1.4fr_1fr] lg:gap-24">
 
-              {/* LEFT — form */}
-              <div>
+              {/* LEFT — form (order-2 on mobile so contacts appear first) */}
+              <div className="order-2 lg:order-1">
                 <Suspense fallback={
                   <div className="h-64 animate-pulse rounded-[1.2rem] bg-white/[0.03]" />
                 }>
@@ -296,8 +296,8 @@ export default function ContactPage() {
                 </Suspense>
               </div>
 
-              {/* RIGHT — direct contacts */}
-              <div className="flex flex-col gap-8">
+              {/* RIGHT — direct contacts (order-1 on mobile so they appear above form) */}
+              <div className="order-1 flex flex-col gap-8 lg:order-2">
 
                 {/* Response badge */}
                 <div className="inline-flex items-center gap-2.5 self-start rounded-full border border-[#FECE00]/15 bg-[#FECE00]/[0.06] px-4 py-2">

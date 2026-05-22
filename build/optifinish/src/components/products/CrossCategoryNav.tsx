@@ -56,13 +56,13 @@ export default function CrossCategoryNav({ currentSlug }: CrossCategoryNavProps)
           Explore other ranges
         </p>
 
-        {/* Cards */}
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+        {/* Cards — 2-card visible snap-scroll on mobile, 4-col grid on sm+ */}
+        <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory sm:grid sm:grid-cols-4 sm:overflow-visible sm:pb-0" style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none' }}>
           {others.map((cat) => (
             <Link
               key={cat.slug}
               href={`/products/${cat.slug}`}
-              className="group flex flex-col overflow-hidden rounded-[1.1rem] border border-[#FECE00]/[0.07] bg-[#141414] transition-all duration-300 hover:-translate-y-1 hover:border-[#FECE00]/[0.18] hover:bg-[#181818]"
+              className="group flex flex-col overflow-hidden rounded-[1.1rem] border border-[#FECE00]/[0.07] bg-[#141414] transition-all duration-300 hover:-translate-y-1 hover:border-[#FECE00]/[0.18] hover:bg-[#181818] w-[44vw] flex-shrink-0 snap-start sm:w-auto sm:flex-shrink"
             >
               {/* Image area */}
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#0f0f0f]">

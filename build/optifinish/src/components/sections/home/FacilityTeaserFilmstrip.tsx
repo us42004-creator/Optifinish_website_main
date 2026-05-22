@@ -166,7 +166,7 @@ export default function FacilityTeaserFilmstrip() {
 
               <Link
                 href="/facility"
-                className="panel-button dynamic-button dynamic-button-yellow mt-6 inline-flex"
+                className="panel-button dynamic-button dynamic-button-yellow mt-6 inline-flex w-full justify-center sm:w-auto"
               >
                 <span>See the Facility</span>
                 <div className="dynamic-button-glow" />

@@ -118,10 +118,10 @@ export default function ProprietaryAutomation() {
         <div className="relative flex h-full items-center">
           <div className="mx-auto w-full max-w-7xl px-5 md:px-8">
 
-            <div className="grid gap-12 lg:grid-cols-2 lg:items-end lg:gap-16">
+            <div className="grid gap-8 lg:grid-cols-2 lg:items-end lg:gap-16">
 
               {/* ── LEFT col ── */}
-              <div className="flex flex-col">
+              <div className="flex flex-col order-2 lg:order-1">
 
                 {/* Eyebrow */}
                 <div className="overflow-hidden pb-[0.15em]">
@@ -206,16 +206,16 @@ export default function ProprietaryAutomation() {
                       ))}
                     </ul>
 
-                    <div className="flex flex-wrap gap-3">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                       <Link
                         href={product.href}
-                        className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-[0.68rem] font-bold uppercase tracking-[0.18em] text-white transition-colors hover:bg-ink/85"
+                        className="inline-flex items-center justify-center gap-2 rounded-full bg-ink px-5 py-3 text-[0.68rem] font-bold uppercase tracking-[0.18em] text-white transition-colors hover:bg-ink/85 sm:py-2.5"
                       >
                         Learn more <span>→</span>
                       </Link>
                       <Link
                         href="/products/automation"
-                        className="inline-flex items-center gap-2 rounded-full border border-ink/[0.12] px-5 py-2.5 text-[0.68rem] font-bold uppercase tracking-[0.18em] text-ink/40 transition-colors hover:text-ink/65"
+                        className="inline-flex items-center justify-center gap-2 rounded-full border border-ink/[0.12] px-5 py-3 text-[0.68rem] font-bold uppercase tracking-[0.18em] text-ink/40 transition-colors hover:text-ink/65 sm:py-2.5"
                       >
                         View all automation
                       </Link>
@@ -224,7 +224,7 @@ export default function ProprietaryAutomation() {
                 </AnimatePresence>
               </div>
 
-              {/* ── RIGHT col — media cards (desktop only) ── */}
+              {/* ── RIGHT col — media cards (image first on mobile via order-1) ── */}
               <AnimatePresence mode="wait">
                 <motion.div
                   key={product.id + '-visual'}
@@ -232,7 +232,7 @@ export default function ProprietaryAutomation() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.97 }}
                   transition={{ duration: 0.34, ease }}
-                  className="flex flex-col gap-3"
+                  className="flex flex-col gap-3 order-1 lg:order-2"
                 >
                   <div className="overflow-hidden rounded-[1.4rem] border border-ink/[0.07] bg-white/70 shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
                     <div className="relative aspect-[4/3] w-full bg-[#f0f0f0]">

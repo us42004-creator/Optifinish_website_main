@@ -56,7 +56,7 @@ export default function OurWorkPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />
 
-      <main className="min-h-screen bg-[#070809] text-white">
+      <main className="min-h-svh bg-[#070809] text-white">
         {/* Hero */}
         <section className="relative flex min-h-[60vh] flex-col items-center justify-center px-6 pt-32 pb-20 text-center">
           <span className="mb-4 block text-[0.6rem] font-bold uppercase tracking-[0.28em] text-[#FECE00]/60">

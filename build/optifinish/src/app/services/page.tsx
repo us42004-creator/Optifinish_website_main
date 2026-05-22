@@ -106,7 +106,7 @@ export default function ServicesPage() {
   return (
     <>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
-    <main className="min-h-screen">
+    <main className="min-h-svh">
 
       {/* ── Hero (dark) ── */}
       <section className="relative overflow-hidden bg-[#070809] pb-20 pt-[100px] md:pb-28 md:pt-[108px]">
@@ -178,7 +178,7 @@ export default function ServicesPage() {
             </h2>
           </div>
 
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {SERVICES.map((svc) =>
               svc.comingSoon ? (
                 /* Coming soon card */

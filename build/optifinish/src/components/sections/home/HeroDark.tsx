@@ -25,7 +25,7 @@ const STATS = [
 
 export default function HeroDark() {
   return (
-    <section className="relative min-h-screen overflow-hidden bg-[#080a0c]">
+    <section className="relative min-h-svh overflow-hidden bg-[#080a0c]">
 
       {/* ── Yellow grid — same 72px grid, yellow lines on dark ── */}
       <div
@@ -54,7 +54,7 @@ export default function HeroDark() {
       <div className="pointer-events-none absolute bottom-0 right-0 h-[300px] w-[300px] rounded-full bg-[#FECE00]/[0.01] blur-[100px]" />
 
       {/* Centring shell */}
-      <div className="relative mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-center px-5 pb-44 pt-24 md:px-8">
+      <div className="relative mx-auto flex min-h-svh max-w-7xl flex-col items-center justify-center px-5 pb-36 pt-24 md:pb-44 md:px-8">
 
         {/* ── Hero content — CSS animations so visible before JS hydration ── */}
         <div
@@ -98,7 +98,7 @@ export default function HeroDark() {
 
           {/* CTAs */}
           <div
-            className="mt-10 flex justify-center md:mt-16"
+            className="mt-10 flex justify-center px-1 md:mt-16"
             style={{ animation: 'hero-item-in 0.55s cubic-bezier(0.22,1,0.36,1) 0.38s both' }}
           >
             <button
@@ -106,7 +106,7 @@ export default function HeroDark() {
               onClick={() =>
                 document.getElementById('products-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
               }
-              className="panel-button dynamic-button dynamic-button-yellow"
+              className="panel-button dynamic-button dynamic-button-yellow w-full sm:w-auto"
             >
               <span>Explore Products</span>
               <div className="dynamic-button-glow" />

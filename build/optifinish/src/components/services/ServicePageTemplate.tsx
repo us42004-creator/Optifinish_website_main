@@ -141,7 +141,7 @@ export default function ServicePageTemplate({
           <div className="mt-8">
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 rounded-full border border-white/[0.1] bg-white/[0.04] px-5 py-2.5 text-[0.68rem] font-bold uppercase tracking-[0.18em] text-white/60 transition-all hover:border-[#FECE00]/30 hover:text-white"
+              className="flex w-full items-center justify-center gap-2 rounded-full border border-white/[0.1] bg-white/[0.04] px-5 py-3.5 text-[0.68rem] font-bold uppercase tracking-[0.18em] text-white/60 transition-all hover:border-[#FECE00]/30 hover:text-white sm:inline-flex sm:w-auto sm:py-2.5"
             >
               Request this service <span>→</span>
             </Link>
@@ -331,12 +331,13 @@ export default function ServicePageTemplate({
             </h2>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Related — horizontal snap-scroll on mobile, grid on sm+ */}
+          <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory sm:grid sm:grid-cols-2 sm:overflow-visible sm:pb-0 lg:grid-cols-3" style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none' }}>
             {relatedServices.map((svc) => (
               <Link
                 key={svc.href}
                 href={svc.href}
-                className="group flex flex-col gap-3 rounded-[1.1rem] border border-[#0A0A0A]/[0.07] bg-white/70 p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[#0A0A0A]/[0.12]"
+                className="group flex flex-col gap-3 rounded-[1.1rem] border border-[#0A0A0A]/[0.07] bg-white/70 p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[#0A0A0A]/[0.12] w-[75vw] flex-shrink-0 snap-start sm:w-auto sm:flex-shrink"
               >
                 <span className="self-start rounded-full border border-[#0A0A0A]/[0.1] bg-[#0A0A0A]/[0.04] px-2.5 py-0.5 text-[0.52rem] font-bold uppercase tracking-[0.18em] text-[#0A0A0A]/45">
                   {svc.tag}

@@ -517,7 +517,7 @@ export default function ProductPageTemplate({
 
       {/* ── Full-viewport video hero ── */}
       {heroVideoFull && heroVideoSrc ? (
-        <div className="relative min-h-screen overflow-hidden bg-black">
+        <div className="relative min-h-svh overflow-hidden bg-black">
           {/* Background video */}
           <video
             src={heroVideoSrc}
@@ -666,16 +666,16 @@ export default function ProductPageTemplate({
               )}
 
               {/* CTAs */}
-              <div className="mt-8 flex flex-wrap items-center gap-3">
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
                 <Link
                   href={`/contact?product=${enquireSlug}`}
-                  className="rounded-full bg-[#FECE00] px-6 py-2.5 text-[0.65rem] font-bold uppercase tracking-[0.16em] text-[#0A0A0A] transition-opacity hover:opacity-85"
+                  className="rounded-full bg-[#FECE00] px-6 py-3 text-[0.65rem] font-bold uppercase tracking-[0.16em] text-[#0A0A0A] transition-opacity hover:opacity-85 text-center sm:py-2.5"
                 >
                   Enquire →
                 </Link>
                 <Link
                   href={backHref}
-                  className={`rounded-full border px-6 py-2.5 text-[0.65rem] font-bold uppercase tracking-[0.16em] transition-all ${
+                  className={`rounded-full border px-6 py-3 text-[0.65rem] font-bold uppercase tracking-[0.16em] transition-all text-center sm:py-2.5 ${
                     hero
                       ? 'border-black/[0.14] text-[#0A0A0A]/45 hover:border-black/[0.28] hover:text-[#0A0A0A]/70'
                       : 'border-white/[0.14] text-white/40 hover:border-white/[0.3] hover:text-white/65'
@@ -1142,13 +1142,13 @@ export default function ProductPageTemplate({
               {variantsSectionTitle ?? 'Choose your configuration'}
             </h2>
 
-            {/* Variant pills */}
-            <div className="mb-8 flex flex-wrap gap-2">
+            {/* Variant pills — horizontal scroll on mobile so they don't wrap */}
+            <div className="mb-8 flex overflow-x-auto gap-2 pb-1" style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
               {variants!.map((v, i) => (
                 <button
                   key={v.id}
                   onClick={() => setActiveVariant(i)}
-                  className={`rounded-full border px-4 py-1.5 text-[0.62rem] font-bold uppercase tracking-[0.14em] transition-all duration-200 ${
+                  className={`flex-shrink-0 rounded-full border px-4 py-1.5 text-[0.62rem] font-bold uppercase tracking-[0.14em] transition-all duration-200 ${
                     i === activeVariant
                       ? vars
                         ? 'border-[#0A0A0A] bg-[#0A0A0A] text-white'
@@ -1584,12 +1584,13 @@ export default function ProductPageTemplate({
           >
             Related products
           </h2>
-          <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3">
+          {/* Related cards — horizontal snap-scroll on mobile, grid on desktop */}
+          <div className="flex gap-5 overflow-x-auto pb-2 snap-x snap-mandatory md:grid md:grid-cols-3 md:overflow-visible md:pb-0" style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none' }}>
             {related.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`group flex flex-col overflow-hidden rounded-[1.1rem] border transition-all duration-300 hover:-translate-y-0.5 ${
+                className={`group flex flex-col overflow-hidden rounded-[1.1rem] border transition-all duration-300 hover:-translate-y-0.5 w-[75vw] flex-shrink-0 snap-start md:w-auto md:flex-shrink ${
                   rltd
                     ? 'border-[#0A0A0A]/[0.07] bg-white/70 shadow-[0_4px_14px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.09)]'
                     : 'border-white/[0.06] bg-white/[0.02] hover:border-white/[0.14]'
@@ -1678,16 +1679,16 @@ export default function ProductPageTemplate({
           <p className="mx-auto mt-5 max-w-[480px] text-[0.87rem] leading-relaxed text-[#0A0A0A]/60">
             {ctaBody}
           </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <div className="mt-8 flex flex-col gap-3 px-2 sm:flex-row sm:items-center sm:justify-center sm:px-0">
             <Link
               href={`/contact?product=${enquireSlug}`}
-              className="rounded-full bg-[#0A0A0A] px-8 py-3 text-[0.65rem] font-bold uppercase tracking-[0.18em] text-white transition-opacity hover:opacity-80"
+              className="rounded-full bg-[#0A0A0A] px-8 py-3.5 text-[0.65rem] font-bold uppercase tracking-[0.18em] text-white transition-opacity hover:opacity-80 text-center sm:py-3"
             >
               Enquire now →
             </Link>
             <Link
               href={backHref}
-              className="rounded-full border border-[#0A0A0A]/25 px-8 py-3 text-[0.65rem] font-bold uppercase tracking-[0.18em] text-[#0A0A0A]/60 transition-all hover:border-[#0A0A0A]/50 hover:text-[#0A0A0A]/80"
+              className="rounded-full border border-[#0A0A0A]/25 px-8 py-3.5 text-[0.65rem] font-bold uppercase tracking-[0.18em] text-[#0A0A0A]/60 transition-all hover:border-[#0A0A0A]/50 hover:text-[#0A0A0A]/80 text-center sm:py-3"
             >
               {backLabel}
             </Link>

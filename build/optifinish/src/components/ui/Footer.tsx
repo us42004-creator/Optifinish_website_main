@@ -1,5 +1,9 @@
+'use client';
+
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { ChevronRight } from 'lucide-react';
 
 const FOOTER_COLS = [
   {
@@ -19,24 +23,24 @@ const FOOTER_COLS = [
   {
     heading: 'Solutions',
     links: [
-      { href: '/products/optifinish-manufactured/powder-spray-booth',   label: 'Powder Spray Booth' },
-      { href: '/products/optifinish-manufactured/liquid-spray-booth',   label: 'Liquid Spray Booth' },
-      { href: '/products/optifinish-manufactured/ss-booth-system',      label: 'SS Booth System' },
-      { href: '/products/optifinish-manufactured/pt-line',              label: 'Pretreatment Line' },
+      { href: '/products/optifinish-manufactured/powder-spray-booth',     label: 'Powder Spray Booth' },
+      { href: '/products/optifinish-manufactured/liquid-spray-booth',     label: 'Liquid Spray Booth' },
+      { href: '/products/optifinish-manufactured/ss-booth-system',        label: 'SS Booth System' },
+      { href: '/products/optifinish-manufactured/pt-line',                label: 'Pretreatment Line' },
       { href: '/products/optifinish-manufactured/cyclone-dust-collector', label: 'Cyclone Dust Collector' },
-      { href: '/services/plant-amc',                                    label: 'Plant AMC' },
-      { href: '/services/testing-commissioning',                        label: 'Commissioning' },
-      { href: '/services/gema-spare-parts',                             label: 'GEMA Spare Parts' },
+      { href: '/services/plant-amc',                                      label: 'Plant AMC' },
+      { href: '/services/testing-commissioning',                          label: 'Commissioning' },
+      { href: '/services/gema-spare-parts',                               label: 'GEMA Spare Parts' },
     ],
   },
   {
     heading: 'Company',
     links: [
-      { href: '/about',         label: 'About OptiFinish' },
-      { href: '/facility',      label: 'Facility' },
-      { href: '/our-work',      label: 'Our Work' },
+      { href: '/about',          label: 'About OptiFinish' },
+      { href: '/facility',       label: 'Facility' },
+      { href: '/our-work',       label: 'Our Work' },
       { href: '/resources/blog', label: 'Blog' },
-      { href: '/contact',       label: 'Contact' },
+      { href: '/contact',        label: 'Contact' },
       { href: '/privacy-policy', label: 'Privacy Policy' },
       { href: '/terms',          label: 'Terms of Use' },
     ],
@@ -44,15 +48,22 @@ const FOOTER_COLS = [
 ];
 
 export default function Footer() {
+  // Track which accordion sections are open on mobile (all closed by default)
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
+
+  const toggleSection = (heading: string) => {
+    setOpenSections((prev) => ({ ...prev, [heading]: !prev[heading] }));
+  };
+
   return (
     <footer className="border-t border-white/10 bg-[#050505] px-5 py-12 text-white sm:py-16 md:px-8">
       <div className="mx-auto max-w-7xl">
 
         {/* Top — brand + columns */}
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-8 sm:gap-10 lg:grid-cols-4">
 
           {/* Brand */}
-          <div>
+          <div className="pb-6 border-b border-white/[0.06] lg:border-b-0 lg:pb-0">
             <div className="flex items-center gap-3">
               <Image src="/images/logos/optifinish-logo.png" alt="OptiFinish" width={192} height={192} className="h-9 w-auto object-contain" />
             </div>
@@ -67,7 +78,7 @@ export default function Footer() {
             </div>
             <div className="mt-4 flex gap-3">
               <a href="https://www.linkedin.com/company/value-added-coating-solution" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="flex h-7 w-7 items-center justify-center rounded-full border border-white/[0.1] text-white/30 transition hover:border-white/30 hover:text-white/70">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 23.2 0 22.222 0h.003z"/></svg>
               </a>
               <a href="https://www.youtube.com/@vacspl" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="flex h-7 w-7 items-center justify-center rounded-full border border-white/[0.1] text-white/30 transition hover:border-white/30 hover:text-white/70">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
@@ -81,26 +92,48 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Link columns */}
-          {FOOTER_COLS.map((col) => (
-            <div key={col.heading}>
-              <h3 className="mb-3 text-[9px] font-bold uppercase tracking-[0.26em] text-white/50">
-                {col.heading}
-              </h3>
-              <ul className="space-y-2">
-                {col.links.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-[9px] font-medium text-white/28 transition-colors hover:text-[#FECE00] sm:text-[10px]"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {/* Link columns — accordion on mobile, expanded on desktop */}
+          {FOOTER_COLS.map((col) => {
+            const isOpen = openSections[col.heading] ?? false;
+            return (
+              <div key={col.heading}>
+                {/* Mobile: tappable accordion header */}
+                <button
+                  className="flex w-full items-center justify-between py-3 text-left lg:cursor-default lg:pointer-events-none"
+                  onClick={() => toggleSection(col.heading)}
+                  aria-expanded={isOpen}
+                  style={{ touchAction: 'manipulation' }}
+                >
+                  <h3 className="text-[9px] font-bold uppercase tracking-[0.26em] text-white/50">
+                    {col.heading}
+                  </h3>
+                  <ChevronRight
+                    size={12}
+                    className={`text-white/30 transition-transform duration-200 lg:hidden ${isOpen ? 'rotate-90' : 'rotate-0'}`}
+                  />
+                </button>
+
+                {/* Desktop: always visible. Mobile: toggle */}
+                <ul className={`space-y-2 overflow-hidden transition-all duration-300 lg:block lg:mt-3 lg:max-h-none ${
+                  isOpen ? 'max-h-[600px] pb-3' : 'max-h-0 lg:max-h-none'
+                }`}>
+                  {col.links.map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        className="text-[9px] font-medium text-white/28 transition-colors hover:text-[#FECE00] sm:text-[10px]"
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* Divider between accordion rows on mobile */}
+                <div className="border-b border-white/[0.06] lg:hidden" />
+              </div>
+            );
+          })}
         </div>
 
         {/* Bottom row */}
