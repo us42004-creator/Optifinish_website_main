@@ -84,14 +84,16 @@ export default function PTLinePage() {
         { val: '500+', label: 'Hrs salt spray (7-stage)' },
         { val: 'Custom', label: 'Spray tunnel or dip tank' },
       ]}
+      heroImageSrc="/images/products/optifinish-manufactured/pt-line/product-shots/pt_line1.png"
+      heroImageCover
       heroImageLabel="Pretreatment Line · multi-stage spray tunnel"
 
-      installationCarousel={[
-        { src: '/images/products/optifinish-manufactured/pt-line/product-shots/pt_line1.png', label: 'PT Line — Full spray tunnel installation' },
-        { src: '/images/products/optifinish-manufactured/pt-line/product-shots/pt_line2.png', label: 'Multi-stage pretreatment line' },
-        { src: '/images/products/optifinish-manufactured/pt-line/product-shots/pt_line3.png', label: 'Tank & tunnel assembly' },
-        { src: '/images/products/optifinish-manufactured/pt-line/product-shots/pt_line4.png', label: 'Pretreatment line — side view' },
-        { src: '/images/products/optifinish-manufactured/pt-line/product-shots/pt_line05.png', label: 'Installed PT line — production floor' },
+      photoGallery={[
+        { src: '/images/products/optifinish-manufactured/pt-line/product-shots/pt_line1.png', label: 'Full Line View' },
+        { src: '/images/products/optifinish-manufactured/pt-line/product-shots/pt_line2.png', label: 'Multi-Stage Tunnel' },
+        { src: '/images/products/optifinish-manufactured/pt-line/product-shots/pt_line3.png', label: 'Tank & Tunnel Assembly' },
+        { src: '/images/products/optifinish-manufactured/pt-line/product-shots/pt_line4.png', label: 'PT Line — Side View' },
+        { src: '/images/products/optifinish-manufactured/pt-line/product-shots/pt_line05.png', label: 'Installed PT Line — Production Floor' },
       ]}
 
       enquireSlug="pt-line"
