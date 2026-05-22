@@ -74,8 +74,15 @@ export default function OurTeam() {
                 <p className="mb-1 text-[0.55rem] font-bold uppercase tracking-[0.24em] text-[#FECE00]/60">
                   {founder.role}
                 </p>
-                <p className="font-display text-[clamp(2.2rem,5vw,3.8rem)] font-black leading-[0.9] tracking-[-0.04em] text-white">
-                  {founder.name}
+                <p className="font-display text-[clamp(1.4rem,5vw,3.8rem)] font-black leading-[0.9] tracking-[-0.04em] text-white">
+                  {founder.name.split(' ').map((word, wi) => (
+                    <span key={wi}>
+                      {wi > 0 && ' '}
+                      {wi === 0
+                        ? <span style={{ color: '#FECE00' }}>{word}</span>
+                        : word}
+                    </span>
+                  ))}
                 </p>
                 <p className="mt-3 max-w-md text-[0.78rem] leading-relaxed text-white/35">
                   {founder.bio}
@@ -83,7 +90,7 @@ export default function OurTeam() {
               </div>
 
               {/* Right — rectangular portrait */}
-              <div className="relative h-48 w-36 shrink-0 overflow-hidden rounded-lg border border-white/[0.08] sm:h-64 sm:w-48">
+              <div className="relative h-32 w-24 shrink-0 overflow-hidden rounded-lg border border-white/[0.08] sm:h-48 sm:w-36">
                 <Image
                   src={founder.src}
                   alt={founder.name}

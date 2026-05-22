@@ -117,7 +117,33 @@ export default function ClientsTestimonials() {
   const [containerWidth, setContainerWidth] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
+  // Logo marquee — auto-scroll + manual scroll
+  const logoRef      = useRef<HTMLDivElement>(null);
+  const logoPaused   = useRef(false);
+  const logoRaf      = useRef<number>(0);
+
+  // Testimonial swipe
+  const touchStartX  = useRef<number | null>(null);
+
   useHeadingAnimation({ trigger: sectionRef, eyebrow: eyebrowRef, line1: line1Ref, line2: line2Ref });
+
+  useEffect(() => {
+    const el = logoRef.current;
+    if (!el) return;
+    const SPEED = 38; // px per second
+    let last = 0;
+    const step = (t: number) => {
+      if (!logoPaused.current) {
+        const delta = last ? (t - last) / 1000 : 0;
+        el.scrollLeft += SPEED * delta;
+        if (el.scrollLeft >= el.scrollWidth / 2) el.scrollLeft -= el.scrollWidth / 2;
+      }
+      last = t;
+      logoRaf.current = requestAnimationFrame(step);
+    };
+    logoRaf.current = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(logoRaf.current);
+  }, []);
 
   // measure container for card width calculation
   useEffect(() => {
@@ -196,8 +222,38 @@ export default function ClientsTestimonials() {
           ))}
         </div>
 
-        {/* Client logos grid */}
-        <div className="mb-14 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6">
+        {/* Client logos — marquee on mobile, grid on desktop */}
+
+        {/* Mobile: interactive auto-scroll (pauses on touch, manual scroll works) */}
+        <div
+          ref={logoRef}
+          className="mb-14 overflow-x-auto md:hidden"
+          style={{
+            scrollbarWidth: 'none',
+            WebkitOverflowScrolling: 'touch',
+            maskImage: 'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)',
+          }}
+          onMouseEnter={() => { logoPaused.current = true; }}
+          onMouseLeave={() => { logoPaused.current = false; }}
+          onTouchStart={() => { logoPaused.current = true; }}
+          onTouchEnd={() => { setTimeout(() => { logoPaused.current = false; }, 1200); }}
+        >
+          <div className="flex w-max gap-3">
+            {[...CLIENT_LOGOS, ...CLIENT_LOGOS].map((logo, i) => (
+              <div key={i} className="relative flex h-20 w-36 flex-shrink-0 items-center justify-center overflow-hidden rounded-[0.8rem] border border-ink/[0.07] bg-white">
+                <div className={`absolute inset-0 ${logo.pad ?? 'p-5'}`}>
+                  <div className="relative h-full w-full">
+                    <Image src={logo.src} alt={logo.name} fill className="object-contain" unoptimized />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Desktop: static grid */}
+        <div className="mb-14 hidden md:grid md:grid-cols-4 md:gap-3 lg:grid-cols-6">
           {CLIENT_LOGOS.map((logo) => (
             <div key={logo.name} className="relative flex h-24 items-center justify-center overflow-hidden rounded-[0.8rem] border border-ink/[0.07] bg-white">
               <div className={`absolute inset-0 ${logo.pad ?? 'p-6'}`}>
@@ -245,6 +301,15 @@ export default function ClientsTestimonials() {
             className="overflow-hidden"
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
+            onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; setIsPaused(true); }}
+            onTouchEnd={(e) => {
+              if (touchStartX.current === null) return;
+              const delta = touchStartX.current - e.changedTouches[0].clientX;
+              if (delta > 50) next();
+              else if (delta < -50) prev();
+              touchStartX.current = null;
+              setIsPaused(false);
+            }}
           >
             <div
               className="flex"

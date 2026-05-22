@@ -87,10 +87,10 @@ export default function ProprietaryAutomation() {
   });
 
   return (
-    <section ref={containerRef} className="relative h-[300vh]">
+    <section ref={containerRef} className="relative lg:h-[300vh]">
 
       {/* ── Sticky viewport ── */}
-      <div className="sticky top-0 h-screen overflow-y-auto lg:overflow-hidden bg-[#f1efea]">
+      <div className="sticky top-0 h-auto lg:h-screen overflow-y-visible lg:overflow-hidden bg-[#f1efea] py-16 lg:py-0">
 
         {/* Grid drift layers */}
         <div
@@ -224,7 +224,7 @@ export default function ProprietaryAutomation() {
                 </AnimatePresence>
               </div>
 
-              {/* ── RIGHT col — media cards ── */}
+              {/* ── RIGHT col — media cards (desktop only) ── */}
               <AnimatePresence mode="wait">
                 <motion.div
                   key={product.id + '-visual'}
@@ -275,7 +275,7 @@ export default function ProprietaryAutomation() {
         </div>
 
         {/* ── Scroll progress dots ── */}
-        <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 items-center gap-2">
+        <div className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 items-center gap-2 lg:flex">
           {PRODUCTS.map((_, i) => (
             <button
               key={i}

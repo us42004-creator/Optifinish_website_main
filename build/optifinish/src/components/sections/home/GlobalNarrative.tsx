@@ -63,7 +63,8 @@ export default function GlobalNarrative() {
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
               }}>India</span>
-              {'.'}{' '}
+              {'.'}
+              <br />
               <span style={{ color: '#FECE00' }}>Powered by </span>
               <span style={{ color: '#FECE00' }}>Swiss</span>
               <span style={{ color: '#FECE00' }}> and </span>

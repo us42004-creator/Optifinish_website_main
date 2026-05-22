@@ -36,16 +36,18 @@ export default function OurWorkPreview() {
   });
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden bg-[#070809] py-20 md:py-28">
-      {/* Subtle grid */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.028]"
-        style={{
-          backgroundImage:
-            'linear-gradient(rgba(254,206,0,1) 1px, transparent 1px), linear-gradient(90deg, rgba(254,206,0,1) 1px, transparent 1px)',
-          backgroundSize: '72px 72px',
-        }}
-      />
+    <section ref={sectionRef} className="relative bg-[#070809] py-20 md:py-28">
+      {/* Subtle grid — clipped in its own layer so section allows horizontal scroll on mobile */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div
+          className="absolute inset-0 opacity-[0.028]"
+          style={{
+            backgroundImage:
+              'linear-gradient(rgba(254,206,0,1) 1px, transparent 1px), linear-gradient(90deg, rgba(254,206,0,1) 1px, transparent 1px)',
+            backgroundSize: '72px 72px',
+          }}
+        />
+      </div>
 
       <div className="relative mx-auto max-w-7xl px-5 md:px-8">
 
@@ -82,12 +84,12 @@ export default function OurWorkPreview() {
           </Link>
         </div>
 
-        {/* 3-card grid */}
-        <div className="grid gap-4 md:grid-cols-3">
+        {/* Cards — horizontal snap-scroll on mobile, 3-col grid on desktop */}
+        <div className="-mx-5 flex gap-3 overflow-x-auto px-5 pb-4 snap-x snap-mandatory md:mx-0 md:grid md:grid-cols-3 md:gap-4 md:overflow-visible md:px-0 md:pb-0">
           {WORK_CARDS.map((card, i) => (
             <div
               key={i}
-              className="flex flex-col overflow-hidden rounded-[1.4rem] border border-white/[0.06] bg-white/[0.02] transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.1]"
+              className="snap-start shrink-0 w-[76vw] md:w-auto flex flex-col overflow-hidden rounded-[1.4rem] border border-white/[0.06] bg-white/[0.02] transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.1]"
             >
               <div className="relative overflow-hidden">
                 <div className="flex aspect-[4/3] w-full items-center justify-center bg-white/[0.03]">

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useHeadingAnimation } from '@/hooks/useHeadingAnimation';
@@ -40,11 +40,32 @@ const EXTERIOR_PHOTOS = [
 ];
 
 export default function FacilityTeaserFilmstrip() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const eyebrowRef = useRef<HTMLSpanElement>(null);
-  const line1Ref   = useRef<HTMLSpanElement>(null);
-  const line2Ref   = useRef<HTMLSpanElement>(null);
-  const bodyRef    = useRef<HTMLParagraphElement>(null);
+  const sectionRef  = useRef<HTMLElement>(null);
+  const eyebrowRef  = useRef<HTMLSpanElement>(null);
+  const line1Ref    = useRef<HTMLSpanElement>(null);
+  const line2Ref    = useRef<HTMLSpanElement>(null);
+  const bodyRef     = useRef<HTMLParagraphElement>(null);
+  const stripRef    = useRef<HTMLDivElement>(null);
+  const stripPaused = useRef(false);
+  const stripRaf    = useRef<number>(0);
+
+  useEffect(() => {
+    const el = stripRef.current;
+    if (!el) return;
+    const SPEED = 42; // px per second
+    let last = 0;
+    const step = (t: number) => {
+      if (!stripPaused.current) {
+        const delta = last ? (t - last) / 1000 : 0;
+        el.scrollLeft += SPEED * delta;
+        if (el.scrollLeft >= el.scrollWidth / 2) el.scrollLeft -= el.scrollWidth / 2;
+      }
+      last = t;
+      stripRaf.current = requestAnimationFrame(step);
+    };
+    stripRaf.current = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(stripRaf.current);
+  }, []);
 
   useHeadingAnimation({
     trigger: sectionRef,
@@ -182,18 +203,22 @@ export default function FacilityTeaserFilmstrip() {
             </div>
 
             <div
-              className="facility-strip overflow-hidden pb-5"
+              ref={stripRef}
+              className="overflow-x-auto pb-5"
               style={{
+                scrollbarWidth: 'none',
+                WebkitOverflowScrolling: 'touch',
                 maskImage:
                   'linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)',
                 WebkitMaskImage:
                   'linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)',
               }}
+              onMouseEnter={() => { stripPaused.current = true; }}
+              onMouseLeave={() => { stripPaused.current = false; }}
+              onTouchStart={() => { stripPaused.current = true; }}
+              onTouchEnd={() => { setTimeout(() => { stripPaused.current = false; }, 1200); }}
             >
-              <div
-                className="facility-track flex gap-3 will-change-transform"
-                style={{ animation: 'marquee 48s linear infinite' }}
-              >
+              <div className="flex w-max gap-3">
                 {[...FACILITY_PHOTOS, ...FACILITY_PHOTOS].map((src, i) => (
                   <div
                     key={i}

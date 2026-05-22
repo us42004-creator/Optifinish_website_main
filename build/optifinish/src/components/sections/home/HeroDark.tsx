@@ -98,7 +98,7 @@ export default function HeroDark() {
 
           {/* CTAs */}
           <div
-            className="mt-16 flex justify-center"
+            className="mt-10 flex justify-center md:mt-16"
             style={{ animation: 'hero-item-in 0.55s cubic-bezier(0.22,1,0.36,1) 0.38s both' }}
           >
             <button
