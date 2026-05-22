@@ -306,7 +306,7 @@ function PostLayout({
         </h2>
         <Link
           href="/contact"
-          className="mt-8 inline-flex items-center gap-2 rounded-full bg-yellow px-7 py-3.5 text-[10px] font-black uppercase tracking-[0.2em] text-ink transition-colors hover:bg-white"
+          className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-yellow px-7 py-3.5 text-[10px] font-black uppercase tracking-[0.2em] text-ink transition-colors hover:bg-white sm:w-auto"
         >
           Get in Touch
         </Link>

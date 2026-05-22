@@ -276,7 +276,7 @@ export default function ClientsTestimonials() {
                 onClick={prev}
                 disabled={activeIndex === 0}
                 aria-label="Previous testimonial"
-                className="flex h-8 w-8 items-center justify-center rounded-full bg-[#FECE00] text-[#0a0a0a] shadow-sm transition-all hover:bg-[#f0c200] disabled:opacity-30"
+                className="flex h-11 w-11 items-center justify-center rounded-full bg-[#FECE00] text-[#0a0a0a] shadow-sm transition-all hover:bg-[#f0c200] disabled:opacity-30"
               >
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                   <path d="M9 11L5 7l4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -286,7 +286,7 @@ export default function ClientsTestimonials() {
                 onClick={next}
                 disabled={activeIndex >= maxIndex}
                 aria-label="Next testimonial"
-                className="flex h-8 w-8 items-center justify-center rounded-full bg-[#FECE00] text-[#0a0a0a] shadow-sm transition-all hover:bg-[#f0c200] disabled:opacity-30"
+                className="flex h-11 w-11 items-center justify-center rounded-full bg-[#FECE00] text-[#0a0a0a] shadow-sm transition-all hover:bg-[#f0c200] disabled:opacity-30"
               >
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                   <path d="M5 3l4 4-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -354,18 +354,25 @@ export default function ClientsTestimonials() {
           </div>
 
           {/* Dot indicators */}
-          <div className="mt-5 flex justify-center gap-1.5">
+          <div className="mt-5 flex justify-center gap-0.5">
             {Array.from({ length: maxIndex + 1 }).map((_, i) => (
               <button
                 key={i}
                 onClick={() => setActiveIndex(i)}
                 aria-label={`Go to testimonial ${i + 1}`}
-                className="h-1.5 rounded-full transition-all duration-300"
-                style={{
-                  width: i === activeIndex ? '24px' : '6px',
-                  background: i === activeIndex ? '#FECE00' : 'rgba(10,10,10,0.2)',
-                }}
-              />
+                className="flex h-6 w-6 items-center justify-center"
+                style={{ touchAction: 'manipulation' }}
+              >
+                <span
+                  className="rounded-full transition-all duration-300"
+                  style={{
+                    height: '6px',
+                    width: i === activeIndex ? '24px' : '6px',
+                    background: i === activeIndex ? '#FECE00' : 'rgba(10,10,10,0.2)',
+                    display: 'block',
+                  }}
+                />
+              </button>
             ))}
           </div>
         </div>
