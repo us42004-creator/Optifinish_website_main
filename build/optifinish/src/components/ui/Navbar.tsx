@@ -259,22 +259,6 @@ export default function Navbar() {
       >
         {/* Outer row — pill centred */}
         <div className="relative flex justify-center px-3 pt-2.5 md:px-4 md:pt-4">
-
-          {/* ── Hamburger: plain div sibling, no Framer Motion parent, guaranteed iOS touch ── */}
-          <button
-            type="button"
-            aria-label="Toggle menu"
-            className={`lg:hidden absolute right-3 top-[6px] z-10 flex h-11 w-11 items-center justify-center rounded-full ${
-              (scrolled || isDark || menuOpen)
-                ? 'border border-white/25 bg-white/10 text-white'
-                : 'border border-black/12 bg-black/[0.06] text-black'
-            }`}
-            style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent' }}
-            onClick={() => setMenuOpen((v) => !v)}
-          >
-            {menuOpen ? <X size={18} /> : <Menu size={18} />}
-          </button>
-
           <motion.div
             onMouseEnter={() => setExpanded(true)}
             onMouseLeave={() => { setExpanded(false); }}
@@ -644,6 +628,33 @@ export default function Navbar() {
 
         </div>
       </header>
+
+      {/* ── Hamburger: fixed sibling outside header, z-[55] above pill (z-50) ── */}
+      {/* onPointerUp is the most reliable cross-platform touch event on Android + iOS */}
+      <button
+        type="button"
+        aria-label="Toggle menu"
+        className={`fixed z-[55] lg:hidden flex h-12 w-12 items-center justify-center rounded-full ${
+          (scrolled || isDark || menuOpen)
+            ? 'border border-white/25 bg-white/10 text-white'
+            : 'border border-black/12 bg-black/[0.06] text-black'
+        }`}
+        style={{
+          top: '10px',
+          right: '12px',
+          touchAction: 'manipulation',
+          WebkitTapHighlightColor: 'transparent',
+          cursor: 'pointer',
+          userSelect: 'none',
+          WebkitUserSelect: 'none',
+        }}
+        onPointerUp={(e) => {
+          e.currentTarget.releasePointerCapture(e.pointerId);
+          setMenuOpen((v) => !v);
+        }}
+      >
+        {menuOpen ? <X size={20} /> : <Menu size={20} />}
+      </button>
 
       {/* Full-screen mobile menu — z-[60] sits ABOVE the navbar (z-50) */}
       {menuOpen && (
