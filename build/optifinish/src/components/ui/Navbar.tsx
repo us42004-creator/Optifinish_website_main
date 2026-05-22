@@ -379,16 +379,30 @@ export default function Navbar() {
                 )}
               </nav>
 
-              {/* Desktop CTA only — hamburger is now OUTSIDE the pill */}
-              <div className="hidden lg:flex shrink-0 items-center">
+              {/* Right side — desktop CTA + mobile hamburger (inside pill for reliable iOS touch) */}
+              <div className="flex shrink-0 items-center gap-2">
+                {/* Desktop CTA */}
                 <Link
                   href="/contact"
-                  className={`rounded-full border border-yellow/20 bg-yellow font-bold uppercase tracking-[0.2em] text-ink ${
+                  className={`hidden lg:flex rounded-full border border-yellow/20 bg-yellow font-bold uppercase tracking-[0.2em] text-ink ${
                     scrolled && !expanded ? 'px-4 py-1.5 text-[8px]' : 'px-5 py-2 text-[9px]'
                   } transition-all duration-300`}
                 >
                   Get in Touch
                 </Link>
+                {/* Mobile hamburger — inside pill so iOS touch events always land here */}
+                <button
+                  className={`flex h-10 w-10 items-center justify-center rounded-full lg:hidden ${
+                    (scrolled || isDark || menuOpen)
+                      ? 'border border-white/25 bg-white/12 text-white'
+                      : 'border border-black/15 bg-black/[0.07] text-black'
+                  }`}
+                  style={{ touchAction: 'manipulation' }}
+                  onClick={() => setMenuOpen((v) => !v)}
+                  aria-label="Toggle menu"
+                >
+                  {menuOpen ? <X size={18} /> : <Menu size={18} />}
+                </button>
               </div>
             </motion.div>
 
@@ -628,21 +642,6 @@ export default function Navbar() {
 
         </div>
       </header>
-
-      {/* ── Hamburger — FIXED position, completely outside all stacking contexts ── */}
-      {/* fixed keeps it above every motion.div transform layer; z-[55] = above navbar(50) below menu(60) */}
-      <button
-        className={`fixed z-[55] flex h-12 w-12 items-center justify-center rounded-full lg:hidden ${
-          (scrolled || isDark || menuOpen)
-            ? 'border border-white/25 bg-white/12 text-white'
-            : 'border border-black/15 bg-black/[0.07] text-black'
-        }`}
-        style={{ top: '10px', right: '12px', touchAction: 'manipulation' }}
-        onClick={() => setMenuOpen((v) => !v)}
-        aria-label="Toggle menu"
-      >
-        {menuOpen ? <X size={20} /> : <Menu size={20} />}
-      </button>
 
       {/* Full-screen mobile menu — z-[60] sits ABOVE the navbar (z-50) */}
       {menuOpen && (
