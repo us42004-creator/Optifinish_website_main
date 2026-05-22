@@ -184,7 +184,8 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen]           = useState(false);
   const [productsOpen, setProductsOpen]   = useState(false);
   const [servicesOpen, setServicesOpen]   = useState(false);
-  const [mobilePanel, setMobilePanel]     = useState<'main' | 'products' | 'services'>('main');
+  const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [hoveredCat, setHoveredCat]       = useState(PRODUCTS_MENU[0].slug);
   const [hoveredSvc, setHoveredSvc]       = useState(SERVICES_MENU[0].href);
   const closeTimer                        = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -246,7 +247,7 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  useEffect(() => { setMenuOpen(false); setProductsOpen(false); setServicesOpen(false); setMobilePanel('main'); }, [pathname]);
+  useEffect(() => { setMenuOpen(false); setProductsOpen(false); setServicesOpen(false); setMobileProductsOpen(false); setMobileServicesOpen(false); }, [pathname]);
 
   // Mobile menu links now use CSS animation (no GSAP needed — avoids opacity:0 flash)
 
@@ -646,7 +647,7 @@ export default function Navbar() {
       {/* Full-screen mobile menu — z-[60] sits ABOVE the navbar (z-50) */}
       {menuOpen && (
         <div
-          className="fixed inset-0 z-[60] flex flex-col bg-[#080808] lg:hidden overflow-hidden"
+          className="fixed inset-0 z-[60] flex flex-col bg-[#080808] lg:hidden"
           style={{
             animation: 'mobile-menu-enter 0.22s cubic-bezier(0.22,1,0.36,1) both',
             paddingTop: 'env(safe-area-inset-top, 0px)',
@@ -655,13 +656,13 @@ export default function Navbar() {
         >
           {/* Header row */}
           <div className="flex flex-shrink-0 items-center justify-between border-b border-white/[0.06] px-5 pb-2 pt-4">
-            <Link href="/" onClick={() => { setMenuOpen(false); setMobilePanel('main'); }} className="flex items-center gap-2.5">
+            <Link href="/" onClick={() => setMenuOpen(false)} className="flex items-center gap-2.5">
               <Image src="/images/logos/optifinish-logo.png" alt="OptiFinish" width={192} height={192} priority className="h-9 w-auto object-contain" />
               <span className="font-display text-[0.9rem] font-black tracking-[-0.03em] text-white">OptiFinish</span>
             </Link>
             <button
               className="flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-white/[0.06] text-white"
-              onClick={() => { setMenuOpen(false); setMobilePanel('main'); }}
+              onClick={() => setMenuOpen(false)}
               aria-label="Close menu"
               style={{ touchAction: 'manipulation' }}
             >
@@ -669,140 +670,130 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* Sliding panels — overflow-hidden so sub-panel slides in from right */}
-          <div className="flex flex-1 overflow-hidden">
-            <div
-              className="flex flex-shrink-0 transition-transform duration-300"
-              style={{
-                width: '200%',
-                transform: mobilePanel === 'main' ? 'translateX(0)' : 'translateX(-50%)',
-                transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)',
-              }}
-            >
+          {/* Nav list — scrollable */}
+          <div className="flex-1 overflow-y-auto overscroll-contain">
+            <nav className="px-5 py-2">
 
-              {/* ── Panel 0: Main nav ── */}
-              <div className="flex flex-col" style={{ width: '50%' }}>
-                {/* Links centred in available space */}
-                <div className="flex flex-1 flex-col justify-center px-6">
-                  {NAV_LINKS.map((link, i) =>
-                    link.hasDropdown ? (
-                      <button
-                        key="products"
-                        onClick={() => setMobilePanel('products')}
-                        className="mobile-nav-link flex w-full items-center justify-between py-3.5 font-display text-[2rem] font-black tracking-[-0.03em] text-white/70 active:text-yellow"
-                        style={{
-                          animation: 'mobile-link-in 0.4s cubic-bezier(0.22,1,0.36,1) both',
-                          animationDelay: `${0.05 + i * 0.05}s`,
-                          touchAction: 'manipulation',
-                        }}
-                      >
-                        Products
-                        <ChevronRight size={22} className="flex-shrink-0 text-white/30" />
-                      </button>
-                    ) : link.hasServicesDropdown ? (
-                      <button
-                        key="services"
-                        onClick={() => setMobilePanel('services')}
-                        className="mobile-nav-link flex w-full items-center justify-between py-3.5 font-display text-[2rem] font-black tracking-[-0.03em] text-white/70 active:text-yellow"
-                        style={{
-                          animation: 'mobile-link-in 0.4s cubic-bezier(0.22,1,0.36,1) both',
-                          animationDelay: `${0.05 + i * 0.05}s`,
-                          touchAction: 'manipulation',
-                        }}
-                      >
-                        Services
-                        <ChevronRight size={22} className="flex-shrink-0 text-white/30" />
-                      </button>
-                    ) : (
-                      <Link
-                        key={link.href}
-                        href={link.href}
-                        onClick={() => { setMenuOpen(false); setMobilePanel('main'); }}
-                        className="mobile-nav-link block py-3.5 font-display text-[2rem] font-black tracking-[-0.03em] text-white/70 transition-colors active:text-yellow"
-                        style={{
-                          animation: 'mobile-link-in 0.4s cubic-bezier(0.22,1,0.36,1) both',
-                          animationDelay: `${0.05 + i * 0.05}s`,
-                        }}
-                      >
-                        {link.label}
-                      </Link>
-                    )
-                  )}
-                </div>
-
-                {/* CTA */}
-                <div className="flex-shrink-0 px-6 pb-6">
-                  <Link
-                    href="/contact"
-                    className="block w-full rounded-full bg-yellow py-4 text-center text-[11px] font-black uppercase tracking-widest text-ink"
-                    style={{ animation: 'mobile-link-in 0.4s cubic-bezier(0.22,1,0.36,1) 0.38s both' }}
-                    onClick={() => { setMenuOpen(false); setMobilePanel('main'); }}
-                  >
-                    Get in Touch
-                  </Link>
-                  <p className="mt-4 text-center text-[9px] font-semibold uppercase tracking-[0.24em] text-white/22">
-                    Value Added Coating Solutions Pvt. Ltd.
-                  </p>
-                </div>
-              </div>
-
-              {/* ── Panel 1: Products / Services sub-menu ── */}
-              <div className="flex flex-col" style={{ width: '50%' }}>
-                {/* Sub-panel header with back button */}
-                <div className="flex flex-shrink-0 items-center gap-3 border-b border-white/[0.06] px-5 py-4">
-                  <button
-                    onClick={() => setMobilePanel('main')}
-                    className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border border-white/[0.1] bg-white/[0.05] text-white"
-                    style={{ touchAction: 'manipulation' }}
-                    aria-label="Back"
-                  >
-                    <ChevronRight size={18} className="rotate-180" />
-                  </button>
-                  <span className="font-display text-[1.1rem] font-black tracking-[-0.03em] text-white/55">
-                    {mobilePanel === 'products' ? 'Products' : 'Services'}
-                  </span>
-                </div>
-
-                {/* Sub-panel item list */}
-                <div className="flex-1 overflow-y-auto overscroll-contain py-2">
-                  {mobilePanel === 'products'
-                    ? PRODUCTS_MENU.map((cat) => (
-                        <Link
-                          key={cat.slug}
-                          href={cat.href}
-                          onClick={() => { setMenuOpen(false); setMobilePanel('main'); }}
-                          className="flex items-center justify-between border-b border-white/[0.05] px-6 py-[18px] font-display text-[1.35rem] font-black tracking-tight text-white/70 transition-colors last:border-b-0 active:text-yellow"
-                        >
-                          <span>{cat.label}</span>
-                          <ChevronRight size={16} className="flex-shrink-0 text-white/25" />
-                        </Link>
-                      ))
-                    : SERVICES_MENU.map((svc) =>
-                        svc.comingSoon ? (
-                          <div
-                            key={svc.href}
-                            className="flex items-center justify-between border-b border-white/[0.05] px-6 py-[18px] font-display text-[1.35rem] font-black tracking-tight text-white/25 last:border-b-0"
-                          >
-                            <span>{svc.label}</span>
-                            <span className="flex-shrink-0 text-[0.5rem] font-bold uppercase tracking-[0.18em] text-white/25">Soon</span>
-                          </div>
-                        ) : (
+              {/* ── Products row with inline accordion ── */}
+              <div className="border-b border-white/[0.05]">
+                <button
+                  onClick={() => { setMobileProductsOpen((v) => !v); setMobileServicesOpen(false); }}
+                  className="flex w-full items-center justify-between py-4 font-display text-[1.9rem] font-black tracking-[-0.03em] text-white/70 active:text-yellow"
+                  style={{ touchAction: 'manipulation' }}
+                >
+                  Products
+                  <ChevronRight
+                    size={20}
+                    className={`flex-shrink-0 text-white/30 transition-transform duration-300 ${mobileProductsOpen ? 'rotate-90' : ''}`}
+                  />
+                </button>
+                <AnimatePresence initial={false}>
+                  {mobileProductsOpen && (
+                    <motion.div
+                      key="products-panel"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <div className="ml-2 flex flex-col border-l border-white/[0.08] pl-4 pb-4">
+                        {PRODUCTS_MENU.map((cat) => (
                           <Link
-                            key={svc.href}
-                            href={svc.href}
-                            onClick={() => { setMenuOpen(false); setMobilePanel('main'); }}
-                            className="flex items-center justify-between border-b border-white/[0.05] px-6 py-[18px] font-display text-[1.35rem] font-black tracking-tight text-white/70 transition-colors last:border-b-0 active:text-yellow"
+                            key={cat.slug}
+                            href={cat.href}
+                            onClick={() => { setMenuOpen(false); setMobileProductsOpen(false); }}
+                            className="flex items-center justify-between py-3 font-display text-[1.15rem] font-black tracking-tight text-white/55 transition-colors active:text-yellow"
                           >
-                            <span>{svc.label}</span>
-                            <ChevronRight size={16} className="flex-shrink-0 text-white/25" />
+                            <span>{cat.label}</span>
+                            <ChevronRight size={14} className="flex-shrink-0 text-white/20" />
                           </Link>
-                        )
-                      )
-                  }
-                </div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
 
-            </div>
+              {/* ── Services row with inline accordion ── */}
+              <div className="border-b border-white/[0.05]">
+                <button
+                  onClick={() => { setMobileServicesOpen((v) => !v); setMobileProductsOpen(false); }}
+                  className="flex w-full items-center justify-between py-4 font-display text-[1.9rem] font-black tracking-[-0.03em] text-white/70 active:text-yellow"
+                  style={{ touchAction: 'manipulation' }}
+                >
+                  Services
+                  <ChevronRight
+                    size={20}
+                    className={`flex-shrink-0 text-white/30 transition-transform duration-300 ${mobileServicesOpen ? 'rotate-90' : ''}`}
+                  />
+                </button>
+                <AnimatePresence initial={false}>
+                  {mobileServicesOpen && (
+                    <motion.div
+                      key="services-panel"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <div className="ml-2 flex flex-col border-l border-white/[0.08] pl-4 pb-4">
+                        {SERVICES_MENU.map((svc) =>
+                          svc.comingSoon ? (
+                            <div
+                              key={svc.href}
+                              className="flex items-center justify-between py-3 font-display text-[1.15rem] font-black tracking-tight text-white/25"
+                            >
+                              <span>{svc.label}</span>
+                              <span className="text-[0.48rem] font-bold uppercase tracking-[0.18em] text-white/25">Soon</span>
+                            </div>
+                          ) : (
+                            <Link
+                              key={svc.href}
+                              href={svc.href}
+                              onClick={() => { setMenuOpen(false); setMobileServicesOpen(false); }}
+                              className="flex items-center justify-between py-3 font-display text-[1.15rem] font-black tracking-tight text-white/55 transition-colors active:text-yellow"
+                            >
+                              <span>{svc.label}</span>
+                              <ChevronRight size={14} className="flex-shrink-0 text-white/20" />
+                            </Link>
+                          )
+                        )}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* ── Simple nav links ── */}
+              {NAV_LINKS.filter((l) => !l.hasDropdown && !l.hasServicesDropdown).map((link) => (
+                <div key={link.href} className="border-b border-white/[0.05]">
+                  <Link
+                    href={link.href}
+                    onClick={() => setMenuOpen(false)}
+                    className="block py-4 font-display text-[1.9rem] font-black tracking-[-0.03em] text-white/70 transition-colors active:text-yellow"
+                  >
+                    {link.label}
+                  </Link>
+                </div>
+              ))}
+
+            </nav>
+          </div>
+
+          {/* CTA */}
+          <div className="flex-shrink-0 border-t border-white/[0.06] px-5 pb-6 pt-4">
+            <Link
+              href="/contact"
+              className="block w-full rounded-full bg-yellow py-4 text-center text-[11px] font-black uppercase tracking-widest text-ink"
+              onClick={() => setMenuOpen(false)}
+            >
+              Get in Touch
+            </Link>
+            <p className="mt-4 text-center text-[9px] font-semibold uppercase tracking-[0.24em] text-white/22">
+              Value Added Coating Solutions Pvt. Ltd.
+            </p>
           </div>
         </div>
       )}

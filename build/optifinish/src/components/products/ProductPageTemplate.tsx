@@ -1143,7 +1143,7 @@ export default function ProductPageTemplate({
             </h2>
 
             {/* Variant pills — horizontal scroll on mobile so they don't wrap */}
-            <div className="mb-8 flex overflow-x-auto gap-2 pb-1" style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
+            <div className="mb-8 flex flex-nowrap overflow-x-auto gap-2 pb-2" style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch', msOverflowStyle: 'none' }}>
               {variants!.map((v, i) => (
                 <button
                   key={v.id}

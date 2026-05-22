@@ -89,7 +89,7 @@ export default function OurWorkPreview() {
           {WORK_CARDS.map((card, i) => (
             <div
               key={i}
-              className="snap-start shrink-0 w-[76vw] md:w-auto flex flex-col overflow-hidden rounded-[1.4rem] border border-white/[0.06] bg-white/[0.02] transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.1]"
+              className="snap-start shrink-0 w-[82vw] md:w-auto flex flex-col overflow-hidden rounded-[1.4rem] border border-white/[0.06] bg-white/[0.02] transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.1]"
             >
               <div className="relative overflow-hidden">
                 <div className="flex aspect-[4/3] w-full items-center justify-center bg-white/[0.03]">
