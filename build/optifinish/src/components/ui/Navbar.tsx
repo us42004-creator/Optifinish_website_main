@@ -257,8 +257,24 @@ export default function Navbar() {
         className="fixed top-0 left-0 right-0 z-50 navbar-enter"
         style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
       >
-        {/* Outer row — pill centred, hamburger sits outside pill as absolute sibling */}
+        {/* Outer row — pill centred */}
         <div className="relative flex justify-center px-3 pt-2.5 md:px-4 md:pt-4">
+
+          {/* ── Hamburger: plain div sibling, no Framer Motion parent, guaranteed iOS touch ── */}
+          <button
+            type="button"
+            aria-label="Toggle menu"
+            className={`lg:hidden absolute right-3 top-[6px] z-10 flex h-11 w-11 items-center justify-center rounded-full ${
+              (scrolled || isDark || menuOpen)
+                ? 'border border-white/25 bg-white/10 text-white'
+                : 'border border-black/12 bg-black/[0.06] text-black'
+            }`}
+            style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent' }}
+            onClick={() => setMenuOpen((v) => !v)}
+          >
+            {menuOpen ? <X size={18} /> : <Menu size={18} />}
+          </button>
+
           <motion.div
             onMouseEnter={() => setExpanded(true)}
             onMouseLeave={() => { setExpanded(false); }}
@@ -379,30 +395,16 @@ export default function Navbar() {
                 )}
               </nav>
 
-              {/* Right side — desktop CTA + mobile hamburger (inside pill for reliable iOS touch) */}
-              <div className="flex shrink-0 items-center gap-2">
-                {/* Desktop CTA */}
+              {/* Desktop CTA only */}
+              <div className="hidden lg:flex shrink-0 items-center">
                 <Link
                   href="/contact"
-                  className={`hidden lg:flex rounded-full border border-yellow/20 bg-yellow font-bold uppercase tracking-[0.2em] text-ink ${
+                  className={`rounded-full border border-yellow/20 bg-yellow font-bold uppercase tracking-[0.2em] text-ink ${
                     scrolled && !expanded ? 'px-4 py-1.5 text-[8px]' : 'px-5 py-2 text-[9px]'
                   } transition-all duration-300`}
                 >
                   Get in Touch
                 </Link>
-                {/* Mobile hamburger — inside pill so iOS touch events always land here */}
-                <button
-                  className={`flex h-10 w-10 items-center justify-center rounded-full lg:hidden ${
-                    (scrolled || isDark || menuOpen)
-                      ? 'border border-white/25 bg-white/12 text-white'
-                      : 'border border-black/15 bg-black/[0.07] text-black'
-                  }`}
-                  style={{ touchAction: 'manipulation' }}
-                  onClick={() => setMenuOpen((v) => !v)}
-                  aria-label="Toggle menu"
-                >
-                  {menuOpen ? <X size={18} /> : <Menu size={18} />}
-                </button>
               </div>
             </motion.div>
 
