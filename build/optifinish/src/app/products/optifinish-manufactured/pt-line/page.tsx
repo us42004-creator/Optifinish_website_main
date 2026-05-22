@@ -207,18 +207,21 @@ export default function PTLinePage() {
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/powder-coating-plant',
           enquireSlug: 'powder-coating-plant',
+          imageSrc: '/images/products/optifinish-manufactured/powder-coating-plant/plant2.jpeg',
         },
         {
           name: 'Powder Spray Booth',
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/powder-spray-booth',
           enquireSlug: 'powder-spray-booth',
+          imageSrc: '/images/products/optifinish-manufactured/SS_BOOTH/ss-booth-master-shot.png',
         },
         {
           name: 'Curing Oven',
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/curing-oven',
           enquireSlug: 'curing-oven',
+          imageSrc: '/images/products/optifinish-manufactured/curing-oven/industrial_oven.png',
         },
       ]}
 

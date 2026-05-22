@@ -182,7 +182,7 @@ export default function PowderCoatingPlantPage() {
           category: 'OptiFinish Manufactured',
           href: '/products/optifinish-manufactured/curing-oven',
           enquireSlug: 'curing-oven',
-          imageSrc: '/images/products/optifinish-manufactured/curing-oven/oven-cleaned.png',
+          imageSrc: '/images/products/optifinish-manufactured/curing-oven/industrial_oven.png',
         },
         {
           name: 'Powder Spray Booth',

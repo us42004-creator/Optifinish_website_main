@@ -88,7 +88,7 @@ export default function CuringOvenPage() {
         { src: '/images/products/optifinish-manufactured/curing-oven/industrial_oven.png', label: 'Curing Oven — Full Build' },
         { src: '/images/products/optifinish-manufactured/curing-oven/oven-nic.png', label: 'Oven Detail' },
         { src: '/images/products/optifinish-manufactured/curing-oven/yellow-oven-lighting.png', label: 'Interior — Heat Chamber' },
-        { src: '/images/products/optifinish-manufactured/curing-oven/oven-cleaned.png', label: 'Curing Oven — Exterior View' },
+        { src: '/images/products/optifinish-manufactured/curing-oven/industrial_oven.png', label: 'Curing Oven — Exterior View' },
         { src: '/images/products/optifinish-manufactured/curing-oven/oven-inside.png', label: 'Chamber Interior' },
       ]}
       enquireSlug="curing-oven"
