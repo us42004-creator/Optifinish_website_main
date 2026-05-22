@@ -638,7 +638,7 @@ export default function Navbar() {
             : 'border border-black/15 bg-black/[0.07] text-black'
         }`}
         style={{ top: '10px', right: '12px', touchAction: 'manipulation' }}
-        onPointerDown={(e) => { e.preventDefault(); setMenuOpen((v) => !v); }}
+        onClick={() => setMenuOpen((v) => !v)}
         aria-label="Toggle menu"
       >
         {menuOpen ? <X size={20} /> : <Menu size={20} />}
