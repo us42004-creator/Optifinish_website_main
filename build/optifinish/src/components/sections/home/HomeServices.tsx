@@ -66,7 +66,7 @@ export default function HomeServices() {
   });
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden bg-[#f1efea] py-14 md:py-28">
+    <section ref={sectionRef} className="relative overflow-hidden bg-[#f1efea] py-8 md:py-28">
 
       {/* Grid drift layers — matches light-themed template */}
       <div className="pointer-events-none absolute inset-0 grid-drift opacity-[0.62] mix-blend-multiply" style={{ backgroundImage: 'linear-gradient(rgba(201,165,0,0.22) 1px, transparent 1px), linear-gradient(90deg, rgba(201,165,0,0.22) 1px, transparent 1px)', backgroundSize: '88px 88px' }} />
@@ -75,7 +75,7 @@ export default function HomeServices() {
       <div className="relative mx-auto max-w-7xl px-5 md:px-8">
 
         {/* Header row */}
-        <div className="mb-8 md:mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div className="mb-5 flex flex-col gap-4 md:mb-12 md:flex-row md:items-end md:justify-between md:gap-6">
           <div>
             <div className="overflow-hidden pb-[0.15em]">
               <span
@@ -100,7 +100,7 @@ export default function HomeServices() {
             </h2>
             <p
               ref={bodyRef}
-              className="mt-4 max-w-lg text-[0.88rem] leading-relaxed text-ink/45"
+              className="mt-3 max-w-lg text-[0.78rem] leading-relaxed text-ink/45 md:mt-4 md:text-[0.88rem]"
               style={{ willChange: 'transform, opacity' }}
             >
               From commissioning to AMC, spare parts to coating trials — complete
@@ -119,37 +119,37 @@ export default function HomeServices() {
         </div>
 
         {/* Services grid */}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-3">
           {SERVICES.map((svc) => {
             const { Icon } = svc;
             return (
               <Link
                 key={svc.href}
                 href={svc.href}
-                className="group flex flex-col gap-4 rounded-[1.2rem] border border-ink/[0.08] bg-white p-6 shadow-[0_2px_16px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-1 hover:border-[#FECE00]/50 hover:shadow-[0_8px_32px_rgba(254,206,0,0.10)]"
+                className="group flex flex-col gap-3 rounded-[1rem] border border-ink/[0.08] bg-white p-4 shadow-[0_2px_16px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-1 hover:border-[#FECE00]/50 hover:shadow-[0_8px_32px_rgba(254,206,0,0.10)] md:gap-4 md:rounded-[1.2rem] md:p-6"
               >
                 {/* Icon + Tag row */}
                 <div className="flex items-center justify-between">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-[0.75rem] bg-[#FECE00]/[0.12] transition-colors duration-200 group-hover:bg-[#FECE00]/[0.2]">
-                    <Icon size={18} className="text-ink/60 transition-colors duration-200 group-hover:text-ink/80" strokeWidth={1.8} />
+                  <div className="flex h-8 w-8 items-center justify-center rounded-[0.6rem] bg-[#FECE00]/[0.12] transition-colors duration-200 group-hover:bg-[#FECE00]/[0.2] md:h-10 md:w-10 md:rounded-[0.75rem]">
+                    <Icon size={14} className="text-ink/60 transition-colors duration-200 group-hover:text-ink/80 md:size-[18px]" strokeWidth={1.8} />
                   </div>
-                  <span className="rounded-full border border-ink/[0.08] bg-ink/[0.04] px-2.5 py-0.5 text-[0.55rem] font-bold uppercase tracking-[0.16em] text-ink/40">
+                  <span className="rounded-full border border-ink/[0.08] bg-ink/[0.04] px-2 py-0.5 text-[0.48rem] font-bold uppercase tracking-[0.12em] text-ink/40 md:px-2.5 md:text-[0.55rem] md:tracking-[0.16em]">
                     {svc.tag}
                   </span>
                 </div>
 
                 {/* Text */}
-                <div className="flex flex-col gap-1.5">
-                  <h3 className="font-display text-[0.95rem] font-black leading-tight tracking-tight text-ink">
+                <div className="flex flex-col gap-1">
+                  <h3 className="font-display text-[0.8rem] font-black leading-tight tracking-tight text-ink md:text-[0.95rem]">
                     {svc.label}
                   </h3>
-                  <p className="text-[0.75rem] leading-relaxed text-ink/45">
+                  <p className="line-clamp-2 text-[0.66rem] leading-snug text-ink/45 md:line-clamp-none md:text-[0.75rem] md:leading-relaxed">
                     {svc.desc}
                   </p>
                 </div>
 
-                {/* Arrow CTA */}
-                <div className="mt-auto flex items-center gap-1.5 text-[0.58rem] font-bold uppercase tracking-[0.18em] text-ink/25 transition-colors duration-200 group-hover:text-[#FECE00]">
+                {/* Arrow CTA — desktop only */}
+                <div className="mt-auto hidden items-center gap-1.5 text-[0.58rem] font-bold uppercase tracking-[0.18em] text-ink/25 transition-colors duration-200 group-hover:text-[#FECE00] md:flex">
                   Learn more
                   <ArrowRight size={10} className="transition-transform duration-200 group-hover:translate-x-0.5" />
                 </div>
