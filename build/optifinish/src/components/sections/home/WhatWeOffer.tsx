@@ -350,14 +350,11 @@ export default function WhatWeOffer() {
           <div className="mb-3 px-5 md:px-8">
             <span className="text-[0.72rem] font-bold uppercase tracking-[0.2em] text-[#FECE00]">OptiFinish</span>
           </div>
-          {/* negative margin trick so scroll bleeds edge-to-edge */}
-          <div className="overflow-hidden">
-            <HScrollRow
-              groups={ROW_ONE}
-              slideIndexes={row1Slides}
-              cardWidthClass="w-[82vw] md:w-[44vw] lg:w-[420px]"
-            />
-          </div>
+          <HScrollRow
+            groups={ROW_ONE}
+            slideIndexes={row1Slides}
+            cardWidthClass="w-[82vw] md:w-[44vw] lg:w-[420px]"
+          />
         </div>
 
         {/* Row 2 — GEMA + DÜRR + Vinayak */}
@@ -365,13 +362,11 @@ export default function WhatWeOffer() {
           <div className="mb-3 px-5 md:px-8">
             <span className="text-[0.72rem] font-bold uppercase tracking-[0.2em] text-[#FECE00]">Partners & Associates</span>
           </div>
-          <div className="overflow-hidden">
-            <HScrollRow
-              groups={ROW_TWO}
-              slideIndexes={row2Slides}
-              cardWidthClass="w-[82vw] md:w-[38vw] lg:w-[360px]"
-            />
-          </div>
+          <HScrollRow
+            groups={ROW_TWO}
+            slideIndexes={row2Slides}
+            cardWidthClass="w-[82vw] md:w-[38vw] lg:w-[360px]"
+          />
         </div>
 
       </div>
