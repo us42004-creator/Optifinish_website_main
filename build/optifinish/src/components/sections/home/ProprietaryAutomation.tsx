@@ -142,9 +142,7 @@ export default function ProprietaryAutomation() {
                 {PRODUCTS.map((p, i) => (
                   <button
                     key={p.id}
-                    onTouchEnd={(e) => { e.preventDefault(); setActive(i); }}
                     onClick={() => setActive(i)}
-                    style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent' }}
                     className={`rounded-full px-4 py-2.5 text-[0.72rem] font-bold uppercase tracking-[0.14em] transition-all duration-200 ${
                       i === active
                         ? 'bg-ink text-white'

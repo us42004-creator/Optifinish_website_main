@@ -647,7 +647,6 @@ export default function Navbar() {
           userSelect: 'none',
           WebkitUserSelect: 'none',
         }}
-        onTouchEnd={(e) => { e.preventDefault(); setMenuOpen((v) => !v); }}
         onClick={() => setMenuOpen((v) => !v)}
       >
         {menuOpen ? <X size={20} /> : <Menu size={20} />}

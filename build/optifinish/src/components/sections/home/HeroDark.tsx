@@ -154,7 +154,7 @@ export default function HeroDark() {
             <div className="h-[1.5px] bg-gradient-to-r from-transparent via-[#FECE00]/50 to-transparent" />
 
             {/* Mobile: 2×2 grid · Desktop: horizontal flex */}
-            <div className="grid grid-cols-2 divide-x divide-y divide-[#FECE00]/[0.06] md:flex md:divide-y-0 md:items-stretch md:divide-x">
+            <div className="grid grid-cols-2 divide-x divide-y divide-[#FECE00]/[0.18] md:flex md:divide-y-0 md:items-stretch md:divide-x md:divide-[#FECE00]/[0.18]">
 
               {STATS.map(({ value, label, sub }) => (
                 <div key={value} className="flex flex-1 flex-col justify-center gap-0.5 px-4 py-3.5 md:px-5 md:py-5 lg:px-6">
