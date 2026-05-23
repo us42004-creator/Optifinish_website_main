@@ -102,14 +102,12 @@ export default function FacilityTeaserFilmstrip() {
       <div className="relative mx-auto max-w-7xl px-5 md:px-8">
         <div className="overflow-hidden rounded-[1.75rem] bg-ink">
 
-          {/* ══════════════════════════════════════
-              MOBILE — compact horizontal card
-          ══════════════════════════════════════ */}
-          <div className="flex items-stretch lg:hidden">
+          {/* ── Top row: text + photo grid ── */}
+          <div className="flex flex-col gap-4 p-5 md:flex-row md:items-stretch md:gap-8 md:p-10">
 
-            {/* Left: text */}
-            <div className="flex flex-1 flex-col justify-between gap-4 p-5">
-              <div>
+            {/* Text */}
+            <div className="flex-1">
+              <div className="overflow-hidden pb-[0.15em]">
                 <span
                   ref={eyebrowRef}
                   className="card-accent-label card-accent-label-light mb-3 block"
@@ -117,78 +115,11 @@ export default function FacilityTeaserFilmstrip() {
                 >
                   Greater Noida Facility
                 </span>
-
-                <h2 className="font-display text-[clamp(1.3rem,5.5vw,1.8rem)] font-black leading-[1.0] tracking-[-0.04em] text-white">
-                  <div className="overflow-hidden pb-[0.1em]">
-                    <span ref={line1Ref} className="block" style={{ willChange: 'transform, opacity' }}>
-                      Manufactured in{' '}
-                      <span style={{
-                        background: 'linear-gradient(to bottom, #FF9933 33%, #ffffff 33%, #ffffff 66%, #138808 66%)',
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        backgroundClip: 'text',
-                      }}>India</span>.
-                    </span>
-                  </div>
-                  <div className="overflow-hidden pb-[0.1em]">
-                    <span ref={line2Ref} className="block text-yellow" style={{ willChange: 'transform, opacity' }}>
-                      Backed by real R&amp;D.
-                    </span>
-                  </div>
-                </h2>
-
-                <p
-                  ref={bodyRef}
-                  className="mt-2.5 text-[0.72rem] leading-relaxed text-white/45"
-                  style={{ willChange: 'transform, opacity' }}
-                >
-                  Greater Noida facility — manufacturing, R&amp;D, trials and commissioning under one roof.
-                </p>
               </div>
 
-              <Link
-                href="/facility"
-                className="inline-flex items-center gap-1.5 rounded-full bg-[#FECE00] px-4 py-2.5 text-[0.62rem] font-bold uppercase tracking-[0.18em] text-ink self-start"
-              >
-                See the Facility →
-              </Link>
-            </div>
-
-            {/* Right: single tall photo */}
-            <div className="relative w-[42%] flex-shrink-0 overflow-hidden">
-              <Image
-                src={EXTERIOR_PHOTOS[0].src}
-                alt="OptiFinish Greater Noida facility"
-                fill
-                className="object-cover"
-                sizes="45vw"
-                priority
-              />
-              {/* gradient to blend into card bg */}
-              <div className="absolute inset-y-0 left-0 w-6 bg-gradient-to-r from-ink to-transparent" />
-            </div>
-
-          </div>
-
-          {/* ══════════════════════════════════════
-              DESKTOP — original layout
-          ══════════════════════════════════════ */}
-          <div className="hidden lg:flex lg:flex-row lg:items-stretch lg:gap-8 lg:p-10">
-
-            {/* Text */}
-            <div className="flex-1">
-              <div className="overflow-hidden pb-[0.15em]">
-                <span
-                  className="card-accent-label card-accent-label-light mb-4 block"
-                  style={{ willChange: 'transform, opacity' }}
-                >
-                  Greater Noida Facility
-                </span>
-              </div>
-
-              <h2 className="font-display desktop-section-heading mobile-hero-ratio-title font-black text-white">
+              <h2 className="font-display text-[clamp(1.5rem,5vw,3rem)] font-black leading-[0.96] tracking-[-0.04em] text-white md:leading-[0.92]">
                 <div className="overflow-hidden pb-[0.15em]">
-                  <span className="block" style={{ willChange: 'transform, opacity' }}>
+                  <span ref={line1Ref} className="block" style={{ willChange: 'transform, opacity' }}>
                     Manufactured in{' '}
                     <span style={{
                       background: 'linear-gradient(to bottom, #FF9933 33%, #ffffff 33%, #ffffff 66%, #138808 66%)',
@@ -199,22 +130,30 @@ export default function FacilityTeaserFilmstrip() {
                   </span>
                 </div>
                 <div className="overflow-hidden pb-[0.15em]">
-                  <span className="block text-yellow" style={{ willChange: 'transform, opacity' }}>
+                  <span ref={line2Ref} className="block text-yellow" style={{ willChange: 'transform, opacity' }}>
                     Backed by real R&amp;D.
                   </span>
                 </div>
               </h2>
 
-              <p className="mt-4 max-w-md text-[0.85rem] leading-relaxed text-white/48">
+              <p
+                ref={bodyRef}
+                className="mt-3 max-w-md text-[0.78rem] leading-relaxed text-white/48 md:text-[0.85rem]"
+                style={{ willChange: 'transform, opacity' }}
+              >
                 Our Greater Noida manufacturing and R&amp;D facility is where OptiFinish products are
                 built, tested, and refined. From complete powder coating plants to proprietary
                 automation systems — everything is engineered here.
               </p>
 
-              <ul className="mt-5 flex flex-col gap-2.5">
-                {BULLETS.map((item) => (
-                  <li key={item} className="flex items-center gap-3 text-[0.78rem] font-medium text-white/55">
-                    <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-yellow/15">
+              {/* Bullets — 2 on mobile, all 4 on desktop */}
+              <ul className="mt-4 flex flex-col gap-2">
+                {BULLETS.map((item, i) => (
+                  <li
+                    key={item}
+                    className={`flex items-center gap-2.5 text-[0.72rem] font-medium text-white/55 md:text-[0.78rem] ${i >= 2 ? 'hidden md:flex' : ''}`}
+                  >
+                    <span className="flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full bg-yellow/15 md:h-5 md:w-5">
                       <span className="h-1.5 w-1.5 rounded-full bg-yellow" />
                     </span>
                     {item}
@@ -224,39 +163,45 @@ export default function FacilityTeaserFilmstrip() {
 
               <Link
                 href="/facility"
-                className="panel-button dynamic-button dynamic-button-yellow mt-6 inline-flex"
+                className="panel-button dynamic-button dynamic-button-yellow mt-5 inline-flex w-full justify-center sm:w-auto md:mt-6"
               >
                 <span>See the Facility</span>
                 <div className="dynamic-button-glow" />
               </Link>
             </div>
 
-            {/* Desktop 2×2 photo grid */}
-            <div className="grid grid-cols-2 grid-rows-2 gap-2 w-[40rem] flex-shrink-0">
+            {/* 2×2 photo grid */}
+            <div className="grid grid-cols-2 grid-rows-2 gap-1.5 md:w-[40rem] md:flex-shrink-0 md:gap-2" style={{ height: '200px' }} >
               {EXTERIOR_PHOTOS.map((photo, i) => (
-                <div key={i} className="relative overflow-hidden rounded-xl min-h-[120px]">
+                <div
+                  key={i}
+                  className="relative overflow-hidden rounded-lg md:rounded-xl"
+                  style={{ minHeight: 0 }}
+                >
                   <Image
                     src={photo.src}
                     alt={photo.label}
                     fill
                     className="object-cover"
-                    sizes="320px"
+                    sizes="(max-width: 768px) 45vw, 320px"
                   />
                 </div>
               ))}
             </div>
+
           </div>
 
-          {/* ── Filmstrip — desktop only ── */}
-          <div className="hidden lg:block border-t border-white/[0.06]">
-            <div className="px-10 pb-2 pt-4">
-              <span className="text-[0.52rem] font-bold uppercase tracking-[0.26em] text-white/25">
+          {/* ── Filmstrip ── */}
+          <div className="border-t border-white/[0.06]">
+            <div className="px-5 pb-2 pt-3 md:px-10 md:pt-4">
+              <span className="text-[0.48rem] font-bold uppercase tracking-[0.26em] text-white/25 md:text-[0.52rem]">
                 From the facility floor
               </span>
             </div>
+
             <div
               ref={stripRef}
-              className="overflow-x-auto pb-5"
+              className="overflow-x-auto pb-4 md:pb-5"
               style={{
                 scrollbarWidth: 'none',
                 WebkitOverflowScrolling: 'touch',
@@ -265,10 +210,15 @@ export default function FacilityTeaserFilmstrip() {
               }}
               onMouseEnter={() => { stripPaused.current = true; }}
               onMouseLeave={() => { stripPaused.current = false; }}
+              onTouchStart={() => { stripPaused.current = true; }}
+              onTouchEnd={() => { setTimeout(() => { stripPaused.current = false; }, 1200); }}
             >
-              <div className="flex w-max gap-3">
+              <div className="flex w-max gap-2 md:gap-3">
                 {[...FACILITY_PHOTOS, ...FACILITY_PHOTOS].map((src, i) => (
-                  <div key={i} className="relative h-32 w-60 flex-shrink-0 overflow-hidden rounded-xl">
+                  <div
+                    key={i}
+                    className="relative h-20 w-36 flex-shrink-0 overflow-hidden rounded-lg md:h-32 md:w-60 md:rounded-xl"
+                  >
                     <Image src={src} alt="OptiFinish facility" fill className="object-cover" sizes="288px" />
                   </div>
                 ))}
