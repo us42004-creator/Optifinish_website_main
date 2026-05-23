@@ -141,7 +141,7 @@ function HScrollRow({
           style={{ scrollSnapAlign: 'start' }}
         >
           {/* Card top — text content */}
-          <div className="flex flex-col gap-3 p-5">
+          <div className="flex flex-col gap-3 py-5 pl-7 pr-5">
 
             {/* Tag row */}
             <div className="flex items-center justify-between">
