@@ -127,12 +127,10 @@ function HScrollRow({
   return (
     <div
       className="carousel-track flex gap-3.5 overflow-x-auto pb-1"
-      style={{
-        scrollSnapType: 'x mandatory',
-        paddingLeft: '20px',
-        paddingRight: '20px',
-      }}
+      style={{ scrollSnapType: 'x mandatory' }}
     >
+      {/* Leading spacer — more reliable than padding-left inside overflow:hidden parents on iOS */}
+      <div className="w-5 flex-shrink-0 md:w-8" />
       {groups.map((g, gi) => (
         <Link
           key={g.href}
@@ -243,8 +241,8 @@ function HScrollRow({
         </Link>
       ))}
 
-      {/* Trailing spacer so last card snaps correctly */}
-      <div className="w-3 flex-shrink-0" />
+      {/* Trailing spacer */}
+      <div className="w-5 flex-shrink-0 md:w-8" />
     </div>
   );
 }
