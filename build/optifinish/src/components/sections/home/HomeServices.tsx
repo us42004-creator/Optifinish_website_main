@@ -66,7 +66,7 @@ export default function HomeServices() {
   });
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden bg-[#f1efea] py-20 md:py-28">
+    <section ref={sectionRef} className="relative overflow-hidden bg-[#f1efea] py-14 md:py-28">
 
       {/* Grid drift layers — matches light-themed template */}
       <div className="pointer-events-none absolute inset-0 grid-drift opacity-[0.62] mix-blend-multiply" style={{ backgroundImage: 'linear-gradient(rgba(201,165,0,0.22) 1px, transparent 1px), linear-gradient(90deg, rgba(201,165,0,0.22) 1px, transparent 1px)', backgroundSize: '88px 88px' }} />
@@ -75,7 +75,7 @@ export default function HomeServices() {
       <div className="relative mx-auto max-w-7xl px-5 md:px-8">
 
         {/* Header row */}
-        <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div className="mb-8 md:mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
             <div className="overflow-hidden pb-[0.15em]">
               <span
@@ -133,7 +133,7 @@ export default function HomeServices() {
                   <div className="flex h-10 w-10 items-center justify-center rounded-[0.75rem] bg-[#FECE00]/[0.12] transition-colors duration-200 group-hover:bg-[#FECE00]/[0.2]">
                     <Icon size={18} className="text-ink/60 transition-colors duration-200 group-hover:text-ink/80" strokeWidth={1.8} />
                   </div>
-                  <span className="rounded-full border border-ink/[0.08] bg-ink/[0.04] px-2.5 py-0.5 text-[0.48rem] font-bold uppercase tracking-[0.16em] text-ink/40">
+                  <span className="rounded-full border border-ink/[0.08] bg-ink/[0.04] px-2.5 py-0.5 text-[0.55rem] font-bold uppercase tracking-[0.16em] text-ink/40">
                     {svc.tag}
                   </span>
                 </div>
@@ -143,7 +143,7 @@ export default function HomeServices() {
                   <h3 className="font-display text-[0.95rem] font-black leading-tight tracking-tight text-ink">
                     {svc.label}
                   </h3>
-                  <p className="text-[0.72rem] leading-relaxed text-ink/45">
+                  <p className="text-[0.75rem] leading-relaxed text-ink/45">
                     {svc.desc}
                   </p>
                 </div>

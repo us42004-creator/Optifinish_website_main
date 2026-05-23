@@ -202,7 +202,7 @@ export default function AboutContent() {
             </div>
 
             {/* H1 */}
-            <h1 className="font-display text-[clamp(2.2rem,6vw,5rem)] font-black leading-[0.9] tracking-[-0.045em] text-white">
+            <h1 className="font-display text-[clamp(2.2rem,6vw,5rem)] font-black leading-[0.96] tracking-[-0.045em] text-white md:leading-[0.9]">
               <div className="overflow-hidden pb-[0.12em]">
                 <span ref={s1L1} className="block" style={{ willChange: 'transform, opacity' }}>
                   Built from
@@ -440,7 +440,7 @@ export default function AboutContent() {
         <div className="relative mx-auto max-w-7xl px-5 md:px-8">
 
           {/* Header */}
-          <div className="mb-12">
+          <div className="mb-8 md:mb-12">
             <div className="overflow-hidden pb-[0.1em]">
               <span
                 ref={s4Eye}

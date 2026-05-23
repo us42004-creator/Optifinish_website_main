@@ -56,13 +56,13 @@ export default function OurWorkPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLD) }} />
 
-      <main className="min-h-screen bg-[#070809] text-white">
+      <main className="min-h-svh bg-[#070809] text-white">
         {/* Hero */}
-        <section className="relative flex min-h-[60vh] flex-col items-center justify-center px-6 pt-32 pb-20 text-center">
+        <section className="relative flex min-h-[60vh] flex-col items-center justify-center px-6 pt-24 pb-14 text-center md:pt-32 md:pb-20">
           <span className="mb-4 block text-[0.6rem] font-bold uppercase tracking-[0.28em] text-[#FECE00]/60">
             Our Work
           </span>
-          <h1 className="font-display text-[clamp(2.5rem,6vw,5rem)] font-black leading-[0.9] tracking-[-0.04em] text-white">
+          <h1 className="font-display text-[clamp(2.5rem,6vw,5rem)] font-black leading-[0.96] tracking-[-0.04em] text-white md:leading-[0.9]">
             Installations that<br />
             <span className="text-[#FECE00]">speak for themselves.</span>
           </h1>
@@ -72,7 +72,7 @@ export default function OurWorkPage() {
         </section>
 
         {/* Coming Soon */}
-        <section className="mx-auto max-w-4xl px-6 pb-32 text-center">
+        <section className="mx-auto max-w-4xl px-6 pb-20 text-center md:pb-32">
           <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-12">
             <span className="mb-4 block text-[0.6rem] font-bold uppercase tracking-[0.28em] text-[#FECE00]/60">
               Portfolio — Coming Soon

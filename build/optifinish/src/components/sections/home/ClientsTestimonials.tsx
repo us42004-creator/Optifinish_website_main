@@ -173,7 +173,7 @@ export default function ClientsTestimonials() {
   }, [isPaused, maxIndex]);
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden bg-[#f1efea] py-20 md:py-28">
+    <section ref={sectionRef} className="relative overflow-hidden bg-[#f1efea] py-14 md:py-28">
 
       {/* Grid drift layers */}
       <div
@@ -196,7 +196,7 @@ export default function ClientsTestimonials() {
       <div className="relative mx-auto max-w-7xl px-5 md:px-8">
 
         {/* Header */}
-        <div className="mb-12">
+        <div className="mb-8 md:mb-12">
           <div className="overflow-hidden pb-[0.15em]">
             <span ref={eyebrowRef} className="mb-3 block text-[0.56rem] font-bold uppercase tracking-[0.22em] text-ink/40" style={{ willChange: 'transform, opacity' }}>
               Our Clients
@@ -217,7 +217,7 @@ export default function ClientsTestimonials() {
           {STATS.map(({ value, label }) => (
             <div key={label} className="flex flex-col gap-0.5 px-3 py-2.5 sm:px-5 sm:py-3.5 md:px-8">
               <span className="font-display text-[1rem] font-black tracking-[-0.03em] text-ink sm:text-[1.2rem]">{value}</span>
-              <span className="text-[0.48rem] font-semibold uppercase tracking-[0.16em] text-ink/40 sm:text-[0.55rem]">{label}</span>
+              <span className="text-[0.55rem] font-semibold uppercase tracking-[0.16em] text-ink/40">{label}</span>
             </div>
           ))}
         </div>
@@ -276,7 +276,7 @@ export default function ClientsTestimonials() {
                 onClick={prev}
                 disabled={activeIndex === 0}
                 aria-label="Previous testimonial"
-                className="flex h-8 w-8 items-center justify-center rounded-full bg-[#FECE00] text-[#0a0a0a] shadow-sm transition-all hover:bg-[#f0c200] disabled:opacity-30"
+                className="flex h-11 w-11 items-center justify-center rounded-full bg-[#FECE00] text-[#0a0a0a] shadow-sm transition-all hover:bg-[#f0c200] disabled:opacity-30"
               >
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                   <path d="M9 11L5 7l4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -286,7 +286,7 @@ export default function ClientsTestimonials() {
                 onClick={next}
                 disabled={activeIndex >= maxIndex}
                 aria-label="Next testimonial"
-                className="flex h-8 w-8 items-center justify-center rounded-full bg-[#FECE00] text-[#0a0a0a] shadow-sm transition-all hover:bg-[#f0c200] disabled:opacity-30"
+                className="flex h-11 w-11 items-center justify-center rounded-full bg-[#FECE00] text-[#0a0a0a] shadow-sm transition-all hover:bg-[#f0c200] disabled:opacity-30"
               >
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                   <path d="M5 3l4 4-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -331,7 +331,7 @@ export default function ClientsTestimonials() {
                   <span className="text-[2rem] leading-none text-[#FECE00]/25 md:text-[2.5rem]">&ldquo;</span>
                   <p className="flex-1 text-[0.8rem] leading-relaxed text-white/60">{t.quote}</p>
                   <div className="border-t border-white/[0.07] pt-4">
-                    <div className="mb-3 text-[0.58rem] font-semibold uppercase tracking-[0.14em] text-white/25">{t.products}</div>
+                    <div className="mb-3 text-[0.62rem] font-semibold uppercase tracking-[0.14em] text-white/25">{t.products}</div>
                     <div className="flex items-center gap-3">
                       <Avatar
                         initials={t.initials}
@@ -354,18 +354,25 @@ export default function ClientsTestimonials() {
           </div>
 
           {/* Dot indicators */}
-          <div className="mt-5 flex justify-center gap-1.5">
+          <div className="mt-5 flex justify-center gap-0.5">
             {Array.from({ length: maxIndex + 1 }).map((_, i) => (
               <button
                 key={i}
                 onClick={() => setActiveIndex(i)}
                 aria-label={`Go to testimonial ${i + 1}`}
-                className="h-1.5 rounded-full transition-all duration-300"
-                style={{
-                  width: i === activeIndex ? '24px' : '6px',
-                  background: i === activeIndex ? '#FECE00' : 'rgba(10,10,10,0.2)',
-                }}
-              />
+                className="flex h-6 w-6 items-center justify-center"
+                style={{ touchAction: 'manipulation' }}
+              >
+                <span
+                  className="rounded-full transition-all duration-300"
+                  style={{
+                    height: '6px',
+                    width: i === activeIndex ? '24px' : '6px',
+                    background: i === activeIndex ? '#FECE00' : 'rgba(10,10,10,0.2)',
+                    display: 'block',
+                  }}
+                />
+              </button>
             ))}
           </div>
         </div>

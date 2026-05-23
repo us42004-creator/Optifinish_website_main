@@ -30,6 +30,7 @@ function CardImageCarousel({
   return (
     <div
       className="relative h-full w-full"
+      style={{ touchAction: 'pan-y' }}
       onMouseEnter={() => { paused.current = true; }}
       onMouseLeave={() => { paused.current = false; }}
     >
@@ -64,18 +65,21 @@ function CardImageCarousel({
       )}
 
       {/* Dot nav */}
-      <div className="absolute bottom-2 left-1/2 z-10 flex -translate-x-1/2 gap-1">
+      <div className="absolute bottom-1 left-1/2 z-10 flex -translate-x-1/2 gap-0.5">
         {images.map((_, i) => (
           <button
             key={i}
             onClick={(e) => { e.stopPropagation(); paused.current = true; setActive(i); setTimeout(() => { paused.current = false; }, 5000); }}
             aria-label={`Image ${i + 1}`}
-            className={`h-1 rounded-full transition-all duration-300 ${
+            className="flex h-6 w-6 items-center justify-center"
+            style={{ touchAction: 'manipulation' }}
+          >
+            <span className={`rounded-full transition-all duration-300 ${
               i === active
-                ? 'w-4 bg-[#FECE00]'
-                : `w-1 ${isDark ? 'bg-white/30' : 'bg-white/50'}`
-            }`}
-          />
+                ? 'h-1 w-4 bg-[#FECE00]'
+                : `h-1 w-1 ${isDark ? 'bg-white/30' : 'bg-white/50'}`
+            }`} />
+          </button>
         ))}
       </div>
     </div>

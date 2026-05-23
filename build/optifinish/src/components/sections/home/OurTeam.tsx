@@ -22,7 +22,7 @@ const ease = [0.22, 1, 0.36, 1] as const;
 
 export default function OurTeam() {
   return (
-    <section className="relative bg-[#070809] py-24 md:py-32">
+    <section className="relative bg-[#070809] py-16 md:py-32">
 
       {/* Background grid */}
       <div

@@ -18,7 +18,7 @@ export default function HomeCTA() {
   });
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden bg-[#f1efea] py-20 md:py-28">
+    <section ref={sectionRef} className="relative overflow-hidden bg-[#f1efea] py-14 md:py-28">
       {/* Grid drift layers */}
       <div
         className="pointer-events-none absolute inset-0 grid-drift opacity-[0.62] mix-blend-multiply"
@@ -40,8 +40,8 @@ export default function HomeCTA() {
           backgroundSize: '264px 264px',
         }}
       />
-      <div className="relative mx-auto max-w-7xl px-5 md:px-8">
-        <div className="noise relative overflow-hidden rounded-[1.75rem] bg-ink px-5 py-10 text-center sm:px-8 sm:py-14 md:px-16 md:py-20">
+      <div className="relative mx-auto max-w-7xl px-4 md:px-8">
+        <div className="noise relative overflow-hidden rounded-[1.4rem] bg-ink px-5 py-10 text-center sm:rounded-[1.75rem] sm:px-8 sm:py-14 md:px-16 md:py-20">
 
           {/* Yellow glow */}
           <div className="pointer-events-none absolute left-1/2 top-0 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-yellow/20 blur-[80px]" />
@@ -77,8 +77,8 @@ export default function HomeCTA() {
               or after-sales support — we&apos;re here.
             </p>
 
-            <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-              <Link href="/contact" className="panel-button dynamic-button dynamic-button-yellow">
+            <div className="mt-9 flex flex-col items-stretch gap-3 px-1 sm:flex-row sm:items-center sm:justify-center sm:px-0">
+              <Link href="/contact" className="panel-button dynamic-button dynamic-button-yellow w-full sm:w-auto justify-center">
                 <span>Get in Touch</span>
                 <div className="dynamic-button-glow" />
               </Link>

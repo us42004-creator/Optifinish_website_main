@@ -164,11 +164,11 @@ export default function CategoryHero({
 
         </div>{/* end left column */}
 
-        {/* Right — image viewport */}
+        {/* Right — image viewport (below text on mobile, beside text on lg+) */}
         {imageSrc && (
-          <div className="mt-10 lg:mt-0 lg:h-full">
+          <div className="mt-8 lg:mt-0 lg:h-full">
             <div
-              className={`relative w-full h-full min-h-[320px] overflow-hidden rounded-[1.2rem] ${
+              className={`relative w-full h-full min-h-[240px] overflow-hidden rounded-[1.2rem] md:min-h-[320px] ${
                 isDark
                   ? 'border border-white/[0.08] bg-white/[0.03]'
                   : 'border border-black/[0.08] bg-white shadow-[0_12px_40px_rgba(0,0,0,0.08)]'

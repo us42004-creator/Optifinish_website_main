@@ -552,7 +552,7 @@ export default function GemaManualGunPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f1efea]">
+    <div className="min-h-svh bg-[#f1efea]">
 
       {/* ══════════════════════════════════════════════════════
           S1 — PRODUCT HERO
@@ -612,7 +612,7 @@ export default function GemaManualGunPage() {
               OptiFlex Pro Series — Gravity / Box / Hopper Fed
             </p>
 
-            <h1 className="font-display text-[clamp(2.4rem,5.5vw,4.5rem)] font-black leading-[0.9] tracking-[-0.04em] text-[#0A0A0A]">
+            <h1 className="font-display text-[clamp(2.4rem,5.5vw,4.5rem)] font-black leading-[0.96] tracking-[-0.04em] text-[#0A0A0A] md:leading-[0.9]">
               Manual powder<br />
               coating gun.<br />
               <span className="text-[#FECE00]">Swiss standard.</span>
@@ -1234,7 +1234,7 @@ export default function GemaManualGunPage() {
               <p className="mb-3 text-[0.56rem] font-bold uppercase tracking-[0.22em] text-[#0A0A0A]/45">
                 Get GEMA equipment in India
               </p>
-              <h2 className="font-display text-[clamp(2rem,5vw,3.8rem)] font-black leading-[0.9] tracking-[-0.04em] text-[#0A0A0A]">
+              <h2 className="font-display text-[clamp(2rem,5vw,3.8rem)] font-black leading-[0.96] tracking-[-0.04em] text-[#0A0A0A] md:leading-[0.9]">
                 Ready to upgrade<br />your powder line?
               </h2>
               <p className="mt-4 max-w-md text-[0.88rem] leading-relaxed text-[#0A0A0A]/60">

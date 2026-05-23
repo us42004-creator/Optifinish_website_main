@@ -104,7 +104,7 @@ export default function DCPMaintenancePage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLD) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(bcLD) }} />
-      <main className="min-h-screen">
+      <main className="min-h-svh">
 
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
           Hero — Coming Soon (dark)

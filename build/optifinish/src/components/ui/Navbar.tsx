@@ -184,10 +184,10 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen]           = useState(false);
   const [productsOpen, setProductsOpen]   = useState(false);
   const [servicesOpen, setServicesOpen]   = useState(false);
+  const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [hoveredCat, setHoveredCat]       = useState(PRODUCTS_MENU[0].slug);
   const [hoveredSvc, setHoveredSvc]       = useState(SERVICES_MENU[0].href);
-  const menuLinksRef                      = useRef<HTMLDivElement>(null);
-  const menuCtaRef                        = useRef<HTMLAnchorElement>(null);
   const closeTimer                        = useRef<ReturnType<typeof setTimeout> | null>(null);
   const closeServicesTimer                = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pathname                        = usePathname();
@@ -247,14 +247,17 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  useEffect(() => { setMenuOpen(false); setProductsOpen(false); setServicesOpen(false); }, [pathname]);
+  useEffect(() => { setMenuOpen(false); setProductsOpen(false); setServicesOpen(false); setMobileProductsOpen(false); setMobileServicesOpen(false); }, [pathname]);
 
   // Mobile menu links now use CSS animation (no GSAP needed — avoids opacity:0 flash)
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 navbar-enter">
-        {/* Outer row — pill centred, hamburger sits outside pill as absolute sibling */}
+      <header
+        className="fixed top-0 left-0 right-0 z-50 navbar-enter"
+        style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
+      >
+        {/* Outer row — pill centred */}
         <div className="relative flex justify-center px-3 pt-2.5 md:px-4 md:pt-4">
           <motion.div
             onMouseEnter={() => setExpanded(true)}
@@ -376,7 +379,7 @@ export default function Navbar() {
                 )}
               </nav>
 
-              {/* Desktop CTA only — hamburger is now OUTSIDE the pill */}
+              {/* Desktop CTA only */}
               <div className="hidden lg:flex shrink-0 items-center">
                 <Link
                   href="/contact"
@@ -626,17 +629,25 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* ── Hamburger — FIXED position, completely outside all stacking contexts ── */}
-      {/* fixed keeps it above every motion.div transform layer; z-[55] = above navbar(50) below menu(60) */}
+      {/* ── Hamburger: fixed sibling outside header, z-[55] above pill (z-50) ── */}
       <button
-        className={`fixed z-[55] flex h-12 w-12 items-center justify-center rounded-full lg:hidden ${
-          (scrolled || isDark || menuOpen)
-            ? 'border border-white/25 bg-white/12 text-white'
-            : 'border border-black/15 bg-black/[0.07] text-black'
-        }`}
-        style={{ top: '10px', right: '12px', touchAction: 'manipulation' }}
-        onPointerDown={(e) => { e.preventDefault(); setMenuOpen((v) => !v); }}
+        type="button"
         aria-label="Toggle menu"
+        className={`fixed z-[55] lg:hidden flex h-12 w-12 items-center justify-center rounded-full ${
+          (scrolled || isDark || menuOpen)
+            ? 'border border-white/25 bg-white/10 text-white'
+            : 'border border-black/12 bg-black/[0.06] text-black'
+        }`}
+        style={{
+          top: '10px',
+          right: '16px',
+          touchAction: 'manipulation',
+          WebkitTapHighlightColor: 'transparent',
+          cursor: 'pointer',
+          userSelect: 'none',
+          WebkitUserSelect: 'none',
+        }}
+        onClick={() => setMenuOpen((v) => !v)}
       >
         {menuOpen ? <X size={20} /> : <Menu size={20} />}
       </button>
@@ -647,11 +658,12 @@ export default function Navbar() {
           className="fixed inset-0 z-[60] flex flex-col bg-[#080808] lg:hidden"
           style={{
             animation: 'mobile-menu-enter 0.22s cubic-bezier(0.22,1,0.36,1) both',
+            paddingTop: 'env(safe-area-inset-top, 0px)',
             paddingBottom: 'env(safe-area-inset-bottom, 1.5rem)',
           }}
         >
-          {/* Header row — sits below the physical nav bar area */}
-          <div className="flex items-center justify-between px-5 pt-4 pb-2 border-b border-white/[0.06]">
+          {/* Header row */}
+          <div className="flex flex-shrink-0 items-center justify-between border-b border-white/[0.06] px-5 pb-2 pt-4">
             <Link href="/" onClick={() => setMenuOpen(false)} className="flex items-center gap-2.5">
               <Image src="/images/logos/optifinish-logo.png" alt="OptiFinish" width={192} height={192} priority className="h-9 w-auto object-contain" />
               <span className="font-display text-[0.9rem] font-black tracking-[-0.03em] text-white">OptiFinish</span>
@@ -666,32 +678,123 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* Nav links — centred in remaining space */}
-          <div ref={menuLinksRef} className="flex flex-1 flex-col justify-center px-6">
-            {NAV_LINKS.map((link, i) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="mobile-nav-link block py-3.5 font-display text-[2rem] font-black tracking-[-0.03em] text-white/70 transition-colors active:text-yellow"
-                style={{
-                  animation: 'mobile-link-in 0.4s cubic-bezier(0.22,1,0.36,1) both',
-                  animationDelay: `${0.05 + i * 0.05}s`,
-                }}
-              >
-                {link.label}
-              </Link>
-            ))}
+          {/* Nav list — scrollable */}
+          <div className="flex-1 overflow-y-auto overscroll-contain">
+            <nav className="px-5 py-2">
+
+              {/* ── Products row with inline accordion ── */}
+              <div className="border-b border-white/[0.05]">
+                <button
+                  onClick={() => { setMobileProductsOpen((v) => !v); setMobileServicesOpen(false); }}
+                  className="flex w-full items-center justify-between py-4 font-display text-[1.9rem] font-black tracking-[-0.03em] text-white/70 active:text-yellow"
+                  style={{ touchAction: 'manipulation' }}
+                >
+                  Products
+                  <ChevronRight
+                    size={20}
+                    className={`flex-shrink-0 text-white/30 transition-transform duration-300 ${mobileProductsOpen ? 'rotate-90' : ''}`}
+                  />
+                </button>
+                <AnimatePresence initial={false}>
+                  {mobileProductsOpen && (
+                    <motion.div
+                      key="products-panel"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <div className="ml-2 flex flex-col border-l border-white/[0.08] pl-4 pb-4">
+                        {PRODUCTS_MENU.map((cat) => (
+                          <Link
+                            key={cat.slug}
+                            href={cat.href}
+                            onClick={() => { setMenuOpen(false); setMobileProductsOpen(false); }}
+                            className="flex items-center justify-between py-3 font-display text-[1.15rem] font-black tracking-tight text-white/55 transition-colors active:text-yellow"
+                          >
+                            <span>{cat.label}</span>
+                            <ChevronRight size={14} className="flex-shrink-0 text-white/20" />
+                          </Link>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* ── Services row with inline accordion ── */}
+              <div className="border-b border-white/[0.05]">
+                <button
+                  onClick={() => { setMobileServicesOpen((v) => !v); setMobileProductsOpen(false); }}
+                  className="flex w-full items-center justify-between py-4 font-display text-[1.9rem] font-black tracking-[-0.03em] text-white/70 active:text-yellow"
+                  style={{ touchAction: 'manipulation' }}
+                >
+                  Services
+                  <ChevronRight
+                    size={20}
+                    className={`flex-shrink-0 text-white/30 transition-transform duration-300 ${mobileServicesOpen ? 'rotate-90' : ''}`}
+                  />
+                </button>
+                <AnimatePresence initial={false}>
+                  {mobileServicesOpen && (
+                    <motion.div
+                      key="services-panel"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <div className="ml-2 flex flex-col border-l border-white/[0.08] pl-4 pb-4">
+                        {SERVICES_MENU.map((svc) =>
+                          svc.comingSoon ? (
+                            <div
+                              key={svc.href}
+                              className="flex items-center justify-between py-3 font-display text-[1.15rem] font-black tracking-tight text-white/25"
+                            >
+                              <span>{svc.label}</span>
+                              <span className="text-[0.48rem] font-bold uppercase tracking-[0.18em] text-white/25">Soon</span>
+                            </div>
+                          ) : (
+                            <Link
+                              key={svc.href}
+                              href={svc.href}
+                              onClick={() => { setMenuOpen(false); setMobileServicesOpen(false); }}
+                              className="flex items-center justify-between py-3 font-display text-[1.15rem] font-black tracking-tight text-white/55 transition-colors active:text-yellow"
+                            >
+                              <span>{svc.label}</span>
+                              <ChevronRight size={14} className="flex-shrink-0 text-white/20" />
+                            </Link>
+                          )
+                        )}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* ── Simple nav links ── */}
+              {NAV_LINKS.filter((l) => !l.hasDropdown && !l.hasServicesDropdown).map((link) => (
+                <div key={link.href} className="border-b border-white/[0.05]">
+                  <Link
+                    href={link.href}
+                    onClick={() => setMenuOpen(false)}
+                    className="block py-4 font-display text-[1.9rem] font-black tracking-[-0.03em] text-white/70 transition-colors active:text-yellow"
+                  >
+                    {link.label}
+                  </Link>
+                </div>
+              ))}
+
+            </nav>
           </div>
 
           {/* CTA */}
-          <div className="px-6 pb-6">
+          <div className="flex-shrink-0 border-t border-white/[0.06] px-5 pb-6 pt-4">
             <Link
-              ref={menuCtaRef}
               href="/contact"
               className="block w-full rounded-full bg-yellow py-4 text-center text-[11px] font-black uppercase tracking-widest text-ink"
-              style={{
-                animation: 'mobile-link-in 0.4s cubic-bezier(0.22,1,0.36,1) 0.38s both',
-              }}
               onClick={() => setMenuOpen(false)}
             >
               Get in Touch

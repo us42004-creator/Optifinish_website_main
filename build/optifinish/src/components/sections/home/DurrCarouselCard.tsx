@@ -50,15 +50,19 @@ export default function DurrCarouselCard() {
         ))}
 
         {/* Dot indicators */}
-        <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-10">
+        <div className="absolute bottom-2 left-0 right-0 z-10 flex justify-center gap-0.5">
           {SLIDES.map((_, i) => (
             <button
               key={i}
               onClick={(e) => { e.preventDefault(); setCurrent(i); }}
-              className={`h-1 rounded-full transition-all duration-300 ${
-                i === current ? 'w-4 bg-white' : 'w-1 bg-white/45'
-              }`}
-            />
+              aria-label={`Slide ${i + 1}`}
+              className="flex h-6 w-6 items-center justify-center"
+              style={{ touchAction: 'manipulation' }}
+            >
+              <span className={`rounded-full transition-all duration-300 ${
+                i === current ? 'h-1 w-4 bg-white' : 'h-1 w-1 bg-white/45'
+              }`} />
+            </button>
           ))}
         </div>
 

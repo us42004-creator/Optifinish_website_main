@@ -14,12 +14,15 @@ function findTarget(el: Element | null): HTMLElement | null {
 }
 
 export default function InteractiveCursor() {
-  const [active, setActive] = useState(false);
+  const [active, setActive]         = useState(false);
+  const [mounted, setMounted]       = useState(false);
   const cursorRef = useRef<HTMLDivElement>(null);
   const dotRef    = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Don't render on touch / coarse-pointer devices (phones, tablets)
     if (!window.matchMedia('(pointer:fine)').matches) return;
+    setMounted(true);
     const cursor = cursorRef.current;
     const dot    = dotRef.current;
     if (!cursor || !dot) return;
@@ -85,11 +88,15 @@ export default function InteractiveCursor() {
     };
   }, []);
 
+  // Only render DOM on fine-pointer (mouse) devices — avoids any cursor flash on mobile
+  if (!mounted) return null;
+
   return (
     <>
       <div
         ref={cursorRef}
-        className={`pointer-events-none fixed left-0 top-0 z-[90] hidden h-10 w-10 -translate-x-1/2 -translate-y-1/2 rounded-full border border-black/28 bg-white/18 shadow-[0_8px_24px_rgba(0,0,0,0.08)] backdrop-blur-[3px] transition-opacity duration-300 md:block ${
+        data-cursor
+        className={`pointer-events-none fixed left-0 top-0 z-[90] h-10 w-10 -translate-x-1/2 -translate-y-1/2 rounded-full border border-black/28 bg-white/18 shadow-[0_8px_24px_rgba(0,0,0,0.08)] backdrop-blur-[3px] transition-opacity duration-300 ${
           active ? 'opacity-100' : 'opacity-0'
         }`}
       >
@@ -97,7 +104,8 @@ export default function InteractiveCursor() {
       </div>
       <div
         ref={dotRef}
-        className={`pointer-events-none fixed left-0 top-0 z-[91] hidden h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#FECE00] transition-opacity duration-300 md:block ${
+        data-cursor
+        className={`pointer-events-none fixed left-0 top-0 z-[91] h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#FECE00] transition-opacity duration-300 ${
           active ? 'opacity-100' : 'opacity-0'
         }`}
       />

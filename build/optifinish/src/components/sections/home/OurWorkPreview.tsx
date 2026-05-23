@@ -36,7 +36,7 @@ export default function OurWorkPreview() {
   });
 
   return (
-    <section ref={sectionRef} className="relative bg-[#070809] py-20 md:py-28">
+    <section ref={sectionRef} className="relative bg-[#070809] py-14 md:py-28">
       {/* Subtle grid — clipped in its own layer so section allows horizontal scroll on mobile */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div
@@ -52,7 +52,7 @@ export default function OurWorkPreview() {
       <div className="relative mx-auto max-w-7xl px-5 md:px-8">
 
         {/* Header */}
-        <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div className="mb-8 md:mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
             <div className="overflow-hidden pb-[0.15em]">
               <span
@@ -66,7 +66,7 @@ export default function OurWorkPreview() {
             <h2 className="font-display text-[clamp(2rem,4vw,3.5rem)] font-black leading-[0.92] tracking-[-0.04em] text-white">
               <div className="overflow-hidden pb-[0.15em]">
                 <span ref={line1Ref} className="block" style={{ willChange: 'transform, opacity' }}>
-                  500+ lines installed
+                  250+ lines installed
                 </span>
               </div>
               <div className="overflow-hidden pb-[0.15em]">
@@ -89,7 +89,7 @@ export default function OurWorkPreview() {
           {WORK_CARDS.map((card, i) => (
             <div
               key={i}
-              className="snap-start shrink-0 w-[76vw] md:w-auto flex flex-col overflow-hidden rounded-[1.4rem] border border-white/[0.06] bg-white/[0.02] transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.1]"
+              className="snap-start shrink-0 w-[82vw] md:w-auto flex flex-col overflow-hidden rounded-[1.4rem] border border-white/[0.06] bg-white/[0.02] transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.1]"
             >
               <div className="relative overflow-hidden">
                 <div className="flex aspect-[4/3] w-full items-center justify-center bg-white/[0.03]">
@@ -106,7 +106,7 @@ export default function OurWorkPreview() {
               <div className="flex flex-col gap-2 p-5">
                 <div className="flex items-center gap-2">
                   <span className="h-1 w-1 flex-shrink-0 rounded-full bg-[#FECE00]" />
-                  <span className="text-[0.6rem] font-bold uppercase tracking-[0.18em] text-[#FECE00]/60">
+                  <span className="text-[0.65rem] font-bold uppercase tracking-[0.18em] text-[#FECE00]/60">
                     {card.industry}
                   </span>
                 </div>

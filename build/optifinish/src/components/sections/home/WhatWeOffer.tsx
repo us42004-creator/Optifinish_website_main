@@ -158,7 +158,7 @@ export default function WhatWeOffer() {
   }, [searchParams]);
 
   return (
-    <section ref={sectionRef} id="what-we-offer" className="relative overflow-hidden bg-[#070809] py-20 md:py-28">
+    <section ref={sectionRef} id="what-we-offer" className="relative overflow-hidden bg-[#070809] py-14 md:py-28">
 
       {/* Subtle dark grid */}
       <div
@@ -173,7 +173,7 @@ export default function WhatWeOffer() {
       <div className="relative mx-auto max-w-7xl px-5 md:px-8">
 
         {/* Header */}
-        <div className="mb-12">
+        <div className="mb-8 md:mb-12">
           <div className="overflow-hidden pb-[0.15em]">
             <span
               ref={eyebrowRef}
@@ -242,7 +242,7 @@ export default function WhatWeOffer() {
                 <p className="text-[0.75rem] leading-relaxed text-white/40">{g.desc}</p>
                 <ul className="flex flex-col gap-1 border-t border-white/[0.06] pt-3">
                   {g.items.map((item) => (
-                    <li key={item} className="flex items-center gap-2 text-[0.68rem] font-medium text-white/45">
+                    <li key={item} className="flex items-center gap-2 text-[0.72rem] font-medium text-white/45">
                       <span className="h-1 w-1 flex-shrink-0 rounded-full bg-[#FECE00]" />
                       {item}
                     </li>
@@ -273,7 +273,7 @@ export default function WhatWeOffer() {
                       </div>
                     ))}
                     <div className="absolute bottom-2 left-3 z-10">
-                      <span className="rounded-full bg-black/35 px-2 py-0.5 text-[0.48rem] font-bold uppercase tracking-[0.16em] text-white/80 backdrop-blur-sm">
+                      <span className="rounded-full bg-black/35 px-2 py-0.5 text-[0.52rem] font-bold uppercase tracking-[0.16em] text-white/80 backdrop-blur-sm">
                         {g.slides[topSlides[gi]].label}
                       </span>
                     </div>
@@ -300,13 +300,13 @@ export default function WhatWeOffer() {
           ))}
         </div>
 
-        {/* Bottom row */}
-        <div className="grid gap-4 md:grid-cols-3">
+        {/* Bottom row — horizontal snap-scroll on mobile, 3-col grid on desktop */}
+        <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory md:grid md:grid-cols-3 md:overflow-visible md:pb-0" style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none' }}>
           {BOTTOM_GROUPS.map((g, gi) => (
             <Link
               key={g.href}
               href={g.href}
-              className="group flex flex-col overflow-hidden rounded-[1.2rem] border border-white/[0.14] bg-white/[0.06] transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.22] hover:bg-white/[0.09]"
+              className="group flex flex-col overflow-hidden rounded-[1.2rem] border border-white/[0.14] bg-white/[0.06] transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.22] hover:bg-white/[0.09] w-[80vw] flex-shrink-0 snap-start md:w-auto md:flex-shrink"
             >
               <div className="flex flex-col gap-3 p-5">
                 <div className="flex items-center justify-between">

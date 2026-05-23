@@ -106,7 +106,7 @@ export default function ServicesPage() {
   return (
     <>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
-    <main className="min-h-screen">
+    <main className="min-h-svh">
 
       {/* ── Hero (dark) ── */}
       <section className="relative overflow-hidden bg-[#070809] pb-20 pt-[100px] md:pb-28 md:pt-[108px]">
@@ -130,7 +130,7 @@ export default function ServicesPage() {
           </p>
 
           {/* Headline */}
-          <h1 className="font-display max-w-3xl text-[clamp(1.8rem,5.5vw,4.5rem)] font-black leading-[0.9] tracking-[-0.04em]">
+          <h1 className="font-display max-w-3xl text-[clamp(1.8rem,5.5vw,4.5rem)] font-black leading-[0.96] tracking-[-0.04em] md:leading-[0.9]">
             <span className="block text-white">Services that keep</span>
             <span className="block text-[#FECE00]">your line running.</span>
           </h1>
@@ -178,7 +178,7 @@ export default function ServicesPage() {
             </h2>
           </div>
 
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {SERVICES.map((svc) =>
               svc.comingSoon ? (
                 /* Coming soon card */
