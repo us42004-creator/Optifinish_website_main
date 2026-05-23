@@ -134,7 +134,7 @@ export default function FacilityPage() {
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
           S1 — FULL-VIEWPORT HERO
       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
-      <section className="relative flex min-h-svh flex-col overflow-hidden">
+      <section className="relative flex min-h-[85svh] flex-col overflow-hidden md:min-h-svh">
 
         {/* Background photo */}
         <div className="absolute inset-0">
@@ -221,7 +221,7 @@ export default function FacilityPage() {
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
           S2 — WHAT HAPPENS HERE (light)
       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
-      <section className="relative overflow-hidden bg-[#f1efea] py-16 md:py-24">
+      <section className="relative overflow-hidden bg-[#f1efea] py-12 md:py-24">
         <div
           className="pointer-events-none absolute inset-0 grid-drift opacity-[0.62] mix-blend-multiply"
           style={LIGHT_GRID_STYLE}
@@ -267,8 +267,29 @@ export default function FacilityPage() {
               </div>
             </div>
 
-            {/* 2×2 photo grid */}
-            <div className="grid h-[260px] grid-cols-2 grid-rows-2 gap-2 md:h-[400px] lg:h-[480px]">
+            {/* Mobile: horizontal scroll strip */}
+            <div className="lg:hidden -mx-5 flex overflow-x-auto carousel-track">
+              <div className="w-4 flex-shrink-0" />
+              {OFFICE_GRID.map((src, i) => (
+                <div
+                  key={i}
+                  className="relative w-[72vw] flex-shrink-0 aspect-[4/3] overflow-hidden rounded-[1rem] scroll-snap-align-start mr-2"
+                  style={{ scrollSnapAlign: 'start' }}
+                >
+                  <Image
+                    src={src}
+                    alt="OptiFinish facility — office interior"
+                    fill
+                    className="object-cover"
+                    sizes="72vw"
+                  />
+                </div>
+              ))}
+              <div className="w-4 flex-shrink-0" />
+            </div>
+
+            {/* Desktop: 2×2 photo grid */}
+            <div className="hidden lg:grid h-[480px] grid-cols-2 grid-rows-2 gap-2">
               {OFFICE_GRID.map((src, i) => (
                 <div key={i} className="relative overflow-hidden rounded-[1rem]">
                   <Image
@@ -276,7 +297,7 @@ export default function FacilityPage() {
                     alt="OptiFinish facility — office interior"
                     fill
                     className="object-cover transition-transform duration-700 hover:scale-105"
-                    sizes="(max-width: 768px) 50vw, 25vw"
+                    sizes="25vw"
                   />
                 </div>
               ))}
@@ -311,44 +332,73 @@ export default function FacilityPage() {
             </p>
           </div>
 
-          {/* Row 1: large hero (full width mobile, 2/3 desktop) + side (full width mobile, 1/3 desktop) */}
-          <div className="grid grid-cols-1 gap-2 md:grid-cols-3 md:h-[420px]">
-            <div className="relative col-span-1 h-[240px] overflow-hidden rounded-[1.1rem] md:col-span-2 md:h-full">
-              <Image
-                src={MFG_HERO}
-                alt="OptiFinish manufacturing — factory floor"
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 66vw"
-              />
-              <div className="absolute bottom-4 left-4 rounded-full border border-white/20 bg-[#070809]/60 px-3 py-1 text-[0.5rem] font-bold uppercase tracking-[0.2em] text-white/60 backdrop-blur-sm">
-                Production floor
-              </div>
-            </div>
-            <div className="relative h-[180px] overflow-hidden rounded-[1.1rem] md:h-full">
-              <Image
-                src={MFG_SIDE}
-                alt="OptiFinish manufacturing"
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 33vw"
-              />
-            </div>
-          </div>
-
-          {/* Row 2: 4 equal tiles — 2-col on mobile, 4-col on desktop */}
-          <div className="mt-2 grid grid-cols-2 gap-2 md:grid-cols-4 md:h-[220px]">
-            {MFG_ROW.map((src, i) => (
-              <div key={i} className="relative h-[140px] overflow-hidden rounded-[1.1rem] md:h-full">
+          {/* Mobile: horizontal scroll strip of all 6 photos */}
+          <div className="md:hidden -mx-5 flex overflow-x-auto carousel-track">
+            <div className="w-4 flex-shrink-0" />
+            {[MFG_HERO, MFG_SIDE, ...MFG_ROW].map((src, i) => (
+              <div
+                key={i}
+                className="relative w-[75vw] flex-shrink-0 aspect-[3/4] overflow-hidden rounded-[1.1rem] mr-2"
+                style={{ scrollSnapAlign: 'start' }}
+              >
                 <Image
                   src={src}
-                  alt="OptiFinish facility"
+                  alt="OptiFinish manufacturing — factory floor"
                   fill
-                  className="object-cover transition-transform duration-500 hover:scale-105"
-                  sizes="(max-width: 768px) 50vw, 25vw"
+                  className="object-cover"
+                  sizes="75vw"
                 />
+                {i === 0 && (
+                  <div className="absolute bottom-4 left-4 rounded-full border border-white/20 bg-[#070809]/60 px-3 py-1 text-[0.5rem] font-bold uppercase tracking-[0.2em] text-white/60 backdrop-blur-sm">
+                    Production floor
+                  </div>
+                )}
               </div>
             ))}
+            <div className="w-4 flex-shrink-0" />
+          </div>
+
+          {/* Desktop: original multi-row grid */}
+          <div className="hidden md:block">
+            {/* Row 1: large hero (2/3 desktop) + side (1/3 desktop) */}
+            <div className="grid grid-cols-3 gap-2 md:h-[420px]">
+              <div className="relative col-span-2 overflow-hidden rounded-[1.1rem] h-full">
+                <Image
+                  src={MFG_HERO}
+                  alt="OptiFinish manufacturing — factory floor"
+                  fill
+                  className="object-cover"
+                  sizes="66vw"
+                />
+                <div className="absolute bottom-4 left-4 rounded-full border border-white/20 bg-[#070809]/60 px-3 py-1 text-[0.5rem] font-bold uppercase tracking-[0.2em] text-white/60 backdrop-blur-sm">
+                  Production floor
+                </div>
+              </div>
+              <div className="relative overflow-hidden rounded-[1.1rem] h-full">
+                <Image
+                  src={MFG_SIDE}
+                  alt="OptiFinish manufacturing"
+                  fill
+                  className="object-cover"
+                  sizes="33vw"
+                />
+              </div>
+            </div>
+
+            {/* Row 2: 4 equal tiles */}
+            <div className="mt-2 grid grid-cols-4 gap-2 md:h-[220px]">
+              {MFG_ROW.map((src, i) => (
+                <div key={i} className="relative overflow-hidden rounded-[1.1rem] h-full">
+                  <Image
+                    src={src}
+                    alt="OptiFinish facility"
+                    fill
+                    className="object-cover transition-transform duration-500 hover:scale-105"
+                    sizes="25vw"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Capability tags */}
@@ -384,21 +434,32 @@ export default function FacilityPage() {
         <div className="pointer-events-none absolute inset-0 grid-drift opacity-[0.32] mix-blend-multiply" style={{ backgroundImage: 'linear-gradient(rgba(255,243,163,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,243,163,0.5) 1px, transparent 1px)', backgroundSize: '264px 264px' }} />
         <div className="relative grid min-h-[560px] lg:grid-cols-2">
 
-          {/* Photo half — left */}
-          <div className="relative min-h-[320px] lg:min-h-0">
+          {/* Photo half — left (desktop only) */}
+          <div className="relative hidden lg:block lg:min-h-0">
             <Image
               src={RD_PHOTO_L}
               alt="OptiFinish R&D and testing facility"
               fill
               className="object-cover"
-              sizes="(max-width: 1024px) 100vw, 50vw"
+              sizes="50vw"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#f1efea]/20 lg:bg-gradient-to-r lg:from-transparent lg:to-transparent" />
+            <div className="absolute inset-0 lg:bg-gradient-to-r lg:from-transparent lg:to-transparent" />
           </div>
 
           {/* Text half — right */}
-          <div className="flex items-center px-5 py-10 md:px-12 lg:px-20">
-            <div className="max-w-md">
+          <div className="flex items-center px-5 py-10 lg:py-0 md:px-12 lg:px-20">
+            <div className="max-w-md w-full">
+              {/* Mobile inline image */}
+              <div className="relative h-44 w-full overflow-hidden rounded-xl mb-6 lg:hidden">
+                <Image
+                  src={RD_PHOTO_L}
+                  alt="OptiFinish R&D and testing facility"
+                  fill
+                  className="object-cover"
+                  sizes="100vw"
+                />
+              </div>
+
               <p className="mb-3 text-[0.56rem] font-bold uppercase tracking-[0.22em] text-[#0A0A0A]/40">
                 R&amp;D &amp; Trials
               </p>
@@ -417,17 +478,22 @@ export default function FacilityPage() {
               </p>
 
               <ul className="mt-6 flex flex-col gap-3">
-                {[
-                  'New product development — Z-TAP, ZA01, and future automation',
-                  'Customer part trials — powder, substrate, and colour validation',
-                  'Process parameter development and documentation',
-                  'Adhesion, gloss, film build, and performance testing',
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-[0.78rem] text-[#0A0A0A]/60">
-                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#FECE00]" />
-                    {item}
-                  </li>
-                ))}
+                <li className="flex items-start gap-3 text-[0.78rem] text-[#0A0A0A]/60">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#FECE00]" />
+                  New product development — Z-TAP, ZA01, and future automation
+                </li>
+                <li className="flex items-start gap-3 text-[0.78rem] text-[#0A0A0A]/60">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#FECE00]" />
+                  Customer part trials — powder, substrate, and colour validation
+                </li>
+                <li className="flex items-start gap-3 text-[0.78rem] text-[#0A0A0A]/60">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#FECE00]" />
+                  Process parameter development and documentation
+                </li>
+                <li className="hidden lg:flex items-start gap-3 text-[0.78rem] text-[#0A0A0A]/60">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#FECE00]" />
+                  Adhesion, gloss, film build, and performance testing
+                </li>
               </ul>
 
               <div className="mt-8 flex flex-wrap gap-3">
@@ -491,7 +557,7 @@ export default function FacilityPage() {
             {[...OFFICE_STRIP, ...OFFICE_STRIP].map((src, i) => (
               <div
                 key={i}
-                className="relative h-40 w-56 shrink-0 overflow-hidden rounded-[1rem] sm:h-52 sm:w-72 md:h-64 md:w-96 lg:h-72 lg:w-[28rem]"
+                className="relative h-32 w-44 shrink-0 overflow-hidden rounded-[1rem] sm:h-52 sm:w-72 md:h-64 md:w-96 lg:h-72 lg:w-[28rem]"
               >
                 <Image
                   src={src}
