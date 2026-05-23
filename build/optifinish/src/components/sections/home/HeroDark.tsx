@@ -54,9 +54,10 @@ export default function HeroDark() {
       <div className="pointer-events-none absolute bottom-0 right-0 h-[300px] w-[300px] rounded-full bg-[#FECE00]/[0.01] blur-[100px]" />
 
       {/* Centring shell */}
-      <div className="relative mx-auto flex min-h-svh max-w-7xl flex-col items-center justify-center px-5 pb-24 pt-20 md:pb-44 md:px-8">
+      <div className="relative mx-auto flex min-h-svh max-w-7xl flex-col items-center px-5 pb-8 pt-20 md:justify-center md:pb-44 md:px-8">
 
-        {/* ── Hero content — CSS animations so visible before JS hydration ── */}
+        {/* ── Hero content — flex-1 so it fills space above authority bar on mobile ── */}
+        <div className="flex flex-1 w-full items-center md:flex-none">
         <div
           className="relative flex w-full flex-col text-center mt-4 md:mt-8"
           style={{ animation: 'hero-item-in 0.7s cubic-bezier(0.22,1,0.36,1) both' }}
@@ -96,9 +97,9 @@ export default function HeroDark() {
             partner for GEMA and DURR — backed by 14+ years of industrial experience.
           </p>
 
-          {/* CTAs */}
+          {/* CTAs — desktop only (mobile CTA lives below authority bar) */}
           <div
-            className="order-4 mt-6 flex justify-center px-1 md:order-3 md:mt-16"
+            className="hidden md:flex order-3 mt-16 justify-center px-1"
             style={{ animation: 'hero-item-in 0.55s cubic-bezier(0.22,1,0.36,1) 0.38s both' }}
           >
             <button
@@ -142,10 +143,11 @@ export default function HeroDark() {
             <span className="text-[0.5rem] font-semibold uppercase tracking-[0.16em] text-white/52">German liquid coating</span>
           </div>
         </div>
+        </div>{/* end flex-1 wrapper */}
 
-        {/* ── Floating authority stripe ── */}
+        {/* ── Authority stripe + mobile CTA — flow on mobile, absolute on desktop ── */}
         <div
-          className="absolute inset-x-5 bottom-12 md:inset-x-10 md:bottom-14 lg:inset-x-12"
+          className="w-full md:absolute md:inset-x-5 md:bottom-12 lg:inset-x-12"
           style={{ animation: 'hero-item-in 0.65s cubic-bezier(0.22,1,0.36,1) 0.48s both' }}
         >
           <div className="overflow-hidden rounded-[1rem] border border-[#FECE00]/[0.12] bg-[#080a0c] shadow-[0_-6px_40px_rgba(0,0,0,0.6),0_16px_48px_rgba(0,0,0,0.4)]">
@@ -215,6 +217,35 @@ export default function HeroDark() {
             </div>
 
           </div>
+
+          {/* Mobile CTA — below authority bar, hidden on desktop */}
+          <div className="mt-4 flex justify-center md:hidden">
+            <button
+              type="button"
+              onClick={() => {
+                const el = document.getElementById('products-section');
+                if (!el) return;
+                const start = window.scrollY;
+                const target = el.getBoundingClientRect().top + window.scrollY - 80;
+                const distance = target - start;
+                const duration = 1000;
+                let startTime: number | null = null;
+                const ease = (t: number) => t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2;
+                const step = (ts: number) => {
+                  if (!startTime) startTime = ts;
+                  const progress = Math.min((ts - startTime) / duration, 1);
+                  window.scrollTo(0, start + distance * ease(progress));
+                  if (progress < 1) requestAnimationFrame(step);
+                };
+                requestAnimationFrame(step);
+              }}
+              className="panel-button dynamic-button dynamic-button-yellow w-full"
+            >
+              <span>Explore Products</span>
+              <div className="dynamic-button-glow" />
+            </button>
+          </div>
+
         </div>
 
       </div>
