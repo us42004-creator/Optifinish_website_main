@@ -118,10 +118,120 @@ export default function ProprietaryAutomation() {
         <div className="relative flex h-full items-center">
           <div className="mx-auto w-full max-w-7xl px-5 md:px-8">
 
-            <div className="grid gap-8 lg:grid-cols-2 lg:items-end lg:gap-16">
+            {/* ══════════════════════════════════════════
+                MOBILE layout — tab-card system (lg:hidden)
+            ══════════════════════════════════════════ */}
+            <div className="lg:hidden">
+
+              {/* Header */}
+              <div className="mb-6">
+                <span className="mb-2 block text-[0.56rem] font-bold uppercase tracking-[0.22em] text-ink/40">
+                  OptiFinish Automation
+                </span>
+                <h2 className="font-display text-[clamp(2rem,7vw,3rem)] font-black leading-[0.96] tracking-[-0.04em] text-ink">
+                  Built by us.<br />
+                  <span style={{ color: '#FECE00' }}>Owned by us.</span>
+                </h2>
+                <p className="mt-3 max-w-sm text-[0.82rem] leading-relaxed text-ink/50">
+                  Three proprietary products — designed, manufactured, and supported by OptiFinish.
+                </p>
+              </div>
+
+              {/* Tab pills */}
+              <div className="mb-5 flex gap-2">
+                {PRODUCTS.map((p, i) => (
+                  <button
+                    key={p.id}
+                    onClick={() => setActive(i)}
+                    style={{ touchAction: 'manipulation' }}
+                    className={`rounded-full px-4 py-2.5 text-[0.72rem] font-bold uppercase tracking-[0.14em] transition-all duration-200 ${
+                      i === active
+                        ? 'bg-ink text-white'
+                        : 'border border-ink/[0.12] bg-ink/[0.04] text-ink/45'
+                    }`}
+                  >
+                    {p.name}
+                  </button>
+                ))}
+              </div>
+
+              {/* Active product card */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={product.id + '-mobile'}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.22, ease }}
+                  className="overflow-hidden rounded-[1.4rem] border border-ink/[0.08] bg-white/70 shadow-[0_4px_20px_rgba(0,0,0,0.06)]"
+                >
+                  {/* Hero image — only render if image exists */}
+                  {product.heroImage && (
+                    <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#f0f0f0]">
+                      <Image
+                        src={product.heroImage}
+                        alt={product.name}
+                        fill
+                        className="object-cover"
+                        style={{ objectPosition: 'center 25%' }}
+                        sizes="100vw"
+                      />
+                    </div>
+                  )}
+
+                  <div className="flex flex-col gap-4 p-5">
+                    {/* Tag + name + tagline */}
+                    <div>
+                      <span className="inline-block rounded-full bg-[#FECE00] px-3 py-1 text-[0.58rem] font-bold uppercase tracking-[0.18em] text-ink">
+                        {product.tag}
+                      </span>
+                      <h3 className="mt-2 font-display text-[1.7rem] font-black tracking-[-0.03em] text-ink">
+                        {product.name}
+                      </h3>
+                      <p className="text-[0.78rem] font-semibold text-ink/50">{product.tagline}</p>
+                    </div>
+
+                    {/* Description */}
+                    <p className="text-[0.8rem] leading-relaxed text-ink/50">{product.desc}</p>
+
+                    {/* Specs */}
+                    <ul className="flex flex-col gap-1.5 border-t border-ink/[0.15] pt-4">
+                      {product.specs.map((s) => (
+                        <li key={s} className="flex items-center gap-2.5 text-[0.72rem] font-medium text-ink/55">
+                          <span className="h-[4px] w-[4px] flex-shrink-0 rounded-full bg-[#FECE00]" />
+                          {s}
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* CTAs */}
+                    <div className="flex gap-2.5">
+                      <Link
+                        href={product.href}
+                        className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full bg-ink px-4 py-3 text-[0.68rem] font-bold uppercase tracking-[0.18em] text-white"
+                      >
+                        Learn more →
+                      </Link>
+                      <Link
+                        href="/products/automation"
+                        className="inline-flex items-center justify-center rounded-full border border-ink/[0.12] px-4 py-3 text-[0.65rem] font-bold uppercase tracking-[0.14em] text-ink/40"
+                      >
+                        All
+                      </Link>
+                    </div>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+
+            </div>
+
+            {/* ══════════════════════════════════════════
+                DESKTOP layout — sticky scroll (hidden lg:grid)
+            ══════════════════════════════════════════ */}
+            <div className="hidden lg:grid lg:grid-cols-2 lg:items-end lg:gap-16">
 
               {/* ── LEFT col ── */}
-              <div className="flex flex-col order-2 lg:order-1">
+              <div className="flex flex-col">
 
                 {/* Eyebrow */}
                 <div className="overflow-hidden pb-[0.15em]">
@@ -206,16 +316,16 @@ export default function ProprietaryAutomation() {
                       ))}
                     </ul>
 
-                    <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                    <div className="flex flex-wrap gap-3">
                       <Link
                         href={product.href}
-                        className="inline-flex items-center justify-center gap-2 rounded-full bg-ink px-5 py-3 text-[0.68rem] font-bold uppercase tracking-[0.18em] text-white transition-colors hover:bg-ink/85 sm:py-2.5"
+                        className="inline-flex items-center justify-center gap-2 rounded-full bg-ink px-5 py-2.5 text-[0.68rem] font-bold uppercase tracking-[0.18em] text-white transition-colors hover:bg-ink/85"
                       >
                         Learn more <span>→</span>
                       </Link>
                       <Link
                         href="/products/automation"
-                        className="inline-flex items-center justify-center gap-2 rounded-full border border-ink/[0.12] px-5 py-3 text-[0.68rem] font-bold uppercase tracking-[0.18em] text-ink/40 transition-colors hover:text-ink/65 sm:py-2.5"
+                        className="inline-flex items-center justify-center gap-2 rounded-full border border-ink/[0.12] px-5 py-2.5 text-[0.68rem] font-bold uppercase tracking-[0.18em] text-ink/40 transition-colors hover:text-ink/65"
                       >
                         View all automation
                       </Link>
@@ -224,7 +334,7 @@ export default function ProprietaryAutomation() {
                 </AnimatePresence>
               </div>
 
-              {/* ── RIGHT col — media cards (image first on mobile via order-1) ── */}
+              {/* ── RIGHT col — media cards ── */}
               <AnimatePresence mode="wait">
                 <motion.div
                   key={product.id + '-visual'}
@@ -232,12 +342,12 @@ export default function ProprietaryAutomation() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.97 }}
                   transition={{ duration: 0.34, ease }}
-                  className="flex flex-col gap-3 order-1 lg:order-2"
+                  className="flex flex-col gap-3"
                 >
                   <div className="overflow-hidden rounded-[1.4rem] border border-ink/[0.07] bg-white/70 shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
                     <div className="relative aspect-[4/3] w-full bg-[#f0f0f0]">
                       {product.heroImage ? (
-                        <Image src={product.heroImage} alt={product.name} fill className="object-cover" style={{ objectPosition: 'center 25%' }} sizes="(max-width: 768px) 100vw, 55vw" />
+                        <Image src={product.heroImage} alt={product.name} fill className="object-cover" style={{ objectPosition: 'center 25%' }} sizes="55vw" />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center bg-ink/[0.03]">
                           <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-ink/20">Coming Soon</span>
@@ -257,7 +367,7 @@ export default function ProprietaryAutomation() {
                       >
                         <div className="relative aspect-[4/3] w-full bg-[#f0f0f0]">
                           {product[key] ? (
-                            <Image src={product[key]!} alt={label} fill className="object-cover object-center" sizes="(max-width: 768px) 50vw, 27vw" />
+                            <Image src={product[key]!} alt={label} fill className="object-cover object-center" sizes="27vw" />
                           ) : (
                             <div className="flex h-full w-full items-center justify-center bg-ink/[0.03]">
                               <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-ink/20">Coming Soon</span>
