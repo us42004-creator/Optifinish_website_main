@@ -166,8 +166,8 @@ function HScrollRow({
                     <Image src={g.logo} alt={g.label} fill className="object-cover" />
                   </div>
                 ) : (
-                  <div className="flex h-6 items-center rounded-md bg-[#0a0a0a] px-2">
-                    <Image src={g.logo} alt={g.label} width={56} height={18} className="h-[13px] w-auto object-contain" style={{ filter: 'brightness(0) invert(1)' }} />
+                  <div className="flex h-7 items-center rounded-md bg-white px-2.5 shadow-[0_1px_4px_rgba(0,0,0,0.1)]">
+                    <Image src={g.logo} alt={g.label} width={72} height={22} className="h-[15px] w-auto object-contain" />
                   </div>
                 )
               )}
