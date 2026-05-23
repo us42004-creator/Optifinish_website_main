@@ -198,8 +198,8 @@ function HScrollRow({
           </div>
 
           {/* Card bottom — image carousel */}
-          <div className="relative mt-auto overflow-hidden rounded-b-[1.4rem]">
-            <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#f0eeeb]">
+          <div className="relative mt-auto px-4 pb-4">
+            <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[1rem] bg-[#f0eeeb]">
               {g.slides.map((slide, i) => (
                 <div
                   key={i}
