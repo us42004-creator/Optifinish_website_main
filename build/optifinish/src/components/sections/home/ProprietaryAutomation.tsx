@@ -90,7 +90,7 @@ export default function ProprietaryAutomation() {
     <section ref={containerRef} className="relative lg:h-[300vh]">
 
       {/* ── Sticky viewport ── */}
-      <div className="sticky top-0 h-auto lg:h-screen overflow-y-visible lg:overflow-hidden bg-[#f1efea] py-12 lg:py-0">
+      <div className="lg:sticky lg:top-0 lg:h-screen lg:overflow-hidden bg-[#f1efea] py-12 lg:py-0">
 
         {/* Grid drift layers */}
         <div
@@ -115,7 +115,7 @@ export default function ProprietaryAutomation() {
         />
 
         {/* ── Vertically centred content ── */}
-        <div className="relative flex h-full items-center">
+        <div className="relative flex lg:h-full lg:items-center">
           <div className="mx-auto w-full max-w-7xl px-5 md:px-8">
 
             {/* ══════════════════════════════════════════
