@@ -36,10 +36,17 @@ export default function OurWorkPreview() {
   });
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden bg-[#f1efea] py-14 md:py-28">
-      {/* Grid drift layers — matches light-themed template */}
-      <div className="pointer-events-none absolute inset-0 opacity-[0.62] mix-blend-multiply" style={{ backgroundImage: 'linear-gradient(rgba(201,165,0,0.22) 1px, transparent 1px), linear-gradient(90deg, rgba(201,165,0,0.22) 1px, transparent 1px)', backgroundSize: '88px 88px' }} />
-      <div className="pointer-events-none absolute inset-0 opacity-[0.32] mix-blend-multiply" style={{ backgroundImage: 'linear-gradient(rgba(255,243,163,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,243,163,0.5) 1px, transparent 1px)', backgroundSize: '264px 264px' }} />
+    <section ref={sectionRef} className="relative bg-[#070809] py-14 md:py-28">
+      {/* Subtle yellow grid */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div
+          className="absolute inset-0 opacity-[0.028]"
+          style={{
+            backgroundImage: 'linear-gradient(rgba(254,206,0,1) 1px, transparent 1px), linear-gradient(90deg, rgba(254,206,0,1) 1px, transparent 1px)',
+            backgroundSize: '72px 72px',
+          }}
+        />
+      </div>
 
       <div className="relative mx-auto max-w-7xl px-5 md:px-8">
 
@@ -49,13 +56,13 @@ export default function OurWorkPreview() {
             <div className="overflow-hidden pb-[0.15em]">
               <span
                 ref={eyebrowRef}
-                className="mb-3 block text-[0.56rem] font-bold uppercase tracking-[0.22em] text-[#FECE00]"
+                className="mb-3 block text-[0.56rem] font-bold uppercase tracking-[0.22em] text-[#FECE00]/55"
                 style={{ willChange: 'transform, opacity' }}
               >
                 Our Work
               </span>
             </div>
-            <h2 className="font-display text-[clamp(2rem,4vw,3.5rem)] font-black leading-[0.92] tracking-[-0.04em] text-ink">
+            <h2 className="font-display text-[clamp(2rem,4vw,3.5rem)] font-black leading-[0.92] tracking-[-0.04em] text-white">
               <div className="overflow-hidden pb-[0.15em]">
                 <span ref={line1Ref} className="block" style={{ willChange: 'transform, opacity' }}>
                   250+ lines installed
@@ -70,7 +77,7 @@ export default function OurWorkPreview() {
           </div>
           <Link
             href="/our-work"
-            className="inline-flex items-center gap-2 self-start rounded-full border border-ink/15 bg-ink/[0.06] px-5 py-2.5 text-[0.68rem] font-bold uppercase tracking-[0.18em] text-ink/55 transition-colors hover:border-ink/25 hover:bg-ink/[0.1] hover:text-ink"
+            className="inline-flex items-center gap-2 self-start rounded-full border border-white/[0.1] bg-white/[0.03] px-5 py-2.5 text-[0.68rem] font-bold uppercase tracking-[0.18em] text-white/40 transition-colors hover:text-white/65"
           >
             View all installations <span>→</span>
           </Link>
@@ -81,15 +88,15 @@ export default function OurWorkPreview() {
           {WORK_CARDS.map((card, i) => (
             <div
               key={i}
-              className="snap-start shrink-0 w-[82vw] md:w-auto flex flex-col overflow-hidden rounded-[1.4rem] border border-ink/[0.08] bg-white shadow-[0_2px_16px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-1 hover:border-[#FECE00]/50 hover:shadow-[0_8px_32px_rgba(254,206,0,0.10)]"
+              className="snap-start shrink-0 w-[82vw] md:w-auto flex flex-col overflow-hidden rounded-[1.4rem] border border-ink/[0.08] bg-white shadow-[0_2px_16px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-1 hover:border-[#FECE00]/50 hover:shadow-[0_8px_32px_rgba(254,206,0,0.10)] md:border-white/[0.06] md:bg-white/[0.02] md:shadow-none"
             >
               <div className="relative overflow-hidden">
-                <div className="flex aspect-[4/3] w-full items-center justify-center bg-[#f0eeeb]">
+                <div className="flex aspect-[4/3] w-full items-center justify-center bg-[#f0eeeb] md:bg-white/[0.03]">
                   <div className="text-center">
-                    <div className="mx-auto mb-2 flex h-9 w-9 items-center justify-center rounded-full border border-ink/[0.1] bg-ink/[0.04]">
-                      <span className="text-ink/25">⊡</span>
+                    <div className="mx-auto mb-2 flex h-9 w-9 items-center justify-center rounded-full border border-ink/[0.1] bg-ink/[0.04] md:border-white/[0.08] md:bg-white/[0.04]">
+                      <span className="text-ink/25 md:text-white/20">⊡</span>
                     </div>
-                    <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-ink/30">
+                    <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-ink/30 md:text-white/18">
                       Coming Soon
                     </span>
                   </div>
@@ -98,12 +105,12 @@ export default function OurWorkPreview() {
               <div className="flex flex-col gap-2 p-5">
                 <div className="flex items-center gap-2">
                   <span className="h-1 w-1 flex-shrink-0 rounded-full bg-[#FECE00]" />
-                  <span className="text-[0.65rem] font-bold uppercase tracking-[0.18em] text-[#b89c00]">
+                  <span className="text-[0.65rem] font-bold uppercase tracking-[0.18em] text-[#b89c00] md:text-[#FECE00]/60">
                     {card.industry}
                   </span>
                 </div>
-                <p className="text-[0.72rem] font-semibold text-ink/60">{card.city}</p>
-                <p className="text-[0.75rem] leading-relaxed text-ink/45">{card.desc}</p>
+                <p className="text-[0.72rem] font-semibold text-ink/60 md:text-white/50">{card.city}</p>
+                <p className="text-[0.75rem] leading-relaxed text-ink/45 md:text-white/30">{card.desc}</p>
               </div>
             </div>
           ))}
