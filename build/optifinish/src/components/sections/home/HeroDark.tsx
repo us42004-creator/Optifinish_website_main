@@ -101,40 +101,44 @@ export default function HeroDark() {
             Expert <span style={{ color: '#FECE00' }}>coating</span> solutions.
           </h1>
 
+          {/* Flag strip — just below heading */}
+          <div
+            className="mt-5 flex items-start justify-center gap-6 md:mt-6"
+            style={{ animation: 'hero-item-in 0.5s cubic-bezier(0.22,1,0.36,1) 0.28s both' }}
+          >
+            <div className="flex flex-col items-center gap-1.5">
+              <span className="text-[1.4rem] leading-none">🇮🇳</span>
+              <span className="text-[0.48rem] font-semibold uppercase tracking-[0.14em] text-white/50 leading-tight text-center">Indian<br />manufacturing</span>
+            </div>
+            <div className="flex flex-col items-center gap-1.5">
+              <span className="text-[1.5rem] leading-none" style={{ display: 'inline-block', transform: 'scaleX(1.25)' }}>🇨🇭</span>
+              <span className="text-[0.48rem] font-semibold uppercase tracking-[0.14em] text-white/50 leading-tight text-center">Swiss<br />powder tech</span>
+            </div>
+            <div className="flex flex-col items-center gap-1.5">
+              <span className="text-[1.4rem] leading-none">🇩🇪</span>
+              <span className="text-[0.48rem] font-semibold uppercase tracking-[0.14em] text-white/50 leading-tight text-center">German<br />liquid coating</span>
+            </div>
+          </div>
+
           {/* Subtext — desktop only */}
           <p
             className="mx-auto mt-5 hidden max-w-[560px] text-[0.78rem] leading-relaxed tracking-[0.01em] text-white/50 md:mt-6 md:block md:text-[0.85rem] md:leading-[1.8]"
-            style={{ animation: 'hero-item-in 0.6s cubic-bezier(0.22,1,0.36,1) 0.28s both' }}
+            style={{ animation: 'hero-item-in 0.6s cubic-bezier(0.22,1,0.36,1) 0.36s both' }}
           >
             OptiFinish designs and manufactures complete powder coating lines,
             develops proprietary automation products, and is an authorised
             partner for GEMA and DURR — backed by 14+ years of industrial experience.
           </p>
 
-          {/* CTA — desktop only (sits above flags on desktop) */}
+          {/* CTA — desktop only */}
           <div
-            className="hidden md:flex order-3 mt-16 justify-center px-1"
-            style={{ animation: 'hero-item-in 0.55s cubic-bezier(0.22,1,0.36,1) 0.38s both' }}
+            className="hidden md:flex mt-14 justify-center px-1"
+            style={{ animation: 'hero-item-in 0.55s cubic-bezier(0.22,1,0.36,1) 0.44s both' }}
           >
             <button type="button" onClick={scrollToProducts} className="panel-button dynamic-button dynamic-button-yellow w-full sm:w-auto">
               <span>Explore Products</span>
               <div className="dynamic-button-glow" />
             </button>
-          </div>
-
-          {/* Flag strip */}
-          <div
-            className="order-3 mt-6 flex items-center justify-center gap-3 md:order-4 md:mt-8"
-            style={{ animation: 'hero-item-in 0.5s cubic-bezier(0.22,1,0.36,1) 0.44s both' }}
-          >
-            <span className="text-[1.2rem] leading-none">🇮🇳</span>
-            <span className="text-[0.5rem] font-semibold uppercase tracking-[0.16em] text-white/52">Indian manufacturing</span>
-            <span className="text-[0.5rem] text-white/18">·</span>
-            <span className="text-[1.5rem] leading-none" style={{ display: 'inline-block', transform: 'scaleX(1.25)' }}>🇨🇭</span>
-            <span className="text-[0.5rem] font-semibold uppercase tracking-[0.16em] text-white/52">Swiss powder tech</span>
-            <span className="text-[0.5rem] text-white/18">·</span>
-            <span className="text-[1.2rem] leading-none">🇩🇪</span>
-            <span className="text-[0.5rem] font-semibold uppercase tracking-[0.16em] text-white/52">German liquid coating</span>
           </div>
 
           {/* ── Authority bar + mobile CTA
