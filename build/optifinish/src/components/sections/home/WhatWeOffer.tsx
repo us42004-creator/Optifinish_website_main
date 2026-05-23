@@ -350,7 +350,7 @@ export default function WhatWeOffer() {
         {/* Row 1 — OptiFinish Manufactured + Automation */}
         <div className="mb-3.5">
           <div className="mb-3 px-5 md:px-8">
-            <span className="text-[0.52rem] font-bold uppercase tracking-[0.2em] text-white/25">OptiFinish</span>
+            <span className="text-[0.72rem] font-bold uppercase tracking-[0.2em] text-[#FECE00]">OptiFinish</span>
           </div>
           {/* negative margin trick so scroll bleeds edge-to-edge */}
           <div className="overflow-hidden">
@@ -365,7 +365,7 @@ export default function WhatWeOffer() {
         {/* Row 2 — GEMA + DÜRR + Vinayak */}
         <div>
           <div className="mb-3 px-5 md:px-8">
-            <span className="text-[0.52rem] font-bold uppercase tracking-[0.2em] text-white/25">Partners & Associates</span>
+            <span className="text-[0.72rem] font-bold uppercase tracking-[0.2em] text-[#FECE00]">Partners & Associates</span>
           </div>
           <div className="overflow-hidden">
             <HScrollRow
