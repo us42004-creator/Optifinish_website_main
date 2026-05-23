@@ -289,7 +289,7 @@ export default function AboutPageContent() {
             <div className="overflow-hidden pb-[0.12em]">
               <span
                 ref={timelineHeadRef}
-                className="block font-display text-[clamp(2.4rem,5.5vw,5.5rem)] font-black leading-[0.9] tracking-[-0.04em] text-white"
+                className="block font-display text-[clamp(2.4rem,5.5vw,5.5rem)] font-black leading-[0.96] tracking-[-0.04em] text-white md:leading-[0.9]"
                 style={{ willChange: 'transform, opacity' }}
               >
                 25 years in the making.

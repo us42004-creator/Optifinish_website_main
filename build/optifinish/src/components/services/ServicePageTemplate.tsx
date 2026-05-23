@@ -218,7 +218,7 @@ export default function ServicePageTemplate({
       <section className="relative bg-[#070809] py-16 md:py-20">
         <DarkGrid />
         <div className="relative mx-auto max-w-7xl px-5 md:px-8">
-          <div className="mb-12">
+          <div className="mb-8 md:mb-12">
             <p className="mb-2 text-[0.56rem] font-bold uppercase tracking-[0.22em] text-[#FECE00]/45">
               Process
             </p>

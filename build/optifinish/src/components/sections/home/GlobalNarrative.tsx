@@ -34,7 +34,7 @@ const PILLARS = [
 export default function GlobalNarrative() {
   return (
     <section
-      className="relative overflow-hidden bg-[#070809] py-10 md:py-14"
+      className="relative overflow-hidden bg-[#070809] py-8 md:py-14"
       aria-label="Global technology, Indian delivery"
     >
       {/* Subtle yellow grid */}
@@ -52,7 +52,7 @@ export default function GlobalNarrative() {
         {/* Header row */}
         <div className="mb-7 flex flex-col gap-2 md:flex-row md:items-end md:justify-between md:gap-8">
           <div>
-            <p className="mb-2 text-[0.5rem] font-bold uppercase tracking-[0.22em] text-[#FECE00]/45">
+            <p className="mb-2 text-[0.56rem] font-bold uppercase tracking-[0.22em] text-[#FECE00]/45">
               Global technology · Indian delivery
             </p>
             <h2 className="font-display text-[clamp(1.3rem,2.8vw,2rem)] font-black leading-[0.92] tracking-[-0.035em] text-white">
@@ -72,7 +72,7 @@ export default function GlobalNarrative() {
               <span style={{ color: '#FECE00' }}> engineering.</span>
             </h2>
           </div>
-          <p className="max-w-sm text-[0.7rem] leading-relaxed text-white/28 md:text-right">
+          <p className="max-w-sm text-[0.75rem] leading-relaxed text-white/28 md:text-right">
             OptiFinish integrates world-class European coating technology into systems manufactured entirely in India — giving Indian industry access to global-standard equipment through a local source.
           </p>
         </div>
@@ -110,12 +110,12 @@ export default function GlobalNarrative() {
               </div>
 
               {/* Body */}
-              <p className="text-[0.68rem] leading-relaxed text-white/32" itemProp="description">
+              <p className="text-[0.75rem] leading-relaxed text-white/32" itemProp="description">
                 {p.body}
               </p>
 
               {/* Detail chip */}
-              <p className="mt-auto text-[0.48rem] font-semibold uppercase tracking-[0.16em] text-[#FECE00]/35">
+              <p className="mt-auto text-[0.52rem] font-semibold uppercase tracking-[0.16em] text-[#FECE00]/35">
                 {p.detail}
               </p>
             </article>

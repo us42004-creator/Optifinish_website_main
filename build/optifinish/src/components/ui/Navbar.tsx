@@ -630,7 +630,6 @@ export default function Navbar() {
       </header>
 
       {/* ── Hamburger: fixed sibling outside header, z-[55] above pill (z-50) ── */}
-      {/* onPointerUp is the most reliable cross-platform touch event on Android + iOS */}
       <button
         type="button"
         aria-label="Toggle menu"
@@ -641,17 +640,15 @@ export default function Navbar() {
         }`}
         style={{
           top: '10px',
-          right: '12px',
+          right: '16px',
           touchAction: 'manipulation',
           WebkitTapHighlightColor: 'transparent',
           cursor: 'pointer',
           userSelect: 'none',
           WebkitUserSelect: 'none',
         }}
-        onPointerUp={(e) => {
-          e.currentTarget.releasePointerCapture(e.pointerId);
-          setMenuOpen((v) => !v);
-        }}
+        onTouchEnd={(e) => { e.preventDefault(); setMenuOpen((v) => !v); }}
+        onClick={() => setMenuOpen((v) => !v)}
       >
         {menuOpen ? <X size={20} /> : <Menu size={20} />}
       </button>

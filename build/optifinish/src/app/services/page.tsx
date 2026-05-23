@@ -130,7 +130,7 @@ export default function ServicesPage() {
           </p>
 
           {/* Headline */}
-          <h1 className="font-display max-w-3xl text-[clamp(1.8rem,5.5vw,4.5rem)] font-black leading-[0.9] tracking-[-0.04em]">
+          <h1 className="font-display max-w-3xl text-[clamp(1.8rem,5.5vw,4.5rem)] font-black leading-[0.96] tracking-[-0.04em] md:leading-[0.9]">
             <span className="block text-white">Services that keep</span>
             <span className="block text-[#FECE00]">your line running.</span>
           </h1>

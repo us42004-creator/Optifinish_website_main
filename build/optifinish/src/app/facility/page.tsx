@@ -168,7 +168,7 @@ export default function FacilityPage() {
             </div>
 
             {/* Headline */}
-            <h1 className="font-display max-w-3xl text-[clamp(1.8rem,6vw,5rem)] font-black leading-[0.88] tracking-[-0.04em] text-white">
+            <h1 className="font-display max-w-3xl text-[clamp(1.8rem,6vw,5rem)] font-black leading-[0.96] tracking-[-0.04em] text-white md:leading-[0.88]">
               Where OptiFinish
               <br />
               <span className="text-[#FECE00]">products are built.</span>

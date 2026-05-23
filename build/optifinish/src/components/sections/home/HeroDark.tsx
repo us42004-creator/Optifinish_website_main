@@ -20,7 +20,7 @@ function PulseBullet() {
 
 const STATS = [
   { value: '14+',  label: 'Years',         sub: 'Industrial experience' },
-  { value: '500+', label: 'Installations', sub: 'Across India'          },
+  { value: '250+', label: 'Installations', sub: 'Across India'          },
 ];
 
 export default function HeroDark() {
@@ -54,11 +54,11 @@ export default function HeroDark() {
       <div className="pointer-events-none absolute bottom-0 right-0 h-[300px] w-[300px] rounded-full bg-[#FECE00]/[0.01] blur-[100px]" />
 
       {/* Centring shell */}
-      <div className="relative mx-auto flex min-h-svh max-w-7xl flex-col items-center justify-center px-5 pb-36 pt-24 md:pb-44 md:px-8">
+      <div className="relative mx-auto flex min-h-svh max-w-7xl flex-col items-center justify-center px-5 pb-24 pt-20 md:pb-44 md:px-8">
 
         {/* ── Hero content — CSS animations so visible before JS hydration ── */}
         <div
-          className="relative w-full text-center mt-8"
+          className="relative flex w-full flex-col text-center mt-4 md:mt-8"
           style={{ animation: 'hero-item-in 0.7s cubic-bezier(0.22,1,0.36,1) both' }}
         >
           {/* yellow glow behind copy */}
@@ -76,7 +76,7 @@ export default function HeroDark() {
 
           {/* Headline */}
           <h1
-            className="font-display text-[clamp(1.5rem,4.6vw,4.6rem)] font-black leading-[0.92] tracking-[-0.04em] text-white"
+            className="font-display text-[clamp(1.5rem,4.6vw,4.6rem)] font-black leading-[1.0] tracking-[-0.04em] text-white md:leading-[0.92]"
             style={{ animation: 'hero-item-in 0.7s cubic-bezier(0.22,1,0.36,1) 0.18s both' }}
           >
             Manufactured systems.{' '}
@@ -88,7 +88,7 @@ export default function HeroDark() {
 
           {/* Subtext */}
           <p
-            className="mx-auto mt-5 max-w-[560px] text-[0.78rem] leading-relaxed tracking-[0.01em] text-white/50 md:mt-6 md:text-[0.85rem] md:leading-[1.8]"
+            className="mx-auto mt-5 hidden max-w-[560px] text-[0.78rem] leading-relaxed tracking-[0.01em] text-white/50 md:mt-6 md:block md:text-[0.85rem] md:leading-[1.8]"
             style={{ animation: 'hero-item-in 0.6s cubic-bezier(0.22,1,0.36,1) 0.28s both' }}
           >
             OptiFinish designs and manufactures complete powder coating lines,
@@ -98,14 +98,28 @@ export default function HeroDark() {
 
           {/* CTAs */}
           <div
-            className="mt-10 flex justify-center px-1 md:mt-16"
+            className="order-4 mt-6 flex justify-center px-1 md:order-3 md:mt-16"
             style={{ animation: 'hero-item-in 0.55s cubic-bezier(0.22,1,0.36,1) 0.38s both' }}
           >
             <button
               type="button"
-              onClick={() =>
-                document.getElementById('products-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-              }
+              onClick={() => {
+                const el = document.getElementById('products-section');
+                if (!el) return;
+                const start = window.scrollY;
+                const target = el.getBoundingClientRect().top + window.scrollY - 80;
+                const distance = target - start;
+                const duration = 1000;
+                let startTime: number | null = null;
+                const ease = (t: number) => t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2;
+                const step = (ts: number) => {
+                  if (!startTime) startTime = ts;
+                  const progress = Math.min((ts - startTime) / duration, 1);
+                  window.scrollTo(0, start + distance * ease(progress));
+                  if (progress < 1) requestAnimationFrame(step);
+                };
+                requestAnimationFrame(step);
+              }}
               className="panel-button dynamic-button dynamic-button-yellow w-full sm:w-auto"
             >
               <span>Explore Products</span>
@@ -115,7 +129,7 @@ export default function HeroDark() {
 
           {/* Global provenance — muted flag strip */}
           <div
-            className="mt-8 flex items-center justify-center gap-3"
+            className="order-3 mt-6 flex items-center justify-center gap-3 md:order-4 md:mt-8"
             style={{ animation: 'hero-item-in 0.5s cubic-bezier(0.22,1,0.36,1) 0.44s both' }}
           >
             <span className="text-[1.2rem] leading-none">🇮🇳</span>
@@ -152,7 +166,7 @@ export default function HeroDark() {
                       {label}
                     </span>
                   </div>
-                  <span className="text-[0.5rem] font-semibold uppercase tracking-[0.14em] text-[#FECE00]/50">
+                  <span className="text-[0.54rem] font-semibold uppercase tracking-[0.14em] text-[#FECE00]/50">
                     {sub}
                   </span>
                 </div>

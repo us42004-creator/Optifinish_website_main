@@ -158,7 +158,7 @@ export default function WhatWeOffer() {
   }, [searchParams]);
 
   return (
-    <section ref={sectionRef} id="what-we-offer" className="relative overflow-hidden bg-[#070809] py-20 md:py-28">
+    <section ref={sectionRef} id="what-we-offer" className="relative overflow-hidden bg-[#070809] py-14 md:py-28">
 
       {/* Subtle dark grid */}
       <div
@@ -173,7 +173,7 @@ export default function WhatWeOffer() {
       <div className="relative mx-auto max-w-7xl px-5 md:px-8">
 
         {/* Header */}
-        <div className="mb-12">
+        <div className="mb-8 md:mb-12">
           <div className="overflow-hidden pb-[0.15em]">
             <span
               ref={eyebrowRef}
@@ -242,7 +242,7 @@ export default function WhatWeOffer() {
                 <p className="text-[0.75rem] leading-relaxed text-white/40">{g.desc}</p>
                 <ul className="flex flex-col gap-1 border-t border-white/[0.06] pt-3">
                   {g.items.map((item) => (
-                    <li key={item} className="flex items-center gap-2 text-[0.68rem] font-medium text-white/45">
+                    <li key={item} className="flex items-center gap-2 text-[0.72rem] font-medium text-white/45">
                       <span className="h-1 w-1 flex-shrink-0 rounded-full bg-[#FECE00]" />
                       {item}
                     </li>
@@ -273,7 +273,7 @@ export default function WhatWeOffer() {
                       </div>
                     ))}
                     <div className="absolute bottom-2 left-3 z-10">
-                      <span className="rounded-full bg-black/35 px-2 py-0.5 text-[0.48rem] font-bold uppercase tracking-[0.16em] text-white/80 backdrop-blur-sm">
+                      <span className="rounded-full bg-black/35 px-2 py-0.5 text-[0.52rem] font-bold uppercase tracking-[0.16em] text-white/80 backdrop-blur-sm">
                         {g.slides[topSlides[gi]].label}
                       </span>
                     </div>

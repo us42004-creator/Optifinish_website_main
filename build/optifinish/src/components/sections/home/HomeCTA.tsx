@@ -18,7 +18,7 @@ export default function HomeCTA() {
   });
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden bg-[#f1efea] py-20 md:py-28">
+    <section ref={sectionRef} className="relative overflow-hidden bg-[#f1efea] py-14 md:py-28">
       {/* Grid drift layers */}
       <div
         className="pointer-events-none absolute inset-0 grid-drift opacity-[0.62] mix-blend-multiply"

@@ -90,7 +90,7 @@ export default function ProprietaryAutomation() {
     <section ref={containerRef} className="relative lg:h-[300vh]">
 
       {/* ── Sticky viewport ── */}
-      <div className="sticky top-0 h-auto lg:h-screen overflow-y-visible lg:overflow-hidden bg-[#f1efea] py-16 lg:py-0">
+      <div className="sticky top-0 h-auto lg:h-screen overflow-y-visible lg:overflow-hidden bg-[#f1efea] py-12 lg:py-0">
 
         {/* Grid drift layers */}
         <div
@@ -164,7 +164,7 @@ export default function ProprietaryAutomation() {
                     <button
                       key={p.id}
                       onClick={() => setActive(i)}
-                      className={`rounded-full px-4 py-2 text-[0.68rem] font-bold uppercase tracking-[0.16em] transition-all duration-200 ${
+                      className={`rounded-full px-4 py-2.5 text-[0.75rem] font-bold uppercase tracking-[0.16em] transition-all duration-200 ${
                         i === active
                           ? 'bg-ink text-white'
                           : 'border border-ink/[0.12] bg-ink/[0.04] text-ink/45 hover:text-ink/70'
@@ -186,7 +186,7 @@ export default function ProprietaryAutomation() {
                     className="mt-6 flex flex-col gap-5"
                   >
                     <div>
-                      <span className="inline-block rounded-full bg-[#FECE00] px-3 py-1 text-[0.58rem] font-bold uppercase tracking-[0.18em] text-ink">
+                      <span className="inline-block rounded-full bg-[#FECE00] px-3 py-1 text-[0.62rem] font-bold uppercase tracking-[0.18em] text-ink">
                         {product.tag}
                       </span>
                       <h3 className="mt-2 font-display text-[2rem] font-black tracking-[-0.03em] text-ink">

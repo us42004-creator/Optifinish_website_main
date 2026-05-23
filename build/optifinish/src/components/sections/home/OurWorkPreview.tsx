@@ -36,7 +36,7 @@ export default function OurWorkPreview() {
   });
 
   return (
-    <section ref={sectionRef} className="relative bg-[#070809] py-20 md:py-28">
+    <section ref={sectionRef} className="relative bg-[#070809] py-14 md:py-28">
       {/* Subtle grid — clipped in its own layer so section allows horizontal scroll on mobile */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div
@@ -52,7 +52,7 @@ export default function OurWorkPreview() {
       <div className="relative mx-auto max-w-7xl px-5 md:px-8">
 
         {/* Header */}
-        <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div className="mb-8 md:mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
             <div className="overflow-hidden pb-[0.15em]">
               <span
@@ -106,7 +106,7 @@ export default function OurWorkPreview() {
               <div className="flex flex-col gap-2 p-5">
                 <div className="flex items-center gap-2">
                   <span className="h-1 w-1 flex-shrink-0 rounded-full bg-[#FECE00]" />
-                  <span className="text-[0.6rem] font-bold uppercase tracking-[0.18em] text-[#FECE00]/60">
+                  <span className="text-[0.65rem] font-bold uppercase tracking-[0.18em] text-[#FECE00]/60">
                     {card.industry}
                   </span>
                 </div>
