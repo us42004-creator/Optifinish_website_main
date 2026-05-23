@@ -34,7 +34,7 @@ const PILLARS = [
 export default function GlobalNarrative() {
   return (
     <section
-      className="relative overflow-hidden bg-[#070809] py-8 md:py-14"
+      className="relative overflow-hidden bg-[#070809] py-5 md:py-14"
       aria-label="Global technology, Indian delivery"
     >
       {/* Subtle yellow grid */}
@@ -50,7 +50,7 @@ export default function GlobalNarrative() {
       <div className="relative mx-auto max-w-7xl px-5 md:px-8">
 
         {/* Header row */}
-        <div className="mb-7 flex flex-col gap-2 md:flex-row md:items-end md:justify-between md:gap-8">
+        <div className="mb-4 flex flex-col gap-2 md:mb-7 md:flex-row md:items-end md:justify-between md:gap-8">
           <div>
             <p className="mb-2 text-[0.56rem] font-bold uppercase tracking-[0.22em] text-[#FECE00]/45">
               Global technology · Indian delivery
@@ -72,17 +72,17 @@ export default function GlobalNarrative() {
               <span style={{ color: '#FECE00' }}> engineering.</span>
             </h2>
           </div>
-          <p className="max-w-sm text-[0.75rem] leading-relaxed text-white/28 md:text-right">
+          <p className="hidden max-w-sm text-[0.75rem] leading-relaxed text-white/28 md:block md:text-right">
             OptiFinish integrates world-class European coating technology into systems manufactured entirely in India — giving Indian industry access to global-standard equipment through a local source.
           </p>
         </div>
 
         {/* Three pillars */}
-        <div className="grid gap-3 sm:grid-cols-3">
+        <div className="grid gap-2.5 sm:grid-cols-3 md:gap-3">
           {PILLARS.map((p) => (
             <article
               key={p.country}
-              className="flex flex-col gap-2.5 rounded-[0.875rem] border border-white/[0.06] bg-white/[0.02] px-4 py-4"
+              className="flex flex-col gap-2 rounded-[0.875rem] border border-white/[0.06] bg-white/[0.02] px-3.5 py-3 md:gap-2.5 md:px-4 md:py-4"
               itemScope
               itemType="https://schema.org/Organization"
             >
@@ -110,7 +110,7 @@ export default function GlobalNarrative() {
               </div>
 
               {/* Body */}
-              <p className="text-[0.75rem] leading-relaxed text-white/32" itemProp="description">
+              <p className="hidden text-[0.75rem] leading-relaxed text-white/32 md:block" itemProp="description">
                 {p.body}
               </p>
 
