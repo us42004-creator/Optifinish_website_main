@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
@@ -11,7 +11,7 @@ const ease = [0.22, 1, 0.36, 1] as const;
 const PRODUCTS = [
   {
     id: 'ztap',
-    href: '/products/automation/ztap',
+    href: '/products/automation/z-tap',
     name: 'Z-TAP',
     tag: 'Flagship',
     tagline: 'Zero-touch robotic coating.',
@@ -22,6 +22,9 @@ const PRODUCTS = [
       'GEMA gun integration',
       'Full coating line compatible',
     ],
+    images: [null, null, null] as (string | null)[],
+    placeholderLabel: 'Z-TAP Robot System',
+    placeholderAccent: '#FECE00',
   },
   {
     id: 'za01',
@@ -36,6 +39,9 @@ const PRODUCTS = [
       'Line-compatible mounting',
       'Low maintenance design',
     ],
+    images: [null, null, null] as (string | null)[],
+    placeholderLabel: 'Opti Recip ZA01',
+    placeholderAccent: '#FECE00',
   },
   {
     id: 'sieve',
@@ -50,10 +56,13 @@ const PRODUCTS = [
       'Reduced manual handling',
       'Compact footprint',
     ],
-    heroImage: '/images/products/sieve-machine/sieve-machine-04.jpg',
-    detailImage: '/images/products/sieve-machine/sieve-machine-02.jpg',
-    inUseImage: '/images/products/sieve-machine/sieve-machine-03.jpg',
-    heroImageContain: true,
+    images: [
+      '/images/products/sieve-machine/sieve-machine-04.jpg',
+      '/images/products/sieve-machine/sieve-machine-02.jpg',
+      '/images/products/sieve-machine/sieve-machine-03.jpg',
+    ] as (string | null)[],
+    placeholderLabel: 'PS Vibratory Sieve Machine',
+    placeholderAccent: '#FECE00',
   },
 ];
 
@@ -65,7 +74,21 @@ export default function ProprietaryAutomation() {
   const bodyRef      = useRef<HTMLParagraphElement>(null);
 
   const [active, setActive] = useState(0);
+  const [imgIndex, setImgIndex] = useState(0);
   const product = PRODUCTS[active];
+
+  const handleSetActive = (i: number) => {
+    setActive(i);
+    setImgIndex(0);
+  };
+
+  // Auto-advance carousel every 3 s
+  useEffect(() => {
+    const t = setInterval(() => {
+      setImgIndex(prev => (prev + 1) % 3);
+    }, 3000);
+    return () => clearInterval(t);
+  }, [active]);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -73,9 +96,9 @@ export default function ProprietaryAutomation() {
   });
 
   useMotionValueEvent(scrollYProgress, 'change', (v) => {
-    if (v < 0.34) setActive(0);
-    else if (v < 0.67) setActive(1);
-    else setActive(2);
+    if (v < 0.34) handleSetActive(0);
+    else if (v < 0.67) handleSetActive(1);
+    else handleSetActive(2);
   });
 
   useHeadingAnimation({
@@ -142,7 +165,7 @@ export default function ProprietaryAutomation() {
                 {PRODUCTS.map((p, i) => (
                   <button
                     key={p.id}
-                    onClick={() => setActive(i)}
+                    onClick={() => handleSetActive(i)}
                     className={`rounded-full px-4 py-2.5 text-[0.72rem] font-bold uppercase tracking-[0.14em] transition-all duration-200 ${
                       i === active
                         ? 'bg-ink text-white'
@@ -164,19 +187,60 @@ export default function ProprietaryAutomation() {
                   transition={{ duration: 0.22, ease }}
                   className="overflow-hidden rounded-[1.4rem] border border-ink/[0.08] bg-white/70 shadow-[0_4px_20px_rgba(0,0,0,0.06)]"
                 >
-                  {/* Hero image — only render if image exists */}
-                  {product.heroImage && (
-                    <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#f0f0f0]">
-                      <Image
-                        src={product.heroImage}
-                        alt={product.name}
-                        fill
-                        className="object-cover"
-                        style={{ objectPosition: 'center 25%' }}
-                        sizes="100vw"
-                      />
+                  {/* Carousel image viewport */}
+                  <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#f0f0f0]">
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={product.id + '-mob-img-' + imgIndex}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.4, ease: 'easeInOut' }}
+                        className="absolute inset-0"
+                      >
+                        {product.images[imgIndex] ? (
+                          <Image
+                            src={product.images[imgIndex]!}
+                            alt={product.name}
+                            fill
+                            className="object-cover"
+                            style={{ objectPosition: 'center 25%' }}
+                            sizes="100vw"
+                          />
+                        ) : (
+                          <div
+                            className="flex h-full w-full flex-col items-center justify-center gap-3"
+                            style={{ background: 'linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%)' }}
+                          >
+                            <span
+                              className="font-display text-[clamp(1.8rem,8vw,2.4rem)] font-black tracking-[-0.04em]"
+                              style={{ color: product.placeholderAccent }}
+                            >
+                              {product.name}
+                            </span>
+                            <span className="text-[0.58rem] font-bold uppercase tracking-[0.24em] text-white/30">
+                              {imgIndex === 0 ? 'Hero view' : imgIndex === 1 ? 'Detail view' : 'In-use shot'}
+                            </span>
+                            <span className="mt-1 rounded-full border border-white/10 px-3 py-1 text-[0.52rem] font-semibold uppercase tracking-[0.18em] text-white/20">
+                              Images coming soon
+                            </span>
+                          </div>
+                        )}
+                      </motion.div>
+                    </AnimatePresence>
+                    {/* Carousel dots */}
+                    <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-1.5">
+                      {product.images.map((_, i) => (
+                        <button
+                          key={i}
+                          onClick={() => setImgIndex(i)}
+                          className={`rounded-full transition-all duration-300 ${
+                            i === imgIndex ? 'h-1.5 w-5 bg-white' : 'h-1.5 w-1.5 bg-white/35'
+                          }`}
+                        />
+                      ))}
                     </div>
-                  )}
+                  </div>
 
                   <div className="flex flex-col gap-4 p-5">
                     {/* Tag + name + tagline */}
@@ -272,7 +336,7 @@ export default function ProprietaryAutomation() {
                   {PRODUCTS.map((p, i) => (
                     <button
                       key={p.id}
-                      onClick={() => setActive(i)}
+                      onClick={() => handleSetActive(i)}
                       className={`rounded-full px-4 py-2.5 text-[0.75rem] font-bold uppercase tracking-[0.16em] transition-all duration-200 ${
                         i === active
                           ? 'bg-ink text-white'
@@ -333,51 +397,70 @@ export default function ProprietaryAutomation() {
                 </AnimatePresence>
               </div>
 
-              {/* ── RIGHT col — media cards ── */}
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={product.id + '-visual'}
-                  initial={{ opacity: 0, scale: 0.97 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.97 }}
-                  transition={{ duration: 0.34, ease }}
-                  className="flex flex-col gap-3"
-                >
-                  <div className="overflow-hidden rounded-[1.4rem] border border-ink/[0.07] bg-white/70 shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
-                    <div className="relative aspect-[4/3] w-full bg-[#f0f0f0]">
-                      {product.heroImage ? (
-                        <Image src={product.heroImage} alt={product.name} fill className="object-cover" style={{ objectPosition: 'center 25%' }} sizes="55vw" />
+              {/* ── RIGHT col — tall carousel viewport ── */}
+              <div className="overflow-hidden rounded-[1.6rem] border border-ink/[0.07] bg-white/70 shadow-[0_8px_32px_rgba(0,0,0,0.08)]">
+                <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#f0f0f0]">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={product.id + '-desk-img-' + imgIndex}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.45, ease: 'easeInOut' }}
+                      className="absolute inset-0"
+                    >
+                      {product.images[imgIndex] ? (
+                        <Image
+                          src={product.images[imgIndex]!}
+                          alt={product.name}
+                          fill
+                          className="object-cover"
+                          style={{ objectPosition: 'center 25%' }}
+                          sizes="55vw"
+                        />
                       ) : (
-                        <div className="flex h-full w-full items-center justify-center bg-ink/[0.03]">
-                          <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-ink/20">Coming Soon</span>
+                        <div
+                          className="flex h-full w-full flex-col items-center justify-center gap-4"
+                          style={{ background: 'linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%)' }}
+                        >
+                          <span
+                            className="font-display text-[clamp(2.4rem,4vw,3.2rem)] font-black tracking-[-0.04em]"
+                            style={{ color: product.placeholderAccent }}
+                          >
+                            {product.name}
+                          </span>
+                          <span className="text-[0.62rem] font-bold uppercase tracking-[0.26em] text-white/30">
+                            {imgIndex === 0 ? 'Hero view' : imgIndex === 1 ? 'Detail view' : 'In-use shot'}
+                          </span>
+                          <span className="mt-1 rounded-full border border-white/10 px-4 py-1.5 text-[0.54rem] font-semibold uppercase tracking-[0.18em] text-white/20">
+                            Images coming soon
+                          </span>
                         </div>
                       )}
-                    </div>
+                    </motion.div>
+                  </AnimatePresence>
+
+                  {/* Slide label chip */}
+                  <div className="absolute left-4 top-4">
+                    <span className="rounded-full bg-black/40 px-3 py-1 text-[0.52rem] font-bold uppercase tracking-[0.18em] text-white/70 backdrop-blur-sm">
+                      {imgIndex === 0 ? 'Hero view' : imgIndex === 1 ? 'Detail view' : 'In-use shot'}
+                    </span>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-3">
-                    {([
-                      { label: 'Detail view', key: 'detailImage' as const },
-                      { label: 'In-use shot',  key: 'inUseImage'  as const },
-                    ]).map(({ label, key }) => (
-                      <div
-                        key={label}
-                        className="overflow-hidden rounded-[1.1rem] border border-ink/[0.07] bg-white/70 shadow-[0_4px_14px_rgba(0,0,0,0.05)]"
-                      >
-                        <div className="relative aspect-[4/3] w-full bg-[#f0f0f0]">
-                          {product[key] ? (
-                            <Image src={product[key]!} alt={label} fill className="object-cover object-center" sizes="27vw" />
-                          ) : (
-                            <div className="flex h-full w-full items-center justify-center bg-ink/[0.03]">
-                              <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-ink/20">Coming Soon</span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
+                  {/* Carousel dots */}
+                  <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2">
+                    {product.images.map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setImgIndex(i)}
+                        className={`rounded-full transition-all duration-300 ${
+                          i === imgIndex ? 'h-1.5 w-6 bg-white' : 'h-1.5 w-1.5 bg-white/40 hover:bg-white/65'
+                        }`}
+                      />
                     ))}
                   </div>
-                </motion.div>
-              </AnimatePresence>
+                </div>
+              </div>
 
             </div>
           </div>
@@ -388,7 +471,7 @@ export default function ProprietaryAutomation() {
           {PRODUCTS.map((_, i) => (
             <button
               key={i}
-              onClick={() => setActive(i)}
+              onClick={() => handleSetActive(i)}
               aria-label={`Go to ${PRODUCTS[i].name}`}
               className={`h-1.5 rounded-full transition-all duration-300 ${
                 i === active ? 'w-6 bg-ink' : 'w-2 bg-ink/25 hover:bg-ink/40'
