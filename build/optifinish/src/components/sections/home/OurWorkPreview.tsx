@@ -10,7 +10,7 @@ const WORK_CARDS = [
     industry: 'Automotive Components',
     city: 'Gurugram, Haryana',
     desc: 'Full powder coating line with conveyor system, curing oven, and spray booth.',
-    imageSrc: null,
+    imageSrc: '/images/products/optifinish-manufactured/cyclone-dust-collector/cyclone-dust-collect.png',
   },
   {
     industry: 'Electrical Equipment',
