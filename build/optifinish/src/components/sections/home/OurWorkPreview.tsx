@@ -10,13 +10,13 @@ const WORK_CARDS = [
     industry: 'Automotive Components',
     city: 'Gurugram, Haryana',
     desc: 'Full powder coating line with conveyor system, curing oven, and spray booth.',
-    imageSrc: '/images/products/optifinish-manufactured/cyclone-dust-collector/cyclone-dust-collect.png',
+    imageSrc: null,
   },
   {
     industry: 'Electrical Equipment',
     city: 'Faridabad, Haryana',
     desc: 'GEMA gun integration with Z-TAP automation on an existing client line.',
-    imageSrc: null,
+    imageSrc: '/images/products/optifinish-manufactured/cyclone-dust-collector/cyclone-dust-collect.png',
   },
   {
     industry: 'Industrial Fabrication',
