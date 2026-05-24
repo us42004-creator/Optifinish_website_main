@@ -101,9 +101,9 @@ export default function HeroDark() {
             Expert <span style={{ color: '#FECE00' }}>coating</span> solutions.
           </h1>
 
-          {/* Flag strip — just below heading */}
+          {/* Flag strip — mobile only, vertical icon-above-label */}
           <div
-            className="mt-5 flex items-start justify-center gap-6 md:mt-6"
+            className="mt-5 flex items-start justify-center gap-6 md:hidden"
             style={{ animation: 'hero-item-in 0.5s cubic-bezier(0.22,1,0.36,1) 0.28s both' }}
           >
             <div className="flex flex-col items-center gap-1.5">
@@ -139,6 +139,18 @@ export default function HeroDark() {
               <span>Explore Products</span>
               <div className="dynamic-button-glow" />
             </button>
+          </div>
+
+          {/* Flag strip — desktop only, horizontal inline */}
+          <div className="mt-8 hidden md:flex items-center justify-center gap-3">
+            <span className="text-[1.2rem] leading-none">🇮🇳</span>
+            <span className="text-[0.5rem] font-semibold uppercase tracking-[0.16em] text-white/52">Indian manufacturing</span>
+            <span className="text-[0.5rem] text-white/18">·</span>
+            <span className="text-[1.5rem] leading-none" style={{display:'inline-block', transform:'scaleX(1.25)'}}>🇨🇭</span>
+            <span className="text-[0.5rem] font-semibold uppercase tracking-[0.16em] text-white/52">Swiss powder tech</span>
+            <span className="text-[0.5rem] text-white/18">·</span>
+            <span className="text-[1.2rem] leading-none">🇩🇪</span>
+            <span className="text-[0.5rem] font-semibold uppercase tracking-[0.16em] text-white/52">German liquid coating</span>
           </div>
 
           {/* ── Authority bar + mobile CTA
