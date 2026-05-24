@@ -94,7 +94,7 @@ export default function HeroDark() {
             className="font-display text-[clamp(1.5rem,4.6vw,4.6rem)] font-black leading-[1.0] tracking-[-0.04em] text-white md:leading-[0.92]"
             style={{ animation: 'hero-item-in 0.7s cubic-bezier(0.22,1,0.36,1) 0.18s both' }}
           >
-            Manufactured systems.{' '}
+            Powder coating plants.{' '}
             <br className="hidden sm:block" />
             <span style={{ color: '#FECE00' }}>Proprietary automation.</span>
             <br className="hidden sm:block" />
