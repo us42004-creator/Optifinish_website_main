@@ -27,7 +27,7 @@ const AUTOMATION_SLIDES = [
 const GEMA_SLIDES = [
   { src: '/images/products/gema/manual-gun/homepage-img.jpg',                          label: 'OptiFlex Pro — Manual Gun',      position: 'object-left' },
   { src: '/images/products/gema/automatic-gun/optigun-ga04.png',                       label: 'OptiGun GA04 — Automatic Gun',   position: 'object-left' },
-  { src: '/images/products/gema/opticentre/gema-opticenter-oc07-oc08-01.jpg',           label: 'OptiCenter OC07 / OC08' },
+  { src: '/images/products/gema/opticentre/gema-opticenter-oc07-oc08-01.jpg',           label: 'OptiCenter OC07 / OC08',         position: 'object-[35%_50%]' },
   { src: '/images/products/gema/reciprocators/gema-reciprocator-inuse-01.jpg',          label: 'Reciprocator — In Operation' },
   { src: '/images/products/gema/opticentre/gema-opticenter-colorchange-01.jpg',         label: 'OptiCenter — Color Change' },
 ];
