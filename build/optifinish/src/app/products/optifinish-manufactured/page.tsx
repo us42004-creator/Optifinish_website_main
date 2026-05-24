@@ -239,7 +239,20 @@ export default function OptiFinishManufacturedPage() {
               What&apos;s in this range
             </h2>
           </div>
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+
+          {/* Mobile — light themed cards */}
+          <div className="grid gap-5 sm:grid-cols-2 md:hidden">
+            {PRODUCTS.map((product) => (
+              <ProductCard
+                key={product.enquireSlug}
+                {...product}
+                theme="light"
+              />
+            ))}
+          </div>
+
+          {/* Desktop — dark themed cards (original) */}
+          <div className="hidden md:grid md:gap-5 md:grid-cols-2 lg:grid-cols-3">
             {PRODUCTS.map((product) => (
               <ProductCard
                 key={product.enquireSlug}
