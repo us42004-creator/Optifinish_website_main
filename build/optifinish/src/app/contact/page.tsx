@@ -299,80 +299,153 @@ export default function ContactPage() {
               {/* RIGHT — direct contacts (order-1 on mobile so they appear above form) */}
               <div className="order-1 flex flex-col gap-8 lg:order-2">
 
-                {/* Response badge */}
-                <div className="inline-flex items-center gap-2.5 self-start rounded-full border border-[#FECE00]/15 bg-[#FECE00]/[0.06] px-4 py-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#FECE00]" />
-                  <span className="text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-[#FECE00]/70">
-                    Responds within 1 business day
-                  </span>
-                </div>
+                {/* ── MOBILE: compact inline strip ── */}
+                <div className="flex flex-col gap-3 md:hidden">
 
-                {/* Contact links */}
-                <div className="flex flex-col gap-4">
-                  {/* Phone */}
+                  {/* Badge */}
+                  <div className="inline-flex items-center gap-2 self-start rounded-full border border-[#FECE00]/15 bg-[#FECE00]/[0.06] px-3 py-1.5">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#FECE00]" />
+                    <span className="text-[0.55rem] font-semibold uppercase tracking-[0.14em] text-[#FECE00]/70">
+                      Responds within 1 business day
+                    </span>
+                  </div>
+
+                  {/* Phone — full width */}
                   <a
                     href="tel:+918929408691"
-                    className="group flex items-center gap-4 rounded-[1rem] border border-white/[0.06] bg-white/[0.02] px-5 py-4 transition-colors hover:border-white/[0.12] hover:bg-white/[0.04]"
+                    className="flex items-center gap-3 rounded-xl border border-white/[0.07] bg-white/[0.025] px-4 py-3 transition-colors active:bg-white/[0.05]"
                   >
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/[0.06]">
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <path d="M2 3.5A1.5 1.5 0 013.5 2h.878c.414 0 .76.3.818.71l.518 3.627a.818.818 0 01-.43.862l-1.04.52a9.5 9.5 0 004.037 4.037l.52-1.04a.818.818 0 01.862-.43l3.628.518c.41.059.709.404.709.818V12.5A1.5 1.5 0 0112.5 14C6.701 14 2 9.299 2 3.5z" fill="rgba(255,255,255,0.45)"/>
+                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white/[0.07]">
+                      <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+                        <path d="M2 3.5A1.5 1.5 0 013.5 2h.878c.414 0 .76.3.818.71l.518 3.627a.818.818 0 01-.43.862l-1.04.52a9.5 9.5 0 004.037 4.037l.52-1.04a.818.818 0 01.862-.43l3.628.518c.41.059.709.404.709.818V12.5A1.5 1.5 0 0112.5 14C6.701 14 2 9.299 2 3.5z" fill="rgba(255,255,255,0.5)"/>
                       </svg>
                     </div>
                     <div>
-                      <p className="text-[0.6rem] font-bold uppercase tracking-[0.16em] text-white/30">Call us</p>
-                      <p className="text-[0.85rem] font-semibold text-white/70">+91 89294 08691</p>
+                      <p className="text-[0.5rem] font-bold uppercase tracking-[0.14em] text-white/30">Call us</p>
+                      <p className="text-[0.78rem] font-semibold text-white/70">+91 89294 08691</p>
                     </div>
                   </a>
 
-                  {/* WhatsApp */}
-                  <a
-                    href="https://wa.me/918929408691"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group flex items-center gap-4 rounded-[1rem] border border-white/[0.06] bg-white/[0.02] px-5 py-4 transition-colors hover:border-[#25D366]/25 hover:bg-[#25D366]/[0.04]"
-                  >
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/[0.06]">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="rgba(255,255,255,0.45)">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-[0.6rem] font-bold uppercase tracking-[0.16em] text-white/30">WhatsApp</p>
-                      <p className="text-[0.85rem] font-semibold text-white/70">Message us directly</p>
-                    </div>
-                  </a>
+                  {/* WhatsApp + Email — 2-col row */}
+                  <div className="grid grid-cols-2 gap-2">
+                    <a
+                      href="https://wa.me/918929408691"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2.5 rounded-xl border border-white/[0.07] bg-white/[0.025] px-3.5 py-3 transition-colors active:bg-white/[0.05]"
+                    >
+                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white/[0.07]">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="rgba(255,255,255,0.5)">
+                          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-[0.5rem] font-bold uppercase tracking-[0.14em] text-white/30">WhatsApp</p>
+                        <p className="text-[0.72rem] font-semibold text-white/65">Message us</p>
+                      </div>
+                    </a>
 
-                  {/* Email */}
-                  <a
-                    href="mailto:info@optifinish.in"
-                    className="group flex items-center gap-4 rounded-[1rem] border border-white/[0.06] bg-white/[0.02] px-5 py-4 transition-colors hover:border-white/[0.12] hover:bg-white/[0.04]"
-                  >
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/[0.06]">
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <path d="M2 4.5A1.5 1.5 0 013.5 3h9A1.5 1.5 0 0114 4.5v.585L8 8.79 2 5.085V4.5zM2 6.415V11.5A1.5 1.5 0 003.5 13h9a1.5 1.5 0 001.5-1.5V6.415L8 10.21 2 6.415z" fill="rgba(255,255,255,0.45)"/>
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-[0.6rem] font-bold uppercase tracking-[0.16em] text-white/30">Email</p>
-                      <p className="text-[0.85rem] font-semibold text-white/70">info@optifinish.in</p>
-                    </div>
-                  </a>
+                    <a
+                      href="mailto:info@optifinish.in"
+                      className="flex items-center gap-2.5 rounded-xl border border-white/[0.07] bg-white/[0.025] px-3.5 py-3 transition-colors active:bg-white/[0.05]"
+                    >
+                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white/[0.07]">
+                        <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+                          <path d="M2 4.5A1.5 1.5 0 013.5 3h9A1.5 1.5 0 0114 4.5v.585L8 8.79 2 5.085V4.5zM2 6.415V11.5A1.5 1.5 0 003.5 13h9a1.5 1.5 0 001.5-1.5V6.415L8 10.21 2 6.415z" fill="rgba(255,255,255,0.5)"/>
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-[0.5rem] font-bold uppercase tracking-[0.14em] text-white/30">Email</p>
+                        <p className="text-[0.68rem] font-semibold text-white/65 leading-tight">info@<br/>optifinish.in</p>
+                      </div>
+                    </a>
+                  </div>
 
-                  {/* Address */}
-                  <div className="flex items-start gap-4 rounded-[1rem] border border-white/[0.06] bg-white/[0.02] px-5 py-4">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/[0.06]">
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <path fillRule="evenodd" clipRule="evenodd" d="M8 1.5a4.5 4.5 0 100 9 4.5 4.5 0 000-9zM2 6a6 6 0 1110.89 3.477l3.316 3.316a.75.75 0 11-1.06 1.06l-3.316-3.316A6 6 0 012 6zm6-2.5a2.5 2.5 0 100 5 2.5 2.5 0 000-5z" fill="rgba(255,255,255,0.45)"/>
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-[0.6rem] font-bold uppercase tracking-[0.16em] text-white/30">Our facility</p>
-                      <p className="text-[0.85rem] font-semibold leading-relaxed text-white/70">
-                        Greater Noida,<br />Uttar Pradesh, India
-                      </p>
+                  {/* Location — single text line */}
+                  <p className="text-[0.62rem] text-white/32">
+                    📍 Greater Noida, Uttar Pradesh, India
+                  </p>
+                </div>
+
+                {/* ── DESKTOP: original 4 full cards (unchanged) ── */}
+                <div className="hidden md:flex md:flex-col md:gap-8">
+
+                  {/* Response badge */}
+                  <div className="inline-flex items-center gap-2.5 self-start rounded-full border border-[#FECE00]/15 bg-[#FECE00]/[0.06] px-4 py-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#FECE00]" />
+                    <span className="text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-[#FECE00]/70">
+                      Responds within 1 business day
+                    </span>
+                  </div>
+
+                  {/* Contact links */}
+                  <div className="flex flex-col gap-4">
+                    {/* Phone */}
+                    <a
+                      href="tel:+918929408691"
+                      className="group flex items-center gap-4 rounded-[1rem] border border-white/[0.06] bg-white/[0.02] px-5 py-4 transition-colors hover:border-white/[0.12] hover:bg-white/[0.04]"
+                    >
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/[0.06]">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                          <path d="M2 3.5A1.5 1.5 0 013.5 2h.878c.414 0 .76.3.818.71l.518 3.627a.818.818 0 01-.43.862l-1.04.52a9.5 9.5 0 004.037 4.037l.52-1.04a.818.818 0 01.862-.43l3.628.518c.41.059.709.404.709.818V12.5A1.5 1.5 0 0112.5 14C6.701 14 2 9.299 2 3.5z" fill="rgba(255,255,255,0.45)"/>
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-[0.6rem] font-bold uppercase tracking-[0.16em] text-white/30">Call us</p>
+                        <p className="text-[0.85rem] font-semibold text-white/70">+91 89294 08691</p>
+                      </div>
+                    </a>
+
+                    {/* WhatsApp */}
+                    <a
+                      href="https://wa.me/918929408691"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex items-center gap-4 rounded-[1rem] border border-white/[0.06] bg-white/[0.02] px-5 py-4 transition-colors hover:border-[#25D366]/25 hover:bg-[#25D366]/[0.04]"
+                    >
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/[0.06]">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="rgba(255,255,255,0.45)">
+                          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-[0.6rem] font-bold uppercase tracking-[0.16em] text-white/30">WhatsApp</p>
+                        <p className="text-[0.85rem] font-semibold text-white/70">Message us directly</p>
+                      </div>
+                    </a>
+
+                    {/* Email */}
+                    <a
+                      href="mailto:info@optifinish.in"
+                      className="group flex items-center gap-4 rounded-[1rem] border border-white/[0.06] bg-white/[0.02] px-5 py-4 transition-colors hover:border-white/[0.12] hover:bg-white/[0.04]"
+                    >
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/[0.06]">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                          <path d="M2 4.5A1.5 1.5 0 013.5 3h9A1.5 1.5 0 0114 4.5v.585L8 8.79 2 5.085V4.5zM2 6.415V11.5A1.5 1.5 0 003.5 13h9a1.5 1.5 0 001.5-1.5V6.415L8 10.21 2 6.415z" fill="rgba(255,255,255,0.45)"/>
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-[0.6rem] font-bold uppercase tracking-[0.16em] text-white/30">Email</p>
+                        <p className="text-[0.85rem] font-semibold text-white/70">info@optifinish.in</p>
+                      </div>
+                    </a>
+
+                    {/* Address */}
+                    <div className="flex items-start gap-4 rounded-[1rem] border border-white/[0.06] bg-white/[0.02] px-5 py-4">
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/[0.06]">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                          <path fillRule="evenodd" clipRule="evenodd" d="M8 1.5a4.5 4.5 0 100 9 4.5 4.5 0 000-9zM2 6a6 6 0 1110.89 3.477l3.316 3.316a.75.75 0 11-1.06 1.06l-3.316-3.316A6 6 0 012 6zm6-2.5a2.5 2.5 0 100 5 2.5 2.5 0 000-5z" fill="rgba(255,255,255,0.45)"/>
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-[0.6rem] font-bold uppercase tracking-[0.16em] text-white/30">Our facility</p>
+                        <p className="text-[0.85rem] font-semibold leading-relaxed text-white/70">
+                          Greater Noida,<br />Uttar Pradesh, India
+                        </p>
+                      </div>
                     </div>
                   </div>
+
                 </div>
 
               </div>
