@@ -20,7 +20,7 @@ const CLIENT_LOGOS = [
 ];
 
 const STATS = [
-  { value: '500+', label: 'Installations' },
+  { value: '375+', label: 'Installations' },
   { value: '200+', label: 'Clients served' },
   { value: '14+',  label: 'Years in industry' },
 ];
