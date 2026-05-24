@@ -171,7 +171,7 @@ export default function FacilityTeaserFilmstrip() {
             </div>
 
             {/* 2×2 photo grid */}
-            <div className="grid grid-cols-2 grid-rows-2 gap-1.5 md:w-[40rem] md:flex-shrink-0 md:gap-2" style={{ height: '200px' }} >
+            <div className="grid grid-cols-2 grid-rows-2 gap-1.5 h-[200px] md:h-auto md:w-[40rem] md:flex-shrink-0 md:gap-2">
               {EXTERIOR_PHOTOS.map((photo, i) => (
                 <div
                   key={i}
