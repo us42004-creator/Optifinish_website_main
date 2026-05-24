@@ -10,7 +10,7 @@ import HomeCTA from '@/components/sections/home/HomeCTA';
 
 const STATS = [
   { value: '1999', label: 'Year founded' },
-  { value: '500+', label: 'Installations commissioned' },
+  { value: '375+', label: 'Installations commissioned' },
   { value: '14+', label: 'Years as GEMA partner' },
   { value: '4',   label: 'Office locations' },
 ];
@@ -450,7 +450,7 @@ export default function AboutPageContent() {
               </p>
               <p className="text-[0.88rem] leading-relaxed text-ink/60">
                 Based out of Greater Noida with offices in Gurugram, Rudrapur, and Bengaluru, VACSPL
-                has commissioned 500+ installations across automotive, consumer appliances, steel
+                has commissioned 375+ installations across automotive, consumer appliances, steel
                 fabrication, and architectural sectors. Every product — from the spray booth to the
                 curing oven to the conveyor — is built in-house at our Kasna facility and backed by a
                 team that has spent over two decades on factory floors.

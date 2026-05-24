@@ -97,7 +97,7 @@ const SERVICES = [
 ];
 
 const TRUST_STATS = [
-  { value: '500+', label: 'Lines serviced' },
+  { value: '375+', label: 'Lines serviced' },
   { value: '14+',  label: 'Years of experience' },
   { value: 'PAN India', label: 'Service coverage' },
 ];

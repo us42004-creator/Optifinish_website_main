@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   metadataBase,
   title: 'About OptiFinish | VACSPL — Powder & Liquid Coating Manufacturer India',
   description:
-    'Value Added Coating Solutions Pvt. Ltd. (VACSPL) — the company behind OptiFinish — designs and manufactures complete powder coating lines, proprietary automation systems, and distributes GEMA and Dürr liquid coating equipment across India. Founded 2010, 500+ installations commissioned.',
+    'Value Added Coating Solutions Pvt. Ltd. (VACSPL) — the company behind OptiFinish — designs and manufactures complete powder coating lines, proprietary automation systems, and distributes GEMA and Dürr liquid coating equipment across India. Est. 2011, 375+ installations commissioned.',
   keywords: [
     'OptiFinish',
     'VACSPL',
@@ -46,13 +46,13 @@ export const metadata: Metadata = {
   openGraph: {
     ...defaultOpenGraph,
     title: 'About OptiFinish | VACSPL — Powder & Liquid Coating Manufacturer India',
-    description: 'Founded by Harish Sharma and Lalit Tayal. 500+ installations commissioned. Authorised GEMA and Dürr partner. Manufactured in Greater Noida, India.',
+    description: 'Founded by Harish Sharma and Lalit Tayal. 375+ installations commissioned. Authorised GEMA and Dürr partner. Manufactured in Greater Noida, India.',
     url: `${SITE.url}/about`,
   },
   twitter: {
     ...defaultTwitter,
     title: 'About OptiFinish | VACSPL India',
-    description: '500+ coating installations commissioned. Authorised GEMA & Dürr partner. Manufactured in Greater Noida.',
+    description: '375+ coating installations commissioned. Authorised GEMA & Dürr partner. Manufactured in Greater Noida.',
   },
 };
 
@@ -105,7 +105,7 @@ export default function AboutPage() {
       },
     ],
     description:
-      'VACSPL designs and manufactures complete powder coating lines, develops proprietary automation systems (Z-TAP, ZA01), and distributes GEMA and Dürr liquid coating equipment across India. 500+ installations across automotive, consumer appliances, steel fabrication, and architectural sectors.',
+      'VACSPL designs and manufactures complete powder coating lines, develops proprietary automation systems (Z-TAP, ZA01), and distributes GEMA and Dürr liquid coating equipment across India. 375+ installations across automotive, consumer appliances, steel fabrication, and architectural sectors.',
     numberOfLocations: 4,
     areaServed: 'India',
     brand: { '@type': 'Brand', name: 'OptiFinish' },

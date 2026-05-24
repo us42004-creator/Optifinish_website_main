@@ -7,9 +7,9 @@ export const SITE = {
   name:        'OptiFinish',
   legalName:   'Value Added Coating Solutions Pvt. Ltd.',
   shortName:   'VACSPL',
-  url:         'https://optifinish.in',
-  logo:        'https://optifinish.in/images/logos/optifinish-logo.png',
-  ogImage:     'https://optifinish.in/images/og-default.jpg',
+  url:         'https://www.optifinish.in',
+  logo:        'https://www.optifinish.in/images/logos/optifinish-logo.png',
+  ogImage:     'https://www.optifinish.in/images/og-default.jpg',
   tagline:     'Powder Coating Plants, Automation & GEMA Equipment — India',
   description: 'Powder coating plants, curing ovens & automation — manufactured in Greater Noida. Authorised GEMA & Dürr partner in India. Z-TAP robot. Get a quote.',
   phone:       '+91-96434-03374',
@@ -147,7 +147,7 @@ export const organizationSchema = {
 
 export const localBusinessSchema = {
   '@context': 'https://schema.org',
-  '@type': 'LocalBusiness',
+  '@type': ['LocalBusiness', 'ManufacturingBusiness'],
   '@id': `${SITE.url}/#localbusiness`,
   name: SITE.name,
   image: SITE.logo,

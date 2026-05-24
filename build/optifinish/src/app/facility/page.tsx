@@ -90,7 +90,7 @@ const GALLERY = [
 const STATS = [
   { value: 'Est. 2011', label: 'Greater Noida' },
   { value: '14+',       label: 'Years in production' },
-  { value: '500+',      label: 'Plants shipped' },
+  { value: '375+',      label: 'Plants shipped' },
   { value: 'R&D',       label: 'In-house development' },
 ];
 

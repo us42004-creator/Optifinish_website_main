@@ -2,11 +2,11 @@ import type { MetadataRoute } from 'next';
 import fs from 'fs';
 import path from 'path';
 
-const BASE = 'https://optifinish.in';
+const BASE = 'https://www.optifinish.in';
 
 const STATIC_ROUTES: { url: string; priority: number; changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency']; lastmod: string }[] = [
   { url: '/',                                                         priority: 1.0,  changeFrequency: 'weekly',  lastmod: '2026-05-24' },
-  { url: '/products',                                                 priority: 0.95, changeFrequency: 'weekly',  lastmod: '2026-01-01' },
+  // NOTE: /products is a redirect to /products/optifinish-manufactured — intentionally excluded from sitemap
   { url: '/products/optifinish-manufactured',                         priority: 0.90, changeFrequency: 'monthly', lastmod: '2025-06-01' },
   { url: '/products/optifinish-manufactured/powder-coating-plant',    priority: 0.88, changeFrequency: 'monthly', lastmod: '2025-06-01' },
   { url: '/products/optifinish-manufactured/curing-oven',             priority: 0.85, changeFrequency: 'monthly', lastmod: '2025-06-01' },
@@ -52,7 +52,7 @@ const STATIC_ROUTES: { url: string; priority: number; changeFrequency: MetadataR
   { url: '/services/ttr',                                              priority: 0.70, changeFrequency: 'monthly', lastmod: '2025-06-01' },
   { url: '/services/dcp-server-based-maintenance',                     priority: 0.68, changeFrequency: 'monthly', lastmod: '2025-06-01' },
   { url: '/facility',                                                  priority: 0.80, changeFrequency: 'monthly', lastmod: '2025-06-01' },
-  { url: '/about',                                                     priority: 0.78, changeFrequency: 'monthly', lastmod: '2025-01-01' },
+  { url: '/about',                                                     priority: 0.78, changeFrequency: 'monthly', lastmod: '2026-05-24' },
   { url: '/resources/blog',                                            priority: 0.75, changeFrequency: 'weekly',  lastmod: '2026-05-24' },
   { url: '/contact',                                                   priority: 0.85, changeFrequency: 'monthly', lastmod: '2025-06-01' },
   { url: '/our-work',                                                  priority: 0.78, changeFrequency: 'monthly', lastmod: '2025-06-01' },
