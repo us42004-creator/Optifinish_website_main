@@ -287,8 +287,8 @@ export default function ContactPage() {
           <div className="mx-auto max-w-7xl px-5 md:px-8">
             <div className="grid gap-16 lg:grid-cols-[1.4fr_1fr] lg:gap-24">
 
-              {/* LEFT — form (order-2 on mobile so contacts appear first) */}
-              <div className="order-2 lg:order-1">
+              {/* LEFT — form (order-1 on mobile so form appears first) */}
+              <div className="order-1 lg:order-1">
                 <Suspense fallback={
                   <div className="h-64 animate-pulse rounded-[1.2rem] bg-white/[0.03]" />
                 }>
@@ -296,8 +296,8 @@ export default function ContactPage() {
                 </Suspense>
               </div>
 
-              {/* RIGHT — direct contacts (order-1 on mobile so they appear above form) */}
-              <div className="order-1 flex flex-col gap-8 lg:order-2">
+              {/* RIGHT — direct contacts (order-2 on mobile so they appear below form) */}
+              <div className="order-2 flex flex-col gap-8 lg:order-2">
 
                 {/* ── MOBILE: compact inline strip ── */}
                 <div className="flex flex-col gap-3 md:hidden">
