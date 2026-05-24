@@ -95,7 +95,7 @@ interface ProductCardProps {
   learnMoreHref?: string;
   externalHref?: string;
   externalLabel?: string;
-  theme: 'dark' | 'light';
+  theme: 'dark' | 'light' | 'yellow';
   imageLabel?: string;
   imageSrc?: string;
   imageSrcs?: { src: string; label?: string; fit?: 'cover' | 'contain' }[];
@@ -126,6 +126,7 @@ export default function ProductCard({
   imageBg,
 }: ProductCardProps) {
   const isDark = theme === 'dark';
+  const isYellow = theme === 'yellow';
   const hasCarousel = imageSrcs && imageSrcs.length > 1;
   const router = useRouter();
 
@@ -135,14 +136,16 @@ export default function ProductCard({
       className={`group flex flex-col overflow-hidden rounded-[1.2rem] border transition-all duration-300 hover:-translate-y-0.5 ${
         isDark
           ? 'border-[#FECE00]/[0.08] bg-[#FECE00]/[0.03] hover:border-[#FECE00]/[0.16]'
+          : isYellow
+          ? 'border-[#e6b800] bg-[#FECE00] hover:bg-[#FFD700] hover:border-[#c9a200]'
           : 'border-black/[0.08] bg-white/70 hover:border-black/[0.16] hover:bg-white/90'
       } ${learnMoreHref ? 'cursor-pointer' : ''} ${className}`}
     >
       {/* Image / Carousel */}
-      <div className={`relative aspect-[4/3] w-full overflow-hidden ${imageBg ? '' : imageBgDark ? 'bg-black' : isDark ? 'bg-white/[0.06]' : 'bg-white'}`} style={imageBg ? { background: imageBg } : undefined}>
-        <div className={`absolute left-0 right-0 top-0 z-10 h-[2px] ${isDark ? 'bg-[#FECE00]/30' : 'bg-[#0A0A0A]/15'}`} />
+      <div className={`relative aspect-[4/3] w-full overflow-hidden ${imageBg ? '' : imageBgDark ? 'bg-black' : isDark ? 'bg-white/[0.06]' : isYellow ? 'bg-[#fff3b0]' : 'bg-white'}`} style={imageBg ? { background: imageBg } : undefined}>
+        <div className={`absolute left-0 right-0 top-0 z-10 h-[2px] ${isDark ? 'bg-[#FECE00]/30' : isYellow ? 'bg-[#0A0A0A]/25' : 'bg-[#0A0A0A]/15'}`} />
         {hasCarousel ? (
-          <CardImageCarousel images={imageSrcs!} name={name} isDark={isDark} imageContain={imageContain} />
+          <CardImageCarousel images={imageSrcs!} name={name} isDark={isDark || isYellow} imageContain={imageContain} />
         ) : imageSrc ? (
           <Image src={imageSrc} alt={imageLabel ?? name} fill className={imageContain ? 'object-contain p-4' : 'object-cover'} sizes="600px" />
         ) : (
@@ -160,7 +163,7 @@ export default function ProductCard({
           <h3 className={`font-display text-[1.05rem] font-black leading-tight tracking-tight ${isDark ? 'text-white' : 'text-[#0A0A0A]'}`}>
             {name}
           </h3>
-          <p className={`mt-0.5 text-[0.62rem] font-bold uppercase tracking-[0.12em] ${isDark ? 'text-[#FECE00]/55' : 'text-[#0A0A0A]/40'}`}>
+          <p className={`mt-0.5 text-[0.62rem] font-bold uppercase tracking-[0.12em] ${isDark ? 'text-[#FECE00]/55' : isYellow ? 'text-[#0A0A0A]/65' : 'text-[#0A0A0A]/40'}`}>
             {subtitle}
           </p>
         </div>
@@ -172,7 +175,7 @@ export default function ProductCard({
               <span
                 key={tag}
                 className={`rounded-full px-2.5 py-0.5 text-[0.58rem] font-bold uppercase tracking-[0.1em] ${
-                  isDark ? 'bg-[#FECE00]/10 text-[#FECE00]/70' : 'bg-[#0A0A0A]/[0.06] text-[#0A0A0A]/50'
+                  isDark ? 'bg-[#FECE00]/10 text-[#FECE00]/70' : isYellow ? 'bg-[#0A0A0A]/[0.1] text-[#0A0A0A]/70' : 'bg-[#0A0A0A]/[0.06] text-[#0A0A0A]/50'
                 }`}
               >
                 {tag}
@@ -182,26 +185,30 @@ export default function ProductCard({
         )}
 
         {/* Description */}
-        <p className={`text-[0.78rem] leading-relaxed ${isDark ? 'text-white/40' : 'text-[#0A0A0A]/55'}`}>
+        <p className={`text-[0.78rem] leading-relaxed ${isDark ? 'text-white/40' : isYellow ? 'text-[#0A0A0A]/75' : 'text-[#0A0A0A]/55'}`}>
           {description}
         </p>
 
         {/* Spec bullets */}
-        <ul className={`flex flex-col gap-1.5 border-t pt-3 ${isDark ? 'border-white/[0.06]' : 'border-black/[0.06]'}`}>
+        <ul className={`flex flex-col gap-1.5 border-t pt-3 ${isDark ? 'border-white/[0.06]' : isYellow ? 'border-[#0A0A0A]/[0.12]' : 'border-black/[0.06]'}`}>
           {specs.map((spec) => (
-            <li key={spec} className={`flex items-start gap-2 text-[0.7rem] leading-snug ${isDark ? 'text-white/45' : 'text-[#0A0A0A]/60'}`}>
-              <span className={`mt-[4px] h-1.5 w-1.5 flex-shrink-0 rounded-full ${isDark ? 'bg-[#FECE00]' : 'bg-[#0A0A0A]/50'}`} />
+            <li key={spec} className={`flex items-start gap-2 text-[0.7rem] leading-snug ${isDark ? 'text-white/45' : isYellow ? 'text-[#0A0A0A]/80' : 'text-[#0A0A0A]/60'}`}>
+              <span className={`mt-[4px] h-1.5 w-1.5 flex-shrink-0 rounded-full ${isDark ? 'bg-[#FECE00]' : isYellow ? 'bg-[#0A0A0A]/70' : 'bg-[#0A0A0A]/50'}`} />
               {spec}
             </li>
           ))}
         </ul>
 
         {/* CTAs */}
-        <div onClick={(e) => e.stopPropagation()} className={`mt-auto flex flex-wrap items-center gap-2 border-t pt-3 ${isDark ? 'border-white/[0.06]' : 'border-black/[0.06]'}`}>
+        <div onClick={(e) => e.stopPropagation()} className={`mt-auto flex flex-wrap items-center gap-2 border-t pt-3 ${isDark ? 'border-white/[0.06]' : isYellow ? 'border-[#0A0A0A]/[0.12]' : 'border-black/[0.06]'}`}>
           <Link
             href={`/contact?product=${enquireSlug}`}
             className={`rounded-full px-4 py-1.5 text-[0.63rem] font-bold uppercase tracking-[0.14em] transition-all duration-200 ${
-              isDark ? 'bg-[#FECE00] text-[#0A0A0A] hover:bg-[#FECE00]/85' : 'bg-[#0A0A0A] text-white hover:bg-[#FECE00] hover:text-[#0A0A0A]'
+              isDark
+                ? 'bg-[#FECE00] text-[#0A0A0A] hover:bg-[#FECE00]/85'
+                : isYellow
+                ? 'bg-[#0A0A0A] text-[#FECE00] hover:bg-[#1a1a1a]'
+                : 'bg-[#0A0A0A] text-white hover:bg-[#FECE00] hover:text-[#0A0A0A]'
             }`}
           >
             Enquire →
@@ -212,6 +219,8 @@ export default function ProductCard({
               className={`rounded-full border px-4 py-1.5 text-[0.63rem] font-bold uppercase tracking-[0.14em] transition-all duration-200 ${
                 isDark
                   ? 'border-white/[0.1] text-white/30 hover:border-white/[0.22] hover:text-white/55'
+                  : isYellow
+                  ? 'border-[#0A0A0A]/25 text-[#0A0A0A]/60 hover:border-[#0A0A0A]/50 hover:text-[#0A0A0A]'
                   : 'border-black/[0.1] text-[#0A0A0A]/38 hover:border-black/[0.22] hover:text-[#0A0A0A]/60'
               }`}
             >
@@ -226,6 +235,8 @@ export default function ProductCard({
               className={`rounded-full border px-4 py-1.5 text-[0.63rem] font-bold uppercase tracking-[0.14em] transition-all duration-200 ${
                 isDark
                   ? 'border-[#FECE00]/20 text-[#FECE00]/50 hover:border-[#FECE00]/40 hover:text-[#FECE00]/80'
+                  : isYellow
+                  ? 'border-[#0A0A0A]/25 text-[#0A0A0A]/60 hover:border-[#0A0A0A]/50 hover:text-[#0A0A0A]'
                   : 'border-black/[0.12] text-[#0A0A0A]/40 hover:border-black/[0.24] hover:text-[#0A0A0A]/65'
               }`}
             >
