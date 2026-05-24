@@ -240,13 +240,13 @@ export default function OptiFinishManufacturedPage() {
             </h2>
           </div>
 
-          {/* Mobile — yellow themed cards */}
+          {/* Mobile — light themed cards */}
           <div className="grid gap-5 sm:grid-cols-2 md:hidden">
             {PRODUCTS.map((product) => (
               <ProductCard
                 key={product.enquireSlug}
                 {...product}
-                theme="yellow"
+                theme="light"
               />
             ))}
           </div>
