@@ -524,11 +524,11 @@ export default function AboutPageContent() {
             {FOUNDERS.map((f) => (
               <article
                 key={f.name}
-                className="flex flex-col gap-5 overflow-hidden rounded-[1.4rem] border border-white/[0.07] bg-white/[0.04] p-6 md:p-8"
+                className="flex flex-col gap-5 overflow-hidden rounded-[1.4rem] border border-black/[0.08] bg-white p-6 md:border-white/[0.07] md:bg-white/[0.04] md:p-8"
                 itemScope
                 itemType="https://schema.org/Person"
               >
-                <div className="relative h-20 w-20 overflow-hidden rounded-full border-2 border-[#FECE00]/30" style={{ background: f.photoBg ?? 'rgba(255,255,255,0.06)' }}>
+                <div className="relative h-20 w-20 overflow-hidden rounded-full border-2 border-[#FECE00]/50 md:border-[#FECE00]/30" style={{ background: f.photoBg ?? 'rgba(245,245,245,1)' }}>
                   {f.photo ? (
                     <Image
                       src={f.photo}
@@ -539,7 +539,7 @@ export default function AboutPageContent() {
                       sizes="80px"
                     />
                   ) : (
-                    <span className="absolute inset-0 flex items-center justify-center font-display text-[1.1rem] font-black text-[#FECE00]/40">
+                    <span className="absolute inset-0 flex items-center justify-center font-display text-[1.1rem] font-black text-[#FECE00]/60 md:text-[#FECE00]/40">
                       {f.initials}
                     </span>
                   )}
@@ -548,23 +548,23 @@ export default function AboutPageContent() {
                 <div>
                   <h3
                     itemProp="name"
-                    className="font-display text-[1.2rem] font-black leading-tight tracking-tight text-white"
+                    className="font-display text-[1.2rem] font-black leading-tight tracking-tight text-[#0A0A0A] md:text-white"
                   >
                     {f.name}
                   </h3>
                   <p
                     itemProp="jobTitle"
-                    className="mt-0.5 text-[0.65rem] font-bold uppercase tracking-[0.16em] text-[#FECE00]/50"
+                    className="mt-0.5 text-[0.65rem] font-bold uppercase tracking-[0.16em] text-[#b89000] md:text-[#FECE00]/50"
                   >
                     {f.role}
                   </p>
                 </div>
 
-                <div className="rounded-[0.7rem] bg-white/[0.05] px-3.5 py-2">
-                  <p className="text-[0.67rem] font-semibold text-white/40">{f.credentials}</p>
+                <div className="rounded-[0.7rem] bg-[#0A0A0A]/[0.05] px-3.5 py-2 md:bg-white/[0.05]">
+                  <p className="text-[0.67rem] font-semibold text-[#0A0A0A]/60 md:text-white/40">{f.credentials}</p>
                 </div>
 
-                <p className="text-[0.83rem] leading-relaxed text-white/50" itemProp="description">
+                <p className="text-[0.83rem] leading-relaxed text-[#0A0A0A]/70 md:text-white/50" itemProp="description">
                   {f.bio}
                 </p>
               </article>
