@@ -138,7 +138,7 @@ export default function ProductCard({
           ? 'border-[#FECE00]/[0.08] bg-[#FECE00]/[0.03] hover:border-[#FECE00]/[0.16]'
           : isYellow
           ? 'border-[#e6b800] bg-[#FECE00] hover:bg-[#FFD700] hover:border-[#c9a200]'
-          : 'border-black/[0.08] bg-white/70 hover:border-black/[0.16] hover:bg-white/90'
+          : 'border-black/[0.08] bg-white hover:border-[#FECE00]/50 hover:shadow-[0_8px_32px_rgba(254,206,0,0.10)]'
       } ${learnMoreHref ? 'cursor-pointer' : ''} ${className}`}
     >
       {/* Image / Carousel */}
