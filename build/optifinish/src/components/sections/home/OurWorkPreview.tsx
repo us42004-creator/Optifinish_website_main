@@ -2,6 +2,7 @@
 
 import { useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useHeadingAnimation } from '@/hooks/useHeadingAnimation';
 
 const WORK_CARDS = [
@@ -9,16 +10,19 @@ const WORK_CARDS = [
     industry: 'Automotive Components',
     city: 'Gurugram, Haryana',
     desc: 'Full powder coating line with conveyor system, curing oven, and spray booth.',
+    imageSrc: null,
   },
   {
     industry: 'Electrical Equipment',
     city: 'Faridabad, Haryana',
     desc: 'GEMA gun integration with Z-TAP automation on an existing client line.',
+    imageSrc: null,
   },
   {
     industry: 'Industrial Fabrication',
     city: 'Greater Noida, UP',
     desc: 'End-to-end turnkey plant — designed, manufactured, and commissioned by OptiFinish.',
+    imageSrc: '/images/products/optifinish-manufactured/SS_BOOTH/ss-booth-master-shot.png',
   },
 ];
 
@@ -91,15 +95,27 @@ export default function OurWorkPreview() {
               className="snap-start shrink-0 w-[82vw] md:w-auto flex flex-col overflow-hidden rounded-[1.4rem] border border-ink/[0.08] bg-white shadow-[0_2px_16px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-1 hover:border-[#FECE00]/50 hover:shadow-[0_8px_32px_rgba(254,206,0,0.10)] md:border-white/[0.06] md:bg-white/[0.02] md:shadow-none"
             >
               <div className="relative overflow-hidden">
-                <div className="flex aspect-[4/3] w-full items-center justify-center bg-[#f0eeeb] md:bg-white/[0.03]">
-                  <div className="text-center">
-                    <div className="mx-auto mb-2 flex h-9 w-9 items-center justify-center rounded-full border border-ink/[0.1] bg-ink/[0.04] md:border-white/[0.08] md:bg-white/[0.04]">
-                      <span className="text-ink/25 md:text-white/20">⊡</span>
+                <div className="relative aspect-[4/3] w-full bg-[#f0eeeb] md:bg-white/[0.03]">
+                  {card.imageSrc ? (
+                    <Image
+                      src={card.imageSrc}
+                      alt={card.industry}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 82vw, 33vw"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center">
+                      <div className="text-center">
+                        <div className="mx-auto mb-2 flex h-9 w-9 items-center justify-center rounded-full border border-ink/[0.1] bg-ink/[0.04] md:border-white/[0.08] md:bg-white/[0.04]">
+                          <span className="text-ink/25 md:text-white/20">⊡</span>
+                        </div>
+                        <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-ink/30 md:text-white/18">
+                          Coming Soon
+                        </span>
+                      </div>
                     </div>
-                    <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-ink/30 md:text-white/18">
-                      Coming Soon
-                    </span>
-                  </div>
+                  )}
                 </div>
               </div>
               <div className="flex flex-col gap-2 p-5">
