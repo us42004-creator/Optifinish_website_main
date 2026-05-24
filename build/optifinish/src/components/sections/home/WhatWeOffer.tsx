@@ -25,8 +25,8 @@ const AUTOMATION_SLIDES = [
 ];
 
 const GEMA_SLIDES = [
-  { src: '/images/products/gema/manual-gun/homepage-img.jpg',                          label: 'OptiFlex Pro — Manual Gun' },
-  { src: '/images/products/gema/automatic-gun/optigun-ga04.png',                       label: 'OptiGun GA04 — Automatic Gun' },
+  { src: '/images/products/gema/manual-gun/homepage-img.jpg',                          label: 'OptiFlex Pro — Manual Gun',      position: 'object-left' },
+  { src: '/images/products/gema/automatic-gun/optigun-ga04.png',                       label: 'OptiGun GA04 — Automatic Gun',   position: 'object-left' },
   { src: '/images/products/gema/opticentre/gema-opticenter-oc07-oc08-01.jpg',           label: 'OptiCenter OC07 / OC08' },
   { src: '/images/products/gema/reciprocators/gema-reciprocator-inuse-01.jpg',          label: 'Reciprocator — In Operation' },
   { src: '/images/products/gema/opticentre/gema-opticenter-colorchange-01.jpg',         label: 'OptiCenter — Color Change' },
@@ -289,7 +289,7 @@ function HScrollRow({
                     src={slide.src}
                     alt={slide.label}
                     fill
-                    className={(slide as { contain?: boolean }).contain ? 'object-contain p-4' : 'object-cover object-center'}
+                    className={(slide as { contain?: boolean }).contain ? 'object-contain p-4' : `object-cover ${(slide as { position?: string }).position ?? 'object-center'}`}
                     sizes="(max-width: 768px) 90vw, 40vw"
                     priority={gi === 0 && i === 0}
                   />
