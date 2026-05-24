@@ -153,71 +153,72 @@ export default function HeroDark() {
             <span className="text-[0.5rem] font-semibold uppercase tracking-[0.16em] text-white/52">German liquid coating</span>
           </div>
 
-          {/* ── Authority bar + mobile CTA
-                Mobile : in flow, right below flags
-                Desktop: absolute at bottom of section  ── */}
-          <div
-            className="mt-6 md:mt-0 md:absolute md:inset-x-0 md:bottom-0"
-            style={{ animation: 'hero-item-in 0.65s cubic-bezier(0.22,1,0.36,1) 0.48s both' }}
-          >
-            <div className="overflow-hidden rounded-[1rem] border border-[#FECE00]/[0.12] bg-[#080a0c] shadow-[0_-6px_40px_rgba(0,0,0,0.6),0_16px_48px_rgba(0,0,0,0.4)]">
-              <div className="h-[1.5px] bg-gradient-to-r from-transparent via-[#FECE00]/50 to-transparent" />
-              <div className="grid grid-cols-2 divide-x divide-y divide-[#FECE00]/[0.18] md:flex md:divide-y-0 md:items-stretch md:divide-x md:divide-[#FECE00]/[0.18]">
+        </div>
 
-                {STATS.map(({ value, label, sub }) => (
-                  <div key={value} className="flex flex-1 flex-col justify-center gap-0.5 px-4 py-3.5 md:px-5 md:py-5 lg:px-6">
-                    <div className="flex items-baseline gap-1.5">
-                      <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 900, fontSize: '1.1rem', color: '#fff', letterSpacing: '-0.03em', lineHeight: 1 }}>
-                        {value}
-                      </span>
-                      <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: '0.68rem', color: 'rgba(255,255,255,0.4)', letterSpacing: '-0.01em' }}>
-                        {label}
-                      </span>
-                    </div>
-                    <span className="text-[0.54rem] font-semibold uppercase tracking-[0.14em] text-[#FECE00]/50">{sub}</span>
-                  </div>
-                ))}
+        {/* ── Authority bar + mobile CTA
+              Mobile : in flow below hero content
+              Desktop: absolute at bottom of centring shell (min-h-svh)  ── */}
+        <div
+          className="w-full mt-6 md:mt-0 md:absolute md:inset-x-0 md:bottom-0"
+          style={{ animation: 'hero-item-in 0.65s cubic-bezier(0.22,1,0.36,1) 0.48s both' }}
+        >
+          <div className="overflow-hidden rounded-[1rem] border border-[#FECE00]/[0.12] bg-[#080a0c] shadow-[0_-6px_40px_rgba(0,0,0,0.6),0_16px_48px_rgba(0,0,0,0.4)]">
+            <div className="h-[1.5px] bg-gradient-to-r from-transparent via-[#FECE00]/50 to-transparent" />
+            <div className="grid grid-cols-2 divide-x divide-y divide-[#FECE00]/[0.18] md:flex md:divide-y-0 md:items-stretch md:divide-x md:divide-[#FECE00]/[0.18]">
 
-                {/* GEMA */}
-                <div className="flex min-w-0 flex-1 items-center gap-2.5 px-4 py-3.5 md:px-5 md:py-5 lg:px-6">
-                  <div className="shrink-0 overflow-hidden rounded-[6px] bg-white px-2.5 py-1.5">
-                    <Image src="/images/logos/gema_logo.png" alt="GEMA" width={96} height={36} className="h-5 w-auto object-contain md:h-6" />
+              {STATS.map(({ value, label, sub }) => (
+                <div key={value} className="flex flex-1 flex-col justify-center gap-0.5 px-4 py-3.5 md:px-5 md:py-5 lg:px-6">
+                  <div className="flex items-baseline gap-1.5">
+                    <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 900, fontSize: '1.1rem', color: '#fff', letterSpacing: '-0.03em', lineHeight: 1 }}>
+                      {value}
+                    </span>
+                    <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: '0.68rem', color: 'rgba(255,255,255,0.4)', letterSpacing: '-0.01em' }}>
+                      {label}
+                    </span>
                   </div>
-                  <div className="flex min-w-0 flex-col gap-0.5">
-                    <span className="text-[1.05rem] leading-none" style={{ display: 'inline-block', transform: 'scaleX(1.2)' }}>🇨🇭</span>
-                    <span className="text-[0.5rem] font-semibold uppercase leading-tight tracking-[0.12em] text-[#FECE00]/70">Authorised<br />partner</span>
-                  </div>
+                  <span className="text-[0.54rem] font-semibold uppercase tracking-[0.14em] text-[#FECE00]/50">{sub}</span>
                 </div>
+              ))}
 
-                {/* DÜRR */}
-                <div className="flex min-w-0 flex-1 items-center gap-2.5 px-4 py-3.5 md:px-5 md:py-5 lg:px-6">
-                  <div className="shrink-0 overflow-hidden rounded-[6px] bg-white px-2.5 py-1.5">
-                    <Image src="/images/logos/duerr-logo-rgb.png" alt="DÜRR" width={600} height={285} className="h-5 w-auto object-contain md:h-6" />
-                  </div>
-                  <div className="flex min-w-0 flex-col gap-0.5">
-                    <span className="text-[0.85rem] leading-none">🇩🇪</span>
-                    <span className="text-[0.5rem] font-semibold uppercase leading-tight tracking-[0.12em] text-[#FECE00]/70">Authorised<br />distributor</span>
-                  </div>
+              {/* GEMA */}
+              <div className="flex min-w-0 flex-1 items-center gap-2.5 px-4 py-3.5 md:px-5 md:py-5 lg:px-6">
+                <div className="shrink-0 overflow-hidden rounded-[6px] bg-white px-2.5 py-1.5">
+                  <Image src="/images/logos/gema_logo.png" alt="GEMA" width={96} height={36} className="h-5 w-auto object-contain md:h-6" />
                 </div>
-
-                <div className="hidden shrink-0 items-center px-5 md:flex lg:px-6">
-                  <span className="whitespace-nowrap rounded-full border border-[#FECE00]/20 bg-[#FECE00]/[0.07] px-4 py-1.5 text-[0.56rem] font-bold uppercase tracking-[0.18em] text-[#FECE00]/65">
-                    🇮🇳 Est. 2011 · Noida
-                  </span>
+                <div className="flex min-w-0 flex-col gap-0.5">
+                  <span className="text-[1.05rem] leading-none" style={{ display: 'inline-block', transform: 'scaleX(1.2)' }}>🇨🇭</span>
+                  <span className="text-[0.5rem] font-semibold uppercase leading-tight tracking-[0.12em] text-[#FECE00]/70">Authorised<br />partner</span>
                 </div>
               </div>
-            </div>
 
-            {/* Mobile CTA — below authority bar */}
-            <div className="mt-4 flex justify-center md:hidden">
-              <button type="button" onClick={scrollToProducts} className="panel-button dynamic-button dynamic-button-yellow w-full">
-                <span>Explore Products</span>
-                <div className="dynamic-button-glow" />
-              </button>
+              {/* DÜRR */}
+              <div className="flex min-w-0 flex-1 items-center gap-2.5 px-4 py-3.5 md:px-5 md:py-5 lg:px-6">
+                <div className="shrink-0 overflow-hidden rounded-[6px] bg-white px-2.5 py-1.5">
+                  <Image src="/images/logos/duerr-logo-rgb.png" alt="DÜRR" width={600} height={285} className="h-5 w-auto object-contain md:h-6" />
+                </div>
+                <div className="flex min-w-0 flex-col gap-0.5">
+                  <span className="text-[0.85rem] leading-none">🇩🇪</span>
+                  <span className="text-[0.5rem] font-semibold uppercase leading-tight tracking-[0.12em] text-[#FECE00]/70">Authorised<br />distributor</span>
+                </div>
+              </div>
+
+              <div className="hidden shrink-0 items-center px-5 md:flex lg:px-6">
+                <span className="whitespace-nowrap rounded-full border border-[#FECE00]/20 bg-[#FECE00]/[0.07] px-4 py-1.5 text-[0.56rem] font-bold uppercase tracking-[0.18em] text-[#FECE00]/65">
+                  🇮🇳 Est. 2011 · Noida
+                </span>
+              </div>
             </div>
           </div>
 
+          {/* Mobile CTA — below authority bar */}
+          <div className="mt-4 flex justify-center md:hidden">
+            <button type="button" onClick={scrollToProducts} className="panel-button dynamic-button dynamic-button-yellow w-full">
+              <span>Explore Products</span>
+              <div className="dynamic-button-glow" />
+            </button>
+          </div>
         </div>
+
       </div>
     </section>
   );
