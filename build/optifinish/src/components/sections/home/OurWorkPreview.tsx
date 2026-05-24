@@ -7,10 +7,10 @@ import { useHeadingAnimation } from '@/hooks/useHeadingAnimation';
 
 const WORK_CARDS = [
   {
-    industry: 'Automotive Components',
-    city: 'Gurugram, Haryana',
-    desc: 'Full powder coating line with conveyor system, curing oven, and spray booth.',
-    imageSrc: null,
+    industry: 'Aluminium Profile — Wood Finish',
+    city: 'Indore, Madhya Pradesh',
+    desc: 'Wood grain sublimation oven installed for aluminium extrusion profiles — thermal transfer finish line.',
+    imageSrc: '/images/products/optifinish-manufactured/wood-finish-oven/img-2.png',
   },
   {
     industry: 'Electrical Equipment',
