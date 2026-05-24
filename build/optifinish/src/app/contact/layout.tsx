@@ -6,11 +6,31 @@ const breadcrumbLD = breadcrumbSchema([
   { name: 'Contact', href: '/contact' },
 ]);
 
+const contactPageLD = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  '@id': `${SITE.url}/contact#webpage`,
+  url: `${SITE.url}/contact`,
+  name: 'Contact OptiFinish',
+  description: 'Get in touch with OptiFinish for powder coating plant enquiries.',
+  mainEntity: {
+    '@type': 'Organization',
+    '@id': `${SITE.url}/#organization`,
+    name: 'OptiFinish',
+    telephone: '+91-96434-03374',
+    email: 'info@optifinish.in',
+    contactPoint: [
+      { '@type': 'ContactPoint', telephone: '+91-96434-03374', contactType: 'sales', areaServed: 'IN' },
+      { '@type': 'ContactPoint', telephone: '+91-89294-08691', contactType: 'customer support', areaServed: 'IN' },
+    ],
+  },
+};
+
 export const metadata: Metadata = {
   metadataBase,
   title: 'Contact OptiFinish — Get a Quote for Coating Equipment | OptiFinish',
   description:
-    'Contact OptiFinish (Value Added Coating Solutions Pvt. Ltd.) for powder coating plants, curing ovens, GEMA guns, Dürr liquid coating systems, and automation solutions. Call +91-96434-03374 or email info@optifinish.in.',
+    'Request a quote for powder coating plants, curing ovens, spray booths, GEMA guns, or Dürr liquid coating equipment. OptiFinish responds within 1 business day.',
   keywords: [
     'contact OptiFinish',
     'powder coating plant quote India',
@@ -39,6 +59,7 @@ export default function ContactLayout({ children }: { children: React.ReactNode 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(contactPageLD) }} />
       {children}
     </>
   );

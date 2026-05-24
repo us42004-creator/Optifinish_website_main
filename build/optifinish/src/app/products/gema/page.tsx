@@ -144,8 +144,8 @@ export default function GemaPage() {
         eyebrow="Authorised Partner — GEMA Switzerland"
         tag="Authorised Partner"
         flag="🇨🇭"
-        headline="World-standard powder coating"
-        headlineAccent="equipment for Indian industry."
+        headline="GEMA Powder Coating Equipment"
+        headlineAccent="for Indian industry."
         subline="OptiFinish is an authorised GEMA partner in India — supplying and supporting the full range of GEMA guns, reciprocators, and powder management systems."
         stats={[
           { value: '60+ Yrs', label: 'Swiss engineering heritage' },

@@ -8,6 +8,9 @@ import {
   breadcrumbSchema,
   faqSchema,
   metadataBase,
+  organizationSchema,
+  localBusinessSchema,
+  websiteSchema,
 } from '@/lib/seo';
 import HeroDark                  from '@/components/sections/home/HeroDark';
 import ProprietaryAutomation     from '@/components/sections/home/ProprietaryAutomation';
@@ -71,7 +74,10 @@ const homeBC = breadcrumbSchema([{ name: 'Home', href: '/' }]);
 export default function Home() {
   return (
     <>
-      {/* Homepage FAQ + Breadcrumb JSON-LD */}
+      {/* Homepage JSON-LD: Organization, LocalBusiness, WebSite, FAQ, Breadcrumb */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(homeFaqs) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(homeBC) }} />
 

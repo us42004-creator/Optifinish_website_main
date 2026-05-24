@@ -20,7 +20,7 @@ function PulseBullet() {
 
 const STATS = [
   { value: '14+',  label: 'Years',         sub: 'Industrial experience' },
-  { value: '250+', label: 'Installations', sub: 'Across India'          },
+  { value: '375+', label: 'Installations', sub: 'Across India'          },
 ];
 
 const scrollToProducts = () => {

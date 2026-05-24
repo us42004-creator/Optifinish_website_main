@@ -209,8 +209,8 @@ export default function DurrPage() {
         eyebrow="Authorised Distributor — Dürr Group"
         tag="Authorised Distributor"
         flag="🇩🇪"
-        headline="High-precision liquid coating"
-        headlineAccent="technology for industrial finishing."
+        headline="Dürr Liquid Coating Systems"
+        headlineAccent="for industrial finishing."
         subline="OptiFinish supplies Dürr liquid coating equipment in India — spray guns, pump systems, and electronic dosing for demanding paint applications."
         stats={[
           { value: '9 Lines', label: 'Guns, pumps, dosing' },

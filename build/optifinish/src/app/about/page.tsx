@@ -2,6 +2,27 @@ import type { Metadata } from 'next';
 import AboutPageContent from './AboutPageContent';
 import { metadataBase, defaultOpenGraph, defaultTwitter, breadcrumbSchema, SITE } from '@/lib/seo';
 
+const founderPersonSchemas = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    '@id': `${SITE.url}/#person-harish-sharma`,
+    name: 'Harish Sharma',
+    jobTitle: 'Co-Founder & Director',
+    alumniOf: 'Rohilkhand University',
+    worksFor: { '@type': 'Organization', '@id': `${SITE.url}/#organization` },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    '@id': `${SITE.url}/#person-lalit-tayal`,
+    name: 'Lalit Tayal',
+    jobTitle: 'Co-Founder & Director',
+    alumniOf: 'Shiva Institute of Management Studies',
+    worksFor: { '@type': 'Organization', '@id': `${SITE.url}/#organization` },
+  },
+];
+
 export const metadata: Metadata = {
   metadataBase,
   title: 'About OptiFinish | VACSPL — Powder & Liquid Coating Manufacturer India',
@@ -99,6 +120,10 @@ export default function AboutPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
+      {founderPersonSchemas.map((schema, i) => (
+        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      ))}
+      <h1 className="sr-only">About OptiFinish — Value Added Coating Solutions</h1>
       <AboutPageContent />
     </>
   );

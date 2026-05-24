@@ -69,7 +69,7 @@ export default function OurWorkPreview() {
             <h2 className="font-display text-[clamp(2rem,4vw,3.5rem)] font-black leading-[0.92] tracking-[-0.04em] text-white">
               <div className="overflow-hidden pb-[0.15em]">
                 <span ref={line1Ref} className="block" style={{ willChange: 'transform, opacity' }}>
-                  250+ lines installed
+                  375+ lines installed
                 </span>
               </div>
               <div className="overflow-hidden pb-[0.15em]">
