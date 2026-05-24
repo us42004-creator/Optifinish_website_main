@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   metadataBase,
   title: 'Powder Coating Plant — Turnkey Conveyorised Lines | OptiFinish',
   description:
-    'Complete turnkey powder coating plant — manual batch or fully conveyorised automatic. 700+ plants installed across India. Custom engineered, manufactured, and commissioned from our Greater Noida facility.',
+    'Complete turnkey powder coating plant — manual batch or fully conveyorised automatic. 375+ plants installed across India. Custom engineered, manufactured, and commissioned from our Greater Noida facility.',
   keywords: [
     'powder coating plant India',
     'turnkey powder coating plant',
@@ -23,13 +23,13 @@ export const metadata: Metadata = {
   openGraph: {
     ...defaultOpenGraph,
     title: 'Powder Coating Plant — Turnkey Conveyorised Lines | OptiFinish',
-    description: 'Turnkey powder coating plants — manual batch or fully conveyorised. 700+ installations across India. Custom engineered from OptiFinish, Greater Noida.',
+    description: 'Turnkey powder coating plants — manual batch or fully conveyorised. 375+ installations across India. Custom engineered from OptiFinish, Greater Noida.',
     url: `${SITE.url}/products/optifinish-manufactured/powder-coating-plant`,
   },
   twitter: {
     ...defaultTwitter,
     title: 'Powder Coating Plant — Turnkey Lines | OptiFinish',
-    description: '700+ powder coating plants installed across India. Turnkey, conveyorised, custom-engineered.',
+    description: '375+ powder coating plants installed across India. Turnkey, conveyorised, custom-engineered.',
   },
 };
 
@@ -81,9 +81,9 @@ export default function PowderCoatingPlantPage() {
       eyebrow="Conveyorised Line — Manual & Automatic"
       headline="Complete line."
       headlineAccent="One roof. One team."
-      subline="A turnkey powder coating plant engineered, fabricated, assembled, and commissioned by OptiFinish — from a 5-metre manual batch line to a 300-metre fully automatic conveyorised production system. 700+ plants installed across Indian industry."
+      subline="A turnkey powder coating plant engineered, fabricated, assembled, and commissioned by OptiFinish — from a 5-metre manual batch line to a 300-metre fully automatic conveyorised production system. 375+ plants installed across Indian industry."
       heroStats={[
-        { val: '700+', label: 'Manual plants installed' },
+        { val: '375+', label: 'Manual plants installed' },
         { val: '75+', label: 'Conveyor lines delivered' },
         { val: '14+', label: 'Years in production' },
       ]}
@@ -107,7 +107,7 @@ export default function PowderCoatingPlantPage() {
         'Manual batch and fully conveyorised automatic configurations',
         'Siemens PLC control panels with VFD drives on all major motors',
         'Full site commissioning and operator training included — we don\'t leave until it runs',
-        '700+ manual plants and 75+ conveyor lines installed across Indian industry',
+        '375+ manual plants and 75+ conveyor lines installed across Indian industry',
       ]}
 
       steps={[

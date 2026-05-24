@@ -308,7 +308,9 @@ export function productSchema({
     offers: {
       '@type': 'Offer',
       url: `${SITE.url}/contact?product=${encodeURIComponent(name)}`,
+      price: '0',
       priceCurrency: 'INR',
+      description: 'Price available on request. Contact OptiFinish for a customised quote.',
       availability: 'https://schema.org/InStock',
       seller: { '@id': `${SITE.url}/#organization` },
     },
