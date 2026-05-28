@@ -85,13 +85,7 @@ export default function ProprietaryAutomation() {
   const [imgIndexes, setImgIndexes] = useState([0, 0, 0]);
   const currentImgIndex = imgIndexes[active];
 
-  /* Mobile: auto-switch product every 6 s */
-  useEffect(() => {
-    const t = setInterval(() => {
-      setActive(prev => (prev + 1) % PRODUCTS.length);
-    }, 6000);
-    return () => clearInterval(t);
-  }, []);
+  /* Mobile: product tab is manual-only — no auto-switch */
 
   /* Mobile: each product carousel advances independently every 3 s */
   useEffect(() => {
