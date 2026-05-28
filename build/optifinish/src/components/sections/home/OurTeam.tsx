@@ -15,8 +15,8 @@ const FOUNDERS = [
     name: 'Lalit Tayal',
     role: 'Director & Co-Founder',
     bio: "B.Sc. + MBA, Shiva Institute of Management Studies. Came to the coating industry from Ayur Herbals. Since 1999, he has built and run the commercial and distribution side of the business — from Vinayak Agencies' first powder sale to Dürr's product range landing under the OptiFinish umbrella. He leads business development, partnerships, and regional expansion.",
-    src: '/images/team/lalit_tayal_v2.jpg',
-    landscape: false,
+    src: '/images/team/Lalit_Tayal.png',
+    landscape: true,
   },
 ];
 
