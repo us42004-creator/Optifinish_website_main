@@ -8,7 +8,7 @@ const FOUNDERS = [
     name: 'Harish Sharma',
     role: 'Director & Co-Founder',
     bio: 'B.Sc. + MBA, Rohilkhand University. Early career at Vardhaman Spinning Mills before discovering the coating industry in 1999. He has spent the last 25 years working every angle of it — sales, procurement, plant commissioning, and product development. He leads manufacturing strategy and key client relationships at VACSPL.',
-    src: '/images/Team/Harish_sharma.png',
+    src: '/images/team/Harish_sharma.png',
     landscape: true,
   },
   {
