@@ -159,7 +159,7 @@ export default function HeroDark() {
               Mobile : in flow below hero content
               Desktop: absolute at bottom of centring shell (min-h-svh)  ── */}
         <div
-          className="w-full mt-6 md:mt-0 md:absolute md:inset-x-0 md:bottom-0"
+          className="w-full mt-6 md:mt-8"
           style={{ animation: 'hero-item-in 0.65s cubic-bezier(0.22,1,0.36,1) 0.48s both' }}
         >
           <div className="overflow-hidden rounded-[1rem] border border-[#FECE00]/[0.12] bg-[#080a0c] shadow-[0_-6px_40px_rgba(0,0,0,0.6),0_16px_48px_rgba(0,0,0,0.4)]">
