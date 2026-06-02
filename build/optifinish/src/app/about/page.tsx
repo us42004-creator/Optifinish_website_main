@@ -62,7 +62,7 @@ export default function AboutPage() {
     '@type': 'Organization',
     name: 'Value Added Coating Solutions Pvt. Ltd.',
     alternateName: ['VACSPL', 'OptiFinish'],
-    foundingDate: '1999',
+    foundingDate: '2011',
     founders: [
       {
         '@type': 'Person',

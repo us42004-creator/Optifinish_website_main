@@ -14,7 +14,7 @@ export const SITE = {
   description: 'Powder coating plants, curing ovens & automation — manufactured in Greater Noida. Authorised GEMA & Dürr partner in India. Z-TAP robot. Get a quote.',
   phone:       '+91-96434-03374',
   email:       'info@optifinish.in',
-  founded:     '1999',
+  founded:     '2011',
   employees:   '11-50',
 };
 

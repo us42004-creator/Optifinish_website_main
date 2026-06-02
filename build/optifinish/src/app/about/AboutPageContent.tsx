@@ -9,7 +9,7 @@ import { useHeadingAnimation } from '@/hooks/useHeadingAnimation';
 import HomeCTA from '@/components/sections/home/HomeCTA';
 
 const STATS = [
-  { value: '1999', label: 'Year founded' },
+  { value: '1999', label: 'In the industry since' },
   { value: '375+', label: 'Installations commissioned' },
   { value: '14+', label: 'Years as GEMA partner' },
   { value: '4',   label: 'Office locations' },
@@ -256,7 +256,7 @@ export default function AboutPageContent() {
   return (
     <main itemScope itemType="https://schema.org/Organization">
       <meta itemProp="name" content="Value Added Coating Solutions Pvt. Ltd." />
-      <meta itemProp="foundingDate" content="1999" />
+      <meta itemProp="foundingDate" content="2011" />
 
       {/* ── S1 TIMELINE — landing section ── */}
       <section className="relative overflow-hidden bg-[#070809]">
