@@ -97,10 +97,9 @@ export default function OptiZA18Page() {
         { src: '/images/products/za01/recip_mount.png',     label: 'OPTI-ZA-18 — gun mounting configuration', fit: 'cover', aspectRatio: '16/9' },
         /* Bottom row 1: control panel + HMI only */
         { src: '/images/products/za01/recip_panel_hmi.png', label: 'OPTI-ZA-18 — control panel & HMI',        fit: 'cover', aspectRatio: '4/3'  },
-        /* Bottom row 2: 3 portrait shots — natural 9:16 containers */
+        /* Bottom row 2: 2 portrait shots — natural 9:16 containers */
         { src: '/images/products/za01/recip_portrait.png',  label: 'OPTI-ZA-18 — machine portrait',           fit: 'cover', aspectRatio: '9/16' },
         { src: '/images/products/za01/recip_side.png',      label: 'OPTI-ZA-18 — side profile',               fit: 'cover', aspectRatio: '9/16' },
-        { src: '/images/products/za01/recip_render.png',    label: 'OPTI-ZA-18 — product render',             fit: 'cover', aspectRatio: '9/16' },
       ]}
       galleryBottomSplit={1}
       enquireSlug="za01"
