@@ -10,7 +10,7 @@ import { useHeadingAnimation } from '@/hooks/useHeadingAnimation';
 
 const MANUFACTURED_SLIDES = [
   { src: '/images/products/optifinish-manufactured/powder-coating-plant/plant2.jpeg',                             label: 'Conveyorised Powder Coating Line' },
-  { src: '/images/products/optifinish-manufactured/curing-oven/industrial_oven.png',                              label: 'Gas-Fired Curing Oven' },
+  { src: '/images/products/optifinish-manufactured/curing-oven/oven-nic.png',                                    label: 'Gas-Fired Curing Oven' },
   { src: '/images/products/spray-booth/automatic/automatic-booth-inside.jpeg',                                    label: 'Automatic Spray Booth — Interior' },
   { src: '/images/products/optifinish-manufactured/SS_BOOTH/ss-booth-master-shot.png',                            label: 'SS-304 Pollution-Free Booth' },
   { src: '/images/products/optifinish-manufactured/liquid-spray-booth/car-painting-booth.jpg',                    label: 'Liquid Spray Booth' },
