@@ -19,9 +19,11 @@ const MANUFACTURED_SLIDES = [
 ];
 
 const AUTOMATION_SLIDES = [
+  { src: '/images/products/za01/recip_landscape.png',           label: 'OPTI-ZA-18 — Vertical Reciprocator' },
+  { src: '/images/products/za01/recip_portrait.png',            label: 'OPTI-ZA-18 — Machine Profile' },
   { src: '/images/products/sieve-machine/sieve-machine-04.jpg', label: 'PS Vibratory Sieve Machine' },
+  { src: '/images/products/za01/recip_mount.png',               label: 'OPTI-ZA-18 — Gun Mounting' },
   { src: '/images/products/sieve-machine/sieve-machine-02.jpg', label: 'Sieve Machine — Detail View' },
-  { src: '/images/products/sieve-machine/sieve-machine-03.jpg', label: 'Sieve Machine — In Use' },
 ];
 
 const GEMA_SLIDES = [
@@ -153,7 +155,7 @@ const TOP_GROUPS = [
     flag: '🇮🇳',
     desc: 'Proprietary automation products developed entirely in-house — Z-TAP, OPTI-ZA-18, and the Automatic Sieve Machine.',
     items: ['Z-TAP Robot System', 'OPTI-ZA-18 Reciprocator', 'Automatic Sieve Machine'],
-    slides: null as typeof MANUFACTURED_SLIDES | null,
+    slides: AUTOMATION_SLIDES as typeof MANUFACTURED_SLIDES | null,
     mediaLabel: 'Automation products · image',
   },
 ];
