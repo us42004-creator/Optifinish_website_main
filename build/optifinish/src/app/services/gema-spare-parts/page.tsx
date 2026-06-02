@@ -1,11 +1,33 @@
 import type { Metadata } from 'next';
 import ServicePageTemplate from '@/components/services/ServicePageTemplate';
-import { serviceSchema, breadcrumbSchema } from '@/lib/seo';
+import { serviceSchema, breadcrumbSchema, metadataBase, defaultOpenGraph, defaultTwitter, SITE } from '@/lib/seo';
 
 export const metadata: Metadata = {
+  metadataBase,
   title: 'GEMA Spare Parts | OptiFinish Services',
   description:
     'Genuine OEM GEMA spare parts supply — wear parts, consumables, gun components, and complete assemblies for all current and legacy GEMA powder coating equipment models.',
+  keywords: [
+    'GEMA spare parts India',
+    'GEMA powder coating gun parts India',
+    'GEMA OEM parts supplier India',
+    'GEMA consumables India',
+    'OptiFinish GEMA spare parts',
+    'GEMA gun wear parts India',
+    'GEMA authorised spare parts dealer India',
+  ],
+  alternates: { canonical: `${SITE.url}/services/gema-spare-parts` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'GEMA Spare Parts | OptiFinish Services',
+    description: 'Genuine OEM GEMA spare parts — wear parts, consumables, gun components and assemblies for all GEMA powder coating equipment models.',
+    url: `${SITE.url}/services/gema-spare-parts`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'GEMA Spare Parts | OptiFinish India',
+    description: 'Genuine OEM GEMA spare parts supply in India — wear parts, consumables, gun components for all GEMA models.',
+  },
 };
 
 const serviceLD = serviceSchema({

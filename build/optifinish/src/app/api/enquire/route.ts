@@ -78,8 +78,8 @@ export async function POST(req: NextRequest) {
     const productLabel = product || 'General enquiry';
     const detailsText  = details || '';
 
-    // Log always (visible in Vercel / server logs as a fallback record)
-    console.log('[enquire] New lead:', { name, company, phone, email, product: productLabel, timestamp: new Date().toISOString() });
+    // Log without PII (visible in Vercel / server logs as a fallback record)
+    console.log('[enquire] New lead received:', { product: productLabel, timestamp: new Date().toISOString() });
 
     // Push to Zoho CRM if credentials are configured
     if (process.env.ZOHO_CLIENT_ID && process.env.ZOHO_REFRESH_TOKEN) {

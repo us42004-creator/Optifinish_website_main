@@ -1,11 +1,32 @@
 import type { Metadata } from 'next';
 import ServicePageTemplate from '@/components/services/ServicePageTemplate';
-import { serviceSchema, breadcrumbSchema } from '@/lib/seo';
+import { serviceSchema, breadcrumbSchema, metadataBase, defaultOpenGraph, defaultTwitter, SITE } from '@/lib/seo';
 
 export const metadata: Metadata = {
+  metadataBase,
   title: 'Troubleshooting & Support | OptiFinish Services',
   description:
     'Remote and on-site coating line troubleshooting — defect diagnosis, equipment fault-finding, root cause analysis, and corrective recommendations across all makes and models.',
+  keywords: [
+    'powder coating troubleshooting India',
+    'coating line fault diagnosis',
+    'coating defect analysis India',
+    'powder coating support service India',
+    'OptiFinish troubleshooting',
+    'coating equipment repair India',
+  ],
+  alternates: { canonical: `${SITE.url}/services/troubleshooting-support` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'Troubleshooting & Support | OptiFinish Services',
+    description: 'Remote and on-site coating line troubleshooting — defect diagnosis, fault-finding, root cause analysis across all makes and models.',
+    url: `${SITE.url}/services/troubleshooting-support`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'Troubleshooting & Support | OptiFinish',
+    description: 'Coating line troubleshooting — remote and on-site defect diagnosis, fault-finding, and corrective recommendations.',
+  },
 };
 
 const serviceLD = serviceSchema({

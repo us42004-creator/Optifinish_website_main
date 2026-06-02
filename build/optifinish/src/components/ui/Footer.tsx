@@ -39,10 +39,11 @@ const PARTNER_PRODUCTS = [
     name: 'GEMA',
     href: '/products/gema',
     items: [
-      { href: '/products/gema/manual-gun',    label: 'Manual Powder Coating Gun' },
-      { href: '/products/gema/automatic-gun', label: 'Automatic Powder Coating Gun' },
-      { href: '/products/gema/reciprocators', label: 'Reciprocators & Automation Axes' },
-      { href: '/products/gema/opticentre',    label: 'OptiCentre Powder Management' },
+      { href: '/products/gema/manual-gun',          label: 'Manual Powder Coating Gun' },
+      { href: '/products/gema/automatic-gun',       label: 'Automatic Powder Coating Gun' },
+      { href: '/products/gema/reciprocators',       label: 'Reciprocators & Automation Axes' },
+      { href: '/products/gema/opticentre',          label: 'OptiCentre Powder Management' },
+      { href: '/products/gema/plastic-pp-booth',    label: 'Plastic / PP Spray Booth' },
     ],
   },
   {

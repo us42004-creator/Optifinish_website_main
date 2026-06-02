@@ -1,11 +1,32 @@
 import type { Metadata } from 'next';
 import ServicePageTemplate from '@/components/services/ServicePageTemplate';
-import { serviceSchema, breadcrumbSchema } from '@/lib/seo';
+import { serviceSchema, breadcrumbSchema, metadataBase, defaultOpenGraph, defaultTwitter, SITE } from '@/lib/seo';
 
 export const metadata: Metadata = {
+  metadataBase,
   title: 'Upgrades & Retrofits | OptiFinish Services',
   description:
     'Extend the life and capability of your existing coating line — automation integration, GEMA gun upgrades, oven modernisation, and conveyor retrofits with minimal production downtime.',
+  keywords: [
+    'powder coating line upgrade India',
+    'coating line retrofit India',
+    'GEMA gun upgrade India',
+    'coating oven modernisation India',
+    'OptiFinish upgrades retrofits',
+    'conveyor coating line retrofit',
+  ],
+  alternates: { canonical: `${SITE.url}/services/upgrades-retrofits` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'Upgrades & Retrofits | OptiFinish Services',
+    description: 'Extend your coating line life — automation integration, GEMA gun upgrades, oven modernisation, and conveyor retrofits with minimal downtime.',
+    url: `${SITE.url}/services/upgrades-retrofits`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'Upgrades & Retrofits | OptiFinish',
+    description: 'Coating line upgrades and retrofits — automation, GEMA guns, oven modernisation, conveyor upgrades.',
+  },
 };
 
 const serviceLD = serviceSchema({

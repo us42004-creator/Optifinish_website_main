@@ -3,11 +3,35 @@ import CategoryHero from '@/components/products/CategoryHero';
 import ProductCard from '@/components/products/ProductCard';
 import CrossCategoryNav from '@/components/products/CrossCategoryNav';
 import HomeCTA from '@/components/sections/home/HomeCTA';
+import { metadataBase, defaultOpenGraph, defaultTwitter, breadcrumbSchema, SITE } from '@/lib/seo';
 
 export const metadata: Metadata = {
+  metadataBase,
   title: 'Vinayak Agencies — Industrial Paints & Powder Coatings | OptiFinish',
   description:
     'Vinayak Agencies is one of India\'s largest authorised Kansai Nerolac industrial dealers — powder coatings, liquid paints, touch-up paints, and adhesives, always in stock.',
+  keywords: [
+    'Vinayak Agencies India',
+    'Kansai Nerolac authorised dealer India',
+    'industrial powder coating paints India',
+    'Nerolac powder coating India',
+    'industrial liquid paint India',
+    'touch-up paint India',
+    'industrial adhesives India',
+    'coating paints Greater Noida',
+  ],
+  alternates: { canonical: `${SITE.url}/products/vinayak` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'Vinayak Agencies — Industrial Paints & Powder Coatings | OptiFinish',
+    description: 'Authorised Kansai Nerolac dealer — powder coatings, liquid paints, touch-up paints, and adhesives always in stock.',
+    url: `${SITE.url}/products/vinayak`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'Vinayak Agencies — Industrial Paints | OptiFinish',
+    description: 'Authorised Kansai Nerolac dealer — powder coatings, liquid paints, touch-up paints, and adhesives.',
+  },
 };
 
 const PRODUCTS = [
@@ -88,9 +112,16 @@ const PRODUCTS = [
   },
 ];
 
+const breadcrumbLD = breadcrumbSchema([
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'Vinayak Agencies', href: '/products/vinayak' },
+]);
+
 export default function VinayakPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLD) }} />
       <CategoryHero
         eyebrow="Sister Concern — Vinayak Agencies"
         tag="Sister Concern"

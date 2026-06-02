@@ -1,11 +1,32 @@
 import type { Metadata } from 'next';
 import ServicePageTemplate from '@/components/services/ServicePageTemplate';
-import { serviceSchema, breadcrumbSchema } from '@/lib/seo';
+import { serviceSchema, breadcrumbSchema, metadataBase, defaultOpenGraph, defaultTwitter, SITE } from '@/lib/seo';
 
 export const metadata: Metadata = {
+  metadataBase,
   title: 'Testing & Commissioning | OptiFinish Services',
   description:
     'Commissioning service for newly installed powder coating lines — site readiness inspection, full system validation, trial production run, and operator handover with documentation.',
+  keywords: [
+    'powder coating line commissioning India',
+    'coating plant testing commissioning',
+    'coating line installation validation',
+    'powder coating startup service India',
+    'OptiFinish commissioning',
+    'coating equipment startup India',
+  ],
+  alternates: { canonical: `${SITE.url}/services/testing-commissioning` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'Testing & Commissioning | OptiFinish Services',
+    description: 'Commissioning service for powder coating lines — site readiness, full system validation, trial production run, and operator handover.',
+    url: `${SITE.url}/services/testing-commissioning`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'Testing & Commissioning | OptiFinish',
+    description: 'Powder coating line commissioning — site readiness, system validation, trial run, and operator handover documentation.',
+  },
 };
 
 const serviceLD = serviceSchema({

@@ -1,12 +1,32 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import HomeCTA from '@/components/sections/home/HomeCTA';
-import { serviceSchema, breadcrumbSchema } from '@/lib/seo';
+import { serviceSchema, breadcrumbSchema, metadataBase, defaultOpenGraph, defaultTwitter, SITE } from '@/lib/seo';
 
 export const metadata: Metadata = {
+  metadataBase,
   title: 'DCP Server-Based Maintenance | OptiFinish Services',
   description:
     'Remote diagnostics and server-based predictive maintenance for connected coating lines — coming soon from OptiFinish.',
+  keywords: [
+    'DCP server maintenance powder coating',
+    'remote coating line diagnostics India',
+    'predictive maintenance coating equipment',
+    'connected coating line monitoring',
+    'OptiFinish DCP server maintenance',
+  ],
+  alternates: { canonical: `${SITE.url}/services/dcp-server-based-maintenance` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'DCP Server-Based Maintenance | OptiFinish Services',
+    description: 'Remote diagnostics and predictive maintenance for connected coating lines — coming soon from OptiFinish.',
+    url: `${SITE.url}/services/dcp-server-based-maintenance`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'DCP Server Maintenance | OptiFinish',
+    description: 'Remote diagnostics and server-based predictive maintenance for connected coating lines.',
+  },
 };
 
 /* ── Shared decorative grids (mirrors ServicePageTemplate) ── */

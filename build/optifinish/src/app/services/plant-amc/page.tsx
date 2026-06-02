@@ -1,11 +1,32 @@
 import type { Metadata } from 'next';
 import ServicePageTemplate from '@/components/services/ServicePageTemplate';
-import { serviceSchema, breadcrumbSchema } from '@/lib/seo';
+import { serviceSchema, breadcrumbSchema, metadataBase, defaultOpenGraph, defaultTwitter, SITE } from '@/lib/seo';
 
 export const metadata: Metadata = {
+  metadataBase,
   title: 'Plant AMC — Annual Maintenance Contract | OptiFinish Services',
   description:
     'Annual Maintenance Contracts for installed powder coating lines — scheduled preventive maintenance, 48-hour breakdown response, and full line coverage across India.',
+  keywords: [
+    'powder coating plant AMC India',
+    'annual maintenance contract coating line',
+    'coating plant preventive maintenance',
+    'powder coating line service contract',
+    'OptiFinish AMC',
+    'coating equipment maintenance India',
+  ],
+  alternates: { canonical: `${SITE.url}/services/plant-amc` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'Plant AMC — Annual Maintenance Contract | OptiFinish Services',
+    description: 'Annual Maintenance Contracts for powder coating lines — preventive maintenance, 48-hour breakdown response, full line coverage across India.',
+    url: `${SITE.url}/services/plant-amc`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'Plant AMC | OptiFinish Services',
+    description: 'Annual maintenance contracts for powder coating lines. 48-hour breakdown response. Full line coverage across India.',
+  },
 };
 
 const serviceLD = serviceSchema({

@@ -97,12 +97,13 @@ const PRODUCTS_MENU = [
     label: 'GEMA',
     tag: 'Authorised Partner',
     href: '/products/gema',
-    count: 4,
+    count: 5,
     products: [
       { name: 'Manual Powder Coating Gun', href: '/products/gema/manual-gun' },
       { name: 'Automatic Powder Coating Gun', href: '/products/gema/automatic-gun' },
       { name: 'Reciprocators & Automation Axes', href: '/products/gema/reciprocators' },
       { name: 'OptiCentre Powder Management', href: '/products/gema/opticentre' },
+      { name: 'Plastic / PP Spray Booth', href: '/products/gema/plastic-pp-booth' },
     ],
   },
   {

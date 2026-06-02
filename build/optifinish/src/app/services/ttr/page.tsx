@@ -1,11 +1,32 @@
 import type { Metadata } from 'next';
 import ServicePageTemplate from '@/components/services/ServicePageTemplate';
-import { serviceSchema, breadcrumbSchema } from '@/lib/seo';
+import { serviceSchema, breadcrumbSchema, metadataBase, defaultOpenGraph, defaultTwitter, SITE } from '@/lib/seo';
 
 export const metadata: Metadata = {
+  metadataBase,
   title: 'Trials, Testing & Review | OptiFinish Services',
   description:
     'Coating trials on sample parts at our Greater Noida facility — substrate testing, powder evaluation, colour matching, adhesion testing, and full written process reports.',
+  keywords: [
+    'powder coating trials India',
+    'coating test on sample parts India',
+    'powder evaluation India',
+    'colour matching powder coating India',
+    'OptiFinish trials testing',
+    'coating substrate testing Greater Noida',
+  ],
+  alternates: { canonical: `${SITE.url}/services/ttr` },
+  openGraph: {
+    ...defaultOpenGraph,
+    title: 'Trials, Testing & Review | OptiFinish Services',
+    description: 'Coating trials at our Greater Noida facility — substrate testing, powder evaluation, colour matching, adhesion testing, full process reports.',
+    url: `${SITE.url}/services/ttr`,
+  },
+  twitter: {
+    ...defaultTwitter,
+    title: 'Coating Trials, Testing & Review | OptiFinish',
+    description: 'Sample part coating trials at Greater Noida — substrate testing, powder evaluation, colour matching, and full written process reports.',
+  },
 };
 
 const serviceLD = serviceSchema({

@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 const PRODUCTS = [
   {
-    href:   '/products/automation/ztap',
+    href:   '/products/automation/z-tap',
     name:   'Z-TAP',
     tag:    'Flagship',
     desc:   'Zero-touch robotic powder coating. Mimic a motion once — Z-TAP records, perfects, and replicates it flawlessly across every part.',
@@ -16,7 +16,7 @@ const PRODUCTS = [
     specs:  ['Vertical axis automation', 'Adjustable stroke and speed', 'Line-compatible design', 'Low maintenance'],
   },
   {
-    href:   '/products/automation/automatic-sieve-machine',
+    href:   '/products/automation/sieve-machine',
     name:   'Automatic Sieve Machine',
     tag:    'Support Equipment',
     desc:   'Automated powder sieving for consistent quality and reduced contamination across your coating process.',
