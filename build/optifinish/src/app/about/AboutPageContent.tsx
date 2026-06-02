@@ -9,7 +9,7 @@ import { useHeadingAnimation } from '@/hooks/useHeadingAnimation';
 import HomeCTA from '@/components/sections/home/HomeCTA';
 
 const STATS = [
-  { value: '1999', label: 'Year founded' },
+  { value: '1999', label: 'In the industry since' },
   { value: '375+', label: 'Installations commissioned' },
   { value: '14+', label: 'Years as GEMA partner' },
   { value: '4',   label: 'Office locations' },
