@@ -92,9 +92,9 @@ export default function OptiZA18Page() {
       heroImageBg="#0d0d0d"
       heroImageAspect="aspect-[4/3]"
       photoGallery={[
-        /* Top row: featured wide + mount */
-        { src: '/images/products/za01/recip_landscape.png', label: 'OPTI-ZA-18 — full installation view',     fit: 'cover' },
+        /* Top row: mount (16/9) in wide 2fr slot, landscape (4/3) in narrow 1fr slot */
         { src: '/images/products/za01/recip_mount.png',     label: 'OPTI-ZA-18 — gun mounting configuration', fit: 'cover' },
+        { src: '/images/products/za01/recip_landscape.png', label: 'OPTI-ZA-18 — full installation view',     fit: 'cover' },
         /* Middle row: 2 portrait cards — dramatic centrepiece */
         { src: '/images/products/za01/recip_portrait.png',  label: 'OPTI-ZA-18 — machine portrait',           fit: 'cover', aspectRatio: '9/16' },
         { src: '/images/products/za01/recip_side.png',      label: 'OPTI-ZA-18 — side profile',               fit: 'cover', aspectRatio: '9/16' },
