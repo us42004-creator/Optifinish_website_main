@@ -9,33 +9,19 @@ const FOOTER_COLS = [
   {
     heading: 'Products',
     links: [
-      { href: '/products/optifinish-manufactured/powder-coating-plant',   label: 'Powder Coating Plant' },
-      { href: '/products/optifinish-manufactured/curing-oven',            label: 'Curing Oven' },
-      { href: '/products/optifinish-manufactured/powder-spray-booth',     label: 'Powder Spray Booth' },
-      { href: '/products/optifinish-manufactured/ss-booth-system',        label: 'SS Booth System' },
-      { href: '/products/optifinish-manufactured/pt-line',                label: 'Pretreatment Line' },
-      { href: '/products/optifinish-manufactured/cyclone-dust-collector', label: 'Cyclone Dust Collector' },
-      { href: '/products/automation/ztap',                                label: 'Z-TAP Automation Robot' },
-      { href: '/products/automation/za01',                                label: 'ZA01 Reciprocator' },
-    ],
-  },
-  {
-    heading: 'Partners',
-    links: [
-      { href: '/products/gema/manual-gun',                            label: 'GEMA Manual Gun' },
-      { href: '/products/gema/automatic-gun',                         label: 'GEMA Automatic Gun' },
-      { href: '/products/gema/opticentre',                            label: 'GEMA OptiCentre' },
-      { href: '/products/durr/hvlp-gun',                              label: 'Dürr HVLP Gun' },
-      { href: '/products/optifinish-manufactured/liquid-spray-booth', label: 'Liquid Spray Booth' },
-      { href: '/products/vinayak/powder-paints',                      label: 'Powder Paints' },
+      { href: '/products/optifinish-manufactured', label: 'OptiFinish Manufactured' },
+      { href: '/products/automation',              label: 'OptiFinish Automation' },
+      { href: '/products/gema',                    label: 'GEMA' },
+      { href: '/products/durr',                    label: 'Dürr' },
+      { href: '/products/vinayak',                 label: 'Vinayak Agencies' },
     ],
   },
   {
     heading: 'Services',
     links: [
-      { href: '/services/plant-amc',              label: 'Plant AMC' },
-      { href: '/services/testing-commissioning',  label: 'Commissioning' },
-      { href: '/services/gema-spare-parts',       label: 'GEMA Spare Parts' },
+      { href: '/services/plant-amc',             label: 'Plant AMC' },
+      { href: '/services/testing-commissioning', label: 'Testing & Commissioning' },
+      { href: '/services/gema-spare-parts',      label: 'GEMA Spare Parts' },
     ],
   },
   {
@@ -65,7 +51,7 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl">
 
         {/* Top — brand + columns */}
-        <div className="grid grid-cols-1 gap-8 sm:gap-10 lg:grid-cols-5">
+        <div className="grid grid-cols-1 gap-8 sm:gap-10 lg:grid-cols-4">
 
           {/* Brand */}
           <div className="pb-6 border-b border-white/[0.06] lg:border-b-0 lg:pb-0">
