@@ -165,6 +165,11 @@ export default function OptiZA18Page() {
         'Operations pairing with Auto Spray Optimisation for trigger-on-demand powder delivery',
         'Lines transitioning from manual to semi-automatic or fully automatic operation',
       ]}
+      applicationImages={[
+        { src: '/images/products/spray-booth/automatic/automatic-booth-guns.jpeg',   label: 'Automatic guns mounted on vertical column — booth installation', fit: 'cover' },
+        { src: '/images/products/spray-booth/automatic/automatic-booth-inside.jpeg', label: 'Automatic booth interior — reciprocator in operation',           fit: 'cover' },
+        { src: '/images/products/za01/recip_landscape.png',                          label: 'OPTI-ZA-18 — full line installation',                            fit: 'cover' },
+      ]}
 
       /* S7 — Compatibility */
       compatibilityTags={[
