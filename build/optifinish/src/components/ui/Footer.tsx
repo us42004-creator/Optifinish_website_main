@@ -9,28 +9,33 @@ const FOOTER_COLS = [
   {
     heading: 'Products',
     links: [
-      { href: '/products/optifinish-manufactured/powder-coating-plant', label: 'Powder Coating Plant' },
-      { href: '/products/optifinish-manufactured/curing-oven',          label: 'Curing Oven' },
-      { href: '/products/automation/z-tap',                             label: 'Z-TAP Automation Robot' },
-      { href: '/products/automation/za01',                              label: 'ZA01 Reciprocator' },
-      { href: '/products/gema/manual-gun',                              label: 'GEMA Manual Gun' },
-      { href: '/products/gema/automatic-gun',                           label: 'GEMA Automatic Gun' },
-      { href: '/products/gema/opticentre',                              label: 'GEMA OptiCentre' },
-      { href: '/products/durr/hvlp-gun',                                label: 'Dürr HVLP Gun' },
-      { href: '/products/vinayak/powder-paints',                        label: 'Powder Paints' },
-    ],
-  },
-  {
-    heading: 'Solutions',
-    links: [
+      { href: '/products/optifinish-manufactured/powder-coating-plant',   label: 'Powder Coating Plant' },
+      { href: '/products/optifinish-manufactured/curing-oven',            label: 'Curing Oven' },
       { href: '/products/optifinish-manufactured/powder-spray-booth',     label: 'Powder Spray Booth' },
-      { href: '/products/optifinish-manufactured/liquid-spray-booth',     label: 'Liquid Spray Booth' },
       { href: '/products/optifinish-manufactured/ss-booth-system',        label: 'SS Booth System' },
       { href: '/products/optifinish-manufactured/pt-line',                label: 'Pretreatment Line' },
       { href: '/products/optifinish-manufactured/cyclone-dust-collector', label: 'Cyclone Dust Collector' },
-      { href: '/services/plant-amc',                                      label: 'Plant AMC' },
-      { href: '/services/testing-commissioning',                          label: 'Commissioning' },
-      { href: '/services/gema-spare-parts',                               label: 'GEMA Spare Parts' },
+      { href: '/products/automation/ztap',                                label: 'Z-TAP Automation Robot' },
+      { href: '/products/automation/za01',                                label: 'ZA01 Reciprocator' },
+    ],
+  },
+  {
+    heading: 'Partners',
+    links: [
+      { href: '/products/gema/manual-gun',                            label: 'GEMA Manual Gun' },
+      { href: '/products/gema/automatic-gun',                         label: 'GEMA Automatic Gun' },
+      { href: '/products/gema/opticentre',                            label: 'GEMA OptiCentre' },
+      { href: '/products/durr/hvlp-gun',                              label: 'Dürr HVLP Gun' },
+      { href: '/products/optifinish-manufactured/liquid-spray-booth', label: 'Liquid Spray Booth' },
+      { href: '/products/vinayak/powder-paints',                      label: 'Powder Paints' },
+    ],
+  },
+  {
+    heading: 'Services',
+    links: [
+      { href: '/services/plant-amc',              label: 'Plant AMC' },
+      { href: '/services/testing-commissioning',  label: 'Commissioning' },
+      { href: '/services/gema-spare-parts',       label: 'GEMA Spare Parts' },
     ],
   },
   {
@@ -60,7 +65,7 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl">
 
         {/* Top — brand + columns */}
-        <div className="grid grid-cols-1 gap-8 sm:gap-10 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-8 sm:gap-10 lg:grid-cols-5">
 
           {/* Brand */}
           <div className="pb-6 border-b border-white/[0.06] lg:border-b-0 lg:pb-0">
@@ -72,10 +77,10 @@ export default function Footer() {
               Value Added Coating Solutions Pvt. Ltd.
             </span>
             <div className="mt-5 space-y-1">
-              <p className="text-[9px] text-white/55">+91-98118-46214 / +91-98113-57749</p>
+              <p className="text-[9px] text-white/55">+91 98118 46214 / +91 98113 57749</p>
               <p className="text-[9px] text-white/55">
                 <a href="https://wa.me/918929408691" target="_blank" rel="noopener noreferrer" className="text-[#25D366]/70 hover:text-[#25D366] transition-colors">
-                  WhatsApp: +91-89294-08691
+                  WhatsApp: +91 89294 08691
                 </a>
               </p>
               <p className="text-[9px] text-white/55">info@optifinish.in</p>
