@@ -91,7 +91,7 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl">
 
         {/* Top — brand + columns */}
-        <div className="grid grid-cols-1 gap-8 sm:gap-10 lg:grid-cols-[1.4fr_1.6fr_0.8fr_0.9fr]">
+        <div className="grid grid-cols-1 gap-8 sm:gap-10 lg:grid-cols-[1fr_2.8fr_0.75fr_0.85fr]">
 
           {/* ── Brand column ── */}
           <div className="pb-6 border-b border-white/[0.06] lg:border-b-0 lg:pb-0">
@@ -172,18 +172,18 @@ export default function Footer() {
             <div className={`overflow-hidden transition-all duration-300 lg:block lg:mt-3 lg:max-h-none ${
               productsOpen ? 'max-h-[900px] pb-3' : 'max-h-0 lg:max-h-none'
             }`}>
-              <div className="flex flex-col gap-4">
+              <div className="grid grid-cols-2 gap-x-6 gap-y-5">
                 {PRODUCT_GROUPS.map((group) => (
                   <div key={group.href}>
                     {/* Category label */}
                     <Link
                       href={group.href}
-                      className="mb-1.5 block text-[8.5px] font-bold uppercase tracking-[0.2em] text-white/55 hover:text-[#FECE00] transition-colors"
+                      className="mb-2 block text-[8px] font-bold uppercase tracking-[0.2em] text-white/55 hover:text-[#FECE00] transition-colors"
                     >
                       {group.name}
                     </Link>
                     {/* Child products */}
-                    <ul className="flex flex-col gap-1 pl-2 border-l border-white/[0.07]">
+                    <ul className="flex flex-col gap-1.5 pl-2 border-l border-white/[0.07]">
                       {group.items.map((item) => (
                         <li key={item.href}>
                           <Link
