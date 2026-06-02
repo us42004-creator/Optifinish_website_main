@@ -7,12 +7,12 @@ import { metadataBase, defaultOpenGraph, defaultTwitter, breadcrumbSchema, SITE 
 
 export const metadata: Metadata = {
   metadataBase,
-  title: 'OptiFinish Automation — Z-TAP Robot, ZA01 Reciprocator & Sieve Machine',
+  title: 'OptiFinish Automation — Z-TAP Robot, OPTI-ZA-18 Reciprocator & Sieve Machine',
   description:
-    'Proprietary powder coating automation systems developed entirely in-house by OptiFinish — Z-TAP coating automation robot, ZA01 vertical automatic reciprocator, and PS Vibratory Sieve Machine for powder recovery.',
+    'Proprietary powder coating automation systems developed entirely in-house by OptiFinish — Z-TAP coating automation robot, OPTI-ZA-18 vertical automatic reciprocator, and PS Vibratory Sieve Machine for powder recovery.',
   keywords: [
     'Z-TAP powder coating robot India',
-    'ZA01 automatic reciprocator India',
+    'OPTI-ZA-18 automatic reciprocator India',
     'powder coating automation system India',
     'automatic powder coating machine India',
     'coating automation robot India',
@@ -24,14 +24,14 @@ export const metadata: Metadata = {
   alternates: { canonical: `${SITE.url}/products/automation` },
   openGraph: {
     ...defaultOpenGraph,
-    title: 'OptiFinish Automation — Z-TAP Robot, ZA01 Reciprocator & Sieve Machine',
-    description: 'Proprietary powder coating automation systems — Z-TAP robot, ZA01 reciprocator, and sieve machine — developed in-house by OptiFinish.',
+    title: 'OptiFinish Automation — Z-TAP Robot, OPTI-ZA-18 Reciprocator & Sieve Machine',
+    description: 'Proprietary powder coating automation systems — Z-TAP robot, OPTI-ZA-18 reciprocator, and sieve machine — developed in-house by OptiFinish.',
     url: `${SITE.url}/products/automation`,
   },
   twitter: {
     ...defaultTwitter,
-    title: 'OptiFinish Automation — Z-TAP Robot, ZA01 Reciprocator & Sieve Machine',
-    description: 'Proprietary powder coating automation — Z-TAP robot, ZA01 reciprocator, sieve machine by OptiFinish.',
+    title: 'OptiFinish Automation — Z-TAP Robot, OPTI-ZA-18 Reciprocator & Sieve Machine',
+    description: 'Proprietary powder coating automation — Z-TAP robot, OPTI-ZA-18 reciprocator, sieve machine by OptiFinish.',
   },
 };
 
@@ -50,7 +50,7 @@ export default function AutomationPage() {
         tag="Proprietary Technology"
         headline="Automation that thinks"
         headlineAccent="like a coater."
-        subline="Every automation product from OptiFinish is developed entirely in-house — from the Z-TAP robot to the ZA01 reciprocator and the PS Vibratory Sieve Machine. No licensing. No rebadging. Ours."
+        subline="Every automation product from OptiFinish is developed entirely in-house — from the Z-TAP robot to the OPTI-ZA-18 reciprocator and the PS Vibratory Sieve Machine. No licensing. No rebadging. Ours."
         stats={[
           { value: '99.4%', label: 'Coat accuracy (Z-TAP)' },
           { value: '3×', label: 'Throughput increase' },
@@ -173,10 +173,10 @@ export default function AutomationPage() {
               </div>
             </div>
 
-            {/* ZA01 — mobile light / desktop dark */}
+            {/* OPTI-ZA-18 — mobile light / desktop dark */}
             <div className="md:hidden">
               <ProductCard
-                name="Opti Recip ZA01"
+                name="OPTI-ZA-18 Reciprocator"
                 subtitle="Vertical Reciprocator — Proprietary Build"
                 description="A slim-column vertical reciprocator built entirely in-house by OptiFinish — designed as the right-sized entry into automated gun traversal for batch and conveyorised lines. Accommodates multiple automatic guns, handles both short and long stroke operations, and keeps maintenance to a minimum."
                 specs={[
@@ -194,7 +194,7 @@ export default function AutomationPage() {
             </div>
             <div className="hidden md:block">
               <ProductCard
-                name="Opti Recip ZA01"
+                name="OPTI-ZA-18 Reciprocator"
                 subtitle="Vertical Reciprocator — Proprietary Build"
                 description="A slim-column vertical reciprocator built entirely in-house by OptiFinish — designed as the right-sized entry into automated gun traversal for batch and conveyorised lines. Accommodates multiple automatic guns, handles both short and long stroke operations, and keeps maintenance to a minimum."
                 specs={[

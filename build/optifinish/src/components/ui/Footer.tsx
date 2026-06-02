@@ -26,7 +26,7 @@ const OWN_PRODUCTS = [
     href: '/products/automation',
     items: [
       { href: '/products/automation/z-tap',                   label: 'Z-TAP Robot System' },
-      { href: '/products/automation/za01',                    label: 'Opti Recip ZA01' },
+      { href: '/products/automation/za01',                    label: 'OPTI-ZA-18 Reciprocator' },
       { href: '/products/automation/sieve-machine',           label: 'PS Vibratory Sieve Machine' },
       { href: '/products/automation/auto-spray-optimisation', label: 'Auto Spray Optimisation' },
     ],

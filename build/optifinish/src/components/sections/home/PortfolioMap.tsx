@@ -17,7 +17,7 @@ const GROUPS = [
     tag:   'Proprietary',
     color: 'bg-ink',
     text:  'text-yellow',
-    items: ['Z-TAP', 'ZA01 Reciprocator', 'Automatic Sieve Machine'],
+    items: ['Z-TAP', 'OPTI-ZA-18 Reciprocator', 'Automatic Sieve Machine'],
     desc:  'Proprietary automation products developed in-house for precision and process control.',
   },
   {

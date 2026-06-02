@@ -13,7 +13,7 @@ const CATEGORIES = [
     slug: 'automation',
     label: 'Automation',
     tag: 'Proprietary',
-    desc: 'Z-TAP, ZA01, Sieve',
+    desc: 'Z-TAP, OPTI-ZA-18, Sieve',
     image: '/images/products/sieve-machine/sieve-machine-02.jpg',
   },
   {

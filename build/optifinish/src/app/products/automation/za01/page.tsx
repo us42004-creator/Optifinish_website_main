@@ -4,64 +4,64 @@ import { metadataBase, defaultOpenGraph, defaultTwitter, productSchema, breadcru
 
 export const metadata: Metadata = {
   metadataBase,
-  title: 'ZA01 Vertical Reciprocator — Automatic Powder Coating Line | OptiFinish',
+  title: 'OPTI-ZA-18 Vertical Reciprocator — Automatic Powder Coating Line | OptiFinish',
   description:
-    'Opti Recip ZA01 — OptiFinish proprietary slim-column vertical reciprocator. Mounts up to 6 automatic guns. Space-efficient design for new and retrofit automatic powder coating lines. Built in-house, Greater Noida.',
+    'OPTI-ZA-18 — OptiFinish proprietary slim-column vertical reciprocator. Mounts up to 6 automatic guns. Space-efficient design for new and retrofit automatic powder coating lines. Built in-house, Greater Noida.',
   keywords: [
-    'ZA01 reciprocator India',
+    'OPTI-ZA-18 reciprocator India',
     'vertical reciprocator powder coating',
     'automatic powder coating reciprocator India',
     'powder coating line automation',
-    'OptiFinish ZA01',
-    'ZA01 powder coating robot',
+    'OptiFinish OPTI-ZA-18',
+    'OPTI-ZA-18 powder coating robot',
     'automatic gun traversal India',
   ],
   alternates: { canonical: `${SITE.url}/products/automation/za01` },
   openGraph: {
     ...defaultOpenGraph,
-    title: 'ZA01 Vertical Reciprocator — Automatic Powder Coating Line | OptiFinish',
-    description: 'Opti Recip ZA01 — slim-column vertical reciprocator, up to 6 guns. Built in-house at OptiFinish Greater Noida.',
+    title: 'OPTI-ZA-18 Vertical Reciprocator — Automatic Powder Coating Line | OptiFinish',
+    description: 'OPTI-ZA-18 — slim-column vertical reciprocator, up to 6 guns. Built in-house at OptiFinish Greater Noida.',
     url: `${SITE.url}/products/automation/za01`,
   },
   twitter: {
     ...defaultTwitter,
-    title: 'ZA01 Vertical Reciprocator | OptiFinish',
+    title: 'OPTI-ZA-18 Vertical Reciprocator | OptiFinish',
     description: 'Proprietary slim-column vertical reciprocator. Up to 6 automatic guns. New and retrofit powder coating lines.',
   },
 };
 
 const productLD = productSchema({
-  name: 'Opti Recip ZA01 Vertical Reciprocator',
+  name: 'OPTI-ZA-18 Vertical Reciprocator',
   description: 'OptiFinish proprietary slim-column vertical reciprocator. Mounts up to 6 automatic guns. Space-efficient design for new and retrofit automatic powder coating lines. Built in-house, Greater Noida.',
   url: '/products/automation/za01',
   brand: 'OptiFinish',
   category: 'Powder Coating Automation',
-  keywords: ['ZA01 reciprocator', 'vertical reciprocator', 'automatic gun traversal', 'powder coating automation India'],
+  keywords: ['OPTI-ZA-18 reciprocator', 'vertical reciprocator', 'automatic gun traversal', 'powder coating automation India'],
 });
 
 const breadcrumbLD = breadcrumbSchema([
   { name: 'Home', href: '/' },
   { name: 'Products', href: '/products' },
   { name: 'OptiFinish Automation', href: '/products/automation' },
-  { name: 'ZA01 Reciprocator', href: '/products/automation/za01' },
+  { name: 'OPTI-ZA-18 Reciprocator', href: '/products/automation/za01' },
 ]);
 
 const faqLD = faqSchema([
   {
-    q: 'What is the ZA01 vertical reciprocator?',
-    a: 'The ZA01 is OptiFinish\'s proprietary slim-column vertical reciprocator — it moves automatic powder coating guns up and down at a programmed traverse speed and stroke, replacing manual sprayers and delivering consistent, repeatable gun coverage. It mounts up to 6 automatic guns and is built in-house at the Greater Noida facility.',
+    q: 'What is the OPTI-ZA-18 vertical reciprocator?',
+    a: 'The OPTI-ZA-18 is OptiFinish\'s proprietary slim-column vertical reciprocator — it moves automatic powder coating guns up and down at a programmed traverse speed and stroke, replacing manual sprayers and delivering consistent, repeatable gun coverage. It mounts up to 6 automatic guns and is built in-house at the Greater Noida facility.',
   },
   {
-    q: 'How does the ZA01 differ from the GEMA ZA Series reciprocators?',
-    a: 'The ZA01 is a proprietary in-house design by OptiFinish — optimised for space-efficiency and retrofit applications. GEMA ZA Series reciprocators are GEMA-manufactured and designed for integration with the full GEMA gun and control ecosystem. Both are supplied by OptiFinish.',
+    q: 'How does the OPTI-ZA-18 differ from the GEMA ZA Series reciprocators?',
+    a: 'The OPTI-ZA-18 is a proprietary in-house design by OptiFinish — optimised for space-efficiency and retrofit applications. GEMA ZA Series reciprocators are GEMA-manufactured and designed for integration with the full GEMA gun and control ecosystem. Both are supplied by OptiFinish.',
   },
   {
-    q: 'Can the ZA01 be retrofitted to an existing powder coating line?',
-    a: 'Yes. The ZA01 is specifically designed for easy integration into both new automatic lines and retrofit installations — OptiFinish handles the mechanical integration, gun mounting, and commissioning as part of the supply.',
+    q: 'Can the OPTI-ZA-18 be retrofitted to an existing powder coating line?',
+    a: 'Yes. The OPTI-ZA-18 is specifically designed for easy integration into both new automatic lines and retrofit installations — OptiFinish handles the mechanical integration, gun mounting, and commissioning as part of the supply.',
   },
 ]);
 
-export default function ZA01Page() {
+export default function OptiZA18Page() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLD) }} />
@@ -74,10 +74,10 @@ export default function ZA01Page() {
       breadcrumb={[
         { label: 'Products', href: '/products' },
         { label: 'Automation', href: '/products/automation' },
-        { label: 'Opti Recip ZA01', href: '/products/automation/za01' },
+        { label: 'OPTI-ZA-18', href: '/products/automation/za01' },
       ]}
       badge="Proprietary — OptiFinish Built"
-      eyebrow="Opti Recip ZA01"
+      eyebrow="OPTI-ZA-18"
       headline="Slim column."
       headlineAccent="Six-gun capacity."
       subline="A vertical reciprocator designed and built entirely in-house by OptiFinish — slim column profile, space-efficient multi-gun mounting, and an advanced synchronized motor for smooth, consistent traversal across every production shift."
@@ -87,23 +87,22 @@ export default function ZA01Page() {
         { val: '100%', label: 'In-house built' },
       ]}
       heroImageSrc="/images/products/za01/recip_landscape.png"
-      heroImageLabel="Opti Recip ZA01 · vertical reciprocator"
+      heroImageLabel="OPTI-ZA-18 · vertical reciprocator"
       heroImageCover={false}
       heroImageBg="#0d0d0d"
       heroImageAspect="aspect-[4/3]"
       photoGallery={[
         /* Top row: 2 landscape shots */
-        { src: '/images/products/za01/recip_landscape.png', label: 'ZA01 — full installation view',     fit: 'cover', aspectRatio: '4/3'  },
-        { src: '/images/products/za01/recip_mount.png',     label: 'ZA01 — gun mounting configuration', fit: 'cover', aspectRatio: '16/9' },
-        /* Bottom row 1: 2 landscape panels */
-        { src: '/images/products/za01/recip_panel_hmi.png', label: 'ZA01 — control panel & HMI',        fit: 'cover', aspectRatio: '4/3'  },
-        { src: '/images/products/za01/recip_panel.png',     label: 'ZA01 — panel close-up',             fit: 'cover', aspectRatio: '16/9' },
+        { src: '/images/products/za01/recip_landscape.png', label: 'OPTI-ZA-18 — full installation view',     fit: 'cover', aspectRatio: '4/3'  },
+        { src: '/images/products/za01/recip_mount.png',     label: 'OPTI-ZA-18 — gun mounting configuration', fit: 'cover', aspectRatio: '16/9' },
+        /* Bottom row 1: control panel + HMI only */
+        { src: '/images/products/za01/recip_panel_hmi.png', label: 'OPTI-ZA-18 — control panel & HMI',        fit: 'cover', aspectRatio: '4/3'  },
         /* Bottom row 2: 3 portrait shots — natural 9:16 containers */
-        { src: '/images/products/za01/recip_portrait.png',  label: 'ZA01 — machine portrait',           fit: 'cover', aspectRatio: '9/16' },
-        { src: '/images/products/za01/recip_side.png',      label: 'ZA01 — side profile',               fit: 'cover', aspectRatio: '9/16' },
-        { src: '/images/products/za01/recip_render.png',    label: 'ZA01 — product render',             fit: 'cover', aspectRatio: '9/16' },
+        { src: '/images/products/za01/recip_portrait.png',  label: 'OPTI-ZA-18 — machine portrait',           fit: 'cover', aspectRatio: '9/16' },
+        { src: '/images/products/za01/recip_side.png',      label: 'OPTI-ZA-18 — side profile',               fit: 'cover', aspectRatio: '9/16' },
+        { src: '/images/products/za01/recip_render.png',    label: 'OPTI-ZA-18 — product render',             fit: 'cover', aspectRatio: '9/16' },
       ]}
-      galleryBottomSplit={2}
+      galleryBottomSplit={1}
       enquireSlug="za01"
       backHref="/products/automation"
       backLabel="← Back to Automation"
@@ -111,7 +110,7 @@ export default function ZA01Page() {
       /* S2 — Problem */
       problemHeadline="Manual gun traversal"
       problemAccent="is holding your line back."
-      problemBody="A manual operator moving a gun up and down the part height introduces speed variation, distance variation, and fatigue — all translating directly into inconsistent film build. The ZA01 eliminates this variable and replaces it with a consistent, programmable traversal that repeats identically for every part."
+      problemBody="A manual operator moving a gun up and down the part height introduces speed variation, distance variation, and fatigue — all translating directly into inconsistent film build. The OPTI-ZA-18 eliminates this variable and replaces it with a consistent, programmable traversal that repeats identically for every part."
       benefits={[
         'Slim column design maximises floor space — up to 6 automatic guns in a minimal footprint',
         'Short and long stroke configurations cover the full range of part envelope heights',
@@ -126,8 +125,8 @@ export default function ZA01Page() {
         {
           num: '01',
           title: 'Gun mounting and alignment',
-          body: 'Up to 6 automatic guns are mounted on the ZA01 column at the required spacing for the part envelope. Horizontal and vertical mounting arrangements are both supported. The slim column design allows close positioning to the booth side for maximum spray efficiency.',
-          imageLabel: 'Step 01 · gun mounting on ZA01 column',
+          body: 'Up to 6 automatic guns are mounted on the OPTI-ZA-18 column at the required spacing for the part envelope. Horizontal and vertical mounting arrangements are both supported. The slim column design allows close positioning to the booth side for maximum spray efficiency.',
+          imageLabel: 'Step 01 · gun mounting on OPTI-ZA-18 column',
           imageSrc: '/images/products/za01/recip_mount.png',
         },
         {
@@ -140,8 +139,8 @@ export default function ZA01Page() {
         {
           num: '03',
           title: 'Control panel & HMI',
-          body: 'Traversal speed, stroke length, and dwell settings are all configured from the ZA01 control panel. The HMI provides clear readout of current operating parameters and allows on-the-fly adjustment during production without stopping the line.',
-          imageLabel: 'Step 03 · ZA01 control panel and HMI',
+          body: 'Traversal speed, stroke length, and dwell settings are all configured from the OPTI-ZA-18 control panel. The HMI provides clear readout of current operating parameters and allows on-the-fly adjustment during production without stopping the line.',
+          imageLabel: 'Step 03 · OPTI-ZA-18 control panel and HMI',
           imageSrc: '/images/products/za01/recip_panel_hmi.png',
         },
       ]}
@@ -208,7 +207,7 @@ export default function ZA01Page() {
       /* S10 — CTA */
       ctaHeadline="Add vertical traversal to your line."
       ctaAccent="We'll design the integration."
-      ctaBody="Talk to OptiFinish about integrating the ZA01 with your booth and gun setup — new line or retrofit into an existing installation."
+      ctaBody="Talk to OptiFinish about integrating the OPTI-ZA-18 with your booth and gun setup — new line or retrofit into an existing installation."
     />
     </>
   );

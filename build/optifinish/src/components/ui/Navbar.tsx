@@ -87,7 +87,7 @@ const PRODUCTS_MENU = [
     count: 4,
     products: [
       { name: 'Z-TAP Robot System', href: '/products/automation/z-tap', external: false },
-      { name: 'Opti Recip ZA01', href: '/products/automation/za01' },
+      { name: 'OPTI-ZA-18 Reciprocator', href: '/products/automation/za01' },
       { name: 'PS Vibratory Sieve Machine', href: '/products/automation/sieve-machine' },
       { name: 'Auto Spray Optimisation', href: '/products/automation/auto-spray-optimisation' },
     ],

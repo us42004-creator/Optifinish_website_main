@@ -10,7 +10,7 @@ const PRODUCTS = [
   },
   {
     href:   '/products/automation/za01',
-    name:   'ZA01',
+    name:   'OPTI-ZA-18',
     tag:    'Reciprocator',
     desc:   'OptiFinish proprietary reciprocator designed for consistent vertical gun movement across high-throughput powder coating lines.',
     specs:  ['Vertical axis automation', 'Adjustable stroke and speed', 'Line-compatible design', 'Low maintenance'],

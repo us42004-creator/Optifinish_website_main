@@ -35,7 +35,7 @@ const PRODUCTS = [
   {
     id: 'za01',
     href: '/products/automation/za01',
-    name: 'ZA01',
+    name: 'OPTI-ZA-18',
     tag: 'Reciprocator',
     tagline: 'Precision vertical automation.',
     desc: 'Proprietary reciprocator designed for consistent vertical gun movement across high-throughput lines. Engineered entirely in-house for reliability and process control.',
