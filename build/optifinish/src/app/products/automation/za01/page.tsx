@@ -86,10 +86,7 @@ export default function ZA01Page() {
         { val: 'Slim', label: 'Column profile' },
         { val: '100%', label: 'In-house built' },
       ]}
-      heroImageSrcs={[
-        '/images/products/za01/recip_portrait.png',
-        '/images/products/za01/recip_landscape.png',
-      ]}
+      heroImageSrc="/images/products/za01/recip_landscape.png"
       heroImageLabel="Opti Recip ZA01 · vertical reciprocator"
       heroImageCover={false}
       heroImageBg="#0d0d0d"
