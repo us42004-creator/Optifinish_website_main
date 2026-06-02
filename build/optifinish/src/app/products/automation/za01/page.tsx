@@ -166,9 +166,9 @@ export default function OptiZA18Page() {
         'Lines transitioning from manual to semi-automatic or fully automatic operation',
       ]}
       applicationImages={[
-        { src: '/images/products/spray-booth/automatic/automatic-booth-guns.jpeg',   label: 'Automatic guns mounted on vertical column — booth installation', fit: 'cover' },
-        { src: '/images/products/spray-booth/automatic/automatic-booth-inside.jpeg', label: 'Automatic booth interior — reciprocator in operation',           fit: 'cover' },
-        { src: '/images/products/za01/recip_landscape.png',                          label: 'OPTI-ZA-18 — full line installation',                            fit: 'cover' },
+        { src: '/images/products/optifinish-manufactured/pt-line/application/automotive-components.jpg',  label: 'Automotive components — high-volume conveyorised coating', fit: 'cover' },
+        { src: '/images/products/vinayak/powder-paints/application/app-agriculture-01.jpg',               label: 'Agricultural equipment — large part powder coating',        fit: 'cover' },
+        { src: '/images/products/optifinish-manufactured/pt-line/application/conveyor-coating-line.jpg',  label: 'Conveyorised line — parts through automatic booth',         fit: 'cover' },
       ]}
 
       /* S7 — Compatibility */
