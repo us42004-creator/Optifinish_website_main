@@ -14,7 +14,7 @@ export const SITE = {
   description: 'Powder coating plants, curing ovens & automation — manufactured in Greater Noida. Authorised GEMA & Dürr partner in India. Z-TAP robot. Get a quote.',
   phone:       '+91-96434-03374',
   email:       'info@optifinish.in',
-  founded:     '1999',
+  founded:     '2011',  // VACSPL registration year; founders' journey since 1999 is handled in about page content
   employees:   '11-50',
 };
 
@@ -132,7 +132,7 @@ export const organizationSchema = {
       { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Pretreatment Line',               url: `${SITE.url}/products/optifinish-manufactured/pt-line` } },
       { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Wood Finish Oven',                url: `${SITE.url}/products/optifinish-manufactured/wood-finish-oven` } },
       { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Z-TAP Coating Automation System', url: `${SITE.url}/products/automation/z-tap` } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'ZA01 Automatic Reciprocator',     url: `${SITE.url}/products/automation/za01` } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'OPTI-ZA-18 Vertical Reciprocator', url: `${SITE.url}/products/automation/za01` } },
       { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Automatic Sieve Machine',         url: `${SITE.url}/products/automation/sieve-machine` } },
       { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'GEMA Manual Powder Coating Gun',  url: `${SITE.url}/products/gema/manual-gun` } },
       { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'GEMA Automatic Powder Coating Gun', url: `${SITE.url}/products/gema/automatic-gun` } },

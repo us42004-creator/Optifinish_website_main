@@ -62,7 +62,7 @@ export default function AboutPage() {
     '@type': 'Organization',
     name: 'Value Added Coating Solutions Pvt. Ltd.',
     alternateName: ['VACSPL', 'OptiFinish'],
-    foundingDate: '1999',
+    foundingDate: '2011',
     founders: [
       {
         '@type': 'Person',
@@ -105,7 +105,7 @@ export default function AboutPage() {
       },
     ],
     description:
-      'VACSPL designs and manufactures complete powder coating lines, develops proprietary automation systems (Z-TAP, ZA01), and distributes GEMA and Dürr liquid coating equipment across India. 375+ installations across automotive, consumer appliances, steel fabrication, and architectural sectors.',
+      'VACSPL designs and manufactures complete powder coating lines, develops proprietary automation systems (Z-TAP, OPTI-ZA-18), and distributes GEMA and Dürr liquid coating equipment across India. 375+ installations across automotive, consumer appliances, steel fabrication, and architectural sectors.',
     numberOfLocations: 4,
     areaServed: 'India',
     brand: { '@type': 'Brand', name: 'OptiFinish' },

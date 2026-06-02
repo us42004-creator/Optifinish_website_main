@@ -256,7 +256,7 @@ export default function AboutPageContent() {
   return (
     <main itemScope itemType="https://schema.org/Organization">
       <meta itemProp="name" content="Value Added Coating Solutions Pvt. Ltd." />
-      <meta itemProp="foundingDate" content="1999" />
+      <meta itemProp="foundingDate" content="2011" />
 
       {/* ── S1 TIMELINE — landing section ── */}
       <section className="relative overflow-hidden bg-[#070809]">
