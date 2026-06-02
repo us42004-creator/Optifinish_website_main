@@ -136,7 +136,7 @@ export default function ZA01Page() {
           title: 'Control panel & HMI',
           body: 'Traversal speed, stroke length, and dwell settings are all configured from the ZA01 control panel. The HMI provides clear readout of current operating parameters and allows on-the-fly adjustment during production without stopping the line.',
           imageLabel: 'Step 03 · ZA01 control panel and HMI',
-          imageSrc: '/images/products/za01/recip_panel.png',
+          imageSrc: '/images/products/za01/recip_panel_hmi.png',
         },
       ]}
       howItWorksTitle="Mount, traverse, coat"
