@@ -92,10 +92,13 @@ export default function ZA01Page() {
       heroImageBg="#0d0d0d"
       heroImageAspect="aspect-[4/3]"
       photoGallery={[
-        { src: '/images/products/za01/recip_render.png',      label: 'ZA01 render — full-line view',          fit: 'cover' },
-        { src: '/images/products/za01/recip_panel_hmi.png',   label: 'ZA01 control panel & HMI',              fit: 'cover' },
-        { src: '/images/products/za01/recip_landscape.png',   label: 'ZA01 — landscape installation view',    fit: 'cover' },
-        { src: '/images/products/za01/recip_side.png',        label: 'ZA01 — side profile',                   fit: 'cover' },
+        { src: '/images/products/za01/recip_landscape.png', label: 'ZA01 — full installation view',     fit: 'cover'   },
+        { src: '/images/products/za01/recip_mount.png',     label: 'ZA01 — gun mounting configuration', fit: 'cover'   },
+        { src: '/images/products/za01/recip_panel_hmi.png', label: 'ZA01 — control panel & HMI',        fit: 'cover'   },
+        { src: '/images/products/za01/recip_panel.png',     label: 'ZA01 — panel close-up',             fit: 'cover'   },
+        { src: '/images/products/za01/recip_portrait.png',  label: 'ZA01 — machine portrait',           fit: 'contain' },
+        { src: '/images/products/za01/recip_side.png',      label: 'ZA01 — side profile',               fit: 'contain' },
+        { src: '/images/products/za01/recip_render.png',    label: 'ZA01 — product render',             fit: 'contain' },
       ]}
       enquireSlug="za01"
       backHref="/products/automation"
