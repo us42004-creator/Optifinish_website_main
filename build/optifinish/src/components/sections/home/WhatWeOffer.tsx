@@ -522,7 +522,7 @@ export default function WhatWeOffer() {
               </div>
               <div className="relative mt-auto overflow-hidden">
                 {g.slides ? (
-                  <div className="relative aspect-[16/9] w-full overflow-hidden border-t border-[#FECE00]/[0.1]">
+                  <div className="relative aspect-[4/3] w-full overflow-hidden border-t border-[#FECE00]/[0.1]">
                     {g.slides.map((slide, i) => (
                       <div
                         key={i}
@@ -557,7 +557,7 @@ export default function WhatWeOffer() {
                     </div>
                   </div>
                 ) : (
-                  <div className="flex aspect-[16/9] w-full items-center justify-center bg-[#FECE00]/[0.04] border-t border-[#FECE00]/[0.1]">
+                  <div className="flex aspect-[4/3] w-full items-center justify-center bg-[#FECE00]/[0.04] border-t border-[#FECE00]/[0.1]">
                     <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-white/40">
                       {g.mediaLabel}
                     </span>

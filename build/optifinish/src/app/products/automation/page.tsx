@@ -187,6 +187,11 @@ export default function AutomationPage() {
                   'Compatible with GEMA OptiGun and other standard automatic gun mounts',
                   'Designed and manufactured at OptiFinish Greater Noida R&D facility',
                 ]}
+                imageSrcs={[
+                  { src: '/images/products/za01/recip_landscape.png', label: 'OPTI-ZA-18 — Full installation view', fit: 'cover' },
+                  { src: '/images/products/za01/recip_portrait.png',  label: 'OPTI-ZA-18 — Machine profile',       fit: 'cover' },
+                  { src: '/images/products/za01/recip_mount.png',     label: 'OPTI-ZA-18 — Gun mounting',          fit: 'cover' },
+                ]}
                 enquireSlug="za01"
                 learnMoreHref="/products/automation/za01"
                 theme="light"
@@ -204,6 +209,11 @@ export default function AutomationPage() {
                   'Minimal maintenance design — quick service, no specialist tooling',
                   'Compatible with GEMA OptiGun and other standard automatic gun mounts',
                   'Designed and manufactured at OptiFinish Greater Noida R&D facility',
+                ]}
+                imageSrcs={[
+                  { src: '/images/products/za01/recip_landscape.png', label: 'OPTI-ZA-18 — Full installation view', fit: 'cover' },
+                  { src: '/images/products/za01/recip_portrait.png',  label: 'OPTI-ZA-18 — Machine profile',       fit: 'cover' },
+                  { src: '/images/products/za01/recip_mount.png',     label: 'OPTI-ZA-18 — Gun mounting',          fit: 'cover' },
                 ]}
                 enquireSlug="za01"
                 learnMoreHref="/products/automation/za01"
