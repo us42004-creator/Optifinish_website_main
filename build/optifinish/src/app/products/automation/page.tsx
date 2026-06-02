@@ -189,7 +189,7 @@ export default function AutomationPage() {
                 ]}
                 imageSrcs={[
                   { src: '/images/products/za01/recip_landscape.png', label: 'OPTI-ZA-18 — Full installation view', fit: 'cover' },
-                  { src: '/images/products/za01/recip_portrait.png',  label: 'OPTI-ZA-18 — Machine profile',       fit: 'cover' },
+                  { src: '/images/products/za01/recip_panel_hmi.png', label: 'OPTI-ZA-18 — Control panel & HMI',   fit: 'cover' },
                   { src: '/images/products/za01/recip_mount.png',     label: 'OPTI-ZA-18 — Gun mounting',          fit: 'cover' },
                 ]}
                 enquireSlug="za01"
@@ -212,7 +212,7 @@ export default function AutomationPage() {
                 ]}
                 imageSrcs={[
                   { src: '/images/products/za01/recip_landscape.png', label: 'OPTI-ZA-18 — Full installation view', fit: 'cover' },
-                  { src: '/images/products/za01/recip_portrait.png',  label: 'OPTI-ZA-18 — Machine profile',       fit: 'cover' },
+                  { src: '/images/products/za01/recip_panel_hmi.png', label: 'OPTI-ZA-18 — Control panel & HMI',   fit: 'cover' },
                   { src: '/images/products/za01/recip_mount.png',     label: 'OPTI-ZA-18 — Gun mounting',          fit: 'cover' },
                 ]}
                 enquireSlug="za01"
