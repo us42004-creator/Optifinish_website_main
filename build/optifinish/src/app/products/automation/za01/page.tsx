@@ -86,7 +86,18 @@ export default function ZA01Page() {
         { val: 'Slim', label: 'Column profile' },
         { val: '100%', label: 'In-house built' },
       ]}
+      heroImageSrcs={[
+        '/images/products/za01/recip_portrait.png',
+        '/images/products/za01/recip_landscape.png',
+      ]}
       heroImageLabel="Opti Recip ZA01 · vertical reciprocator"
+      heroImageCover={true}
+      photoGallery={[
+        { src: '/images/products/za01/recip_render.png',      label: 'ZA01 render — full-line view',          fit: 'cover' },
+        { src: '/images/products/za01/recip_panel_hmi.png',   label: 'ZA01 control panel & HMI',              fit: 'cover' },
+        { src: '/images/products/za01/recip_landscape.png',   label: 'ZA01 — landscape installation view',    fit: 'cover' },
+        { src: '/images/products/za01/recip_side.png',        label: 'ZA01 — side profile',                   fit: 'cover' },
+      ]}
       enquireSlug="za01"
       backHref="/products/automation"
       backLabel="← Back to Automation"
@@ -111,18 +122,21 @@ export default function ZA01Page() {
           title: 'Gun mounting and alignment',
           body: 'Up to 6 automatic guns are mounted on the ZA01 column at the required spacing for the part envelope. Horizontal and vertical mounting arrangements are both supported. The slim column design allows close positioning to the booth side for maximum spray efficiency.',
           imageLabel: 'Step 01 · gun mounting on ZA01 column',
+          imageSrc: '/images/products/za01/recip_mount.png',
         },
         {
           num: '02',
           title: 'Synchronized traversal',
           body: 'The advanced synchronized motor drives the gun carriage up and down the column at the programmed traversal speed — maintaining consistent distance and speed throughout the full stroke. Short stroke for compact parts; long stroke for tall profiles. Both are configurable from the control panel.',
           imageLabel: 'Step 02 · synchronized vertical traversal in operation',
+          imageSrc: '/images/products/za01/recip_side.png',
         },
         {
           num: '03',
-          title: 'Continuous production',
-          body: 'Parts enter the booth on the conveyor; the ZA01 continues traversal at the set pattern. For lines with Auto Spray Optimisation, gun triggering synchronises with part presence — powder only fires when a part is detected. The ZA01 requires minimal maintenance throughout multi-shift operation.',
-          imageLabel: 'Step 03 · ZA01 in continuous production operation',
+          title: 'Control panel & HMI',
+          body: 'Traversal speed, stroke length, and dwell settings are all configured from the ZA01 control panel. The HMI provides clear readout of current operating parameters and allows on-the-fly adjustment during production without stopping the line.',
+          imageLabel: 'Step 03 · ZA01 control panel and HMI',
+          imageSrc: '/images/products/za01/recip_panel.png',
         },
       ]}
       howItWorksTitle="Mount, traverse, coat"
