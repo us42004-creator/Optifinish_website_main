@@ -159,8 +159,9 @@ export default function Footer() {
 
           {/* ── Brand ── */}
           <div className="pb-6 border-b border-white/[0.06] lg:border-b-0 lg:pb-0">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2.5">
               <Image src="/images/logos/optifinish-logo.png" alt="OptiFinish" width={192} height={192} className="h-8 w-auto object-contain" />
+              <span className="font-display text-[1.1rem] font-black tracking-tight text-white">OptiFinish</span>
             </div>
             <span className="mt-2.5 block text-[8.5px] font-semibold uppercase tracking-[0.22em] text-white/60">
               Industrial Coating Solutions
