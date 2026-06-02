@@ -20,7 +20,7 @@ const MANUFACTURED_SLIDES = [
 
 const AUTOMATION_SLIDES = [
   { src: '/images/products/za01/recip_landscape.png',           label: 'OPTI-ZA-18 — Vertical Reciprocator' },
-  { src: '/images/products/za01/recip_portrait.png',            label: 'OPTI-ZA-18 — Machine Profile' },
+  { src: '/images/products/za01/recip_panel_hmi.png',           label: 'OPTI-ZA-18 — Control Panel & HMI' },
   { src: '/images/products/sieve-machine/sieve-machine-04.jpg', label: 'PS Vibratory Sieve Machine' },
   { src: '/images/products/za01/recip_mount.png',               label: 'OPTI-ZA-18 — Gun Mounting' },
   { src: '/images/products/sieve-machine/sieve-machine-02.jpg', label: 'Sieve Machine — Detail View' },
