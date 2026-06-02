@@ -51,7 +51,7 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl">
 
         {/* Top — brand + columns */}
-        <div className="grid grid-cols-1 gap-8 sm:gap-10 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-8 sm:gap-10 lg:grid-cols-[1.6fr_1fr_0.8fr_1fr]">
 
           {/* Brand */}
           <div className="pb-6 border-b border-white/[0.06] lg:border-b-0 lg:pb-0">
@@ -87,27 +87,27 @@ export default function Footer() {
               </a>
             </div>
 
-            {/* Employee portal links */}
-            <div className="mt-5 border-t border-white/[0.06] pt-4">
-              <p className="mb-2 text-[8px] font-bold uppercase tracking-[0.22em] text-white/28">Employee Portal</p>
-              <div className="flex flex-col gap-1.5">
+            {/* Employee portal box */}
+            <div className="mt-5 rounded-lg border border-white/[0.08] bg-white/[0.03] px-3 py-3">
+              <p className="mb-2.5 text-[7.5px] font-bold uppercase tracking-[0.24em] text-white/30">Employee Portal</p>
+              <div className="flex flex-col gap-2">
                 <a
                   href="https://vacspl-enquiry.vercel.app/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center gap-1.5 text-[9px] font-medium text-white/40 transition-colors hover:text-[#FECE00]/80"
+                  className="group flex items-center justify-between rounded-md border border-white/[0.07] bg-white/[0.04] px-2.5 py-2 transition-colors hover:border-[#FECE00]/20 hover:bg-[#FECE00]/[0.06]"
                 >
-                  <span className="h-1 w-1 shrink-0 rounded-full bg-[#FECE00]/30 group-hover:bg-[#FECE00]/70 transition-colors" />
-                  Enquiry Manager
+                  <span className="text-[9px] font-medium text-white/50 group-hover:text-white/80 transition-colors">Enquiry Manager</span>
+                  <span className="text-[10px] text-white/20 group-hover:text-[#FECE00]/60 transition-colors">↗</span>
                 </a>
                 <a
                   href="https://optifinish.netlify.app/home"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center gap-1.5 text-[9px] font-medium text-white/40 transition-colors hover:text-[#FECE00]/80"
+                  className="group flex items-center justify-between rounded-md border border-white/[0.07] bg-white/[0.04] px-2.5 py-2 transition-colors hover:border-[#FECE00]/20 hover:bg-[#FECE00]/[0.06]"
                 >
-                  <span className="h-1 w-1 shrink-0 rounded-full bg-[#FECE00]/30 group-hover:bg-[#FECE00]/70 transition-colors" />
-                  Employee Login
+                  <span className="text-[9px] font-medium text-white/50 group-hover:text-white/80 transition-colors">Employee Login</span>
+                  <span className="text-[10px] text-white/20 group-hover:text-[#FECE00]/60 transition-colors">↗</span>
                 </a>
               </div>
             </div>
