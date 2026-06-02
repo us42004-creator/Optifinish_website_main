@@ -72,7 +72,12 @@ export default function Footer() {
               Value Added Coating Solutions Pvt. Ltd.
             </span>
             <div className="mt-5 space-y-1">
-              <p className="text-[9px] text-white/55">+91-96434-03374</p>
+              <p className="text-[9px] text-white/55">+91-98118-46214 / +91-98113-57749</p>
+              <p className="text-[9px] text-white/55">
+                <a href="https://wa.me/918929408691" target="_blank" rel="noopener noreferrer" className="text-[#25D366]/70 hover:text-[#25D366] transition-colors">
+                  WhatsApp: +91-89294-08691
+                </a>
+              </p>
               <p className="text-[9px] text-white/55">info@optifinish.in</p>
               <p className="text-[9px] text-white/55">Greater Noida, UP — 201306</p>
             </div>
@@ -89,6 +94,31 @@ export default function Footer() {
               <a href="https://www.facebook.com/optifinish.connect" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="flex h-11 w-11 items-center justify-center rounded-full border border-white/[0.1] text-white/50 transition hover:border-white/40 hover:text-white/80 sm:h-7 sm:w-7">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
               </a>
+            </div>
+
+            {/* Employee portal links */}
+            <div className="mt-5 border-t border-white/[0.06] pt-4">
+              <p className="mb-2 text-[8px] font-bold uppercase tracking-[0.22em] text-white/28">Employee Portal</p>
+              <div className="flex flex-col gap-1.5">
+                <a
+                  href="https://vacspl-enquiry.vercel.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center gap-1.5 text-[9px] font-medium text-white/40 transition-colors hover:text-[#FECE00]/80"
+                >
+                  <span className="h-1 w-1 shrink-0 rounded-full bg-[#FECE00]/30 group-hover:bg-[#FECE00]/70 transition-colors" />
+                  Enquiry Manager
+                </a>
+                <a
+                  href="https://optifinish.netlify.app/home"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center gap-1.5 text-[9px] font-medium text-white/40 transition-colors hover:text-[#FECE00]/80"
+                >
+                  <span className="h-1 w-1 shrink-0 rounded-full bg-[#FECE00]/30 group-hover:bg-[#FECE00]/70 transition-colors" />
+                  Employee Login
+                </a>
+              </div>
             </div>
           </div>
 
