@@ -5,17 +5,57 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 
-const FOOTER_COLS = [
+/* ── Products: grouped by brand segment ── */
+const PRODUCT_GROUPS = [
   {
-    heading: 'Products',
-    links: [
-      { href: '/products/optifinish-manufactured', label: 'OptiFinish Manufactured' },
-      { href: '/products/automation',              label: 'OptiFinish Automation' },
-      { href: '/products/gema',                    label: 'GEMA' },
-      { href: '/products/durr',                    label: 'Dürr' },
-      { href: '/products/vinayak',                 label: 'Vinayak Agencies' },
+    name: 'OptiFinish Manufactured',
+    href: '/products/optifinish-manufactured',
+    items: [
+      { href: '/products/optifinish-manufactured/powder-coating-plant',   label: 'Powder Coating Plant' },
+      { href: '/products/optifinish-manufactured/curing-oven',            label: 'Curing Oven' },
+      { href: '/products/optifinish-manufactured/powder-spray-booth',     label: 'Powder Spray Booth' },
+      { href: '/products/optifinish-manufactured/pt-line',                label: 'Pretreatment Line' },
+      { href: '/products/optifinish-manufactured/cyclone-dust-collector', label: 'Cyclone Dust Collector' },
     ],
   },
+  {
+    name: 'OptiFinish Automation',
+    href: '/products/automation',
+    items: [
+      { href: '/products/automation/ztap',                    label: 'Z-TAP' },
+      { href: '/products/automation/za01',                    label: 'ZA01 Reciprocator' },
+      { href: '/products/automation/automatic-sieve-machine', label: 'Automatic Sieve Machine' },
+    ],
+  },
+  {
+    name: 'GEMA',
+    href: '/products/gema',
+    items: [
+      { href: '/products/gema/manual-gun',    label: 'Manual Gun' },
+      { href: '/products/gema/automatic-gun', label: 'Automatic Gun' },
+      { href: '/products/gema/opticentre',    label: 'OptiCentre' },
+    ],
+  },
+  {
+    name: 'Dürr',
+    href: '/products/durr',
+    items: [
+      { href: '/products/durr/hvlp-gun',  label: 'HVLP Gun' },
+      { href: '/products/durr/airless-gun', label: 'Airless Gun' },
+      { href: '/products/durr/ecodose',   label: 'EcoDose 2K/3K' },
+    ],
+  },
+  {
+    name: 'Vinayak Agencies',
+    href: '/products/vinayak',
+    items: [
+      { href: '/products/vinayak/powder-paints', label: 'Powder Paints' },
+    ],
+  },
+];
+
+/* ── Flat nav columns ── */
+const FOOTER_COLS = [
   {
     heading: 'Services',
     links: [
@@ -39,8 +79,8 @@ const FOOTER_COLS = [
 ];
 
 export default function Footer() {
-  // Track which accordion sections are open on mobile (all closed by default)
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
+  const [productsOpen, setProductsOpen] = useState(false);
 
   const toggleSection = (heading: string) => {
     setOpenSections((prev) => ({ ...prev, [heading]: !prev[heading] }));
@@ -51,9 +91,9 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl">
 
         {/* Top — brand + columns */}
-        <div className="grid grid-cols-1 gap-8 sm:gap-10 lg:grid-cols-[1.6fr_1fr_0.8fr_1fr]">
+        <div className="grid grid-cols-1 gap-8 sm:gap-10 lg:grid-cols-[1.4fr_1.6fr_0.8fr_0.9fr]">
 
-          {/* Brand */}
+          {/* ── Brand column ── */}
           <div className="pb-6 border-b border-white/[0.06] lg:border-b-0 lg:pb-0">
             <div className="flex items-center gap-3">
               <Image src="/images/logos/optifinish-logo.png" alt="OptiFinish" width={192} height={192} className="h-9 w-auto object-contain" />
@@ -87,38 +127,88 @@ export default function Footer() {
               </a>
             </div>
 
-            {/* Employee portal box */}
-            <div className="mt-5 rounded-lg border border-white/[0.08] bg-white/[0.03] px-3 py-3">
-              <p className="mb-2.5 text-[7.5px] font-bold uppercase tracking-[0.24em] text-white/30">Employee Portal</p>
-              <div className="flex flex-col gap-2">
+            {/* Employee portal box — compact */}
+            <div className="mt-4 rounded-md border border-white/[0.07] bg-white/[0.025] px-2.5 py-2">
+              <p className="mb-1.5 text-[7px] font-bold uppercase tracking-[0.24em] text-white/25">Employee Portal</p>
+              <div className="flex flex-col gap-1">
                 <a
                   href="https://vacspl-enquiry.vercel.app/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center justify-between rounded-md border border-white/[0.07] bg-white/[0.04] px-2.5 py-2 transition-colors hover:border-[#FECE00]/20 hover:bg-[#FECE00]/[0.06]"
+                  className="group flex items-center justify-between rounded px-2 py-1.5 transition-colors hover:bg-[#FECE00]/[0.07]"
                 >
-                  <span className="text-[9px] font-medium text-white/50 group-hover:text-white/80 transition-colors">Enquiry Manager</span>
-                  <span className="text-[10px] text-white/20 group-hover:text-[#FECE00]/60 transition-colors">↗</span>
+                  <span className="text-[8.5px] font-medium text-white/45 group-hover:text-white/75 transition-colors">Enquiry Manager</span>
+                  <span className="text-[9px] text-white/18 group-hover:text-[#FECE00]/55 transition-colors">↗</span>
                 </a>
                 <a
                   href="https://optifinish.netlify.app/home"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center justify-between rounded-md border border-white/[0.07] bg-white/[0.04] px-2.5 py-2 transition-colors hover:border-[#FECE00]/20 hover:bg-[#FECE00]/[0.06]"
+                  className="group flex items-center justify-between rounded px-2 py-1.5 transition-colors hover:bg-[#FECE00]/[0.07]"
                 >
-                  <span className="text-[9px] font-medium text-white/50 group-hover:text-white/80 transition-colors">Employee Login</span>
-                  <span className="text-[10px] text-white/20 group-hover:text-[#FECE00]/60 transition-colors">↗</span>
+                  <span className="text-[8.5px] font-medium text-white/45 group-hover:text-white/75 transition-colors">Employee Login</span>
+                  <span className="text-[9px] text-white/18 group-hover:text-[#FECE00]/55 transition-colors">↗</span>
                 </a>
               </div>
             </div>
           </div>
 
-          {/* Link columns — accordion on mobile, expanded on desktop */}
+          {/* ── Products column — grouped ── */}
+          <div>
+            {/* Mobile accordion header */}
+            <button
+              className="flex w-full items-center justify-between py-3 text-left lg:cursor-default lg:pointer-events-none"
+              onClick={() => setProductsOpen(v => !v)}
+              aria-expanded={productsOpen}
+              style={{ touchAction: 'manipulation' }}
+            >
+              <h3 className="text-[9px] font-bold uppercase tracking-[0.26em] text-white/70">Products</h3>
+              <ChevronRight
+                size={12}
+                className={`text-white/30 transition-transform duration-200 lg:hidden ${productsOpen ? 'rotate-90' : 'rotate-0'}`}
+              />
+            </button>
+
+            <div className={`overflow-hidden transition-all duration-300 lg:block lg:mt-3 lg:max-h-none ${
+              productsOpen ? 'max-h-[900px] pb-3' : 'max-h-0 lg:max-h-none'
+            }`}>
+              <div className="flex flex-col gap-4">
+                {PRODUCT_GROUPS.map((group) => (
+                  <div key={group.href}>
+                    {/* Category label */}
+                    <Link
+                      href={group.href}
+                      className="mb-1.5 block text-[8.5px] font-bold uppercase tracking-[0.2em] text-white/55 hover:text-[#FECE00] transition-colors"
+                    >
+                      {group.name}
+                    </Link>
+                    {/* Child products */}
+                    <ul className="flex flex-col gap-1 pl-2 border-l border-white/[0.07]">
+                      {group.items.map((item) => (
+                        <li key={item.href}>
+                          <Link
+                            href={item.href}
+                            className="text-[8.5px] font-medium text-white/38 transition-colors hover:text-white/70"
+                          >
+                            {item.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Mobile divider */}
+            <div className="border-b border-white/[0.06] lg:hidden" />
+          </div>
+
+          {/* ── Services + Company columns ── */}
           {FOOTER_COLS.map((col) => {
             const isOpen = openSections[col.heading] ?? false;
             return (
               <div key={col.heading}>
-                {/* Mobile: tappable accordion header */}
                 <button
                   className="flex w-full items-center justify-between py-3 text-left lg:cursor-default lg:pointer-events-none"
                   onClick={() => toggleSection(col.heading)}
@@ -134,7 +224,6 @@ export default function Footer() {
                   />
                 </button>
 
-                {/* Desktop: always visible. Mobile: toggle */}
                 <ul className={`space-y-2 overflow-hidden transition-all duration-300 lg:block lg:mt-3 lg:max-h-none ${
                   isOpen ? 'max-h-[600px] pb-3' : 'max-h-0 lg:max-h-none'
                 }`}>
@@ -150,7 +239,6 @@ export default function Footer() {
                   ))}
                 </ul>
 
-                {/* Divider between accordion rows on mobile */}
                 <div className="border-b border-white/[0.06] lg:hidden" />
               </div>
             );
