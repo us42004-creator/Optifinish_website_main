@@ -91,7 +91,9 @@ export default function ZA01Page() {
         '/images/products/za01/recip_landscape.png',
       ]}
       heroImageLabel="Opti Recip ZA01 · vertical reciprocator"
-      heroImageCover={true}
+      heroImageCover={false}
+      heroImageBg="#0d0d0d"
+      heroImageAspect="aspect-[4/3]"
       photoGallery={[
         { src: '/images/products/za01/recip_render.png',      label: 'ZA01 render — full-line view',          fit: 'cover' },
         { src: '/images/products/za01/recip_panel_hmi.png',   label: 'ZA01 control panel & HMI',              fit: 'cover' },
