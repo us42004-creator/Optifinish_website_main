@@ -118,14 +118,14 @@ export default function Footer() {
               Value Added Coating Solutions Pvt. Ltd.
             </span>
             <div className="mt-5 space-y-1">
-              <p className="text-[9px] text-white/55">+91 98118 46214 / +91 98113 57749</p>
-              <p className="text-[9px] text-white/55">
+              <p className="text-[9px] text-white/65">+91 98118 46214 / +91 98113 57749</p>
+              <p className="text-[9px] text-white/65">
                 <a href="https://wa.me/918929408691" target="_blank" rel="noopener noreferrer" className="text-[#25D366]/70 hover:text-[#25D366] transition-colors">
                   WhatsApp: +91 89294 08691
                 </a>
               </p>
-              <p className="text-[9px] text-white/55">info@optifinish.in</p>
-              <p className="text-[9px] text-white/55">Greater Noida, UP — 201306</p>
+              <p className="text-[9px] text-white/65">info@optifinish.in</p>
+              <p className="text-[9px] text-white/65">Greater Noida, UP — 201306</p>
             </div>
             <div className="mt-4 flex gap-3">
               <a href="https://www.linkedin.com/company/value-added-coating-solution" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="flex h-11 w-11 items-center justify-center rounded-full border border-white/[0.1] text-white/50 transition hover:border-white/40 hover:text-white/80 sm:h-7 sm:w-7">
@@ -152,7 +152,7 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   className="group flex items-center justify-between rounded px-2 py-1.5 transition-colors hover:bg-[#FECE00]/[0.07]"
                 >
-                  <span className="text-[8.5px] font-medium text-white/45 group-hover:text-white/75 transition-colors">Enquiry Manager</span>
+                  <span className="text-[8.5px] font-medium text-white/60 group-hover:text-white/85 transition-colors">Enquiry Manager</span>
                   <span className="text-[9px] text-white/18 group-hover:text-[#FECE00]/55 transition-colors">↗</span>
                 </a>
                 <a
@@ -161,7 +161,7 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   className="group flex items-center justify-between rounded px-2 py-1.5 transition-colors hover:bg-[#FECE00]/[0.07]"
                 >
-                  <span className="text-[8.5px] font-medium text-white/45 group-hover:text-white/75 transition-colors">Employee Login</span>
+                  <span className="text-[8.5px] font-medium text-white/60 group-hover:text-white/85 transition-colors">Employee Login</span>
                   <span className="text-[9px] text-white/18 group-hover:text-[#FECE00]/55 transition-colors">↗</span>
                 </a>
               </div>
@@ -177,7 +177,7 @@ export default function Footer() {
               aria-expanded={productsOpen}
               style={{ touchAction: 'manipulation' }}
             >
-              <h3 className="text-[9px] font-bold uppercase tracking-[0.26em] text-white/70">Products</h3>
+              <h3 className="text-[9px] font-bold uppercase tracking-[0.26em] text-white/80">Products</h3>
               <ChevronRight
                 size={12}
                 className={`text-white/30 transition-transform duration-200 lg:hidden ${productsOpen ? 'rotate-90' : 'rotate-0'}`}
@@ -187,23 +187,23 @@ export default function Footer() {
             <div className={`overflow-hidden transition-all duration-300 lg:block lg:mt-3 lg:max-h-none ${
               productsOpen ? 'max-h-[900px] pb-3' : 'max-h-0 lg:max-h-none'
             }`}>
-              <div className="grid grid-cols-2 gap-x-6 gap-y-5">
+              <div className="grid grid-cols-2 gap-x-5 gap-y-3.5">
                 {PRODUCT_GROUPS.map((group) => (
                   <div key={group.href}>
                     {/* Category label */}
                     <Link
                       href={group.href}
-                      className="mb-2 block text-[8px] font-bold uppercase tracking-[0.2em] text-white/55 hover:text-[#FECE00] transition-colors"
+                      className="mb-1.5 block text-[7.5px] font-bold uppercase tracking-[0.18em] text-white/65 hover:text-[#FECE00] transition-colors"
                     >
                       {group.name}
                     </Link>
                     {/* Child products */}
-                    <ul className="flex flex-col gap-1.5 pl-2 border-l border-white/[0.07]">
+                    <ul className="flex flex-col gap-[3px] pl-2 border-l border-white/[0.09]">
                       {group.items.map((item) => (
                         <li key={item.href}>
                           <Link
                             href={item.href}
-                            className="text-[8.5px] font-medium text-white/38 transition-colors hover:text-white/70"
+                            className="text-[8px] font-medium text-white/52 transition-colors hover:text-white/80"
                           >
                             {item.label}
                           </Link>
@@ -230,7 +230,7 @@ export default function Footer() {
                   aria-expanded={isOpen}
                   style={{ touchAction: 'manipulation' }}
                 >
-                  <h3 className="text-[9px] font-bold uppercase tracking-[0.26em] text-white/70">
+                  <h3 className="text-[9px] font-bold uppercase tracking-[0.26em] text-white/80">
                     {col.heading}
                   </h3>
                   <ChevronRight
@@ -246,7 +246,7 @@ export default function Footer() {
                     <li key={link.href}>
                       <Link
                         href={link.href}
-                        className="text-[9px] font-medium text-white/52 transition-colors hover:text-[#FECE00] sm:text-[10px]"
+                        className="text-[9px] font-medium text-white/62 transition-colors hover:text-[#FECE00] sm:text-[10px]"
                       >
                         {link.label}
                       </Link>
