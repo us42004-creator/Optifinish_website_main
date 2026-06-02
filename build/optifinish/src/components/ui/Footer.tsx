@@ -60,17 +60,14 @@ const PARTNER_PRODUCTS = [
       { href: '/products/durr/ecodose-3k',        label: '3K Dosing System' },
     ],
   },
-  {
-    name: 'Vinayak Agencies',
-    href: '/products/vinayak',
-    items: [
-      { href: '/products/vinayak/powder-paints',  label: 'Powder Coating Paints' },
-      { href: '/products/vinayak/liquid-paint',   label: 'Liquid Industrial Paint' },
-      { href: '/products/vinayak/touchup-paints', label: 'Touch-up Paints' },
-      { href: '/products/vinayak/pu-enamel',      label: 'PU & Enamel Paints' },
-      { href: '/products/vinayak/adhesives',      label: 'Adhesives & Tapes' },
-    ],
-  },
+];
+
+const VINAYAK = [
+  { href: '/products/vinayak/powder-paints',  label: 'Powder Coating Paints' },
+  { href: '/products/vinayak/liquid-paint',   label: 'Liquid Industrial Paint' },
+  { href: '/products/vinayak/touchup-paints', label: 'Touch-up Paints' },
+  { href: '/products/vinayak/pu-enamel',      label: 'PU & Enamel Paints' },
+  { href: '/products/vinayak/adhesives',      label: 'Adhesives & Tapes' },
 ];
 
 /* ── Flat nav columns ── */
@@ -248,15 +245,38 @@ export default function Footer() {
                   <ChevronRight size={12} className={`text-white/30 transition-transform duration-200 lg:hidden ${isOpen ? 'rotate-90' : 'rotate-0'}`} />
                 </button>
 
-                <ul className={`space-y-2 overflow-hidden transition-all duration-300 lg:block lg:mt-3 lg:max-h-none ${isOpen ? 'max-h-[600px] pb-3' : 'max-h-0 lg:max-h-none'}`}>
-                  {col.links.map((link) => (
-                    <li key={link.href}>
-                      <Link href={link.href} className="text-[8.5px] font-medium text-white/60 transition-colors hover:text-[#FECE00]">
-                        {link.label}
+                <div className={`overflow-hidden transition-all duration-300 lg:block lg:mt-3 lg:max-h-none ${isOpen ? 'max-h-[800px] pb-3' : 'max-h-0 lg:max-h-none'}`}>
+                  <ul className="space-y-2">
+                    {col.links.map((link) => (
+                      <li key={link.href}>
+                        <Link href={link.href} className="text-[8.5px] font-medium text-white/60 transition-colors hover:text-[#FECE00]">
+                          {link.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* Vinayak Agencies appended to Services column */}
+                  {col.heading === 'Services' && (
+                    <div className="mt-5">
+                      <Link
+                        href="/products/vinayak"
+                        className="mb-1.5 block text-[7.5px] font-bold uppercase tracking-[0.18em] text-white/65 hover:text-[#FECE00] transition-colors"
+                      >
+                        Vinayak Agencies
                       </Link>
-                    </li>
-                  ))}
-                </ul>
+                      <ul className="flex flex-col gap-[3px] border-l border-white/[0.09] pl-2">
+                        {VINAYAK.map((item) => (
+                          <li key={item.href}>
+                            <Link href={item.href} className="text-[8px] font-medium text-white/52 transition-colors hover:text-white/80">
+                              {item.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
 
                 <div className="border-b border-white/[0.06] lg:hidden" />
               </div>
