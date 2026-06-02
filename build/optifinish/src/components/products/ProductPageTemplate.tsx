@@ -944,7 +944,7 @@ export default function ProductPageTemplate({
                           {firstRow.map(renderCell)}
                         </div>
                         {restRows.length > 0 && (
-                          <div className={`grid gap-3 grid-cols-2 ${restRows.length === 4 ? 'md:grid-cols-2' : restRows.length === 1 ? 'md:grid-cols-1' : 'md:grid-cols-3'}`}>
+                          <div className={`mt-3 grid gap-3 grid-cols-2 ${restRows.length === 4 ? 'md:grid-cols-2' : restRows.length === 1 ? 'md:grid-cols-1' : 'md:grid-cols-3'}`}>
                             {restRows.map(renderCell)}
                           </div>
                         )}

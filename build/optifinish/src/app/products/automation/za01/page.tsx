@@ -92,16 +92,16 @@ export default function OptiZA18Page() {
       heroImageBg="#0d0d0d"
       heroImageAspect="aspect-[4/3]"
       photoGallery={[
-        /* Top row: 2 landscape shots */
-        { src: '/images/products/za01/recip_landscape.png', label: 'OPTI-ZA-18 — full installation view',     fit: 'cover', aspectRatio: '4/3'  },
-        { src: '/images/products/za01/recip_mount.png',     label: 'OPTI-ZA-18 — gun mounting configuration', fit: 'cover', aspectRatio: '16/9' },
-        /* Bottom row 1: control panel + HMI only */
-        { src: '/images/products/za01/recip_panel_hmi.png', label: 'OPTI-ZA-18 — control panel & HMI',        fit: 'cover', aspectRatio: '4/3'  },
-        /* Bottom row 2: 2 portrait shots — natural 9:16 containers */
+        /* Top row: featured wide + mount */
+        { src: '/images/products/za01/recip_landscape.png', label: 'OPTI-ZA-18 — full installation view',     fit: 'cover' },
+        { src: '/images/products/za01/recip_mount.png',     label: 'OPTI-ZA-18 — gun mounting configuration', fit: 'cover' },
+        /* Middle row: 2 portrait cards — dramatic centrepiece */
         { src: '/images/products/za01/recip_portrait.png',  label: 'OPTI-ZA-18 — machine portrait',           fit: 'cover', aspectRatio: '9/16' },
         { src: '/images/products/za01/recip_side.png',      label: 'OPTI-ZA-18 — side profile',               fit: 'cover', aspectRatio: '9/16' },
+        /* Bottom strip: control panel — slim cinematic bar */
+        { src: '/images/products/za01/recip_panel_hmi.png', label: 'OPTI-ZA-18 — control panel & HMI',        fit: 'cover', aspectRatio: '21/9' },
       ]}
-      galleryBottomSplit={1}
+      galleryBottomSplit={2}
       enquireSlug="za01"
       backHref="/products/automation"
       backLabel="← Back to Automation"
