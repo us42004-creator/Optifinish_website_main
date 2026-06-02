@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
@@ -11,27 +11,6 @@ const ease = [0.22, 1, 0.36, 1] as const;
 const SLIDE_LABELS = ['Hero view', 'Detail view', 'In-use shot'];
 
 const PRODUCTS = [
-  {
-    id: 'ztap',
-    href: '/products/automation/z-tap',
-    name: 'Z-TAP',
-    tag: 'Flagship',
-    tagline: 'Zero-touch robotic coating.',
-    desc: 'Mimic a motion once — Z-TAP records, perfects, and replicates it flawlessly across every part. Powered by the Fairino FR5 robot platform with native GEMA gun integration.',
-    specs: [
-      'Motion mimic technology',
-      'Fairino FR5 robot platform',
-      'GEMA gun integration',
-      'Full coating line compatible',
-    ],
-    /* Mobile carousel images */
-    images: [null, null, null] as (string | null)[],
-    placeholderAccent: '#FECE00',
-    /* Desktop media */
-    heroImage: undefined as string | undefined,
-    detailImage: undefined as string | undefined,
-    inUseImage: undefined as string | undefined,
-  },
   {
     id: 'za01',
     href: '/products/automation/za01',
@@ -45,12 +24,14 @@ const PRODUCTS = [
       'Line-compatible mounting',
       'Low maintenance design',
     ],
+    /* Mobile carousel images */
     images: [
       '/images/products/za01/recip_landscape.png',
       '/images/products/za01/recip_portrait.png',
       '/images/products/za01/recip_side.png',
     ] as (string | null)[],
     placeholderAccent: '#FECE00',
+    /* Desktop media */
     heroImage: '/images/products/za01/recip_landscape.png' as string | undefined,
     detailImage: '/images/products/za01/recip_portrait.png' as string | undefined,
     inUseImage: '/images/products/za01/recip_mount.png' as string | undefined,
@@ -78,6 +59,25 @@ const PRODUCTS = [
     detailImage: '/images/products/sieve-machine/sieve-machine-02.jpg',
     inUseImage: '/images/products/sieve-machine/sieve-machine-03.jpg',
   },
+  {
+    id: 'ztap',
+    href: '/products/automation/z-tap',
+    name: 'Z-TAP',
+    tag: 'Flagship',
+    tagline: 'Zero-touch robotic coating.',
+    desc: 'Mimic a motion once — Z-TAP records, perfects, and replicates it flawlessly across every part. Powered by the Fairino FR5 robot platform with native GEMA gun integration.',
+    specs: [
+      'Motion mimic technology',
+      'Fairino FR5 robot platform',
+      'GEMA gun integration',
+      'Full coating line compatible',
+    ],
+    images: [null, null, null] as (string | null)[],
+    placeholderAccent: '#FECE00',
+    heroImage: undefined as string | undefined,
+    detailImage: undefined as string | undefined,
+    inUseImage: undefined as string | undefined,
+  },
 ];
 
 export default function ProprietaryAutomation() {
@@ -89,21 +89,7 @@ export default function ProprietaryAutomation() {
   const [imgIndexes, setImgIndexes] = useState([0, 0, 0]);
   const currentImgIndex = imgIndexes[active];
 
-  /* Mobile: product tab is manual-only — no auto-switch */
-
-  /* Mobile: each product carousel advances independently every 3 s */
-  useEffect(() => {
-    const intervals = PRODUCTS.map((_, i) =>
-      setInterval(() => {
-        setImgIndexes(prev => {
-          const next = [...prev];
-          next[i] = (next[i] + 1) % 3;
-          return next;
-        });
-      }, 3000 + i * 300)
-    );
-    return () => intervals.forEach(clearInterval);
-  }, []);
+  /* Mobile: images only change on pill click — no auto-cycling */
 
   /* ── Desktop: sticky scroll via useScroll ── */
   const containerRef = useRef<HTMLElement>(null);
