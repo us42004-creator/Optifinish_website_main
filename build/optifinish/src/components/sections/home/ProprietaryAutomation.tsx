@@ -33,7 +33,7 @@ const PRODUCTS = [
     placeholderAccent: '#FECE00',
     /* Desktop media */
     heroImage: '/images/products/za01/recip_landscape.png' as string | undefined,
-    detailImage: '/images/products/za01/recip_portrait.png' as string | undefined,
+    detailImage: '/images/products/za01/recip_panel_hmi.png' as string | undefined,
     inUseImage: '/images/products/za01/recip_mount.png' as string | undefined,
   },
   {
