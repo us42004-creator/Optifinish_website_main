@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { notifySheet } from '@/lib/notifySheet';
 
 const ZOHO_TOKEN_URL   = 'https://accounts.zoho.in/oauth/v2/token';
 const ZOHO_LEADS_URL   = 'https://www.zohoapis.in/crm/v2/Leads';
@@ -88,6 +89,8 @@ export async function POST(req: NextRequest) {
     } else {
       console.warn('[enquire] Zoho credentials not set — lead logged only, not sent to CRM');
     }
+
+    notifySheet({ name, company, phone, email, product: productLabel, details: detailsText, source: 'OptiFinish Website' });
 
     return NextResponse.json({ ok: true });
 
