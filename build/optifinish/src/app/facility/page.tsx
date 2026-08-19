@@ -41,6 +41,15 @@ const breadcrumbLD = breadcrumbSchema([
 // S1 hero — building exterior (touchup)
 const HERO_BG = '/images/facility/factory_exterior_touchup.png';
 
+// Precision machining — CNC & laser cutting machines
+const MACHINE_IMAGES = [
+  { src: '/images/Machine/machine-01.jpg', label: 'CNC Machine' },
+  { src: '/images/Machine/machine-02.jpg', label: 'CNC Machine' },
+  { src: '/images/Machine/machine-03.jpg', label: 'Laser Cutting' },
+  { src: '/images/Machine/machine-04.jpg', label: 'Laser Cutting' },
+  { src: '/images/Machine/machine-05.jpg', label: 'Precision Fabrication' },
+];
+
 // S2 capabilities — office & meeting rooms (4 distinct shots, no duplicates)
 const OFFICE_GRID = [
   '/images/facility/facility-78.jpg',  // office floor with active computers
@@ -420,6 +429,93 @@ export default function FacilityPage() {
               </span>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+          S3b — PRECISION MACHINING (light)
+      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      <section className="relative overflow-hidden bg-[#f1efea] py-12 md:py-20">
+        <div className="pointer-events-none absolute inset-0 grid-drift opacity-[0.62] mix-blend-multiply" style={LIGHT_GRID_STYLE} />
+        <div className="relative mx-auto max-w-7xl px-5 md:px-8">
+
+          {/* Heading */}
+          <div className="mb-8 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="mb-2 text-[0.56rem] font-bold uppercase tracking-[0.22em] text-[#0A0A0A]/40">
+                In-House Fabrication
+              </p>
+              <h2 className="font-display text-[clamp(1.6rem,3vw,2.6rem)] font-black leading-[0.92] tracking-[-0.04em] text-[#0A0A0A]">
+                CNC &amp; Laser Cutting.
+              </h2>
+            </div>
+            <p className="max-w-sm text-[0.82rem] leading-relaxed text-[#0A0A0A]/50 md:text-right">
+              Precision sheet metal cutting and CNC machining done entirely in-house — enabling tighter
+              tolerances and faster turnarounds on every build.
+            </p>
+          </div>
+
+          {/* Mobile: horizontal scroll */}
+          <div className="md:hidden -mx-5 flex overflow-x-auto carousel-track">
+            <div className="w-4 flex-shrink-0" />
+            {MACHINE_IMAGES.map((m, i) => (
+              <div
+                key={i}
+                className="relative w-[72vw] flex-shrink-0 aspect-[4/3] overflow-hidden rounded-[1rem] mr-2"
+                style={{ scrollSnapAlign: 'start' }}
+              >
+                <Image src={m.src} alt={m.label} fill className="object-cover" sizes="72vw" />
+                <div className="absolute bottom-3 left-3 rounded-full border border-black/10 bg-white/70 px-3 py-1 text-[0.5rem] font-bold uppercase tracking-[0.2em] text-[#0A0A0A]/60 backdrop-blur-sm">
+                  {m.label}
+                </div>
+              </div>
+            ))}
+            <div className="w-4 flex-shrink-0" />
+          </div>
+
+          {/* Desktop: hero + 2×2 grid */}
+          <div className="hidden md:grid grid-cols-3 gap-2 h-[420px]">
+            {/* Large hero — first image */}
+            <div className="relative col-span-2 overflow-hidden rounded-[1.1rem]">
+              <Image
+                src={MACHINE_IMAGES[0].src}
+                alt={MACHINE_IMAGES[0].label}
+                fill
+                className="object-cover transition-transform duration-700 hover:scale-105"
+                sizes="66vw"
+              />
+              <div className="absolute bottom-4 left-4 rounded-full border border-black/10 bg-white/70 px-3 py-1 text-[0.5rem] font-bold uppercase tracking-[0.2em] text-[#0A0A0A]/60 backdrop-blur-sm">
+                CNC Machine
+              </div>
+            </div>
+            {/* Right column — 2 stacked */}
+            <div className="grid grid-rows-2 gap-2">
+              {MACHINE_IMAGES.slice(1, 3).map((m, i) => (
+                <div key={i} className="relative overflow-hidden rounded-[1.1rem]">
+                  <Image src={m.src} alt={m.label} fill className="object-cover transition-transform duration-700 hover:scale-105" sizes="33vw" />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Bottom row — remaining 2 images */}
+          <div className="hidden md:grid mt-2 grid-cols-2 gap-2 h-[220px]">
+            {MACHINE_IMAGES.slice(3).map((m, i) => (
+              <div key={i} className="relative overflow-hidden rounded-[1.1rem]">
+                <Image
+                  src={m.src}
+                  alt={m.label}
+                  fill
+                  className="object-cover transition-transform duration-500 hover:scale-105"
+                  sizes="50vw"
+                />
+                <div className="absolute bottom-3 left-3 rounded-full border border-black/10 bg-white/70 px-3 py-1 text-[0.5rem] font-bold uppercase tracking-[0.2em] text-[#0A0A0A]/60 backdrop-blur-sm">
+                  {m.label}
+                </div>
+              </div>
+            ))}
+          </div>
+
         </div>
       </section>
 
