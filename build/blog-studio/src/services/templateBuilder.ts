@@ -4,7 +4,9 @@ import {
   AudienceId,
   DossierSnapshot,
   ImagePlacement,
-  StructuralShape
+  StructuralShape,
+  AeoBundle,
+  AeoEntity
 } from '../types';
 import { CATEGORIES, AUDIENCES } from '../constants';
 
@@ -73,7 +75,15 @@ export function buildOptiFinishBlogHtml({ draft, category, audience }: BuildArgs
 
   const seoBlock = draft.seo ? buildSeoHead(draft.seo) : '';
 
-  const articleBody = injectImages(draft.bodyHtml, draft.imagePlacements);
+  // Entity linking runs BEFORE image injection so we don't accidentally wrap
+  // an entity name inside an <img alt> that images add. It also runs on the
+  // final polished body so all H2s / lists / blockquotes are already there.
+  const bodyWithEntityLinks = draft.aeo?.entities?.length
+    ? linkEntities(draft.bodyHtml, draft.aeo.entities)
+    : draft.bodyHtml;
+  const articleBody = injectImages(bodyWithEntityLinks, draft.imagePlacements);
+  const quickAnswerBlock = draft.aeo?.quickAnswer ? buildQuickAnswerBlock(draft.aeo.quickAnswer) : '';
+  const faqBlock = draft.aeo?.faq?.length ? buildFaqBlock(draft.aeo.faq) : '';
   const readMin = Math.max(3, Math.round(draft.wordCount / 220));
 
   return `<!DOCTYPE html>
@@ -144,7 +154,11 @@ ${BASE_CSS}
         </div>
       </header>
 
+      ${quickAnswerBlock}
+
       <div class="blog-body-text">${articleBody}</div>
+
+      ${faqBlock}
 
       <!-- ───── Conversion CTA card ───── -->
       <aside class="cta-card">
@@ -485,6 +499,89 @@ const BASE_CSS = `    :root {
       line-height: 1.55;
     }
 
+    /* ───── AEO Quick Answer (top of body, machine-readable summary) ───── */
+    .quick-answer {
+      margin: 0 0 48px;
+      padding: 26px 30px 24px;
+      background: var(--paper-warm);
+      border-left: 3px solid var(--ember-500);
+      border-radius: 10px;
+    }
+    .quick-answer-eyebrow {
+      display: block;
+      font-size: 10px; font-weight: 700; font-style: italic;
+      text-transform: uppercase; letter-spacing: 0.28em;
+      color: var(--ember-700);
+      margin-bottom: 10px;
+    }
+    .quick-answer-body {
+      margin: 0;
+      font-size: 16px; line-height: 1.65;
+      color: var(--ink-900);
+      font-weight: 500;
+    }
+    @media (max-width: 720px) {
+      .quick-answer { padding: 20px 22px 18px; margin-bottom: 32px; }
+      .quick-answer-body { font-size: 15px; }
+    }
+
+    /* ───── Entity links inside body prose ───── */
+    .blog-body-text a.entity-link {
+      color: var(--ember-700);
+      text-decoration: none;
+      border-bottom: 1px dotted rgba(194, 74, 32, 0.5);
+      transition: border-color 0.15s ease;
+    }
+    .blog-body-text a.entity-link:hover {
+      border-bottom-color: var(--ember-500);
+    }
+
+    /* ───── FAQ block (renders below body, above CTA — AEO-critical) ───── */
+    .faq-block {
+      margin: 56px 0 24px;
+      padding: 36px 40px 32px;
+      background: #ffffff;
+      border: 1px solid rgba(10, 10, 11, 0.08);
+      border-radius: 18px;
+    }
+    .faq-eyebrow {
+      display: block;
+      font-size: 10px; font-weight: 700; font-style: italic;
+      text-transform: uppercase; letter-spacing: 0.32em;
+      color: var(--ember-700);
+      margin-bottom: 14px;
+    }
+    .faq-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 30px; font-weight: 600;
+      margin: 0 0 28px;
+      color: var(--ink-950);
+      line-height: 1.15;
+      border: none; padding: 0;
+    }
+    .faq-item {
+      padding: 18px 0;
+      border-top: 1px solid rgba(10, 10, 11, 0.06);
+    }
+    .faq-item:first-of-type { border-top: none; padding-top: 4px; }
+    .faq-question {
+      font-size: 16px; font-weight: 700;
+      color: var(--ink-950);
+      margin: 0 0 8px;
+      line-height: 1.4;
+    }
+    .faq-answer {
+      font-size: 15px; line-height: 1.65;
+      color: var(--ink-900);
+      margin: 0;
+    }
+    @media (max-width: 720px) {
+      .faq-block { padding: 24px 22px 22px; border-radius: 14px; margin-top: 40px; }
+      .faq-title { font-size: 24px; margin-bottom: 20px; }
+      .faq-question { font-size: 15px; }
+      .faq-answer { font-size: 14px; }
+    }
+
     /* ───── Conversion CTA card ───── */
     .cta-card {
       position: relative;
@@ -564,6 +661,159 @@ function esc(s: string): string {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
+}
+
+// ─────────────────────────────────────────────────────────────
+// AEO renderers — Quick Answer block, FAQ block, entity links
+// ─────────────────────────────────────────────────────────────
+
+// Quick Answer sits ABOVE the body prose. It's what Perplexity / ChatGPT
+// quote verbatim in their AI-search summaries, and it's what the buyer
+// scanning the page reads before deciding to invest reading time.
+function buildQuickAnswerBlock(quickAnswer: string): string {
+  return `
+    <aside class="quick-answer">
+      <span class="quick-answer-eyebrow">Quick Answer</span>
+      <p class="quick-answer-body">${esc(quickAnswer)}</p>
+    </aside>`;
+}
+
+// FAQ block sits BELOW the body prose, ABOVE the CTA card. Google's AI
+// Overviews + Perplexity feature FAQ answers preferentially. Also renders
+// visibly for human readers who scroll to the end for "what should I ask
+// next" cues.
+function buildFaqBlock(faq: AeoBundle['faq']): string {
+  const items = faq
+    .map(
+      (f) => `
+      <div class="faq-item">
+        <h4 class="faq-question">${esc(f.question)}</h4>
+        <p class="faq-answer">${esc(f.answer)}</p>
+      </div>`
+    )
+    .join('');
+  return `
+    <section class="faq-block">
+      <span class="faq-eyebrow">Frequently Asked</span>
+      <h3 class="faq-title">More questions buyers ask</h3>
+      ${items}
+    </section>`;
+}
+
+// Wraps the FIRST mention of each named entity in the body with an <a> to
+// its authoritative URL. Search engines + LLMs read this as a citation
+// gesture — "OptiFinish's article knows what CBAM is and links to the
+// EU's own page for it".
+//
+// Important guardrails:
+//   1. Skip any mention already inside an <a>, an <h2>/<h3>, or an
+//      <img alt="…"> — those would either break the anchor or wrap a
+//      heading.
+//   2. First mention only. Second and third mentions stay plain text so
+//      the body doesn't turn into a wiki-of-links.
+//   3. Entities are matched as whole-word (word-boundary) so "BIS" doesn't
+//      match inside "basis" and "PFAS" doesn't match "PFASfree".
+function linkEntities(bodyHtml: string, entities: AeoEntity[]): string {
+  let html = bodyHtml;
+  // Longer names first so "MSME-ZED" beats "MSME" when both are in the set.
+  const sorted = [...entities].sort((a, b) => b.name.length - a.name.length);
+
+  for (const entity of sorted) {
+    const name = entity.name.trim();
+    if (!name || !entity.url) continue;
+
+    // Word-boundary regex. \b doesn't work reliably around non-ASCII (Dürr's
+    // ü, hyphens in MSME-ZED), so we hand-roll boundaries as "start-of-string
+    // or non-word char" on each side. Case-sensitive so we preserve the
+    // brand's canonical casing.
+    const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const pattern = new RegExp(
+      `(?<![\\w\\-])(${escaped})(?![\\w\\-])`,
+      // Case-insensitive so "cbam" and "CBAM" both match, but we replace
+      // with the entity's canonical name so display stays consistent.
+      'i'
+    );
+
+    // Skip mentions inside tags (<h2>NAME</h2>, <a href="…">NAME</a>,
+    // <img alt="NAME"), inside existing <a>, or inside <blockquote>.
+    // Approach: walk the HTML segment by segment and only replace inside
+    // text nodes between tags.
+    html = replaceInTextNodes(html, pattern, (match) => {
+      return `<a class="entity-link" href="${esc(entity.url)}" target="_blank" rel="noopener nofollow" title="${esc(entity.description)}">${esc(match)}</a>`;
+    }, {
+      // Don't recurse into these — they're either already-linked, or a
+      // heading, or a quotation we shouldn't editorialize.
+      skipTags: ['a', 'h2', 'h3', 'h4', 'blockquote', 'img', 'code', 'pre']
+    });
+  }
+  return html;
+}
+
+// Walks HTML linearly. For each stretch of text OUTSIDE tags AND outside any
+// of the skip-tag scopes, applies `replacer` on the FIRST regex match only.
+// Once one match has been replaced, further text nodes are passed through
+// unchanged (first-mention semantics). Not a full HTML parser — good enough
+// for our tightly-controlled body HTML.
+function replaceInTextNodes(
+  html: string,
+  pattern: RegExp,
+  replacer: (match: string) => string,
+  opts: { skipTags: string[] }
+): string {
+  const skipSet = new Set(opts.skipTags.map((t) => t.toLowerCase()));
+  const skipStack: string[] = []; // stack of currently-open skip tags
+  let out = '';
+  let i = 0;
+  let replaced = false;
+
+  while (i < html.length) {
+    if (html[i] === '<') {
+      // Tag — copy through as-is, and update skip stack
+      const end = html.indexOf('>', i);
+      if (end === -1) {
+        out += html.slice(i);
+        break;
+      }
+      const tagHtml = html.slice(i, end + 1);
+      out += tagHtml;
+
+      // Parse tag name
+      const nameMatch = tagHtml.match(/^<\s*(\/?)([a-zA-Z0-9]+)/);
+      if (nameMatch) {
+        const isClose = nameMatch[1] === '/';
+        const tagName = nameMatch[2].toLowerCase();
+        const isSelfClosing = tagHtml.endsWith('/>') || tagName === 'br' || tagName === 'img' || tagName === 'hr';
+        if (skipSet.has(tagName) && !isSelfClosing) {
+          if (isClose) {
+            // Pop the most recent matching open
+            const idx = skipStack.lastIndexOf(tagName);
+            if (idx >= 0) skipStack.splice(idx, 1);
+          } else {
+            skipStack.push(tagName);
+          }
+        }
+      }
+      i = end + 1;
+    } else {
+      // Text node — up to the next '<'
+      const nextTag = html.indexOf('<', i);
+      const text = nextTag === -1 ? html.slice(i) : html.slice(i, nextTag);
+      if (skipStack.length === 0 && !replaced) {
+        const m = pattern.exec(text);
+        if (m) {
+          out += text.slice(0, m.index) + replacer(m[1]) + text.slice(m.index + m[0].length);
+          replaced = true;
+        } else {
+          out += text;
+        }
+      } else {
+        out += text;
+      }
+      if (nextTag === -1) break;
+      i = nextTag;
+    }
+  }
+  return out;
 }
 
 // Builds the full SEO <head> block: standard meta + Open Graph + Twitter Card

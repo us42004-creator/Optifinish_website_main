@@ -26,7 +26,8 @@ import {
   BlogDraft,
   ImagePlacement,
   DossierSnapshot,
-  StructuralShape
+  StructuralShape,
+  AeoBundle
 } from '../types';
 import { CATEGORIES, AUDIENCES } from '../constants';
 import { chatJSON, chatCompletion, parseJsonish } from './nvidiaLlmService';
@@ -34,6 +35,7 @@ import { pickRotated, pickRandom, MODELS, ModelEntry, ModelId } from './modelRou
 import { CATEGORY_BLUEPRINT } from './draftEngine';
 import { searchTavily, tavilyToPromptContext } from './tavilySearch';
 import { computeEditorialFlags, flagsToHtmlComment } from './editorialFlags';
+import { generateAeoBundle } from './aeoEngine';
 
 // Tavily search excludes optifinish's own domains so external evidence is
 // genuinely external — not our own claims cited back at us. Product /
@@ -368,6 +370,29 @@ Every section must contain AT LEAST TWO of the following concrete anchors — ot
 If a section reads like it could belong on any powder-coating website in any country, you have not applied this rule. Rewrite until it could only belong in an OptiFinish post grounded in the Indian shop floor.
 
 ═════════════════════════════════════════════
+  AEO RULE — FIRST SENTENCE ANSWERS THE HEADING
+═════════════════════════════════════════════
+The FIRST sentence of your section must directly answer the implicit question the H2 poses. This is what AI search engines (ChatGPT, Perplexity, Claude, Gemini) extract and quote when a user asks about this topic.
+
+Rules for the first sentence:
+- Third-person, factual, concrete. No "in this section", no "let's explore", no framing preamble.
+- Names the specific object of the answer (a system, a number, a decision, a mechanism).
+- Reads as a standalone sentence that could be pulled out of context and still hold.
+- 15-35 words. Not one-word. Not a run-on.
+
+Examples:
+- H2: "Why hour-six humidity rewrites every spec sheet"
+  ✓ "By hour six of the third shift, morning humidity in coastal Indian plants routinely peaks above eighty percent, which shifts the effective cure window even when the oven set-point has not moved."
+  ✗ "In this section, we will explore how humidity affects powder coating." (framing)
+  ✗ "Humidity is important." (too thin)
+
+- H2: "The thermal profile that decides adhesion"
+  ✓ "Adhesion is decided in the last three minutes of the ramp curve, not at peak metal temperature, because the substrate reaches gel while the powder is still consolidating."
+  ✗ "Let us discuss thermal profiles." (framing)
+
+After the first sentence, expand normally per the rest of the rules.
+
+═════════════════════════════════════════════
   ONE SHARP LINE PER SECTION
 ═════════════════════════════════════════════
 Every section must contain AT LEAST ONE sentence that would work as a pull-quote — a compressed insight, ideally a reframe, in tight language. Not marketing punch. Editorial punch. Example shapes:
@@ -683,7 +708,7 @@ export async function generateBlogDraftMultipass(
       alt: p.alt
     }));
 
-  return {
+  const partialDraft: BlogDraft = {
     title: outline.title,
     subtitle: outline.subtitle,
     bodyHtml: polished,
@@ -692,6 +717,25 @@ export async function generateBlogDraftMultipass(
     imagePlacements,
     editorialFlags
   };
+
+  // ─── AEO pass — best-effort, never blocks publish ───
+  // Produces the Quick Answer / FAQ / entity metadata that makes the post
+  // citable by ChatGPT / Perplexity / Claude / Gemini. Runs after all draft
+  // passes so it sees the final body the reader will see. A failure here
+  // is logged and swallowed — the post ships without AEO but is otherwise
+  // complete.
+  const t3 = Date.now();
+  let aeo: AeoBundle | undefined;
+  try {
+    aeo = await generateAeoBundle(partialDraft);
+    console.log(
+      `[multipass] AEO ready (${((Date.now() - t3) / 1000).toFixed(1)}s): quickAnswer=${aeo.quickAnswer.split(/\s+/).length}w, faq=${aeo.faq.length}, entities=${aeo.entities.length}`
+    );
+  } catch (err) {
+    console.warn('[multipass] AEO generation failed (non-blocking):', err);
+  }
+
+  return { ...partialDraft, aeo };
 }
 
 // Detectors moved to src/services/editorialFlags.ts (shared with single-pass

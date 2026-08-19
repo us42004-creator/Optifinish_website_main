@@ -121,6 +121,25 @@ export interface EditorialFlags {
   hasAny: boolean;
 }
 
+// AEO (AI Engine Optimization) bundle — data added to every published post so
+// GPTs / Perplexity / Claude / Gemini can cite the post reliably.
+export interface AeoEntity {
+  name: string;            // "GEMA", "CBAM", "BEE"
+  url: string;             // authoritative source (Wikipedia, govt page, org URL)
+  description: string;     // 1-line context
+}
+
+export interface AeoFaqEntry {
+  question: string;        // natural-language question a buyer would type into ChatGPT
+  answer: string;          // 40-80 words, factually derivable from the post
+}
+
+export interface AeoBundle {
+  quickAnswer: string;         // 40-60 word direct answer to post's implicit question — LLMs quote this verbatim
+  faq: AeoFaqEntry[];          // 3-5 Q&A pairs → emitted as FAQPage schema
+  entities: AeoEntity[];       // named entities mentioned in the post → linked in body + schema.mentions
+}
+
 export interface BlogDraft {
   title: string;
   subtitle: string;
@@ -130,6 +149,7 @@ export interface BlogDraft {
   seo?: SeoMeta;
   snapshot?: DossierSnapshot;
   editorialFlags?: EditorialFlags; // populated by post-gen detector — Step 4 UI shows a red banner if hasAny
+  aeo?: AeoBundle;                 // AI Engine Optimization — Quick Answer, FAQ, named entities
 }
 
 export interface ImagePlacement {

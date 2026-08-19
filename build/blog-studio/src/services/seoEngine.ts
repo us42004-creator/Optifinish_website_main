@@ -208,10 +208,41 @@ function buildSchemaJsonLd(
     ]
   };
 
+  const graphNodes: unknown[] = [article, breadcrumbs, organization];
+
+  // AEO: named-entity mentions — signal to Google/ChatGPT that the article
+  // authoritatively covers these entities. Link them to their canonical URLs.
+  if (draft.aeo?.entities?.length) {
+    (article as Record<string, unknown>).mentions = draft.aeo.entities.map((e) => ({
+      '@type': 'Thing',
+      name: e.name,
+      description: e.description,
+      sameAs: e.url
+    }));
+  }
+
+  // AEO: FAQPage — this is the highest-value AEO signal. Google routinely
+  // features FAQPage results in AI Overviews; Perplexity and ChatGPT read
+  // FAQ nodes as authoritative Q-A pairs. Emitted as its own @graph node
+  // (not nested in the Article) so validators pick it up cleanly.
+  if (draft.aeo?.faq?.length) {
+    graphNodes.push({
+      '@type': 'FAQPage',
+      mainEntity: draft.aeo.faq.map((f) => ({
+        '@type': 'Question',
+        name: f.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: f.answer
+        }
+      }))
+    });
+  }
+
   // Multiple @graph nodes is the modern, validator-friendly pattern
   const graph = {
     '@context': 'https://schema.org',
-    '@graph': [article, breadcrumbs, organization]
+    '@graph': graphNodes
   };
 
   return safeJsonLd(graph);
