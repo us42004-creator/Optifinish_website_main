@@ -1,11 +1,13 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Stage,
   CategoryId,
   AudienceId,
   TopicIdea,
   BlogDraft,
-  EditorialFlags
+  EditorialFlags,
+  WeeklyBrief,
+  WeeklyBriefCard
 } from './types';
 import { CATEGORIES, AUDIENCES, BRAND, STAGES } from './constants';
 import { StageRail } from './components/StageRail';
@@ -25,6 +27,11 @@ import type { DistributionPack, AbVariants, VoiceScore } from './services/aiServ
 import { buildOptiFinishBlogHtml } from './services/templateBuilder';
 import { CalendarView } from './components/CalendarView';
 import * as historyStore from './services/historyStore';
+import {
+  generateWeeklyBrief,
+  loadBriefFromCache,
+  clearBriefCache
+} from './services/weeklyBriefEngine';
 
 type Tab = 'pipeline' | 'calendar';
 
@@ -42,6 +49,18 @@ const App: React.FC = () => {
   const [editPrompt, setEditPrompt] = useState('');
   const [busy, setBusy] = useState<string | null>(null);
 
+  // Weekly editorial brief — hydrated from cache on mount so studio is
+  // never empty. Refreshed on demand via the panel's refresh button.
+  const [brief, setBrief] = useState<WeeklyBrief | null>(null);
+  const [briefBusy, setBriefBusy] = useState(false);
+  const [briefError, setBriefError] = useState<string | null>(null);
+  const [manualPickerOpen, setManualPickerOpen] = useState(false);
+
+  useEffect(() => {
+    const cached = loadBriefFromCache();
+    if (cached) setBrief(cached);
+  }, []);
+
   const completed = useMemo(() => {
     const set = new Set<Stage>();
     if (category) set.add('category');
@@ -52,6 +71,68 @@ const App: React.FC = () => {
     if (draft?.imagePlacements?.some((p) => p.generatedUrl)) set.add('images');
     return set;
   }, [category, audience, topic, draft]);
+
+  const handleRefreshBrief = async () => {
+    setBriefBusy(true);
+    setBriefError(null);
+    try {
+      clearBriefCache();
+      const fresh = await generateWeeklyBrief();
+      setBrief(fresh);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.error('[brief] generation failed:', err);
+      setBriefError(msg);
+    } finally {
+      setBriefBusy(false);
+    }
+  };
+
+  // Start writing from a curated card. Skips category/audience/topic pickers.
+  // We pass overrides explicitly to generateBlogDraft because React state
+  // updates are async — the setCategory/setAudience above won't be visible
+  // to the very next generateBlogDraft call otherwise.
+  const handleStartFromCard = async (card: WeeklyBriefCard) => {
+    const topicIdea: TopicIdea = {
+      id: card.id,
+      title: card.title,
+      angle: card.optifinishAngle,
+      hook: card.whyNow,
+      estimatedReadTime: '6-8 min'
+    };
+    setCategory(card.suggestedCategory);
+    setAudience(card.suggestedAudience);
+    setTopic(topicIdea);
+    setBusy(`Drafting "${card.title.slice(0, 50)}…" from the weekly brief…`);
+    try {
+      // Persist for anti-repetition ledger
+      try {
+        const prev: string[] = JSON.parse(localStorage.getItem('optifinish-recent-topics') || '[]');
+        const updated = [topicIdea.title, ...prev.filter((x) => x !== topicIdea.title)].slice(0, 30);
+        localStorage.setItem('optifinish-recent-topics', JSON.stringify(updated));
+      } catch {
+        /* ignore */
+      }
+      const d = await generateBlogDraft(topicIdea, card.suggestedCategory, card.suggestedAudience);
+      setDraft(d);
+      setVoiceScore(scoreVoice(d.bodyHtml));
+      historyStore.record({
+        title: d.title,
+        category: card.suggestedCategory,
+        audience: card.suggestedAudience,
+        archetype: d.snapshot?.structuralShape ?? 'immersive_essay',
+        modelUsed: 'multipass',
+        voiceUsed: 'rotated',
+        wordCount: d.wordCount
+      });
+      setStage('draft');
+    } catch (err) {
+      console.error('[brief-card] draft failed:', err);
+      setBriefError('Draft generation failed — check console.');
+    } finally {
+      setBusy(null);
+    }
+  };
 
   const handleGenerateTopics = async () => {
     if (!category || !audience) return;
@@ -259,27 +340,49 @@ const App: React.FC = () => {
         {/* Center workspace */}
         <main className="overflow-y-auto p-10">
           {stage === 'category' && (
-            <Section
-              eyebrow="Step 01"
-              title="Choose a category"
-              hint="What kind of post is this? Sets tone, structure, and the system prompt."
-            >
-              <div className="grid grid-cols-2 gap-4">
-                {CATEGORIES.map((c) => (
-                  <PickerCard
-                    key={c.id}
-                    active={category === c.id}
-                    title={c.label}
-                    subtitle={c.blurb}
-                    meta={c.examples}
-                    onClick={() => {
-                      setCategory(c.id);
-                      setStage('audience');
-                    }}
-                  />
-                ))}
+            <>
+              <WeeklyBriefPanel
+                brief={brief}
+                busy={briefBusy}
+                error={briefError}
+                onRefresh={handleRefreshBrief}
+                onSelectCard={handleStartFromCard}
+                cardActionDisabled={!!busy}
+              />
+
+              <div className="mb-4 mt-10 flex items-center gap-3 border-t border-ink-800 pt-8">
+                <button
+                  className="text-[11px] font-mono uppercase tracking-industrial text-steel-400 hover:text-steel-200 transition-colors"
+                  onClick={() => setManualPickerOpen((v) => !v)}
+                >
+                  {manualPickerOpen ? '▼' : '▶'} Manual mode — pick category + audience yourself
+                </button>
               </div>
-            </Section>
+
+              {manualPickerOpen && (
+                <Section
+                  eyebrow="Manual · Step 01"
+                  title="Choose a category"
+                  hint="What kind of post is this? Sets tone, structure, and the system prompt."
+                >
+                  <div className="grid grid-cols-2 gap-4">
+                    {CATEGORIES.map((c) => (
+                      <PickerCard
+                        key={c.id}
+                        active={category === c.id}
+                        title={c.label}
+                        subtitle={c.blurb}
+                        meta={c.examples}
+                        onClick={() => {
+                          setCategory(c.id);
+                          setStage('audience');
+                        }}
+                      />
+                    ))}
+                  </div>
+                </Section>
+              )}
+            </>
           )}
 
           {stage === 'audience' && (
@@ -980,6 +1083,167 @@ const SeoRow: React.FC<{ label: string; value: string; mono?: boolean }> = ({
     <span className={`text-sm ${mono ? 'font-mono text-ember-400' : 'text-paper-100'}`}>
       {value}
     </span>
+  </div>
+);
+
+// ─────────────────────────────────────────────────────────────
+// Weekly Editorial Brief — top-of-studio panel
+// ─────────────────────────────────────────────────────────────
+const WeeklyBriefPanel: React.FC<{
+  brief: WeeklyBrief | null;
+  busy: boolean;
+  error: string | null;
+  onRefresh: () => void;
+  onSelectCard: (card: WeeklyBriefCard) => void;
+  cardActionDisabled: boolean;
+}> = ({ brief, busy, error, onRefresh, onSelectCard, cardActionDisabled }) => {
+  const generatedLabel = brief
+    ? new Date(brief.generatedAt).toLocaleString(undefined, {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      })
+    : null;
+
+  return (
+    <section className="mb-6">
+      <header className="flex items-baseline justify-between gap-4 mb-6">
+        <div>
+          <p className="text-[10px] font-mono uppercase tracking-industrial text-ember-500 mb-2">
+            Weekly Editorial Brief
+          </p>
+          <h2 className="text-2xl font-bold tracking-tight">
+            Curated topics — {brief ? `${brief.cards.length} ideas from live industry research` : 'ready to generate'}
+          </h2>
+          <p className="text-sm text-steel-400 mt-2">
+            {brief
+              ? `Sourced from ${brief.totalEvidenceCollected} evidence items across ${brief.totalQueriesRun} live searches. Last updated ${generatedLabel}.`
+              : 'Runs 10 Tavily searches across regulations, OEM launches, defect trends and market shifts, then cross-references what optifinish.in already covers.'}
+          </p>
+        </div>
+        <button
+          onClick={onRefresh}
+          disabled={busy}
+          className="text-[11px] font-mono uppercase tracking-industrial px-4 py-2 border border-ember-500 text-ember-400 hover:bg-ember-500 hover:text-ink-950 transition-colors rounded-md disabled:opacity-50 disabled:cursor-wait whitespace-nowrap"
+        >
+          {busy ? 'Researching…' : brief ? '↻ Refresh brief' : 'Generate brief'}
+        </button>
+      </header>
+
+      {error && (
+        <div className="mb-4 p-4 border border-rose-500/40 bg-rose-500/10 rounded-lg text-sm text-rose-200">
+          <strong className="font-mono uppercase text-[10px] tracking-industrial text-rose-300 block mb-1">
+            Brief generation failed
+          </strong>
+          {error}
+        </div>
+      )}
+
+      {busy && !brief && (
+        <div className="p-8 border border-ember-500/30 bg-ember-500/5 rounded-xl text-center">
+          <p className="text-sm text-steel-300">
+            Searching industry sources… this takes 20-40 seconds (10 live queries + synthesis).
+          </p>
+        </div>
+      )}
+
+      {!brief && !busy && !error && (
+        <div className="p-8 border border-ink-800 bg-ink-900/50 rounded-xl text-center">
+          <p className="text-sm text-steel-400 mb-3">
+            No brief yet. Click <strong className="text-ember-400">Generate brief</strong> to see this week's most-worth-writing topics based on live industry research.
+          </p>
+          <p className="text-[11px] text-steel-500 font-mono">
+            Or scroll down to pick a category manually.
+          </p>
+        </div>
+      )}
+
+      {brief && brief.cards.length > 0 && (
+        <div className="grid grid-cols-1 gap-4">
+          {brief.cards.map((card) => (
+            <BriefCard
+              key={card.id}
+              card={card}
+              onSelect={() => onSelectCard(card)}
+              disabled={cardActionDisabled}
+            />
+          ))}
+        </div>
+      )}
+    </section>
+  );
+};
+
+const BriefCard: React.FC<{
+  card: WeeklyBriefCard;
+  onSelect: () => void;
+  disabled: boolean;
+}> = ({ card, onSelect, disabled }) => {
+  const categoryLabel = CATEGORIES.find((c) => c.id === card.suggestedCategory)?.label ?? card.suggestedCategory;
+  const audienceLabel = AUDIENCES.find((a) => a.id === card.suggestedAudience)?.label ?? card.suggestedAudience;
+
+  return (
+    <article className="p-6 border border-ink-700 hover:border-ember-500/60 bg-ink-900/50 rounded-xl transition-colors">
+      <header className="flex items-baseline justify-between gap-4 mb-3">
+        <h3 className="text-lg font-bold tracking-tight leading-snug">{card.title}</h3>
+        <div className="flex gap-2 flex-shrink-0">
+          <span className="text-[9px] font-mono uppercase tracking-industrial px-2 py-1 rounded bg-ember-500/10 text-ember-400 border border-ember-500/30 whitespace-nowrap">
+            {categoryLabel}
+          </span>
+          <span className="text-[9px] font-mono uppercase tracking-industrial px-2 py-1 rounded bg-ink-800 text-steel-300 border border-ink-700 whitespace-nowrap">
+            {audienceLabel}
+          </span>
+        </div>
+      </header>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3 text-xs mb-4">
+        <BriefRow label="Why now" value={card.whyNow} />
+        <BriefRow label="Search demand" value={card.searchDemand} />
+        <BriefRow label="OptiFinish angle" value={card.optifinishAngle} />
+        <BriefRow label="Gap in our content" value={card.gapInOurContent} />
+      </div>
+
+      {card.evidenceUrls.length > 0 && (
+        <div className="mb-4 pt-3 border-t border-ink-800">
+          <p className="text-[9px] font-mono uppercase tracking-industrial text-steel-500 mb-2">
+            Evidence
+          </p>
+          <ul className="space-y-1">
+            {card.evidenceUrls.map((u, i) => (
+              <li key={i}>
+                <a
+                  href={u}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[11px] text-steel-400 hover:text-ember-400 font-mono break-all"
+                >
+                  {new URL(u).hostname.replace(/^www\./, '')}
+                  {new URL(u).pathname.slice(0, 60)}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <button
+        onClick={onSelect}
+        disabled={disabled}
+        className="text-[11px] font-mono uppercase tracking-industrial px-4 py-2 bg-ember-500 text-ink-950 hover:bg-ember-400 transition-colors rounded-md disabled:opacity-40 disabled:cursor-not-allowed"
+      >
+        Start writing →
+      </button>
+    </article>
+  );
+};
+
+const BriefRow: React.FC<{ label: string; value: string }> = ({ label, value }) => (
+  <div>
+    <p className="text-[9px] font-mono uppercase tracking-industrial text-steel-500 mb-1">
+      {label}
+    </p>
+    <p className="text-xs text-paper-100 leading-relaxed">{value || '—'}</p>
   </div>
 );
 

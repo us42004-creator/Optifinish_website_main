@@ -178,3 +178,30 @@ export interface PipelineState {
   topic: TopicIdea | null;
   draft: BlogDraft | null;
 }
+
+// ─────────────────────────────────────────────────────────────
+// Weekly Editorial Brief — replaces scattered manual 8×8 matrix picking
+// with a curated research-driven topic feed. Runs live Tavily queries
+// across the industry, cross-references what OptiFinish's own site
+// already covers (via siteIndex), then LLM-synthesizes 5-7 topic cards
+// the editor can start writing with one click.
+// ─────────────────────────────────────────────────────────────
+
+export interface WeeklyBriefCard {
+  id: string;                       // stable id for dedupe / caching
+  title: string;                    // provisional post title
+  whyNow: string;                   // 1-2 sentence trigger (regulation date, launch, market shift)
+  searchDemand: string;             // 1 sentence — the buyer query this answers
+  optifinishAngle: string;          // 1 sentence — what only OptiFinish can credibly say
+  gapInOurContent: string;          // 1 sentence — what the crawled site does NOT yet cover
+  suggestedCategory: CategoryId;    // pre-picked pipeline category
+  suggestedAudience: AudienceId;    // pre-picked pipeline audience
+  evidenceUrls: string[];           // 2-4 Tavily source URLs backing the "why now"
+}
+
+export interface WeeklyBrief {
+  generatedAt: string;              // ISO timestamp
+  cards: WeeklyBriefCard[];
+  totalQueriesRun: number;
+  totalEvidenceCollected: number;
+}
