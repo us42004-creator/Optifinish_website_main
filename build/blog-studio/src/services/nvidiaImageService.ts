@@ -17,20 +17,27 @@ export interface FluxModel {
   label: string;
 }
 
-// Brand suffix has FOUR variants. One is picked at random per render so
-// images don't all look like the same Hasselblad-80mm-f/4 frame. The
-// shared elements (restrained palette, ember accent, industrial editorial
-// register) lock the brand. The varying elements (focal length, light,
-// film stock) give the library visual range.
+// HONESTY CLAUSE — appended to every variant. These are the things Flux
+// fabricates badly: text on signs (gibberish letters), company logos
+// (mangled marks), split-screens/comparisons, illustrations styled like
+// photos, distorted hands / faces, physics-impossible geometry. Naming
+// them explicitly reduces the hallucination rate noticeably.
+const HONESTY_CLAUSE = `Photorealistic documentary photography, no illustration or CGI look. No text, no signage, no readable letters, no numbers on gauges beyond blurred dial faces, no visible company logos, no branded product labels. No side-by-side comparisons, no split-screen, no before-and-after layout, no infographic overlay, no annotation arrows or callouts. Physically plausible geometry only. If a human hand appears it must be anatomically correct with five visible fingers or cropped so the count is not in frame. Natural composition, not overtly staged.`;
+
+// Brand suffix has FOUR stylistic variants. One is picked at random per
+// render so images don't all look like the same Hasselblad-80mm-f/4
+// frame. The shared elements (restrained palette, ember accent, industrial
+// editorial register, honesty clause) lock the brand. The varying elements
+// (focal length, light, film stock) give the library visual range.
 const FLUX_BRAND_SUFFIX_VARIANTS = [
   // Wide editorial — for facility shots, conveyor lines, plant interiors
-  `Shot on Hasselblad X2D, 35mm lens, f/5.6, soft cool overhead light. Editorial industrial photography, calm and precise, restrained palette of graphite, steel grey, warm white. A single ember-orange accent. Kodak Portra 400 color science. Wide framing, generous negative space.`,
+  `Shot on Hasselblad X2D, 35mm lens, f/5.6, soft cool overhead light. Editorial industrial photography, calm and precise, restrained palette of graphite, steel grey, warm white. A single ember-orange accent. Kodak Portra 400 color science. Wide framing, generous negative space.\n\n${HONESTY_CLAUSE}`,
   // Detail / portrait — for guns, instruments, hands-at-work
-  `Shot on Hasselblad X2D, 80mm lens, f/4, natural directional light from a tall side window. Editorial industrial photography, calm and precise, graphite and steel grey palette with one warm ember accent. Kodak Portra 400 color science. Sharp subject focus, gentle falloff into shadow.`,
+  `Shot on Hasselblad X2D, 80mm lens, f/4, natural directional light from a tall side window. Editorial industrial photography, calm and precise, graphite and steel grey palette with one warm ember accent. Kodak Portra 400 color science. Sharp subject focus, gentle falloff into shadow.\n\n${HONESTY_CLAUSE}`,
   // Macro / defect — for orange-peel, blistering, surface texture
-  `Shot on Phase One IQ4 macro setup, 120mm lens, f/8, raking side light from low angle. Editorial diagnostic photography, surface texture in extreme detail. Restrained palette of cool steel grey with a single warm highlight. Cinestill 50D color science. Shallow depth, exposed micro-topology.`,
+  `Shot on Phase One IQ4 macro setup, 120mm lens, f/8, raking side light from low angle. Editorial diagnostic photography, surface texture in extreme detail. Restrained palette of cool steel grey with a single warm highlight. Cinestill 50D color science. Shallow depth, exposed micro-topology.\n\n${HONESTY_CLAUSE}`,
   // Cinematic interior — for ovens, booths, exit tunnels
-  `Shot on Hasselblad X2D, 50mm lens, f/2.8, deep dramatic chiaroscuro with a single ember-warm key light. Editorial industrial photography, atmospheric, calm. Graphite and ink palette with a warm orange glow source. Cinestill 800T color science. Sharp focus on the foreground subject.`
+  `Shot on Hasselblad X2D, 50mm lens, f/2.8, deep dramatic chiaroscuro with a single ember-warm key light. Editorial industrial photography, atmospheric, calm. Graphite and ink palette with a warm orange glow source. Cinestill 800T color science. Sharp focus on the foreground subject.\n\n${HONESTY_CLAUSE}`
 ];
 
 function pickBrandSuffix(): string {

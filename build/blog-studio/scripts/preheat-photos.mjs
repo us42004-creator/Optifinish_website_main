@@ -152,6 +152,96 @@ const PHOTOS = [
     alt: 'Macro detail of Faraday-cage dropouts on a coated recessed corner, dull patches against surrounding gloss surface',
     tags: ['defect', 'Faraday cage', 'dropouts', 'recess', 'diagnostic', 'macro', 'transfer efficiency'],
     categories: ['how-to', 'technical-deep-dive']
+  },
+
+  // ───── Expansion set: adds subject variety so back-to-back posts don't
+  // draw from the same 18-image pool. Focus: QC instruments, procurement/
+  // decision scenes, defect variety, line detail, people-at-work, plant
+  // context. No new "curing oven interior" shots — that bucket is already
+  // full. Every entry has 6-8 tags for BM25 matching latitude.
+  {
+    id: 'preheat-adhesion-cross-cut-test',
+    subject: 'A cross-cut adhesion tester pressed against a powder-coated black test panel, the lattice pattern of scored squares visible in raking light, a tape strip pulled halfway back. Macro framing, sharp focus on the intersection.',
+    alt: 'Cross-cut adhesion test in progress on a coated black test panel, scored lattice visible under raking light, tape strip half-lifted',
+    tags: ['adhesion', 'cross-cut', 'QC', 'test', 'tape', 'panel', 'lattice', 'diagnostic'],
+    categories: ['how-to', 'technical-deep-dive', 'case-study']
+  },
+  {
+    id: 'preheat-gloss-meter-reading',
+    subject: 'A hand-held gloss meter pressed against a coated metal panel, digital readout glowing on the instrument face. Gloved hand steadying the meter, workbench edge visible.',
+    alt: 'Hand-held gloss meter pressed against a coated metal panel, digital readout visible, gloved hand steadying the instrument',
+    tags: ['gloss meter', 'measurement', 'QC', 'instrument', 'panel', 'diagnostic', 'reading'],
+    categories: ['technical-deep-dive', 'how-to', 'comparison-decision']
+  },
+  {
+    id: 'preheat-quote-clipboard-shop-floor',
+    subject: 'A wooden clipboard with a printed spec sheet resting on a shop-floor workbench, digital calipers and a red measuring square nearby. Overhead fluorescent light. Blurred plant machinery in the background.',
+    alt: 'Clipboard with a spec sheet on a shop-floor workbench, digital calipers and red measuring square nearby',
+    tags: ['spec sheet', 'clipboard', 'procurement', 'documentation', 'calipers', 'workbench', 'measurement'],
+    categories: ['comparison-decision', 'cost-of-inaction', 'pillar-guide']
+  },
+  {
+    id: 'preheat-powder-color-samples',
+    subject: 'A row of small square powder-coated color-swatch panels racked vertically on a metal rack, gradient from cool grey through warm terracotta. Studio light, shallow depth of field on the front sample.',
+    alt: 'Row of powder-coated color-swatch panels racked on a metal rack, gradient from cool grey to warm terracotta',
+    tags: ['color', 'swatch', 'samples', 'rack', 'RAL', 'palette', 'formulation'],
+    categories: ['pillar-guide', 'technical-deep-dive', 'industry-trends']
+  },
+  {
+    id: 'preheat-back-ionization-defect',
+    subject: 'Macro detail of a powder-coated metal surface with visible back-ionization craters — small pockmarks and dry-spray texture on an otherwise smooth film. Raking side light, diagnostic reference framing.',
+    alt: 'Macro detail of back-ionization craters on a coated surface, small pockmarks and dry-spray texture, raking side light',
+    tags: ['defect', 'back-ionization', 'craters', 'dry spray', 'macro', 'diagnostic', 'rejection'],
+    categories: ['how-to', 'technical-deep-dive']
+  },
+  {
+    id: 'preheat-oven-control-panel',
+    subject: 'An industrial oven HMI touchscreen mounted on a metal control cabinet, showing a cure profile graph in soft amber-on-black. Cabinet lit by cool ambient overhead light.',
+    alt: 'Industrial oven HMI touchscreen showing a cure profile graph in amber, mounted on a metal control cabinet',
+    tags: ['HMI', 'control', 'oven', 'cure profile', 'touchscreen', 'PLC', 'panel'],
+    categories: ['technical-deep-dive', 'facility-behind-scenes', 'pillar-guide']
+  },
+  {
+    id: 'preheat-dust-collector-cartridge',
+    subject: 'Close-up detail of a booth dust-collector cartridge lifted partially out of its housing, pleated filter media visible, thin powder residue at the base. Industrial gantry above.',
+    alt: 'Booth dust-collector cartridge lifted from its housing, pleated filter media visible, powder residue at the base',
+    tags: ['dust collector', 'cartridge', 'filter', 'booth', 'maintenance', 'reclaim'],
+    categories: ['how-to', 'technical-deep-dive', 'facility-behind-scenes']
+  },
+  {
+    id: 'preheat-loading-bay-dispatch',
+    subject: 'A dispatch loading bay at an industrial finishing plant, palletised finished parts wrapped in stretch film ready for a truck. Open shutter door in the background, morning light spilling across the concrete floor.',
+    alt: 'Dispatch loading bay with palletised finished parts wrapped in stretch film, open shutter door with morning light',
+    tags: ['dispatch', 'loading bay', 'palletised', 'finished parts', 'logistics', 'plant', 'shipment'],
+    categories: ['facility-behind-scenes', 'case-study', 'industry-trends']
+  },
+  {
+    id: 'preheat-engineer-marking-defect',
+    subject: 'A process engineer marking a defect on a powder-coated test panel with a fine paint pen, the paint pen tip touching the panel surface. Overhead task light, macro framing on the pen tip, no eye contact.',
+    alt: 'Process engineer marking a defect on a coated test panel with a fine paint pen, macro framing on the pen tip',
+    tags: ['engineer', 'defect', 'marking', 'test panel', 'diagnostic', 'people', 'QC'],
+    categories: ['how-to', 'technical-deep-dive', 'facility-behind-scenes']
+  },
+  {
+    id: 'preheat-cast-aluminium-blank',
+    subject: 'An untreated cast-aluminium blank resting on a workbench, casting texture and gate stub visible. Overhead cool light, macro framing on the surface pores.',
+    alt: 'Untreated cast-aluminium blank on a workbench, casting texture and gate stub visible, macro on surface pores',
+    tags: ['cast aluminium', 'substrate', 'blank', 'casting', 'porosity', 'preparation', 'untreated'],
+    categories: ['technical-deep-dive', 'how-to']
+  },
+  {
+    id: 'preheat-conveyor-hook-detail',
+    subject: 'A close-up of a conveyor hook holding a small coated part mid-transit through a powder line, the hook and part in sharp focus, motion blur on the background chain and structure.',
+    alt: 'Close-up of a conveyor hook holding a coated part mid-transit, motion blur on background chain',
+    tags: ['conveyor', 'hook', 'transit', 'part carrier', 'line', 'motion', 'detail'],
+    categories: ['facility-behind-scenes', 'technical-deep-dive', 'pillar-guide']
+  },
+  {
+    id: 'preheat-hygrometer-plant',
+    subject: 'A wall-mounted analog hygrometer and thermometer in an industrial plant, needle showing high humidity. Painted concrete wall texture behind, subtle warm ambient light.',
+    alt: 'Wall-mounted analog hygrometer and thermometer in an industrial plant, needle showing high humidity',
+    tags: ['humidity', 'hygrometer', 'monsoon', 'ambient', 'plant', 'reading', 'instrument'],
+    categories: ['how-to', 'technical-deep-dive', 'facility-behind-scenes']
   }
 ];
 

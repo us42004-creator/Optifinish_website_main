@@ -13,7 +13,7 @@ import {
   generateTopicIdeas,
   generateBlogDraft,
   generateSeo,
-  generateImage,
+  generateImagesForPlacements,
   rewriteWithPrompt,
   generateDistributionPack,
   renderDistributionMarkdown,
@@ -168,13 +168,15 @@ const App: React.FC = () => {
 
   const handleGenerateImages = async () => {
     if (!draft) return;
-    setBusy('Generating images…');
-    const placements = await Promise.all(
-      draft.imagePlacements.map(async (p) => ({
-        ...p,
-        generatedUrl: await generateImage(p.prompt)
-      }))
-    );
+    setBusy('Generating images (sequential — kills intra-post duplication)…');
+    // Sequential generation with library-ID exclusion — image N cannot
+    // resolve to the same library photo as image N-1. Kills the "both
+    // images in the post are the same thermocouple shot" failure mode.
+    const generated = await generateImagesForPlacements(draft.imagePlacements);
+    const placements = generated.map((g) => ({
+      ...g,
+      generatedUrl: g.url
+    }));
     setDraft({ ...draft, imagePlacements: placements });
     setStage('images');
     setBusy(null);

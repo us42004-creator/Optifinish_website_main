@@ -121,6 +121,12 @@ export async function searchPhotos(query: string, limit = 3): Promise<SearchHit[
   return hits;
 }
 
+export interface SearchBestResult {
+  url: string;   // base64 data URL — self-contained for export
+  alt: string;
+  id: string;    // photo library entry id — caller records to exclude on next call
+}
+
 // Returns a top-tier photo as a base64 data URL if any of the top matches
 // clear the trust threshold, otherwise null. Base64 embedding keeps the
 // exported HTML self-contained (works offline, works on WhatsApp).
@@ -129,15 +135,26 @@ export async function searchPhotos(query: string, limit = 3): Promise<SearchHit[
 // among the top 3 instead of always returning the highest-score match.
 // Eliminates "same photo every time for similar topics".
 //
+// EXCLUSION: pass `excludeIds` (usually the IDs already used earlier in
+// the same post) and matching photos are filtered out BEFORE the random
+// pick. Kills intra-post duplication — image 2 will never be the same
+// as image 1.
+//
 // Excludes placeholders — those are seed records without real photo data.
-export async function searchBest(query: string): Promise<{ url: string; alt: string } | null> {
-  const hits = await searchPhotos(query, 5);
-  const trustedReal = hits.filter((h) => h.trusted && !h.entry.isPlaceholder);
+export async function searchBest(
+  query: string,
+  opts: { excludeIds?: string[] } = {}
+): Promise<SearchBestResult | null> {
+  const hits = await searchPhotos(query, 8);
+  const excludeSet = new Set(opts.excludeIds ?? []);
+  const trustedReal = hits.filter(
+    (h) => h.trusted && !h.entry.isPlaceholder && !excludeSet.has(h.entry.id)
+  );
   if (trustedReal.length === 0) return null;
 
-  // Random pick among the top 3 trusted matches — gives variety across runs
-  // even when the topic word-set is similar. Always-#1 made every cure-window
-  // post show the same thermocouple shot.
+  // Random pick among the top 3 (of the un-excluded set) — variety across
+  // runs even when the topic word-set is similar. Always-#1 made every
+  // cure-window post show the same thermocouple shot.
   const candidatePool = trustedReal.slice(0, 3);
   const chosen = candidatePool[Math.floor(Math.random() * candidatePool.length)];
 
@@ -150,7 +167,7 @@ export async function searchBest(query: string): Promise<{ url: string; alt: str
     }
     const blob = await res.blob();
     const dataUrl = await blobToDataUrl(blob);
-    return { url: dataUrl, alt: chosen.entry.alt };
+    return { url: dataUrl, alt: chosen.entry.alt, id: chosen.entry.id };
   } catch (err) {
     console.warn('[photoLibrary] base64 encode failed, falling through:', err);
     return null;
