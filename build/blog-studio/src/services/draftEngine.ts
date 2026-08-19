@@ -10,6 +10,7 @@ import {
 import { CATEGORIES, AUDIENCES } from '../constants';
 import { chatJSON } from './nvidiaLlmService';
 import { pickRotated, MODELS, ModelId } from './modelRouter';
+import { computeEditorialFlags, flagsToHtmlComment } from './editorialFlags';
 
 // ─────────────────────────────────────────────────────────────
 // Per-category structural blueprint. The model MUST follow the
@@ -338,7 +339,19 @@ Write the full post per the rules. Hit at least 1100 words of body text — this
     json = await callWith(llama.id, llama.intrinsicVoice);
   }
 
-  const wordCount = json.bodyHtml.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+  // Same defensive detectors as multipass — either path can win the race
+  // (multipass errors → single-pass fallback) and the editor deserves the
+  // same warnings regardless.
+  const editorialFlags = computeEditorialFlags(json.bodyHtml);
+  let bodyHtml = json.bodyHtml;
+  if (editorialFlags.hasAny) {
+    console.warn(
+      `[single-pass] editorial flags — fab:${editorialFlags.fabricatedNumbers.length} fp:${editorialFlags.firstPersonLeaks.length} years:${editorialFlags.fabricatedYears.length}`
+    );
+    bodyHtml = flagsToHtmlComment(editorialFlags) + bodyHtml;
+  }
+
+  const wordCount = bodyHtml.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
 
   const imagePlacements: ImagePlacement[] = (json.imagePlacements ?? [])
     .slice(0, 2)
@@ -353,9 +366,10 @@ Write the full post per the rules. Hit at least 1100 words of body text — this
   return {
     title: json.title,
     subtitle: json.subtitle,
-    bodyHtml: json.bodyHtml,
+    bodyHtml,
     wordCount,
     snapshot: json.snapshot,
-    imagePlacements
+    imagePlacements,
+    editorialFlags
   };
 }

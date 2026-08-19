@@ -33,6 +33,7 @@ import { chatJSON, chatCompletion, parseJsonish } from './nvidiaLlmService';
 import { pickRotated, pickRandom, MODELS, ModelEntry, ModelId } from './modelRouter';
 import { CATEGORY_BLUEPRINT } from './draftEngine';
 import { searchTavily, tavilyToPromptContext } from './tavilySearch';
+import { computeEditorialFlags, flagsToHtmlComment } from './editorialFlags';
 
 // Tavily search excludes optifinish's own domains so external evidence is
 // genuinely external — not our own claims cited back at us. Product /
@@ -170,14 +171,16 @@ The image goes to an AI image model (Flux) that produces ONE photographic frame 
 If a section's content is genuinely a COMPARISON or a DIAGRAM, anchor the image to a DIFFERENT section that has a single concrete photographable subject. The post can have brilliant comparison TABLES in prose without needing a comparison IMAGE.
 
 HARD-BANNED PROMPT PATTERNS (writing any of these is a generation failure):
-- "side-by-side"
-- "vs", "versus", "compared to", "comparison"
-- "illustrated", "illustration"
+- "side-by-side", "split-screen", "before and after"
+- "contrasting", "contrasted with", "juxtaposed with", "next to a X, next to a Y"
+- "vs", "versus", "compared to", "comparison", "comparison of X and Y"
+- "illustrated", "illustration", "rendering", "3D render"
 - "cross-section", "cut-away", "exploded view"
-- "diagram", "schematic", "infographic", "blueprint"
-- "highlighting", "labelled", "labeled", "annotated", "callouts"
-- "split-screen", "before and after"
-- "showing the X branding", "with X logo visible"
+- "diagram", "schematic", "infographic", "blueprint", "chart", "graph"
+- "highlighting", "labelled", "labeled", "annotated", "callouts", "arrows pointing to"
+- "showing the X branding", "with X logo visible", "brand name visible", "readable text"
+- Any parenthetical asking Flux to render a compliance label — NEVER write "(BEE compliant)", "(BIS certified)", "(ISO 9001)", "(CE marked)" or similar inside a prompt. Flux fakes text as gibberish.
+- Any "showing X compliant" / "with certification stamp" / "labelled sustainable" phrasings — these all ask Flux to render legible signage or logos it cannot render honestly.
 
 REQUIRED PROMPT SHAPE (30-80 words):
 First sentence = one concrete physical subject in the scene + framing. Second sentence = light + mood. Third (optional) = a small specific detail anchoring the scene to OptiFinish's world.
@@ -209,7 +212,7 @@ Strict JSON only.
 {
   "title": "string (max 75 chars)",
   "subtitle": "string (max 130 chars)",
-  "leadParagraph": "string (60-110 words, sits above the first H2, sets the scene without any first-person and without any fabricated numbers; opens with a concrete physical observation, a dated trigger, or a sharp question — NEVER 'In today's', 'Did you know', 'Have you ever')",
+  "leadParagraph": "string (60-110 words, sits above the first H2). MUST open with a concrete physical observation OR a dated trigger from the trigger pool OR a specific numbered claim from the EXTERNAL EVIDENCE. MUST NOT open with (banned openers, applied strictly): 'In today's', 'In the world of', 'In the realm of', 'Did you know', 'Have you ever', 'What if', 'Imagine if', 'Picture this', 'Every X knows', 'It is no secret', 'When it comes to'. MUST NOT contain first-person (no we/our/us). MUST NOT contain a fabricated percentage, INR figure, or physical claim (temperature/humidity) not present in EXTERNAL EVIDENCE. MUST NOT contain a fabricated context year (like 'since 2010' or 'in the 1990s') — use a current year or omit.",
   "snapshot": {
     "decisionFriction": "",
     "dominantAnxiety": "",
@@ -654,22 +657,18 @@ export async function generateBlogDraftMultipass(
     polished = assembled;
   }
 
-  // Defensive scrub for the two failure modes that damage trust most:
-  // (a) fabricated specific percentages slipping through (e.g. "22% re-coats")
-  // (b) first-person pronouns slipping through ("our facility", "we offer")
-  // These are last-mile catches; the prompt already forbids both, but the
-  // model occasionally ignores rules under length pressure. Log + flag in
-  // a comment so the editor sees what was caught.
-  const fabFlags = detectFabricatedNumbers(polished);
-  const fpFlags = detectFirstPersonInBody(polished);
-  if (fabFlags.length || fpFlags.length) {
-    const notes: string[] = [];
-    if (fabFlags.length)
-      notes.push(`fabricated-number candidates: ${fabFlags.slice(0, 5).join(', ')}`);
-    if (fpFlags.length)
-      notes.push(`first-person leaks: ${fpFlags.slice(0, 5).join(', ')}`);
-    console.warn(`[multipass] post-gen review flags — ${notes.join(' | ')}`);
-    polished = `<!--\n  EDITORIAL REVIEW FLAGS (auto-detected, do not publish without checking):\n  ${notes.join('\n  ')}\n-->\n${polished}`;
+  // Defensive editorial detectors — broadened set in editorialFlags.ts catches
+  // INR ranges, fabricated years, bare "we're / we've", and more outcome
+  // percentage patterns than the original narrower rule. Runs post-scrub so
+  // it sees the FINAL body the reader will see.
+  const editorialFlags = computeEditorialFlags(polished);
+  if (editorialFlags.hasAny) {
+    console.warn(
+      `[multipass] editorial flags — fab:${editorialFlags.fabricatedNumbers.length} fp:${editorialFlags.firstPersonLeaks.length} years:${editorialFlags.fabricatedYears.length}`
+    );
+    // Prepend an HTML comment for editor-visible marker in the source.
+    // The studio's Step 4 also surfaces a red banner via draft.editorialFlags.
+    polished = flagsToHtmlComment(editorialFlags) + polished;
   }
 
   const wordCount = wordCountOf(polished);
@@ -690,49 +689,14 @@ export async function generateBlogDraftMultipass(
     bodyHtml: polished,
     wordCount,
     snapshot: outline.snapshot,
-    imagePlacements
+    imagePlacements,
+    editorialFlags
   };
 }
 
-// Spots obvious fabricated-statistic patterns. Tuned to be conservative —
-// it's better to miss a real fabrication than to flag a real verifiable
-// number (regulation date, OEM-announced capacity). Returns the raw phrases
-// that look suspicious so the editor knows what to verify.
-function detectFabricatedNumbers(html: string): string[] {
-  const text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
-  const hits: string[] = [];
-  // "22% reduction", "98% yield", "31% improvement" — outcome percentages
-  const outcomePercent =
-    /\b\d{1,3}(?:\.\d+)?%\s+(?:re-?coat|yield|reduction|increase|drop|improvement|cost|cut|gain|efficiency|throughput|adhesion|recovery|first-pass|rejection|defect)/gi;
-  // "5°C shift", "35°C inside", "92% humidity at" — physical claims with degrees / RH
-  const physical = /\b\d{1,3}(?:\.\d+)?\s*°\s?[CcFf]\b|\b\d{1,3}%\s+(?:humidity|relative humidity|RH)\b/gi;
-  // "INR 4.5 cr capex", "Rs 12 lakh" — specific INR amounts (excluding verified press-release figures)
-  const inr = /\b(?:INR|Rs\.?|₹)\s*\d{1,4}(?:[,.]\d+)*\s*(?:cr|crore|lakh|lakhs)\b/gi;
-  for (const re of [outcomePercent, physical, inr]) {
-    let m;
-    while ((m = re.exec(text)) !== null && hits.length < 8) hits.push(m[0]);
-  }
-  return Array.from(new Set(hits));
-}
-
-// Spots first-person pronouns and OptiFinish-as-author phrasings inside
-// the body. The CTA paragraph at the bottom may legitimately use second-
-// person; the rest should be third-person observational.
-function detectFirstPersonInBody(html: string): string[] {
-  const text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
-  const hits: string[] = [];
-  const patterns = [
-    /\b(?:our|we['']?(?:re|ve|ll)?|us|my|I['']?(?:m|ve|ll))\s+(?:facility|team|booth|line|plant|customers|engineers|approach|view|experience|guide|reference)/gi,
-    /\b(?:we|our|us)\s+(?:offer|provide|recommend|believe|build|sell|integrate|deliver|design|test)/gi,
-    /\bOptiFinish\s+(?:has|believes|offers|provides|recommends|has been)/gi,
-    /\bin\s+our\s+(?:experience|view|facility|tests|practice)/gi
-  ];
-  for (const re of patterns) {
-    let m;
-    while ((m = re.exec(text)) !== null && hits.length < 8) hits.push(m[0]);
-  }
-  return Array.from(new Set(hits));
-}
+// Detectors moved to src/services/editorialFlags.ts (shared with single-pass
+// engine). Kept these local wrappers only if legacy call sites need them —
+// no longer used in this file.
 
 function wordCountOf(html: string): number {
   return html.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;

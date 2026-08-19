@@ -48,9 +48,51 @@ function pickBrandSuffix(): string {
 // callers and the dedupe check both still work.
 const FLUX_BRAND_SUFFIX = FLUX_BRAND_SUFFIX_VARIANTS[1];
 
+// Defensive prompt filter — strips patterns Flux fabricates worst, so
+// even if the outline LLM slips a banned phrase through, we don't send
+// it to the image endpoint. Each pattern is replaced (not just removed)
+// with a neutral phrase so the surrounding sentence still parses.
+export function sanitizeFluxPrompt(raw: string): { clean: string; stripped: string[] } {
+  let out = raw;
+  const stripped: string[] = [];
+  const rules: Array<[RegExp, string, string]> = [
+    // Split-screen / comparison layouts Flux cannot render
+    [/\bcontrasting\s+with\s+[^.,;]+/gi, 'contrasting with', ''],
+    [/\bside[-\s]by[-\s]side\b[^.,;]*/gi, 'side-by-side', ''],
+    [/\bside[-\s]by[-\s]side\s+comparison\s+of\s+[^.,;]+/gi, 'side-by-side comparison', ''],
+    [/\bbefore\s+and\s+after\s+[^.,;]+/gi, 'before-and-after', ''],
+    [/\bcomparison\s+of\s+[^.,;]+\s+(?:vs|versus|and)\s+[^.,;]+/gi, 'comparison-of layout', ''],
+    [/\bsplit[-\s]?screen\b/gi, 'split-screen', ''],
+    // Illustrations / diagrams / infographics Flux fakes as bad drawings
+    [/\billustrated\s+cross[-\s]?section\s+(?:of|highlighting|showing)?\s*[^.,;]+/gi, 'illustrated cross-section', ''],
+    [/\b(?:illustrated|labeled|labelled|annotated)\s+(?:diagram|schematic|infographic|cross[-\s]?section)\b[^.,;]*/gi, 'illustration/diagram', ''],
+    [/\bhighlighting\s+the\s+\d+\s+[a-z-]+\b/gi, 'highlighting the N sub-systems', ''],
+    [/\binfographic\b/gi, 'infographic', ''],
+    // Text on signs / gauges / screens — Flux fakes gibberish
+    [/\b(?:sign|label|screen|gauge|display|placard)\s+(?:showing|reading|that says|with text)\s+[^.,;]+/gi, 'sign/label/screen showing X', ''],
+    [/\bwith\s+text\s+(?:saying|reading)\s+[^.,;]+/gi, 'text-reads-X pattern', ''],
+    [/\b\((?:BEE|BIS|ISO|ISI|CE|UL|CPCB)[^)]{0,40}\bcompliant\)/gi, 'parenthetical compliance label', ''],
+    [/\bshowing\s+[^,.]{0,40}(?:compliant|certified|approved|rated)\b[^.,;]*/gi, 'showing X-compliant', '']
+  ];
+  for (const [pat, label] of rules) {
+    if (pat.test(out)) {
+      stripped.push(label);
+      out = out.replace(pat, ' ').replace(/\s{2,}/g, ' ');
+    }
+  }
+  return { clean: out.trim(), stripped };
+}
+
 export function applyBrandSuffix(rawPrompt: string): string {
   if (rawPrompt.includes('Hasselblad') || rawPrompt.includes('Phase One')) return rawPrompt;
-  return `${rawPrompt.trim()}\n\n${pickBrandSuffix()}`;
+  // Sanitize the caller's subject before appending the brand suffix so
+  // banned patterns never reach Flux even if the LLM outline slipped them
+  // past the outline-prompt ban list.
+  const { clean, stripped } = sanitizeFluxPrompt(rawPrompt);
+  if (stripped.length) {
+    console.warn('[nvidiaImageService] stripped banned patterns from Flux prompt:', stripped);
+  }
+  return `${clean.trim()}\n\n${pickBrandSuffix()}`;
 }
 
 export async function generateFluxImage(opts: FluxOptions): Promise<string> {

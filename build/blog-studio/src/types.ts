@@ -114,6 +114,13 @@ export interface DossierSnapshot {
   lever: string; // 1-line specific differentiator/insight
 }
 
+export interface EditorialFlags {
+  fabricatedNumbers: string[];
+  firstPersonLeaks: string[];
+  fabricatedYears: string[];
+  hasAny: boolean;
+}
+
 export interface BlogDraft {
   title: string;
   subtitle: string;
@@ -122,6 +129,7 @@ export interface BlogDraft {
   imagePlacements: ImagePlacement[];
   seo?: SeoMeta;
   snapshot?: DossierSnapshot;
+  editorialFlags?: EditorialFlags; // populated by post-gen detector — Step 4 UI shows a red banner if hasAny
 }
 
 export interface ImagePlacement {

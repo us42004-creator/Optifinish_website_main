@@ -4,7 +4,8 @@ import {
   CategoryId,
   AudienceId,
   TopicIdea,
-  BlogDraft
+  BlogDraft,
+  EditorialFlags
 } from './types';
 import { CATEGORIES, AUDIENCES, BRAND, STAGES } from './constants';
 import { StageRail } from './components/StageRail';
@@ -345,6 +346,9 @@ const App: React.FC = () => {
               title="Draft"
               hint={`${draft.wordCount} words. Review before adding the SEO layer.`}
             >
+              {draft.editorialFlags?.hasAny && (
+                <EditorialFlagsBanner flags={draft.editorialFlags} />
+              )}
               <DraftBlock draft={draft} />
               <PrimaryButton disabled={!!busy} onClick={handleSeo}>
                 Add SEO layer →
@@ -754,6 +758,77 @@ const StateRow: React.FC<{ label: string; value: string; multiline?: boolean }> 
     </span>
   </div>
 );
+
+// Red banner at the top of Step 4 when the post-generation detector spotted
+// fabricated numbers, first-person leaks, or fabricated years in the draft.
+// Editor must review + fix before publishing — the HTML comment inside the
+// exported body is easy to miss, this is unmissable.
+const EditorialFlagsBanner: React.FC<{ flags: EditorialFlags }> = ({ flags }) => (
+  <div className="border border-rose-500/60 bg-rose-950/30 rounded-xl p-5 mb-6">
+    <div className="flex items-baseline justify-between mb-3">
+      <div className="flex items-center gap-2">
+        <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
+        <span className="text-[10px] font-mono uppercase tracking-industrial text-rose-300 font-bold">
+          Editorial Review Required
+        </span>
+      </div>
+      <span className="text-[10px] font-mono text-rose-400">
+        {flags.fabricatedNumbers.length + flags.firstPersonLeaks.length + flags.fabricatedYears.length} flag(s)
+      </span>
+    </div>
+    <p className="text-xs text-rose-100 mb-4 leading-relaxed">
+      The post-generation detector spotted patterns that damage credibility. Fix these before adding SEO or exporting — each one is either a fabricated claim, an editorial voice slip, or an unverified date.
+    </p>
+    <div className="space-y-3 text-[11px]">
+      {flags.fabricatedNumbers.length > 0 && (
+        <FlagGroup
+          label="Fabricated numbers"
+          color="rose"
+          items={flags.fabricatedNumbers}
+          note="Every % / INR / °C / RH figure below is a candidate — verify against a published source or rewrite qualitatively."
+        />
+      )}
+      {flags.firstPersonLeaks.length > 0 && (
+        <FlagGroup
+          label="First-person leaks"
+          color="amber"
+          items={flags.firstPersonLeaks}
+          note="Body copy is third-person observational. Rewrite each instance — CTA card is the ONLY surface allowed to address the reader."
+        />
+      )}
+      {flags.fabricatedYears.length > 0 && (
+        <FlagGroup
+          label="Fabricated years"
+          color="amber"
+          items={flags.fabricatedYears}
+          note="Historical years (e.g. 'since 2010') are invented context. Either cite a real source or drop the year."
+        />
+      )}
+    </div>
+  </div>
+);
+
+const FlagGroup: React.FC<{ label: string; color: 'rose' | 'amber'; items: string[]; note: string }> = ({
+  label,
+  color,
+  items,
+  note
+}) => {
+  const c = color === 'rose' ? 'text-rose-300' : 'text-amber-300';
+  return (
+    <div>
+      <div className={`font-mono uppercase text-[10px] tracking-wider mb-1 ${c}`}>{label}</div>
+      <ul className="space-y-1 mb-1">
+        {items.slice(0, 6).map((s, i) => (
+          <li key={i} className="text-paper-100 font-mono text-[11px] pl-3 border-l-2 border-rose-500/40">
+            {s.length > 100 ? s.slice(0, 97) + '…' : s}
+          </li>
+        ))}
+      </ul>
+      <p className={`text-[10px] italic ${c}/80`}>{note}</p>
+    </div>
+  );
+};
 
 const DraftBlock: React.FC<{ draft: BlogDraft }> = ({ draft }) => (
   <div className="border border-ink-700 rounded-xl p-8 bg-ink-900/30">
