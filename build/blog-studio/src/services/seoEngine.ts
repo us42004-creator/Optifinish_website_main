@@ -6,6 +6,7 @@ import { BlogDraft, CategoryId, AudienceId, SeoMeta, SeoScores, InternalLinkSugg
 import { CATEGORIES, AUDIENCES } from '../constants';
 import { chatJSON } from './nvidiaLlmService';
 import { MODELS } from './modelRouter';
+import { suggestInternalLinks } from './siteIndex';
 
 interface SeoLlmJson {
   metaTitle: string;
@@ -349,6 +350,32 @@ Apply ALL the rules: character limits, keyword strategy, India-first intent, AEO
   const schemaJsonLd = buildSchemaJsonLd(draft, category, audience, baseSeo);
   const scores = computeScores(draft, baseSeo);
 
+  // INTERNAL LINKS: prefer VERIFIED matches from the live optifinish.in site
+  // index over the LLM's fabricated targetCategory slugs (which don't resolve).
+  // Query built from the title + focus keyword — surfaces genuinely relevant
+  // pages the SEO engine can suggest to the editor with real URLs attached.
+  //
+  // Falls through to the LLM-invented suggestions only when the site index
+  // is empty or nothing scored above the noise floor.
+  let internalLinkSuggestions: InternalLinkSuggestion[] = [];
+  try {
+    const queryString = `${draft.title} ${baseSeo.focusKeyword} ${baseSeo.secondaryKeywords.slice(0, 3).join(' ')}`;
+    const verified = await suggestInternalLinks(queryString, { limit: 5 });
+    if (verified.length > 0) {
+      internalLinkSuggestions = verified.map((v) => ({
+        anchor: v.anchor,
+        targetCategory: v.pathname, // now the actual pathname, not a slug guess
+        rationale: `${v.rationale} · verified live at ${v.url}`
+      }));
+    }
+  } catch (err) {
+    console.warn('[seoEngine] site index lookup failed, falling back to LLM suggestions:', err);
+  }
+  // Fall back to LLM-invented suggestions ONLY if nothing verified came back
+  if (internalLinkSuggestions.length === 0) {
+    internalLinkSuggestions = (llm.internalLinkSuggestions ?? []).slice(0, 5);
+  }
+
   return {
     ...baseSeo,
     longTailKeywords: (llm.longTailKeywords ?? []).slice(0, 3),
@@ -363,7 +390,7 @@ Apply ALL the rules: character limits, keyword strategy, India-first intent, AEO
     schemaJsonLd,
     geoRegion: 'IN-UP',
     geoPlacename: 'Greater Noida',
-    internalLinkSuggestions: (llm.internalLinkSuggestions ?? []).slice(0, 5),
+    internalLinkSuggestions,
     scores
   };
 }

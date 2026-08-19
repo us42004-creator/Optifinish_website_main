@@ -2,6 +2,7 @@ import { CategoryId, AudienceId, TopicIdea } from '../types';
 import { CATEGORIES, AUDIENCES } from '../constants';
 import { chatJSON } from './nvidiaLlmService';
 import { pickRotated, shuffle, MODELS } from './modelRouter';
+import { searchTavily, tavilyToPromptContext } from './tavilySearch';
 
 // 2025-2026 verified triggers from the niche-research synthesis.
 // We show a RANDOM SUBSET of 9 to the model on each call so different runs
@@ -143,6 +144,29 @@ export async function generateTopicIdeasLLM(
   }
   const triggers = shuffle(RECENT_TRIGGERS_2025_2026).slice(0, 9);
 
+  // Fresh-context block: hit Tavily for actually-current industry news so
+  // topics can reference events past the LLM's training cutoff. Best-effort —
+  // if Tavily fails or key isn't set, the block is silently omitted and the
+  // static trigger pool + LLM knowledge still carry the generation.
+  //
+  // Tavily free tier: 1000 queries/month. One call per topic gen = fine.
+  let freshContextBlock = '';
+  try {
+    const freshQuery = `India ${cat.label} ${aud.label.split(' ')[0].toLowerCase()} powder coating 2026`;
+    const fresh = await searchTavily(freshQuery, {
+      searchDepth: 'basic',
+      maxResults: 5,
+      topic: 'general',
+      excludeDomains: ['optifinish.in', 'optifinish.com'] // don't feed our own site back as external "news"
+    });
+    if (fresh.results.length > 0) {
+      freshContextBlock = `\n\nFRESH WEB SIGNAL (via Tavily search, use only if genuinely relevant — do NOT force-fit):\n${tavilyToPromptContext(fresh.results, { maxEntries: 5, maxContentChars: 180 })}\n`;
+    }
+  } catch (err) {
+    // Silent — freshness is bonus, not required. Static trigger pool always ships.
+    console.warn('[topicEngine] Tavily freshness fetch skipped:', err);
+  }
+
   const userPrompt = `Generate 5 topic ideas.
 
 Category: ${cat.label} — ${cat.blurb}
@@ -151,7 +175,7 @@ Examples that fit this category: ${cat.examples.join(', ')}
 Audience: ${aud.label} (${aud.role})
 This reader cares about: ${aud.cares}
 
-Apply the editorial voice nudge above. Vary structural angle across the 5 topics. Anchor at least 2 to a real TRIGGER POOL entry. Apply substitution patterns. Apply anti-monotony rules. Do not fabricate numbers.${
+Apply the editorial voice nudge above. Vary structural angle across the 5 topics. Anchor at least 2 to a real TRIGGER POOL entry. Apply substitution patterns. Apply anti-monotony rules. Do not fabricate numbers.${freshContextBlock}${
     excludeTitles.length > 0
       ? `
 
