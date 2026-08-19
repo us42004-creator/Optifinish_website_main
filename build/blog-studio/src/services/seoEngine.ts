@@ -350,30 +350,25 @@ Apply ALL the rules: character limits, keyword strategy, India-first intent, AEO
   const schemaJsonLd = buildSchemaJsonLd(draft, category, audience, baseSeo);
   const scores = computeScores(draft, baseSeo);
 
-  // INTERNAL LINKS: prefer VERIFIED matches from the live optifinish.in site
-  // index over the LLM's fabricated targetCategory slugs (which don't resolve).
-  // Query built from the title + focus keyword — surfaces genuinely relevant
-  // pages the SEO engine can suggest to the editor with real URLs attached.
+  // INTERNAL LINKS: STRICTLY from the live optifinish.in site index.
+  // Recommendations must resolve to real pages on our own site — never
+  // LLM-fabricated slugs. If the site index has no matches for this topic,
+  // return EMPTY (better no suggestions than fake ones).
   //
-  // Falls through to the LLM-invented suggestions only when the site index
-  // is empty or nothing scored above the noise floor.
+  // The LLM's internalLinkSuggestions from the SEO prompt are IGNORED
+  // entirely — they'd point at invented URLs.
   let internalLinkSuggestions: InternalLinkSuggestion[] = [];
   try {
     const queryString = `${draft.title} ${baseSeo.focusKeyword} ${baseSeo.secondaryKeywords.slice(0, 3).join(' ')}`;
     const verified = await suggestInternalLinks(queryString, { limit: 5 });
-    if (verified.length > 0) {
-      internalLinkSuggestions = verified.map((v) => ({
-        anchor: v.anchor,
-        targetCategory: v.pathname, // now the actual pathname, not a slug guess
-        rationale: `${v.rationale} · verified live at ${v.url}`
-      }));
-    }
+    internalLinkSuggestions = verified.map((v) => ({
+      anchor: v.anchor,
+      targetCategory: v.pathname, // real pathname on optifinish.in
+      rationale: `${v.rationale} · verified live at ${v.url}`
+    }));
   } catch (err) {
-    console.warn('[seoEngine] site index lookup failed, falling back to LLM suggestions:', err);
-  }
-  // Fall back to LLM-invented suggestions ONLY if nothing verified came back
-  if (internalLinkSuggestions.length === 0) {
-    internalLinkSuggestions = (llm.internalLinkSuggestions ?? []).slice(0, 5);
+    console.warn('[seoEngine] site index lookup failed, no internal-link suggestions returned:', err);
+    internalLinkSuggestions = []; // strict — no fabricated fallback
   }
 
   return {

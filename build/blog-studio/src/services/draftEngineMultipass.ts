@@ -32,6 +32,36 @@ import { CATEGORIES, AUDIENCES } from '../constants';
 import { chatJSON, chatCompletion, parseJsonish } from './nvidiaLlmService';
 import { pickRotated, pickRandom, MODELS, ModelEntry, ModelId } from './modelRouter';
 import { CATEGORY_BLUEPRINT } from './draftEngine';
+import { searchTavily, tavilyToPromptContext } from './tavilySearch';
+
+// Tavily search excludes optifinish's own domains so external evidence is
+// genuinely external — not our own claims cited back at us. Product /
+// internal-link recommendations happen through the site-index path
+// (seoEngine → siteIndex), never through this fresh-context path.
+const OWN_DOMAINS_EXCLUDE = ['optifinish.in', 'optifinish.com', 'www.optifinish.in'];
+
+// Pulls up to N external results for one query, formats as an EXTERNAL
+// EVIDENCE block ready for prompt injection. Best-effort — silent-fallthrough
+// on error (no key, quota exceeded, network) so a bad Tavily call never
+// blocks draft generation. Returns empty string if nothing usable came back.
+async function fetchExternalEvidence(query: string, maxEntries: number): Promise<string> {
+  try {
+    const res = await searchTavily(query, {
+      searchDepth: 'basic',
+      maxResults: maxEntries,
+      topic: 'general',
+      excludeDomains: OWN_DOMAINS_EXCLUDE
+    });
+    if (res.results.length === 0) return '';
+    return `\n\nEXTERNAL EVIDENCE (via Tavily, real published sources — cite loosely, do NOT invent numbers not present here):\n${tavilyToPromptContext(res.results, {
+      maxEntries,
+      maxContentChars: 220
+    })}\n`;
+  } catch (err) {
+    console.warn(`[draftEngineMultipass] Tavily fetch skipped for "${query.slice(0, 40)}":`, err);
+    return '';
+  }
+}
 
 interface OutlineSection {
   id: string;
@@ -207,6 +237,14 @@ async function runOutlinePass(
   const cat = CATEGORIES.find((c) => c.id === category)!;
   const aud = AUDIENCES.find((a) => a.id === audience)!;
 
+  // Pull external evidence for the topic — grounds the outline in real
+  // sources so section headings and snapshot fields aren't invented from
+  // model memory alone. One Tavily call for the whole outline.
+  const evidence = await fetchExternalEvidence(
+    `${topic.title} India 2026 industrial coating`,
+    6
+  );
+
   const userPrompt = `Outline this post.
 
 TITLE (provisional): "${topic.title}"
@@ -215,9 +253,11 @@ ANGLE: ${topic.angle}
 
 Category: ${cat.label} — ${cat.blurb}
 Audience: ${aud.label} (${aud.role})
-Reader cares about: ${aud.cares}
+Reader cares about: ${aud.cares}${evidence}
 
-Produce 6-8 sections. Section wordTargets must sum to 1100-1400. Mark exactly one section hasPullQuote: true. Anchor 2 inline images to two different section headings you wrote (exact text match).`;
+Produce 6-8 sections. Section wordTargets must sum to 1100-1400. Mark exactly one section hasPullQuote: true. Anchor 2 inline images to two different section headings you wrote (exact text match).
+
+If the EXTERNAL EVIDENCE above contains named events, dates, OEM figures, or regulations directly relevant to this post's angle, reflect them in the outline's snapshot fields and section intents — do not fabricate parallel facts.`;
 
   return chatJSON<OutlineJson>({
     model: model.id,
@@ -362,6 +402,11 @@ async function runExpandPass(
     (prevSection ? `\nPrevious section was: "${prevSection.heading}" — covered: ${prevSection.intent}. Do not repeat that material.` : '') +
     (nextSection ? `\nNext section will be: "${nextSection.heading}" — will cover: ${nextSection.intent}. Set up that handoff but do not preempt it.` : '');
 
+  // Per-section external evidence — query built from heading + first ~10 words
+  // of intent for a focused search. External sources only (no optifinish.in).
+  const sectionQuery = `${section.heading} ${section.intent.split(/\s+/).slice(0, 10).join(' ')}`;
+  const evidence = await fetchExternalEvidence(sectionQuery, 4);
+
   const userPrompt = `Expand this section.
 
 POST CONTEXT:
@@ -373,12 +418,14 @@ THIS SECTION:
 - Heading (already in the post, do not repeat in your output): "${section.heading}"
 - Intent: ${section.intent}
 - Word target: ${section.wordTarget} words (acceptable range: ${Math.round(section.wordTarget * 0.85)}-${Math.round(section.wordTarget * 1.2)})
-${continuity}
+${continuity}${evidence}
 
 CONSTRAINTS:
 - Output 2-3 paragraphs of body HTML.
 ${section.hasPullQuote ? '- Include exactly ONE <blockquote> wrapping the most quotable line of this section. Pick the sharpest reframe in your prose and quote it.' : '- DO NOT include <blockquote>.'}
 - An <ol> or <ul> may appear if it makes sense for enumerating failure modes or decision criteria. Optional.
+- If the EXTERNAL EVIDENCE above contains a named entity / date / OEM figure directly relevant to this section, use it (attribution loose — "as reported in early 2026" style is fine). Do not fabricate parallel figures.
+- Product / partner recommendations do NOT belong in the body. Any "learn more about our X" line is CTA territory, not body-copy territory.
 
 Apply ALL anti-monotony, no-fabricated-numbers, no-marketing-hype, no-cliché rules.`;
 
