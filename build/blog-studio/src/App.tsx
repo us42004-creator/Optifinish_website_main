@@ -56,6 +56,10 @@ const App: React.FC = () => {
   const [briefError, setBriefError] = useState<string | null>(null);
   const [manualPickerOpen, setManualPickerOpen] = useState(false);
 
+  // Mobile-only slide-out drawer state. On desktop (md+) both rails are
+  // always visible and this is ignored.
+  const [mobileDrawer, setMobileDrawer] = useState<'stages' | 'info' | null>(null);
+
   useEffect(() => {
     const cached = loadBriefFromCache();
     if (cached) setBrief(cached);
@@ -281,64 +285,131 @@ const App: React.FC = () => {
     <div className="min-h-screen flex flex-col">
       {/* Header */}
       <header className="border-b border-ink-800 bg-ink-900/80 backdrop-blur sticky top-0 z-40">
-        <div className="px-8 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="w-10 h-10 rounded-lg bg-ember-500 flex items-center justify-center font-mono font-bold text-ink-950 text-sm">
+        <div className="px-4 md:px-8 h-16 md:h-20 flex items-center justify-between gap-3">
+          {/* Left cluster: mobile hamburger + brand */}
+          <div className="flex items-center gap-3 md:gap-4 min-w-0">
+            {tab === 'pipeline' && (
+              <button
+                className="md:hidden p-2 -ml-2 text-paper-100 hover:text-ember-400 transition-colors"
+                onClick={() => setMobileDrawer(mobileDrawer === 'stages' ? null : 'stages')}
+                aria-label="Toggle pipeline stages"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
+                </svg>
+              </button>
+            )}
+            <div className="w-9 h-9 md:w-10 md:h-10 rounded-lg bg-ember-500 flex items-center justify-center font-mono font-bold text-ink-950 text-sm flex-shrink-0">
               OF
             </div>
-            <div>
-              <h1 className="text-base font-bold tracking-tight">{BRAND.name}</h1>
-              <p className="text-[10px] uppercase tracking-industrial text-steel-500 font-mono">
+            <div className="min-w-0">
+              <h1 className="text-sm md:text-base font-bold tracking-tight truncate">{BRAND.name}</h1>
+              <p className="hidden md:block text-[10px] uppercase tracking-industrial text-steel-500 font-mono">
                 {BRAND.tagline}
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-4">
+
+          {/* Right cluster: tabs + busy + version + mobile info button */}
+          <div className="flex items-center gap-2 md:gap-4 flex-shrink-0">
             <div className="flex items-center gap-1 p-1 bg-ink-900 border border-ink-700 rounded-lg">
               <TabButton label="Pipeline" active={tab === 'pipeline'} onClick={() => setTab('pipeline')} />
               <TabButton label="Calendar" active={tab === 'calendar'} onClick={() => setTab('calendar')} />
             </div>
             {busy && (
-              <span className="text-[11px] font-mono text-ember-400 uppercase tracking-wider flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-ember-500 pulse-ember" />
-                {busy}
+              <span className="hidden lg:flex text-[11px] font-mono text-ember-400 uppercase tracking-wider items-center gap-2 max-w-xs truncate">
+                <span className="w-1.5 h-1.5 rounded-full bg-ember-500 pulse-ember flex-shrink-0" />
+                <span className="truncate">{busy}</span>
               </span>
             )}
-            <span className="text-[10px] font-mono text-steel-500 uppercase tracking-industrial">
-              v0.1 — local
+            <span className="hidden md:inline text-[10px] font-mono text-steel-500 uppercase tracking-industrial">
+              v0.1
             </span>
+            {tab === 'pipeline' && (
+              <button
+                className="md:hidden p-2 -mr-2 text-paper-100 hover:text-ember-400 transition-colors"
+                onClick={() => setMobileDrawer(mobileDrawer === 'info' ? null : 'info')}
+                aria-label="Toggle live state panel"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" />
+                </svg>
+              </button>
+            )}
           </div>
         </div>
+        {/* Mobile busy indicator — full-width under header when active */}
+        {busy && (
+          <div className="lg:hidden px-4 py-2 border-t border-ink-800 bg-ink-950/60">
+            <p className="text-[10px] font-mono text-ember-400 uppercase tracking-wider flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-ember-500 pulse-ember flex-shrink-0" />
+              <span className="truncate">{busy}</span>
+            </p>
+          </div>
+        )}
       </header>
 
       {tab === 'calendar' ? (
-        <main className="flex-1 overflow-y-auto p-10">
+        <main className="flex-1 overflow-y-auto p-4 md:p-10">
           <div className="max-w-5xl mx-auto">
-            <header className="mb-8">
+            <header className="mb-6 md:mb-8">
               <p className="text-[10px] font-mono uppercase tracking-industrial text-ember-400 mb-2">
                 Editorial calendar
               </p>
-              <h2 className="text-3xl font-bold tracking-tight mb-2">Coverage matrix</h2>
+              <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">Coverage matrix</h2>
               <p className="text-sm text-steel-400">
                 Click any cell — empty (red), stale (amber), or hot (orange) — to jump straight
                 to topic generation for that pairing.
               </p>
             </header>
-            <CalendarView onPickCell={handlePickCalendarCell} />
+            <div className="overflow-x-auto -mx-4 md:mx-0 px-4 md:px-0">
+              <CalendarView onPickCell={handlePickCalendarCell} />
+            </div>
           </div>
         </main>
       ) : (
-      <div className="flex-1 grid grid-cols-[260px_1fr_400px] min-h-0">
-        {/* Left rail */}
-        <aside className="border-r border-ink-800 p-6 overflow-y-auto">
-          <p className="text-[10px] uppercase tracking-industrial text-steel-500 font-mono mb-4">
-            Pipeline
-          </p>
-          <StageRail current={stage} completed={completed} onJump={setStage} />
+      <div className="flex-1 md:grid md:grid-cols-[260px_1fr_400px] min-h-0 relative">
+        {/* Mobile backdrop when a drawer is open */}
+        {mobileDrawer && (
+          <div
+            className="md:hidden fixed inset-0 bg-black/70 z-30"
+            onClick={() => setMobileDrawer(null)}
+          />
+        )}
+
+        {/* Left rail — desktop static, mobile slide-in from left */}
+        <aside
+          className={`
+            border-r border-ink-800 overflow-y-auto bg-ink-950
+            md:static md:translate-x-0 md:block md:p-6
+            fixed top-16 bottom-0 left-0 w-72 z-40 p-6
+            transform transition-transform duration-200 ease-out
+            ${mobileDrawer === 'stages' ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+          `}
+        >
+          <div className="flex items-center justify-between md:block mb-4">
+            <p className="text-[10px] uppercase tracking-industrial text-steel-500 font-mono">
+              Pipeline
+            </p>
+            <button
+              className="md:hidden text-steel-400 hover:text-paper-100 text-xs font-mono"
+              onClick={() => setMobileDrawer(null)}
+            >
+              ✕ Close
+            </button>
+          </div>
+          <StageRail
+            current={stage}
+            completed={completed}
+            onJump={(s) => {
+              setStage(s);
+              setMobileDrawer(null);
+            }}
+          />
         </aside>
 
         {/* Center workspace */}
-        <main className="overflow-y-auto p-10">
+        <main className="overflow-y-auto p-4 md:p-10">
           {stage === 'category' && (
             <>
               <WeeklyBriefPanel
@@ -365,7 +436,7 @@ const App: React.FC = () => {
                   title="Choose a category"
                   hint="What kind of post is this? Sets tone, structure, and the system prompt."
                 >
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {CATEGORIES.map((c) => (
                       <PickerCard
                         key={c.id}
@@ -391,7 +462,7 @@ const App: React.FC = () => {
               title="Pick the target audience"
               hint="Tone, depth and what the post optimises for change with the reader."
             >
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {AUDIENCES.map((a) => (
                   <PickerCard
                     key={a.id}
@@ -521,7 +592,7 @@ const App: React.FC = () => {
                     key={p.id}
                     className="border border-ink-700 rounded-xl overflow-hidden bg-ink-900/50"
                   >
-                    <div className="grid grid-cols-[200px_1fr] gap-0">
+                    <div className="grid grid-cols-1 sm:grid-cols-[200px_1fr] gap-0">
                       <div className="bg-ink-800 aspect-[4/3] flex items-center justify-center">
                         {p.generatedUrl ? (
                           <img
@@ -646,11 +717,27 @@ const App: React.FC = () => {
           )}
         </main>
 
-        {/* Right preview */}
-        <aside className="border-l border-ink-800 bg-ink-900/40 overflow-y-auto p-8">
-          <p className="text-[10px] uppercase tracking-industrial text-steel-500 font-mono mb-4">
-            Live State
-          </p>
+        {/* Right preview — desktop static, mobile slide-in from right */}
+        <aside
+          className={`
+            border-l border-ink-800 bg-ink-900/95 md:bg-ink-900/40 overflow-y-auto
+            md:static md:translate-x-0 md:block md:p-8
+            fixed top-16 bottom-0 right-0 w-80 z-40 p-6
+            transform transition-transform duration-200 ease-out
+            ${mobileDrawer === 'info' ? 'translate-x-0' : 'translate-x-full md:translate-x-0'}
+          `}
+        >
+          <div className="flex items-center justify-between md:block mb-4">
+            <p className="text-[10px] uppercase tracking-industrial text-steel-500 font-mono">
+              Live State
+            </p>
+            <button
+              className="md:hidden text-steel-400 hover:text-paper-100 text-xs font-mono"
+              onClick={() => setMobileDrawer(null)}
+            >
+              ✕ Close
+            </button>
+          </div>
           <div className="space-y-3 text-xs">
             <StateRow label="Category" value={category ? CATEGORIES.find((c) => c.id === category)!.label : '—'} />
             <StateRow label="Audience" value={audience ? AUDIENCES.find((a) => a.id === audience)!.label : '—'} />
@@ -814,13 +901,13 @@ const Section: React.FC<{
   hint: string;
   children: React.ReactNode;
 }> = ({ eyebrow, title, hint, children }) => (
-  <div className="max-w-3xl space-y-8">
+  <div className="max-w-3xl space-y-6 md:space-y-8">
     <header>
       <p className="text-[10px] font-mono uppercase tracking-industrial text-ember-400 mb-2">
         {eyebrow}
       </p>
-      <h2 className="text-3xl font-bold tracking-tight mb-2">{title}</h2>
-      <p className="text-sm text-steel-400">{hint}</p>
+      <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2 leading-tight">{title}</h2>
+      <p className="text-xs md:text-sm text-steel-400 leading-relaxed">{hint}</p>
     </header>
     {children}
   </div>
@@ -834,7 +921,7 @@ const PrimaryButton: React.FC<{
   <button
     disabled={disabled}
     onClick={onClick}
-    className={`px-6 py-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${
+    className={`w-full sm:w-auto px-5 md:px-6 py-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${
       disabled
         ? 'bg-ink-800 text-steel-600 cursor-not-allowed'
         : 'bg-ember-500 text-ink-950 hover:bg-ember-400 active:scale-[0.98]'
@@ -934,11 +1021,11 @@ const FlagGroup: React.FC<{ label: string; color: 'rose' | 'amber'; items: strin
 };
 
 const DraftBlock: React.FC<{ draft: BlogDraft }> = ({ draft }) => (
-  <div className="border border-ink-700 rounded-xl p-8 bg-ink-900/30">
-    <h1 className="text-2xl font-bold mb-2 leading-tight">{draft.title}</h1>
+  <div className="border border-ink-700 rounded-xl p-4 md:p-8 bg-ink-900/30 overflow-hidden">
+    <h1 className="text-xl md:text-2xl font-bold mb-2 leading-tight">{draft.title}</h1>
     <p className="text-sm text-steel-400 italic mb-6">{draft.subtitle}</p>
     <div
-      className="prose prose-invert prose-sm max-w-none text-paper-100"
+      className="prose prose-invert prose-sm max-w-none text-paper-100 overflow-x-auto"
       style={{ lineHeight: 1.7 }}
       dangerouslySetInnerHTML={{ __html: draft.bodyHtml }}
     />
@@ -1076,7 +1163,7 @@ const SeoRow: React.FC<{ label: string; value: string; mono?: boolean }> = ({
   value,
   mono
 }) => (
-  <div className="grid grid-cols-[140px_1fr] gap-4 items-start">
+  <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-1 sm:gap-4 items-start">
     <span className="text-[10px] font-mono uppercase tracking-industrial text-steel-500 pt-1">
       {label}
     </span>
@@ -1108,15 +1195,15 @@ const WeeklyBriefPanel: React.FC<{
 
   return (
     <section className="mb-6">
-      <header className="flex items-baseline justify-between gap-4 mb-6">
-        <div>
+      <header className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-4 mb-6">
+        <div className="min-w-0">
           <p className="text-[10px] font-mono uppercase tracking-industrial text-ember-500 mb-2">
             Weekly Editorial Brief
           </p>
-          <h2 className="text-2xl font-bold tracking-tight">
+          <h2 className="text-xl md:text-2xl font-bold tracking-tight leading-tight">
             Curated topics — {brief ? `${brief.cards.length} ideas from live industry research` : 'ready to generate'}
           </h2>
-          <p className="text-sm text-steel-400 mt-2">
+          <p className="text-xs md:text-sm text-steel-400 mt-2 leading-relaxed">
             {brief
               ? `Sourced from ${brief.totalEvidenceCollected} evidence items across ${brief.totalQueriesRun} live searches. Last updated ${generatedLabel}.`
               : 'Runs 10 Tavily searches across regulations, OEM launches, defect trends and market shifts, then cross-references what optifinish.in already covers.'}
@@ -1125,7 +1212,7 @@ const WeeklyBriefPanel: React.FC<{
         <button
           onClick={onRefresh}
           disabled={busy}
-          className="text-[11px] font-mono uppercase tracking-industrial px-4 py-2 border border-ember-500 text-ember-400 hover:bg-ember-500 hover:text-ink-950 transition-colors rounded-md disabled:opacity-50 disabled:cursor-wait whitespace-nowrap"
+          className="text-[11px] font-mono uppercase tracking-industrial px-4 py-2 border border-ember-500 text-ember-400 hover:bg-ember-500 hover:text-ink-950 transition-colors rounded-md disabled:opacity-50 disabled:cursor-wait whitespace-nowrap self-start sm:self-auto flex-shrink-0"
         >
           {busy ? 'Researching…' : brief ? '↻ Refresh brief' : 'Generate brief'}
         </button>
@@ -1184,10 +1271,10 @@ const BriefCard: React.FC<{
   const audienceLabel = AUDIENCES.find((a) => a.id === card.suggestedAudience)?.label ?? card.suggestedAudience;
 
   return (
-    <article className="p-6 border border-ink-700 hover:border-ember-500/60 bg-ink-900/50 rounded-xl transition-colors">
-      <header className="flex items-baseline justify-between gap-4 mb-3">
-        <h3 className="text-lg font-bold tracking-tight leading-snug">{card.title}</h3>
-        <div className="flex gap-2 flex-shrink-0">
+    <article className="p-4 md:p-6 border border-ink-700 hover:border-ember-500/60 bg-ink-900/50 rounded-xl transition-colors">
+      <header className="flex flex-col md:flex-row md:items-baseline md:justify-between gap-3 mb-3">
+        <h3 className="text-base md:text-lg font-bold tracking-tight leading-snug">{card.title}</h3>
+        <div className="flex flex-wrap gap-2 md:flex-shrink-0">
           <span className="text-[9px] font-mono uppercase tracking-industrial px-2 py-1 rounded bg-ember-500/10 text-ember-400 border border-ember-500/30 whitespace-nowrap">
             {categoryLabel}
           </span>
