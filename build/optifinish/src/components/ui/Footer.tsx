@@ -89,6 +89,7 @@ const FOOTER_COLS = [
       { href: '/our-work',       label: 'Our Work' },
       { href: '/resources/blog', label: 'Blog' },
       { href: '/contact',        label: 'Contact' },
+      { href: '/documents/optifinish-quality-policy.pdf', label: 'Quality Policy', external: true },
       { href: '/privacy-policy', label: 'Privacy Policy' },
       { href: '/terms',          label: 'Terms of Use' },
     ],
@@ -251,9 +252,21 @@ export default function Footer() {
                   <ul className="space-y-2">
                     {col.links.map((link) => (
                       <li key={link.href}>
-                        <Link href={link.href} className="text-[8.5px] font-medium text-white/60 transition-colors hover:text-[#FECE00]">
-                          {link.label}
-                        </Link>
+                        {'external' in link && link.external ? (
+                          <a
+                            href={link.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-[8.5px] font-medium text-white/60 transition-colors hover:text-[#FECE00]"
+                          >
+                            {link.label}
+                            <span className="text-[7px] text-white/25">↗</span>
+                          </a>
+                        ) : (
+                          <Link href={link.href} className="text-[8.5px] font-medium text-white/60 transition-colors hover:text-[#FECE00]">
+                            {link.label}
+                          </Link>
+                        )}
                       </li>
                     ))}
                   </ul>
