@@ -83,127 +83,172 @@ const CONTENT: Record<Lang, {
   },
 };
 
+const YELLOW = '#FECE00';
+
 export default function QualityPolicyContent() {
   const [lang, setLang] = useState<Lang>('en');
   const c = CONTENT[lang];
 
-  return (
-    <section className="mx-auto max-w-3xl px-6 pt-28 pb-24 sm:pt-32">
+  // English → black tile / white text. Toggle interchanges tile ↔ font colour.
+  const dark = lang === 'en';
+  const tileBg = dark ? '#0A0A0A' : '#ffffff';
+  const fg     = dark ? '#ffffff' : '#0A0A0A';
+  const fgMuted = dark ? 'rgba(255,255,255,0.74)' : 'rgba(10,10,10,0.72)';
+  const fgFaint = dark ? 'rgba(255,255,255,0.45)' : 'rgba(10,10,10,0.42)';
+  const line    = dark ? 'rgba(255,255,255,0.14)' : 'rgba(10,10,10,0.12)';
+  const chipBg  = dark ? 'rgba(255,255,255,0.05)' : 'rgba(10,10,10,0.03)';
+  const trans   = 'background-color 0.45s ease, color 0.45s ease, border-color 0.45s ease';
 
-      {/* Kicker + language toggle */}
-      <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <p className="inline-flex items-center gap-2 text-[0.62rem] font-bold uppercase tracking-[0.22em] text-[#E0B400]">
-            <ShieldCheck size={13} className="text-[#E0B400]" />
+  return (
+    <section className="mx-auto max-w-3xl px-5 pt-28 pb-24 sm:px-6 sm:pt-32">
+
+      {/* ── The tile ── */}
+      <div
+        className="rounded-[1.6rem] px-6 py-9 sm:px-11 sm:py-12"
+        style={{
+          backgroundColor: tileBg,
+          color: fg,
+          border: `1px solid ${dark ? 'rgba(255,255,255,0.10)' : 'rgba(10,10,10,0.10)'}`,
+          boxShadow: dark ? '0 24px 70px rgba(0,0,0,0.28)' : '0 24px 70px rgba(10,10,10,0.10)',
+          transition: trans,
+        }}
+      >
+
+        {/* Kicker + language toggle */}
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+          <p
+            className="inline-flex items-center gap-2 text-[0.62rem] font-bold uppercase tracking-[0.2em]"
+            style={{ color: YELLOW }}
+          >
+            <ShieldCheck size={13} />
             {c.kicker}
           </p>
-          <h1 className="mt-3 font-display text-[clamp(2.1rem,6vw,3.6rem)] font-black leading-[0.98] tracking-[-0.04em] text-[#070809]">
-            {c.title}
-          </h1>
+
+          {/* EN / हिंदी toggle */}
+          <div
+            className="inline-flex flex-shrink-0 items-center rounded-full p-1"
+            style={{ border: `1px solid ${line}`, backgroundColor: chipBg, transition: trans }}
+            role="group"
+            aria-label="Language"
+          >
+            {([['en', 'English'], ['hi', 'हिंदी']] as [Lang, string][]).map(([code, label]) => (
+              <button
+                key={code}
+                onClick={() => setLang(code)}
+                aria-pressed={lang === code}
+                className="rounded-full px-4 py-1.5 text-[0.72rem] font-bold uppercase tracking-[0.08em] transition-all duration-200"
+                style={
+                  lang === code
+                    ? { backgroundColor: YELLOW, color: '#0A0A0A' }
+                    : { backgroundColor: 'transparent', color: fgFaint }
+                }
+                onMouseEnter={(e) => { if (lang !== code) e.currentTarget.style.color = fg; }}
+                onMouseLeave={(e) => { if (lang !== code) e.currentTarget.style.color = fgFaint; }}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* EN / हिंदी toggle */}
-        <div
-          className="inline-flex flex-shrink-0 items-center rounded-full border border-black/[0.12] bg-black/[0.03] p-1"
-          role="group"
-          aria-label="Language"
+        {/* Title */}
+        <h1
+          className="mt-4 font-display text-[clamp(2.1rem,6vw,3.4rem)] font-black leading-[0.98] tracking-[-0.04em]"
+          style={{ color: fg, transition: trans }}
         >
-          {([['en', 'English'], ['hi', 'हिंदी']] as [Lang, string][]).map(([code, label]) => (
-            <button
-              key={code}
-              onClick={() => setLang(code)}
-              aria-pressed={lang === code}
-              className={`rounded-full px-4 py-1.5 text-[0.72rem] font-bold uppercase tracking-[0.1em] transition-all duration-200 ${
-                lang === code
-                  ? 'bg-[#FECE00] text-[#070809] shadow-sm'
-                  : 'text-[#070809]/45 hover:text-[#070809]/70'
-              }`}
-              style={{ touchAction: 'manipulation' }}
+          {c.title}
+        </h1>
+
+        {/* Document-control chips */}
+        <div className="mt-6 flex flex-wrap gap-2">
+          {[
+            ['Ref No.', 'VACSPL-05-F03'],
+            ['Standard', 'ISO 9001:2015'],
+            ['Issue', '01 · 22.07.2024'],
+            ['Rev.', '00'],
+          ].map(([k, v]) => (
+            <span
+              key={k}
+              className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[0.66rem] font-medium"
+              style={{ border: `1px solid ${line}`, backgroundColor: chipBg, transition: trans }}
             >
-              {label}
-            </button>
+              <span className="font-bold uppercase tracking-[0.08em]" style={{ color: fgFaint }}>{k}</span>
+              <span className="tabular-nums" style={{ color: fgMuted }}>{v}</span>
+            </span>
           ))}
         </div>
-      </div>
 
-      {/* Document-control chips */}
-      <div className="mt-6 flex flex-wrap gap-2">
-        {[
-          ['Ref No.', 'VACSPL-05-F03'],
-          ['Standard', 'ISO 9001:2015'],
-          ['Issue', '01 · 22.07.2024'],
-          ['Rev.', '00'],
-        ].map(([k, v]) => (
-          <span key={k} className="inline-flex items-center gap-1.5 rounded-full border border-black/[0.1] bg-white px-3 py-1 text-[0.66rem] font-medium text-[#070809]/55">
-            <span className="font-bold uppercase tracking-[0.08em] text-[#070809]/35">{k}</span>
-            <span className="tabular-nums text-[#070809]/75">{v}</span>
-          </span>
-        ))}
-      </div>
+        {/* Accent rule */}
+        <div className="mt-8 h-[3px] w-16 rounded-full" style={{ backgroundColor: YELLOW }} />
 
-      {/* Accent rule */}
-      <div className="mt-8 h-[3px] w-16 rounded-full bg-[#FECE00]" />
+        {/* Intro */}
+        <p className="mt-8 text-[1.02rem] leading-[1.7]" style={{ color: fgMuted, transition: trans }}>
+          {c.intro}
+        </p>
 
-      {/* Intro */}
-      <p className="mt-8 text-[1.02rem] leading-[1.7] text-[#070809]/80">
-        {c.intro}
-      </p>
-
-      {/* Commitment */}
-      <div className="mt-12 flex items-center gap-3">
-        <span className="h-4 w-4 flex-none rounded-[3px] bg-[#FECE00]" />
-        <h2 className="font-display text-[1.35rem] font-black tracking-tight text-[#070809]">{c.commitmentTitle}</h2>
-      </div>
-      <ul className="mt-5 flex flex-col gap-4">
-        {c.commitments.map((item) => (
-          <li key={item.h} className="relative pl-7 text-[0.97rem] leading-[1.6] text-[#070809]/75">
-            <span className="absolute left-0 top-[0.5rem] h-[9px] w-[9px] rounded-full bg-[#FECE00]" />
-            <b className="text-[#070809]">{item.h}</b> — {item.b}
-          </li>
-        ))}
-      </ul>
-
-      {/* Objectives */}
-      <div className="mt-12 flex items-center gap-3">
-        <span className="h-4 w-4 flex-none rounded-[3px] bg-[#FECE00]" />
-        <h2 className="font-display text-[1.35rem] font-black tracking-tight text-[#070809]">{c.objectivesTitle}</h2>
-      </div>
-      <ul className="mt-5 flex flex-col gap-3">
-        {c.objectives.map((item, i) => (
-          <li key={i} className="relative pl-7 text-[0.97rem] leading-[1.6] text-[#070809]/75">
-            <span className="absolute left-0 top-[0.5rem] h-[9px] w-[9px] rounded-full bg-[#FECE00]" />
-            {item}
-          </li>
-        ))}
-      </ul>
-
-      {/* Signatures */}
-      <div className="mt-14 grid grid-cols-1 gap-8 border-t border-black/[0.1] pt-8 sm:grid-cols-2">
-        <div>
-          <p className="text-[0.6rem] font-bold uppercase tracking-[0.16em] text-[#070809]/40">{c.preparedLabel}</p>
-          <p className="mt-4 inline-block border-t-2 border-[#070809] pt-1.5 font-display text-[1.05rem] font-bold text-[#070809]">Avinash Pandey</p>
-          <p className="mt-0.5 text-[0.78rem] text-[#070809]/50">{c.mrDesig}</p>
+        {/* Commitment */}
+        <div className="mt-11 flex items-center gap-3">
+          <span className="h-4 w-4 flex-none rounded-[3px]" style={{ backgroundColor: YELLOW }} />
+          <h2 className="font-display text-[1.3rem] font-black tracking-tight" style={{ color: fg, transition: trans }}>
+            {c.commitmentTitle}
+          </h2>
         </div>
-        <div className="sm:text-right">
-          <p className="text-[0.6rem] font-bold uppercase tracking-[0.16em] text-[#070809]/40">{c.reviewedLabel}</p>
-          <p className="mt-4 inline-block border-t-2 border-[#070809] pt-1.5 font-display text-[1.05rem] font-bold text-[#070809]">Harish Sharma</p>
-          <p className="mt-0.5 text-[0.78rem] text-[#070809]/50">{c.mdDesig}</p>
+        <ul className="mt-5 flex flex-col gap-4">
+          {c.commitments.map((item) => (
+            <li key={item.h} className="relative pl-7 text-[0.97rem] leading-[1.6]" style={{ color: fgMuted, transition: trans }}>
+              <span className="absolute left-0 top-[0.5rem] h-[9px] w-[9px] rounded-full" style={{ backgroundColor: YELLOW }} />
+              <b style={{ color: fg }}>{item.h}</b> — {item.b}
+            </li>
+          ))}
+        </ul>
+
+        {/* Objectives */}
+        <div className="mt-11 flex items-center gap-3">
+          <span className="h-4 w-4 flex-none rounded-[3px]" style={{ backgroundColor: YELLOW }} />
+          <h2 className="font-display text-[1.3rem] font-black tracking-tight" style={{ color: fg, transition: trans }}>
+            {c.objectivesTitle}
+          </h2>
         </div>
-      </div>
+        <ul className="mt-5 flex flex-col gap-3">
+          {c.objectives.map((item, i) => (
+            <li key={i} className="relative pl-7 text-[0.97rem] leading-[1.6]" style={{ color: fgMuted, transition: trans }}>
+              <span className="absolute left-0 top-[0.5rem] h-[9px] w-[9px] rounded-full" style={{ backgroundColor: YELLOW }} />
+              {item}
+            </li>
+          ))}
+        </ul>
 
-      {/* Download PDF */}
-      <div className="mt-10">
-        <a
-          href="/documents/optifinish-quality-policy.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 rounded-full bg-[#070809] px-6 py-3 text-[0.72rem] font-bold uppercase tracking-[0.14em] text-white transition-colors hover:bg-[#FECE00] hover:text-[#070809]"
-        >
-          <Download size={15} />
-          {c.download}
-        </a>
-      </div>
+        {/* Signatures */}
+        <div className="mt-13 grid grid-cols-1 gap-8 pt-8 sm:grid-cols-2" style={{ borderTop: `1px solid ${line}`, marginTop: '3.25rem', transition: trans }}>
+          <div>
+            <p className="text-[0.6rem] font-bold uppercase tracking-[0.16em]" style={{ color: fgFaint }}>{c.preparedLabel}</p>
+            <p className="mt-4 inline-block pt-1.5 font-display text-[1.05rem] font-bold" style={{ color: fg, borderTop: `2px solid ${fg}`, transition: trans }}>Avinash Pandey</p>
+            <p className="mt-0.5 text-[0.78rem]" style={{ color: fgFaint }}>{c.mrDesig}</p>
+          </div>
+          <div className="sm:text-right">
+            <p className="text-[0.6rem] font-bold uppercase tracking-[0.16em]" style={{ color: fgFaint }}>{c.reviewedLabel}</p>
+            <p className="mt-4 inline-block pt-1.5 font-display text-[1.05rem] font-bold" style={{ color: fg, borderTop: `2px solid ${fg}`, transition: trans }}>Harish Sharma</p>
+            <p className="mt-0.5 text-[0.78rem]" style={{ color: fgFaint }}>{c.mdDesig}</p>
+          </div>
+        </div>
 
+        {/* Download PDF */}
+        <div className="mt-10">
+          <a
+            href="/documents/optifinish-quality-policy.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-[0.72rem] font-bold uppercase tracking-[0.14em] transition-colors duration-200"
+            style={{ backgroundColor: YELLOW, color: '#0A0A0A' }}
+            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = fg; e.currentTarget.style.color = tileBg; }}
+            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = YELLOW; e.currentTarget.style.color = '#0A0A0A'; }}
+          >
+            <Download size={15} />
+            {c.download}
+          </a>
+        </div>
+
+      </div>
     </section>
   );
 }
