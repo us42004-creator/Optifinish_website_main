@@ -89,7 +89,7 @@ const FOOTER_COLS = [
       { href: '/our-work',       label: 'Our Work' },
       { href: '/resources/blog', label: 'Blog' },
       { href: '/contact',        label: 'Contact' },
-      { href: '/documents/optifinish-quality-policy.pdf', label: 'Quality Policy', external: true },
+      { href: '/quality-policy', label: 'Quality Policy' },
       { href: '/privacy-policy', label: 'Privacy Policy' },
       { href: '/terms',          label: 'Terms of Use' },
     ],
