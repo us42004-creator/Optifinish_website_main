@@ -151,6 +151,9 @@ export default function QualityPolicyContent() {
           </div>
         </div>
 
+        {/* Language-dependent content — key change replays the cross-fade on switch */}
+        <div key={lang} style={{ animation: 'qpFadeIn 0.4s ease both' }}>
+
         {/* Title */}
         <h1
           className="mt-4 font-display text-[clamp(2.1rem,6vw,3.4rem)] font-black leading-[0.98] tracking-[-0.04em]"
@@ -247,6 +250,9 @@ export default function QualityPolicyContent() {
             {c.download}
           </a>
         </div>
+
+        </div>
+        {/* /language-dependent content */}
 
       </div>
     </section>
