@@ -1,8 +1,8 @@
 {
   "$schema": "https://optifinish.com/schemas/photo-library.json",
   "version": 2,
-  "lastUpdated": "2026-05-09",
-  "note": "Preheated library: 18 brand-locked Flux renders. Replace individual entries with real Greater Noida photography by saving photo to /public/photos/<id>.jpg and editing this index.",
+  "lastUpdated": "2026-08-19",
+  "note": "Preheated library: 30 brand-locked Flux renders. Replace individual entries with real Greater Noida photography by saving photo to /public/photos/<id>.jpg and editing this index.",
   "photos": [
     {
       "id": "preheat-curing-oven-interior",
@@ -361,6 +361,256 @@
       "categories": [
         "how-to",
         "technical-deep-dive"
+      ],
+      "aspectRatio": "1:1",
+      "isPlaceholder": false
+    },
+    {
+      "id": "preheat-adhesion-cross-cut-test",
+      "url": "/photos/preheat-adhesion-cross-cut-test.jpg",
+      "alt": "Cross-cut adhesion test in progress on a coated black test panel, scored lattice visible under raking light, tape strip half-lifted",
+      "tags": [
+        "adhesion",
+        "cross-cut",
+        "QC",
+        "test",
+        "tape",
+        "panel",
+        "lattice",
+        "diagnostic"
+      ],
+      "categories": [
+        "how-to",
+        "technical-deep-dive",
+        "case-study"
+      ],
+      "aspectRatio": "1:1",
+      "isPlaceholder": false
+    },
+    {
+      "id": "preheat-gloss-meter-reading",
+      "url": "/photos/preheat-gloss-meter-reading.jpg",
+      "alt": "Hand-held gloss meter pressed against a coated metal panel, digital readout visible, gloved hand steadying the instrument",
+      "tags": [
+        "gloss meter",
+        "measurement",
+        "QC",
+        "instrument",
+        "panel",
+        "diagnostic",
+        "reading"
+      ],
+      "categories": [
+        "technical-deep-dive",
+        "how-to",
+        "comparison-decision"
+      ],
+      "aspectRatio": "1:1",
+      "isPlaceholder": false
+    },
+    {
+      "id": "preheat-quote-clipboard-shop-floor",
+      "url": "/photos/preheat-quote-clipboard-shop-floor.jpg",
+      "alt": "Clipboard with a spec sheet on a shop-floor workbench, digital calipers and red measuring square nearby",
+      "tags": [
+        "spec sheet",
+        "clipboard",
+        "procurement",
+        "documentation",
+        "calipers",
+        "workbench",
+        "measurement"
+      ],
+      "categories": [
+        "comparison-decision",
+        "cost-of-inaction",
+        "pillar-guide"
+      ],
+      "aspectRatio": "1:1",
+      "isPlaceholder": false
+    },
+    {
+      "id": "preheat-powder-color-samples",
+      "url": "/photos/preheat-powder-color-samples.jpg",
+      "alt": "Row of powder-coated color-swatch panels racked on a metal rack, gradient from cool grey to warm terracotta",
+      "tags": [
+        "color",
+        "swatch",
+        "samples",
+        "rack",
+        "RAL",
+        "palette",
+        "formulation"
+      ],
+      "categories": [
+        "pillar-guide",
+        "technical-deep-dive",
+        "industry-trends"
+      ],
+      "aspectRatio": "1:1",
+      "isPlaceholder": false
+    },
+    {
+      "id": "preheat-back-ionization-defect",
+      "url": "/photos/preheat-back-ionization-defect.jpg",
+      "alt": "Macro detail of back-ionization craters on a coated surface, small pockmarks and dry-spray texture, raking side light",
+      "tags": [
+        "defect",
+        "back-ionization",
+        "craters",
+        "dry spray",
+        "macro",
+        "diagnostic",
+        "rejection"
+      ],
+      "categories": [
+        "how-to",
+        "technical-deep-dive"
+      ],
+      "aspectRatio": "1:1",
+      "isPlaceholder": false
+    },
+    {
+      "id": "preheat-oven-control-panel",
+      "url": "/photos/preheat-oven-control-panel.jpg",
+      "alt": "Industrial oven HMI touchscreen showing a cure profile graph in amber, mounted on a metal control cabinet",
+      "tags": [
+        "HMI",
+        "control",
+        "oven",
+        "cure profile",
+        "touchscreen",
+        "PLC",
+        "panel"
+      ],
+      "categories": [
+        "technical-deep-dive",
+        "facility-behind-scenes",
+        "pillar-guide"
+      ],
+      "aspectRatio": "1:1",
+      "isPlaceholder": false
+    },
+    {
+      "id": "preheat-dust-collector-cartridge",
+      "url": "/photos/preheat-dust-collector-cartridge.jpg",
+      "alt": "Booth dust-collector cartridge lifted from its housing, pleated filter media visible, powder residue at the base",
+      "tags": [
+        "dust collector",
+        "cartridge",
+        "filter",
+        "booth",
+        "maintenance",
+        "reclaim"
+      ],
+      "categories": [
+        "how-to",
+        "technical-deep-dive",
+        "facility-behind-scenes"
+      ],
+      "aspectRatio": "1:1",
+      "isPlaceholder": false
+    },
+    {
+      "id": "preheat-loading-bay-dispatch",
+      "url": "/photos/preheat-loading-bay-dispatch.jpg",
+      "alt": "Dispatch loading bay with palletised finished parts wrapped in stretch film, open shutter door with morning light",
+      "tags": [
+        "dispatch",
+        "loading bay",
+        "palletised",
+        "finished parts",
+        "logistics",
+        "plant",
+        "shipment"
+      ],
+      "categories": [
+        "facility-behind-scenes",
+        "case-study",
+        "industry-trends"
+      ],
+      "aspectRatio": "1:1",
+      "isPlaceholder": false
+    },
+    {
+      "id": "preheat-engineer-marking-defect",
+      "url": "/photos/preheat-engineer-marking-defect.jpg",
+      "alt": "Process engineer marking a defect on a coated test panel with a fine paint pen, macro framing on the pen tip",
+      "tags": [
+        "engineer",
+        "defect",
+        "marking",
+        "test panel",
+        "diagnostic",
+        "people",
+        "QC"
+      ],
+      "categories": [
+        "how-to",
+        "technical-deep-dive",
+        "facility-behind-scenes"
+      ],
+      "aspectRatio": "1:1",
+      "isPlaceholder": false
+    },
+    {
+      "id": "preheat-cast-aluminium-blank",
+      "url": "/photos/preheat-cast-aluminium-blank.jpg",
+      "alt": "Untreated cast-aluminium blank on a workbench, casting texture and gate stub visible, macro on surface pores",
+      "tags": [
+        "cast aluminium",
+        "substrate",
+        "blank",
+        "casting",
+        "porosity",
+        "preparation",
+        "untreated"
+      ],
+      "categories": [
+        "technical-deep-dive",
+        "how-to"
+      ],
+      "aspectRatio": "1:1",
+      "isPlaceholder": false
+    },
+    {
+      "id": "preheat-conveyor-hook-detail",
+      "url": "/photos/preheat-conveyor-hook-detail.jpg",
+      "alt": "Close-up of a conveyor hook holding a coated part mid-transit, motion blur on background chain",
+      "tags": [
+        "conveyor",
+        "hook",
+        "transit",
+        "part carrier",
+        "line",
+        "motion",
+        "detail"
+      ],
+      "categories": [
+        "facility-behind-scenes",
+        "technical-deep-dive",
+        "pillar-guide"
+      ],
+      "aspectRatio": "1:1",
+      "isPlaceholder": false
+    },
+    {
+      "id": "preheat-hygrometer-plant",
+      "url": "/photos/preheat-hygrometer-plant.jpg",
+      "alt": "Wall-mounted analog hygrometer and thermometer in an industrial plant, needle showing high humidity",
+      "tags": [
+        "humidity",
+        "hygrometer",
+        "monsoon",
+        "ambient",
+        "plant",
+        "reading",
+        "instrument"
+      ],
+      "categories": [
+        "how-to",
+        "technical-deep-dive",
+        "facility-behind-scenes"
       ],
       "aspectRatio": "1:1",
       "isPlaceholder": false

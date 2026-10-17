@@ -114,6 +114,32 @@ export interface DossierSnapshot {
   lever: string; // 1-line specific differentiator/insight
 }
 
+export interface EditorialFlags {
+  fabricatedNumbers: string[];
+  firstPersonLeaks: string[];
+  fabricatedYears: string[];
+  hasAny: boolean;
+}
+
+// AEO (AI Engine Optimization) bundle — data added to every published post so
+// GPTs / Perplexity / Claude / Gemini can cite the post reliably.
+export interface AeoEntity {
+  name: string;            // "GEMA", "CBAM", "BEE"
+  url: string;             // authoritative source (Wikipedia, govt page, org URL)
+  description: string;     // 1-line context
+}
+
+export interface AeoFaqEntry {
+  question: string;        // natural-language question a buyer would type into ChatGPT
+  answer: string;          // 40-80 words, factually derivable from the post
+}
+
+export interface AeoBundle {
+  quickAnswer: string;         // 40-60 word direct answer to post's implicit question — LLMs quote this verbatim
+  faq: AeoFaqEntry[];          // 3-5 Q&A pairs → emitted as FAQPage schema
+  entities: AeoEntity[];       // named entities mentioned in the post → linked in body + schema.mentions
+}
+
 export interface BlogDraft {
   title: string;
   subtitle: string;
@@ -122,6 +148,8 @@ export interface BlogDraft {
   imagePlacements: ImagePlacement[];
   seo?: SeoMeta;
   snapshot?: DossierSnapshot;
+  editorialFlags?: EditorialFlags; // populated by post-gen detector — Step 4 UI shows a red banner if hasAny
+  aeo?: AeoBundle;                 // AI Engine Optimization — Quick Answer, FAQ, named entities
 }
 
 export interface ImagePlacement {
@@ -149,4 +177,31 @@ export interface PipelineState {
   audience: AudienceId | null;
   topic: TopicIdea | null;
   draft: BlogDraft | null;
+}
+
+// ─────────────────────────────────────────────────────────────
+// Weekly Editorial Brief — replaces scattered manual 8×8 matrix picking
+// with a curated research-driven topic feed. Runs live Tavily queries
+// across the industry, cross-references what OptiFinish's own site
+// already covers (via siteIndex), then LLM-synthesizes 5-7 topic cards
+// the editor can start writing with one click.
+// ─────────────────────────────────────────────────────────────
+
+export interface WeeklyBriefCard {
+  id: string;                       // stable id for dedupe / caching
+  title: string;                    // provisional post title
+  whyNow: string;                   // 1-2 sentence trigger (regulation date, launch, market shift)
+  searchDemand: string;             // 1 sentence — the buyer query this answers
+  optifinishAngle: string;          // 1 sentence — what only OptiFinish can credibly say
+  gapInOurContent: string;          // 1 sentence — what the crawled site does NOT yet cover
+  suggestedCategory: CategoryId;    // pre-picked pipeline category
+  suggestedAudience: AudienceId;    // pre-picked pipeline audience
+  evidenceUrls: string[];           // 2-4 Tavily source URLs backing the "why now"
+}
+
+export interface WeeklyBrief {
+  generatedAt: string;              // ISO timestamp
+  cards: WeeklyBriefCard[];
+  totalQueriesRun: number;
+  totalEvidenceCollected: number;
 }

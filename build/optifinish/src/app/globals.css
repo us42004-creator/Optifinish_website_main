@@ -470,3 +470,9 @@
   from { width: 0%; }
   to   { width: 100%; }
 }
+
+/* ── Quality Policy: content cross-fade on language switch ── */
+@keyframes qpFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

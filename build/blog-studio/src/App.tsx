@@ -1,10 +1,13 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Stage,
   CategoryId,
   AudienceId,
   TopicIdea,
-  BlogDraft
+  BlogDraft,
+  EditorialFlags,
+  WeeklyBrief,
+  WeeklyBriefCard
 } from './types';
 import { CATEGORIES, AUDIENCES, BRAND, STAGES } from './constants';
 import { StageRail } from './components/StageRail';
@@ -13,7 +16,7 @@ import {
   generateTopicIdeas,
   generateBlogDraft,
   generateSeo,
-  generateImage,
+  generateImagesForPlacements,
   rewriteWithPrompt,
   generateDistributionPack,
   renderDistributionMarkdown,
@@ -24,6 +27,11 @@ import type { DistributionPack, AbVariants, VoiceScore } from './services/aiServ
 import { buildOptiFinishBlogHtml } from './services/templateBuilder';
 import { CalendarView } from './components/CalendarView';
 import * as historyStore from './services/historyStore';
+import {
+  generateWeeklyBrief,
+  loadBriefFromCache,
+  clearBriefCache
+} from './services/weeklyBriefEngine';
 
 type Tab = 'pipeline' | 'calendar';
 
@@ -41,6 +49,22 @@ const App: React.FC = () => {
   const [editPrompt, setEditPrompt] = useState('');
   const [busy, setBusy] = useState<string | null>(null);
 
+  // Weekly editorial brief — hydrated from cache on mount so studio is
+  // never empty. Refreshed on demand via the panel's refresh button.
+  const [brief, setBrief] = useState<WeeklyBrief | null>(null);
+  const [briefBusy, setBriefBusy] = useState(false);
+  const [briefError, setBriefError] = useState<string | null>(null);
+  const [manualPickerOpen, setManualPickerOpen] = useState(false);
+
+  // Mobile-only slide-out drawer state. On desktop (md+) both rails are
+  // always visible and this is ignored.
+  const [mobileDrawer, setMobileDrawer] = useState<'stages' | 'info' | null>(null);
+
+  useEffect(() => {
+    const cached = loadBriefFromCache();
+    if (cached) setBrief(cached);
+  }, []);
+
   const completed = useMemo(() => {
     const set = new Set<Stage>();
     if (category) set.add('category');
@@ -51,6 +75,68 @@ const App: React.FC = () => {
     if (draft?.imagePlacements?.some((p) => p.generatedUrl)) set.add('images');
     return set;
   }, [category, audience, topic, draft]);
+
+  const handleRefreshBrief = async () => {
+    setBriefBusy(true);
+    setBriefError(null);
+    try {
+      clearBriefCache();
+      const fresh = await generateWeeklyBrief();
+      setBrief(fresh);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.error('[brief] generation failed:', err);
+      setBriefError(msg);
+    } finally {
+      setBriefBusy(false);
+    }
+  };
+
+  // Start writing from a curated card. Skips category/audience/topic pickers.
+  // We pass overrides explicitly to generateBlogDraft because React state
+  // updates are async — the setCategory/setAudience above won't be visible
+  // to the very next generateBlogDraft call otherwise.
+  const handleStartFromCard = async (card: WeeklyBriefCard) => {
+    const topicIdea: TopicIdea = {
+      id: card.id,
+      title: card.title,
+      angle: card.optifinishAngle,
+      hook: card.whyNow,
+      estimatedReadTime: '6-8 min'
+    };
+    setCategory(card.suggestedCategory);
+    setAudience(card.suggestedAudience);
+    setTopic(topicIdea);
+    setBusy(`Drafting "${card.title.slice(0, 50)}…" from the weekly brief…`);
+    try {
+      // Persist for anti-repetition ledger
+      try {
+        const prev: string[] = JSON.parse(localStorage.getItem('optifinish-recent-topics') || '[]');
+        const updated = [topicIdea.title, ...prev.filter((x) => x !== topicIdea.title)].slice(0, 30);
+        localStorage.setItem('optifinish-recent-topics', JSON.stringify(updated));
+      } catch {
+        /* ignore */
+      }
+      const d = await generateBlogDraft(topicIdea, card.suggestedCategory, card.suggestedAudience);
+      setDraft(d);
+      setVoiceScore(scoreVoice(d.bodyHtml));
+      historyStore.record({
+        title: d.title,
+        category: card.suggestedCategory,
+        audience: card.suggestedAudience,
+        archetype: d.snapshot?.structuralShape ?? 'immersive_essay',
+        modelUsed: 'multipass',
+        voiceUsed: 'rotated',
+        wordCount: d.wordCount
+      });
+      setStage('draft');
+    } catch (err) {
+      console.error('[brief-card] draft failed:', err);
+      setBriefError('Draft generation failed — check console.');
+    } finally {
+      setBusy(null);
+    }
+  };
 
   const handleGenerateTopics = async () => {
     if (!category || !audience) return;
@@ -168,13 +254,15 @@ const App: React.FC = () => {
 
   const handleGenerateImages = async () => {
     if (!draft) return;
-    setBusy('Generating images…');
-    const placements = await Promise.all(
-      draft.imagePlacements.map(async (p) => ({
-        ...p,
-        generatedUrl: await generateImage(p.prompt)
-      }))
-    );
+    setBusy('Generating images (sequential — kills intra-post duplication)…');
+    // Sequential generation with library-ID exclusion — image N cannot
+    // resolve to the same library photo as image N-1. Kills the "both
+    // images in the post are the same thermocouple shot" failure mode.
+    const generated = await generateImagesForPlacements(draft.imagePlacements);
+    const placements = generated.map((g) => ({
+      ...g,
+      generatedUrl: g.url
+    }));
     setDraft({ ...draft, imagePlacements: placements });
     setStage('images');
     setBusy(null);
@@ -197,86 +285,175 @@ const App: React.FC = () => {
     <div className="min-h-screen flex flex-col">
       {/* Header */}
       <header className="border-b border-ink-800 bg-ink-900/80 backdrop-blur sticky top-0 z-40">
-        <div className="px-8 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="w-10 h-10 rounded-lg bg-ember-500 flex items-center justify-center font-mono font-bold text-ink-950 text-sm">
+        <div className="px-4 md:px-8 h-16 md:h-20 flex items-center justify-between gap-3">
+          {/* Left cluster: mobile hamburger + brand */}
+          <div className="flex items-center gap-3 md:gap-4 min-w-0">
+            {tab === 'pipeline' && (
+              <button
+                className="md:hidden p-2 -ml-2 text-paper-100 hover:text-ember-400 transition-colors"
+                onClick={() => setMobileDrawer(mobileDrawer === 'stages' ? null : 'stages')}
+                aria-label="Toggle pipeline stages"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
+                </svg>
+              </button>
+            )}
+            <div className="w-9 h-9 md:w-10 md:h-10 rounded-lg bg-ember-500 flex items-center justify-center font-mono font-bold text-ink-950 text-sm flex-shrink-0">
               OF
             </div>
-            <div>
-              <h1 className="text-base font-bold tracking-tight">{BRAND.name}</h1>
-              <p className="text-[10px] uppercase tracking-industrial text-steel-500 font-mono">
+            <div className="min-w-0">
+              <h1 className="text-sm md:text-base font-bold tracking-tight truncate">{BRAND.name}</h1>
+              <p className="hidden md:block text-[10px] uppercase tracking-industrial text-steel-500 font-mono">
                 {BRAND.tagline}
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-4">
+
+          {/* Right cluster: tabs + busy + version + mobile info button */}
+          <div className="flex items-center gap-2 md:gap-4 flex-shrink-0">
             <div className="flex items-center gap-1 p-1 bg-ink-900 border border-ink-700 rounded-lg">
               <TabButton label="Pipeline" active={tab === 'pipeline'} onClick={() => setTab('pipeline')} />
               <TabButton label="Calendar" active={tab === 'calendar'} onClick={() => setTab('calendar')} />
             </div>
             {busy && (
-              <span className="text-[11px] font-mono text-ember-400 uppercase tracking-wider flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-ember-500 pulse-ember" />
-                {busy}
+              <span className="hidden lg:flex text-[11px] font-mono text-ember-400 uppercase tracking-wider items-center gap-2 max-w-xs truncate">
+                <span className="w-1.5 h-1.5 rounded-full bg-ember-500 pulse-ember flex-shrink-0" />
+                <span className="truncate">{busy}</span>
               </span>
             )}
-            <span className="text-[10px] font-mono text-steel-500 uppercase tracking-industrial">
-              v0.1 — local
+            <span className="hidden md:inline text-[10px] font-mono text-steel-500 uppercase tracking-industrial">
+              v0.1
             </span>
+            {tab === 'pipeline' && (
+              <button
+                className="md:hidden p-2 -mr-2 text-paper-100 hover:text-ember-400 transition-colors"
+                onClick={() => setMobileDrawer(mobileDrawer === 'info' ? null : 'info')}
+                aria-label="Toggle live state panel"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" />
+                </svg>
+              </button>
+            )}
           </div>
         </div>
+        {/* Mobile busy indicator — full-width under header when active */}
+        {busy && (
+          <div className="lg:hidden px-4 py-2 border-t border-ink-800 bg-ink-950/60">
+            <p className="text-[10px] font-mono text-ember-400 uppercase tracking-wider flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-ember-500 pulse-ember flex-shrink-0" />
+              <span className="truncate">{busy}</span>
+            </p>
+          </div>
+        )}
       </header>
 
       {tab === 'calendar' ? (
-        <main className="flex-1 overflow-y-auto p-10">
+        <main className="flex-1 overflow-y-auto p-4 md:p-10">
           <div className="max-w-5xl mx-auto">
-            <header className="mb-8">
+            <header className="mb-6 md:mb-8">
               <p className="text-[10px] font-mono uppercase tracking-industrial text-ember-400 mb-2">
                 Editorial calendar
               </p>
-              <h2 className="text-3xl font-bold tracking-tight mb-2">Coverage matrix</h2>
+              <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">Coverage matrix</h2>
               <p className="text-sm text-steel-400">
                 Click any cell — empty (red), stale (amber), or hot (orange) — to jump straight
                 to topic generation for that pairing.
               </p>
             </header>
-            <CalendarView onPickCell={handlePickCalendarCell} />
+            <div className="overflow-x-auto -mx-4 md:mx-0 px-4 md:px-0">
+              <CalendarView onPickCell={handlePickCalendarCell} />
+            </div>
           </div>
         </main>
       ) : (
-      <div className="flex-1 grid grid-cols-[260px_1fr_400px] min-h-0">
-        {/* Left rail */}
-        <aside className="border-r border-ink-800 p-6 overflow-y-auto">
-          <p className="text-[10px] uppercase tracking-industrial text-steel-500 font-mono mb-4">
-            Pipeline
-          </p>
-          <StageRail current={stage} completed={completed} onJump={setStage} />
+      <div className="flex-1 md:grid md:grid-cols-[260px_1fr_400px] min-h-0 relative">
+        {/* Mobile backdrop when a drawer is open */}
+        {mobileDrawer && (
+          <div
+            className="md:hidden fixed inset-0 bg-black/70 z-30"
+            onClick={() => setMobileDrawer(null)}
+          />
+        )}
+
+        {/* Left rail — desktop static, mobile slide-in from left */}
+        <aside
+          className={`
+            border-r border-ink-800 overflow-y-auto bg-ink-950
+            md:static md:translate-x-0 md:block md:p-6
+            fixed top-16 bottom-0 left-0 w-72 z-40 p-6
+            transform transition-transform duration-200 ease-out
+            ${mobileDrawer === 'stages' ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+          `}
+        >
+          <div className="flex items-center justify-between md:block mb-4">
+            <p className="text-[10px] uppercase tracking-industrial text-steel-500 font-mono">
+              Pipeline
+            </p>
+            <button
+              className="md:hidden text-steel-400 hover:text-paper-100 text-xs font-mono"
+              onClick={() => setMobileDrawer(null)}
+            >
+              ✕ Close
+            </button>
+          </div>
+          <StageRail
+            current={stage}
+            completed={completed}
+            onJump={(s) => {
+              setStage(s);
+              setMobileDrawer(null);
+            }}
+          />
         </aside>
 
         {/* Center workspace */}
-        <main className="overflow-y-auto p-10">
+        <main className="overflow-y-auto p-4 md:p-10">
           {stage === 'category' && (
-            <Section
-              eyebrow="Step 01"
-              title="Choose a category"
-              hint="What kind of post is this? Sets tone, structure, and the system prompt."
-            >
-              <div className="grid grid-cols-2 gap-4">
-                {CATEGORIES.map((c) => (
-                  <PickerCard
-                    key={c.id}
-                    active={category === c.id}
-                    title={c.label}
-                    subtitle={c.blurb}
-                    meta={c.examples}
-                    onClick={() => {
-                      setCategory(c.id);
-                      setStage('audience');
-                    }}
-                  />
-                ))}
+            <>
+              <WeeklyBriefPanel
+                brief={brief}
+                busy={briefBusy}
+                error={briefError}
+                onRefresh={handleRefreshBrief}
+                onSelectCard={handleStartFromCard}
+                cardActionDisabled={!!busy}
+              />
+
+              <div className="mb-4 mt-10 flex items-center gap-3 border-t border-ink-800 pt-8">
+                <button
+                  className="text-[11px] font-mono uppercase tracking-industrial text-steel-400 hover:text-steel-200 transition-colors"
+                  onClick={() => setManualPickerOpen((v) => !v)}
+                >
+                  {manualPickerOpen ? '▼' : '▶'} Manual mode — pick category + audience yourself
+                </button>
               </div>
-            </Section>
+
+              {manualPickerOpen && (
+                <Section
+                  eyebrow="Manual · Step 01"
+                  title="Choose a category"
+                  hint="What kind of post is this? Sets tone, structure, and the system prompt."
+                >
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {CATEGORIES.map((c) => (
+                      <PickerCard
+                        key={c.id}
+                        active={category === c.id}
+                        title={c.label}
+                        subtitle={c.blurb}
+                        meta={c.examples}
+                        onClick={() => {
+                          setCategory(c.id);
+                          setStage('audience');
+                        }}
+                      />
+                    ))}
+                  </div>
+                </Section>
+              )}
+            </>
           )}
 
           {stage === 'audience' && (
@@ -285,7 +462,7 @@ const App: React.FC = () => {
               title="Pick the target audience"
               hint="Tone, depth and what the post optimises for change with the reader."
             >
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {AUDIENCES.map((a) => (
                   <PickerCard
                     key={a.id}
@@ -343,6 +520,9 @@ const App: React.FC = () => {
               title="Draft"
               hint={`${draft.wordCount} words. Review before adding the SEO layer.`}
             >
+              {draft.editorialFlags?.hasAny && (
+                <EditorialFlagsBanner flags={draft.editorialFlags} />
+              )}
               <DraftBlock draft={draft} />
               <PrimaryButton disabled={!!busy} onClick={handleSeo}>
                 Add SEO layer →
@@ -412,7 +592,7 @@ const App: React.FC = () => {
                     key={p.id}
                     className="border border-ink-700 rounded-xl overflow-hidden bg-ink-900/50"
                   >
-                    <div className="grid grid-cols-[200px_1fr] gap-0">
+                    <div className="grid grid-cols-1 sm:grid-cols-[200px_1fr] gap-0">
                       <div className="bg-ink-800 aspect-[4/3] flex items-center justify-center">
                         {p.generatedUrl ? (
                           <img
@@ -537,11 +717,27 @@ const App: React.FC = () => {
           )}
         </main>
 
-        {/* Right preview */}
-        <aside className="border-l border-ink-800 bg-ink-900/40 overflow-y-auto p-8">
-          <p className="text-[10px] uppercase tracking-industrial text-steel-500 font-mono mb-4">
-            Live State
-          </p>
+        {/* Right preview — desktop static, mobile slide-in from right */}
+        <aside
+          className={`
+            border-l border-ink-800 bg-ink-900/95 md:bg-ink-900/40 overflow-y-auto
+            md:static md:translate-x-0 md:block md:p-8
+            fixed top-16 bottom-0 right-0 w-80 z-40 p-6
+            transform transition-transform duration-200 ease-out
+            ${mobileDrawer === 'info' ? 'translate-x-0' : 'translate-x-full md:translate-x-0'}
+          `}
+        >
+          <div className="flex items-center justify-between md:block mb-4">
+            <p className="text-[10px] uppercase tracking-industrial text-steel-500 font-mono">
+              Live State
+            </p>
+            <button
+              className="md:hidden text-steel-400 hover:text-paper-100 text-xs font-mono"
+              onClick={() => setMobileDrawer(null)}
+            >
+              ✕ Close
+            </button>
+          </div>
           <div className="space-y-3 text-xs">
             <StateRow label="Category" value={category ? CATEGORIES.find((c) => c.id === category)!.label : '—'} />
             <StateRow label="Audience" value={audience ? AUDIENCES.find((a) => a.id === audience)!.label : '—'} />
@@ -705,13 +901,13 @@ const Section: React.FC<{
   hint: string;
   children: React.ReactNode;
 }> = ({ eyebrow, title, hint, children }) => (
-  <div className="max-w-3xl space-y-8">
+  <div className="max-w-3xl space-y-6 md:space-y-8">
     <header>
       <p className="text-[10px] font-mono uppercase tracking-industrial text-ember-400 mb-2">
         {eyebrow}
       </p>
-      <h2 className="text-3xl font-bold tracking-tight mb-2">{title}</h2>
-      <p className="text-sm text-steel-400">{hint}</p>
+      <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2 leading-tight">{title}</h2>
+      <p className="text-xs md:text-sm text-steel-400 leading-relaxed">{hint}</p>
     </header>
     {children}
   </div>
@@ -725,7 +921,7 @@ const PrimaryButton: React.FC<{
   <button
     disabled={disabled}
     onClick={onClick}
-    className={`px-6 py-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${
+    className={`w-full sm:w-auto px-5 md:px-6 py-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${
       disabled
         ? 'bg-ink-800 text-steel-600 cursor-not-allowed'
         : 'bg-ember-500 text-ink-950 hover:bg-ember-400 active:scale-[0.98]'
@@ -753,12 +949,83 @@ const StateRow: React.FC<{ label: string; value: string; multiline?: boolean }> 
   </div>
 );
 
+// Red banner at the top of Step 4 when the post-generation detector spotted
+// fabricated numbers, first-person leaks, or fabricated years in the draft.
+// Editor must review + fix before publishing — the HTML comment inside the
+// exported body is easy to miss, this is unmissable.
+const EditorialFlagsBanner: React.FC<{ flags: EditorialFlags }> = ({ flags }) => (
+  <div className="border border-rose-500/60 bg-rose-950/30 rounded-xl p-5 mb-6">
+    <div className="flex items-baseline justify-between mb-3">
+      <div className="flex items-center gap-2">
+        <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
+        <span className="text-[10px] font-mono uppercase tracking-industrial text-rose-300 font-bold">
+          Editorial Review Required
+        </span>
+      </div>
+      <span className="text-[10px] font-mono text-rose-400">
+        {flags.fabricatedNumbers.length + flags.firstPersonLeaks.length + flags.fabricatedYears.length} flag(s)
+      </span>
+    </div>
+    <p className="text-xs text-rose-100 mb-4 leading-relaxed">
+      The post-generation detector spotted patterns that damage credibility. Fix these before adding SEO or exporting — each one is either a fabricated claim, an editorial voice slip, or an unverified date.
+    </p>
+    <div className="space-y-3 text-[11px]">
+      {flags.fabricatedNumbers.length > 0 && (
+        <FlagGroup
+          label="Fabricated numbers"
+          color="rose"
+          items={flags.fabricatedNumbers}
+          note="Every % / INR / °C / RH figure below is a candidate — verify against a published source or rewrite qualitatively."
+        />
+      )}
+      {flags.firstPersonLeaks.length > 0 && (
+        <FlagGroup
+          label="First-person leaks"
+          color="amber"
+          items={flags.firstPersonLeaks}
+          note="Body copy is third-person observational. Rewrite each instance — CTA card is the ONLY surface allowed to address the reader."
+        />
+      )}
+      {flags.fabricatedYears.length > 0 && (
+        <FlagGroup
+          label="Fabricated years"
+          color="amber"
+          items={flags.fabricatedYears}
+          note="Historical years (e.g. 'since 2010') are invented context. Either cite a real source or drop the year."
+        />
+      )}
+    </div>
+  </div>
+);
+
+const FlagGroup: React.FC<{ label: string; color: 'rose' | 'amber'; items: string[]; note: string }> = ({
+  label,
+  color,
+  items,
+  note
+}) => {
+  const c = color === 'rose' ? 'text-rose-300' : 'text-amber-300';
+  return (
+    <div>
+      <div className={`font-mono uppercase text-[10px] tracking-wider mb-1 ${c}`}>{label}</div>
+      <ul className="space-y-1 mb-1">
+        {items.slice(0, 6).map((s, i) => (
+          <li key={i} className="text-paper-100 font-mono text-[11px] pl-3 border-l-2 border-rose-500/40">
+            {s.length > 100 ? s.slice(0, 97) + '…' : s}
+          </li>
+        ))}
+      </ul>
+      <p className={`text-[10px] italic ${c}/80`}>{note}</p>
+    </div>
+  );
+};
+
 const DraftBlock: React.FC<{ draft: BlogDraft }> = ({ draft }) => (
-  <div className="border border-ink-700 rounded-xl p-8 bg-ink-900/30">
-    <h1 className="text-2xl font-bold mb-2 leading-tight">{draft.title}</h1>
+  <div className="border border-ink-700 rounded-xl p-4 md:p-8 bg-ink-900/30 overflow-hidden">
+    <h1 className="text-xl md:text-2xl font-bold mb-2 leading-tight">{draft.title}</h1>
     <p className="text-sm text-steel-400 italic mb-6">{draft.subtitle}</p>
     <div
-      className="prose prose-invert prose-sm max-w-none text-paper-100"
+      className="prose prose-invert prose-sm max-w-none text-paper-100 overflow-x-auto"
       style={{ lineHeight: 1.7 }}
       dangerouslySetInnerHTML={{ __html: draft.bodyHtml }}
     />
@@ -896,13 +1163,174 @@ const SeoRow: React.FC<{ label: string; value: string; mono?: boolean }> = ({
   value,
   mono
 }) => (
-  <div className="grid grid-cols-[140px_1fr] gap-4 items-start">
+  <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-1 sm:gap-4 items-start">
     <span className="text-[10px] font-mono uppercase tracking-industrial text-steel-500 pt-1">
       {label}
     </span>
     <span className={`text-sm ${mono ? 'font-mono text-ember-400' : 'text-paper-100'}`}>
       {value}
     </span>
+  </div>
+);
+
+// ─────────────────────────────────────────────────────────────
+// Weekly Editorial Brief — top-of-studio panel
+// ─────────────────────────────────────────────────────────────
+const WeeklyBriefPanel: React.FC<{
+  brief: WeeklyBrief | null;
+  busy: boolean;
+  error: string | null;
+  onRefresh: () => void;
+  onSelectCard: (card: WeeklyBriefCard) => void;
+  cardActionDisabled: boolean;
+}> = ({ brief, busy, error, onRefresh, onSelectCard, cardActionDisabled }) => {
+  const generatedLabel = brief
+    ? new Date(brief.generatedAt).toLocaleString(undefined, {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      })
+    : null;
+
+  return (
+    <section className="mb-6">
+      <header className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-4 mb-6">
+        <div className="min-w-0">
+          <p className="text-[10px] font-mono uppercase tracking-industrial text-ember-500 mb-2">
+            Weekly Editorial Brief
+          </p>
+          <h2 className="text-xl md:text-2xl font-bold tracking-tight leading-tight">
+            Curated topics — {brief ? `${brief.cards.length} ideas from live industry research` : 'ready to generate'}
+          </h2>
+          <p className="text-xs md:text-sm text-steel-400 mt-2 leading-relaxed">
+            {brief
+              ? `Sourced from ${brief.totalEvidenceCollected} evidence items across ${brief.totalQueriesRun} live searches. Last updated ${generatedLabel}.`
+              : 'Runs 10 Tavily searches across regulations, OEM launches, defect trends and market shifts, then cross-references what optifinish.in already covers.'}
+          </p>
+        </div>
+        <button
+          onClick={onRefresh}
+          disabled={busy}
+          className="text-[11px] font-mono uppercase tracking-industrial px-4 py-2 border border-ember-500 text-ember-400 hover:bg-ember-500 hover:text-ink-950 transition-colors rounded-md disabled:opacity-50 disabled:cursor-wait whitespace-nowrap self-start sm:self-auto flex-shrink-0"
+        >
+          {busy ? 'Researching…' : brief ? '↻ Refresh brief' : 'Generate brief'}
+        </button>
+      </header>
+
+      {error && (
+        <div className="mb-4 p-4 border border-rose-500/40 bg-rose-500/10 rounded-lg text-sm text-rose-200">
+          <strong className="font-mono uppercase text-[10px] tracking-industrial text-rose-300 block mb-1">
+            Brief generation failed
+          </strong>
+          {error}
+        </div>
+      )}
+
+      {busy && !brief && (
+        <div className="p-8 border border-ember-500/30 bg-ember-500/5 rounded-xl text-center">
+          <p className="text-sm text-steel-300">
+            Searching industry sources… this takes 20-40 seconds (10 live queries + synthesis).
+          </p>
+        </div>
+      )}
+
+      {!brief && !busy && !error && (
+        <div className="p-8 border border-ink-800 bg-ink-900/50 rounded-xl text-center">
+          <p className="text-sm text-steel-400 mb-3">
+            No brief yet. Click <strong className="text-ember-400">Generate brief</strong> to see this week's most-worth-writing topics based on live industry research.
+          </p>
+          <p className="text-[11px] text-steel-500 font-mono">
+            Or scroll down to pick a category manually.
+          </p>
+        </div>
+      )}
+
+      {brief && brief.cards.length > 0 && (
+        <div className="grid grid-cols-1 gap-4">
+          {brief.cards.map((card) => (
+            <BriefCard
+              key={card.id}
+              card={card}
+              onSelect={() => onSelectCard(card)}
+              disabled={cardActionDisabled}
+            />
+          ))}
+        </div>
+      )}
+    </section>
+  );
+};
+
+const BriefCard: React.FC<{
+  card: WeeklyBriefCard;
+  onSelect: () => void;
+  disabled: boolean;
+}> = ({ card, onSelect, disabled }) => {
+  const categoryLabel = CATEGORIES.find((c) => c.id === card.suggestedCategory)?.label ?? card.suggestedCategory;
+  const audienceLabel = AUDIENCES.find((a) => a.id === card.suggestedAudience)?.label ?? card.suggestedAudience;
+
+  return (
+    <article className="p-4 md:p-6 border border-ink-700 hover:border-ember-500/60 bg-ink-900/50 rounded-xl transition-colors">
+      <header className="flex flex-col md:flex-row md:items-baseline md:justify-between gap-3 mb-3">
+        <h3 className="text-base md:text-lg font-bold tracking-tight leading-snug">{card.title}</h3>
+        <div className="flex flex-wrap gap-2 md:flex-shrink-0">
+          <span className="text-[9px] font-mono uppercase tracking-industrial px-2 py-1 rounded bg-ember-500/10 text-ember-400 border border-ember-500/30 whitespace-nowrap">
+            {categoryLabel}
+          </span>
+          <span className="text-[9px] font-mono uppercase tracking-industrial px-2 py-1 rounded bg-ink-800 text-steel-300 border border-ink-700 whitespace-nowrap">
+            {audienceLabel}
+          </span>
+        </div>
+      </header>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3 text-xs mb-4">
+        <BriefRow label="Why now" value={card.whyNow} />
+        <BriefRow label="Search demand" value={card.searchDemand} />
+        <BriefRow label="OptiFinish angle" value={card.optifinishAngle} />
+        <BriefRow label="Gap in our content" value={card.gapInOurContent} />
+      </div>
+
+      {card.evidenceUrls.length > 0 && (
+        <div className="mb-4 pt-3 border-t border-ink-800">
+          <p className="text-[9px] font-mono uppercase tracking-industrial text-steel-500 mb-2">
+            Evidence
+          </p>
+          <ul className="space-y-1">
+            {card.evidenceUrls.map((u, i) => (
+              <li key={i}>
+                <a
+                  href={u}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[11px] text-steel-400 hover:text-ember-400 font-mono break-all"
+                >
+                  {new URL(u).hostname.replace(/^www\./, '')}
+                  {new URL(u).pathname.slice(0, 60)}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <button
+        onClick={onSelect}
+        disabled={disabled}
+        className="text-[11px] font-mono uppercase tracking-industrial px-4 py-2 bg-ember-500 text-ink-950 hover:bg-ember-400 transition-colors rounded-md disabled:opacity-40 disabled:cursor-not-allowed"
+      >
+        Start writing →
+      </button>
+    </article>
+  );
+};
+
+const BriefRow: React.FC<{ label: string; value: string }> = ({ label, value }) => (
+  <div>
+    <p className="text-[9px] font-mono uppercase tracking-industrial text-steel-500 mb-1">
+      {label}
+    </p>
+    <p className="text-xs text-paper-100 leading-relaxed">{value || '—'}</p>
   </div>
 );
 

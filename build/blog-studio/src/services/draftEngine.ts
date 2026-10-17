@@ -5,11 +5,14 @@ import {
   BlogDraft,
   ImagePlacement,
   DossierSnapshot,
-  StructuralShape
+  StructuralShape,
+  AeoBundle
 } from '../types';
 import { CATEGORIES, AUDIENCES } from '../constants';
 import { chatJSON } from './nvidiaLlmService';
 import { pickRotated, MODELS, ModelId } from './modelRouter';
+import { computeEditorialFlags, flagsToHtmlComment } from './editorialFlags';
+import { generateAeoBundle } from './aeoEngine';
 
 // ─────────────────────────────────────────────────────────────
 // Per-category structural blueprint. The model MUST follow the
@@ -338,7 +341,19 @@ Write the full post per the rules. Hit at least 1100 words of body text — this
     json = await callWith(llama.id, llama.intrinsicVoice);
   }
 
-  const wordCount = json.bodyHtml.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+  // Same defensive detectors as multipass — either path can win the race
+  // (multipass errors → single-pass fallback) and the editor deserves the
+  // same warnings regardless.
+  const editorialFlags = computeEditorialFlags(json.bodyHtml);
+  let bodyHtml = json.bodyHtml;
+  if (editorialFlags.hasAny) {
+    console.warn(
+      `[single-pass] editorial flags — fab:${editorialFlags.fabricatedNumbers.length} fp:${editorialFlags.firstPersonLeaks.length} years:${editorialFlags.fabricatedYears.length}`
+    );
+    bodyHtml = flagsToHtmlComment(editorialFlags) + bodyHtml;
+  }
+
+  const wordCount = bodyHtml.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
 
   const imagePlacements: ImagePlacement[] = (json.imagePlacements ?? [])
     .slice(0, 2)
@@ -350,12 +365,28 @@ Write the full post per the rules. Hit at least 1100 words of body text — this
       alt: p.alt
     }));
 
-  return {
+  const partialDraft: BlogDraft = {
     title: json.title,
     subtitle: json.subtitle,
-    bodyHtml: json.bodyHtml,
+    bodyHtml,
     wordCount,
     snapshot: json.snapshot,
-    imagePlacements
+    imagePlacements,
+    editorialFlags
   };
+
+  // AEO metadata (Quick Answer + FAQ + entities). Best-effort, non-blocking —
+  // parity with the multipass path so both engines produce identically-shaped
+  // drafts. See src/services/aeoEngine.ts.
+  let aeo: AeoBundle | undefined;
+  try {
+    aeo = await generateAeoBundle(partialDraft);
+    console.log(
+      `[single-pass] AEO ready: quickAnswer=${aeo.quickAnswer.split(/\s+/).length}w, faq=${aeo.faq.length}, entities=${aeo.entities.length}`
+    );
+  } catch (err) {
+    console.warn('[single-pass] AEO generation failed (non-blocking):', err);
+  }
+
+  return { ...partialDraft, aeo };
 }

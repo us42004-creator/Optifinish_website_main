@@ -26,12 +26,45 @@ import {
   BlogDraft,
   ImagePlacement,
   DossierSnapshot,
-  StructuralShape
+  StructuralShape,
+  AeoBundle
 } from '../types';
 import { CATEGORIES, AUDIENCES } from '../constants';
 import { chatJSON, chatCompletion, parseJsonish } from './nvidiaLlmService';
 import { pickRotated, pickRandom, MODELS, ModelEntry, ModelId } from './modelRouter';
 import { CATEGORY_BLUEPRINT } from './draftEngine';
+import { searchTavily, tavilyToPromptContext } from './tavilySearch';
+import { computeEditorialFlags, flagsToHtmlComment } from './editorialFlags';
+import { generateAeoBundle } from './aeoEngine';
+
+// Tavily search excludes optifinish's own domains so external evidence is
+// genuinely external — not our own claims cited back at us. Product /
+// internal-link recommendations happen through the site-index path
+// (seoEngine → siteIndex), never through this fresh-context path.
+const OWN_DOMAINS_EXCLUDE = ['optifinish.in', 'optifinish.com', 'www.optifinish.in'];
+
+// Pulls up to N external results for one query, formats as an EXTERNAL
+// EVIDENCE block ready for prompt injection. Best-effort — silent-fallthrough
+// on error (no key, quota exceeded, network) so a bad Tavily call never
+// blocks draft generation. Returns empty string if nothing usable came back.
+async function fetchExternalEvidence(query: string, maxEntries: number): Promise<string> {
+  try {
+    const res = await searchTavily(query, {
+      searchDepth: 'basic',
+      maxResults: maxEntries,
+      topic: 'general',
+      excludeDomains: OWN_DOMAINS_EXCLUDE
+    });
+    if (res.results.length === 0) return '';
+    return `\n\nEXTERNAL EVIDENCE (via Tavily, real published sources — cite loosely, do NOT invent numbers not present here):\n${tavilyToPromptContext(res.results, {
+      maxEntries,
+      maxContentChars: 220
+    })}\n`;
+  } catch (err) {
+    console.warn(`[draftEngineMultipass] Tavily fetch skipped for "${query.slice(0, 40)}":`, err);
+    return '';
+  }
+}
 
 interface OutlineSection {
   id: string;
@@ -140,14 +173,16 @@ The image goes to an AI image model (Flux) that produces ONE photographic frame 
 If a section's content is genuinely a COMPARISON or a DIAGRAM, anchor the image to a DIFFERENT section that has a single concrete photographable subject. The post can have brilliant comparison TABLES in prose without needing a comparison IMAGE.
 
 HARD-BANNED PROMPT PATTERNS (writing any of these is a generation failure):
-- "side-by-side"
-- "vs", "versus", "compared to", "comparison"
-- "illustrated", "illustration"
+- "side-by-side", "split-screen", "before and after"
+- "contrasting", "contrasted with", "juxtaposed with", "next to a X, next to a Y"
+- "vs", "versus", "compared to", "comparison", "comparison of X and Y"
+- "illustrated", "illustration", "rendering", "3D render"
 - "cross-section", "cut-away", "exploded view"
-- "diagram", "schematic", "infographic", "blueprint"
-- "highlighting", "labelled", "labeled", "annotated", "callouts"
-- "split-screen", "before and after"
-- "showing the X branding", "with X logo visible"
+- "diagram", "schematic", "infographic", "blueprint", "chart", "graph"
+- "highlighting", "labelled", "labeled", "annotated", "callouts", "arrows pointing to"
+- "showing the X branding", "with X logo visible", "brand name visible", "readable text"
+- Any parenthetical asking Flux to render a compliance label — NEVER write "(BEE compliant)", "(BIS certified)", "(ISO 9001)", "(CE marked)" or similar inside a prompt. Flux fakes text as gibberish.
+- Any "showing X compliant" / "with certification stamp" / "labelled sustainable" phrasings — these all ask Flux to render legible signage or logos it cannot render honestly.
 
 REQUIRED PROMPT SHAPE (30-80 words):
 First sentence = one concrete physical subject in the scene + framing. Second sentence = light + mood. Third (optional) = a small specific detail anchoring the scene to OptiFinish's world.
@@ -179,7 +214,7 @@ Strict JSON only.
 {
   "title": "string (max 75 chars)",
   "subtitle": "string (max 130 chars)",
-  "leadParagraph": "string (60-110 words, sits above the first H2, sets the scene without any first-person and without any fabricated numbers; opens with a concrete physical observation, a dated trigger, or a sharp question — NEVER 'In today's', 'Did you know', 'Have you ever')",
+  "leadParagraph": "string (60-110 words, sits above the first H2). MUST open with a concrete physical observation OR a dated trigger from the trigger pool OR a specific numbered claim from the EXTERNAL EVIDENCE. MUST NOT open with (banned openers, applied strictly): 'In today's', 'In the world of', 'In the realm of', 'Did you know', 'Have you ever', 'What if', 'Imagine if', 'Picture this', 'Every X knows', 'It is no secret', 'When it comes to'. MUST NOT contain first-person (no we/our/us). MUST NOT contain a fabricated percentage, INR figure, or physical claim (temperature/humidity) not present in EXTERNAL EVIDENCE. MUST NOT contain a fabricated context year (like 'since 2010' or 'in the 1990s') — use a current year or omit.",
   "snapshot": {
     "decisionFriction": "",
     "dominantAnxiety": "",
@@ -207,6 +242,14 @@ async function runOutlinePass(
   const cat = CATEGORIES.find((c) => c.id === category)!;
   const aud = AUDIENCES.find((a) => a.id === audience)!;
 
+  // Pull external evidence for the topic — grounds the outline in real
+  // sources so section headings and snapshot fields aren't invented from
+  // model memory alone. One Tavily call for the whole outline.
+  const evidence = await fetchExternalEvidence(
+    `${topic.title} India 2026 industrial coating`,
+    6
+  );
+
   const userPrompt = `Outline this post.
 
 TITLE (provisional): "${topic.title}"
@@ -215,9 +258,11 @@ ANGLE: ${topic.angle}
 
 Category: ${cat.label} — ${cat.blurb}
 Audience: ${aud.label} (${aud.role})
-Reader cares about: ${aud.cares}
+Reader cares about: ${aud.cares}${evidence}
 
-Produce 6-8 sections. Section wordTargets must sum to 1100-1400. Mark exactly one section hasPullQuote: true. Anchor 2 inline images to two different section headings you wrote (exact text match).`;
+Produce 6-8 sections. Section wordTargets must sum to 1100-1400. Mark exactly one section hasPullQuote: true. Anchor 2 inline images to two different section headings you wrote (exact text match).
+
+If the EXTERNAL EVIDENCE above contains named events, dates, OEM figures, or regulations directly relevant to this post's angle, reflect them in the outline's snapshot fields and section intents — do not fabricate parallel facts.`;
 
   return chatJSON<OutlineJson>({
     model: model.id,
@@ -313,6 +358,52 @@ NEVER write copy that positions a partner brand as inferior to OptiFinish's own 
 - AVOID 3-CLAUSE "X, Y, AND Z": maximum one occurrence per section.
 
 ═════════════════════════════════════════════
+  SPECIFICITY REQUIREMENT (this is where LLM prose fails hardest)
+═════════════════════════════════════════════
+Every section must contain AT LEAST TWO of the following concrete anchors — otherwise you are writing generic B2B slop:
+
+1. A NAMED SYSTEM or noun (e.g. "the OptiSpray pump's canister", "a K-type thermocouple", "the exit tunnel", "cast-aluminium substrate", "the Faraday cage at the recess")
+2. A SENSORY DETAIL — something a human on the shop floor would actually see, hear, feel, or smell ("the smell of curing oven exhaust at hour six", "the sound of a conveyor hook striking the frame", "the tactile grain of an orange-peel finish under a fingertip", "raking morning light exposing dry-spray patches", "the low hum of a properly balanced air handler")
+3. A SPECIFIC PLACE OR TIME anchor ("Konkan-coast monsoon mornings", "post-lunch dip in cure profile", "hour six of the third shift", "the first Monday after a powder-brand change")
+4. A NAMED PERSON-ROLE observation ("the operator who has run this booth for eight years", "the plant manager reviewing the third-shift rejection report", "the process engineer commissioning the line", "the QC supervisor cutting cross-hatches")
+
+If a section reads like it could belong on any powder-coating website in any country, you have not applied this rule. Rewrite until it could only belong in an OptiFinish post grounded in the Indian shop floor.
+
+═════════════════════════════════════════════
+  AEO RULE — FIRST SENTENCE ANSWERS THE HEADING
+═════════════════════════════════════════════
+The FIRST sentence of your section must directly answer the implicit question the H2 poses. This is what AI search engines (ChatGPT, Perplexity, Claude, Gemini) extract and quote when a user asks about this topic.
+
+Rules for the first sentence:
+- Third-person, factual, concrete. No "in this section", no "let's explore", no framing preamble.
+- Names the specific object of the answer (a system, a number, a decision, a mechanism).
+- Reads as a standalone sentence that could be pulled out of context and still hold.
+- 15-35 words. Not one-word. Not a run-on.
+
+Examples:
+- H2: "Why hour-six humidity rewrites every spec sheet"
+  ✓ "By hour six of the third shift, morning humidity in coastal Indian plants routinely peaks above eighty percent, which shifts the effective cure window even when the oven set-point has not moved."
+  ✗ "In this section, we will explore how humidity affects powder coating." (framing)
+  ✗ "Humidity is important." (too thin)
+
+- H2: "The thermal profile that decides adhesion"
+  ✓ "Adhesion is decided in the last three minutes of the ramp curve, not at peak metal temperature, because the substrate reaches gel while the powder is still consolidating."
+  ✗ "Let us discuss thermal profiles." (framing)
+
+After the first sentence, expand normally per the rest of the rules.
+
+═════════════════════════════════════════════
+  ONE SHARP LINE PER SECTION
+═════════════════════════════════════════════
+Every section must contain AT LEAST ONE sentence that would work as a pull-quote — a compressed insight, ideally a reframe, in tight language. Not marketing punch. Editorial punch. Example shapes:
+
+  ✓ "The rejection bin is the honest meter, not the spec sheet."
+  ✓ "Cost per gun is easy to compare. Cost per rejected part is what runs the plant."
+  ✓ "Faraday cage dropouts do not respect a torque wrench."
+
+Bury the sharp line inside the paragraph — don't preface it with "In other words" or "put simply".
+
+═════════════════════════════════════════════
   OUTPUT
 ═════════════════════════════════════════════
 Strict JSON only.
@@ -339,6 +430,11 @@ async function runExpandPass(
     (prevSection ? `\nPrevious section was: "${prevSection.heading}" — covered: ${prevSection.intent}. Do not repeat that material.` : '') +
     (nextSection ? `\nNext section will be: "${nextSection.heading}" — will cover: ${nextSection.intent}. Set up that handoff but do not preempt it.` : '');
 
+  // Per-section external evidence — query built from heading + first ~10 words
+  // of intent for a focused search. External sources only (no optifinish.in).
+  const sectionQuery = `${section.heading} ${section.intent.split(/\s+/).slice(0, 10).join(' ')}`;
+  const evidence = await fetchExternalEvidence(sectionQuery, 4);
+
   const userPrompt = `Expand this section.
 
 POST CONTEXT:
@@ -350,12 +446,14 @@ THIS SECTION:
 - Heading (already in the post, do not repeat in your output): "${section.heading}"
 - Intent: ${section.intent}
 - Word target: ${section.wordTarget} words (acceptable range: ${Math.round(section.wordTarget * 0.85)}-${Math.round(section.wordTarget * 1.2)})
-${continuity}
+${continuity}${evidence}
 
 CONSTRAINTS:
 - Output 2-3 paragraphs of body HTML.
 ${section.hasPullQuote ? '- Include exactly ONE <blockquote> wrapping the most quotable line of this section. Pick the sharpest reframe in your prose and quote it.' : '- DO NOT include <blockquote>.'}
 - An <ol> or <ul> may appear if it makes sense for enumerating failure modes or decision criteria. Optional.
+- If the EXTERNAL EVIDENCE above contains a named entity / date / OEM figure directly relevant to this section, use it (attribution loose — "as reported in early 2026" style is fine). Do not fabricate parallel figures.
+- Product / partner recommendations do NOT belong in the body. Any "learn more about our X" line is CTA territory, not body-copy territory.
 
 Apply ALL anti-monotony, no-fabricated-numbers, no-marketing-hype, no-cliché rules.`;
 
@@ -381,43 +479,105 @@ Apply ALL anti-monotony, no-fabricated-numbers, no-marketing-hype, no-cliché ru
 // ─────────────────────────────────────────────────────────────
 const EDIT_SYSTEM_PROMPT = `You are a senior B2B technical editor reviewing one OptiFinish blog draft. Your job is to TIGHTEN, not rewrite. Preserve every H2 heading exactly. Preserve the <blockquote>. Keep total word count within ±5% of the input.
 
-WHAT TO FIX:
-- Cliché openers and template phrases ("It is worth noting", "When it comes to", "At the end of the day", "In essence", "All in all").
-- Marketing hype ("best-in-class", "industry-leading", "game-changing", "cutting-edge", "robust", "seamless", "synergy", "leverage" as verb, "unlock", "harness", "empower").
-- Repetitive paragraph openings — if two consecutive paragraphs start with the same word, vary the second.
-- Cross-section concept repetition — if "transfer efficiency" appears identically in 3 sections, replace 1-2 with synonyms or rephrasings.
-- Em-dashes — replace with commas, colons, or periods.
-- Generic 3-clause "X, Y, and Z" overused — limit to one per section.
+═══════════════════════════════════════════════════════════
+  KILL THESE AI TELLS ON SIGHT (most damaging to credibility)
+═══════════════════════════════════════════════════════════
 
-WHAT NOT TO TOUCH:
+BANNED SENTENCE OPENERS (rewrite the sentence entirely):
+- "It is worth noting that"
+- "It should be mentioned that"
+- "It is important to consider"
+- "One key consideration is"
+- "In today's" (any variant)
+- "In the world of"
+- "In the realm of"
+- "When it comes to"
+- "At the end of the day"
+- "In essence"
+- "In summary"
+- "All in all"
+- "To put it simply"
+- "In conclusion"
+- "That said"
+- "That being said"
+- "Ultimately"
+- "Fundamentally"
+- "Interestingly"
+- "Notably"
+- "Additionally" as a first word (use "Also" or restructure)
+- "Furthermore" as a first word
+- "Moreover" as a first word
+
+BANNED CONNECTIVES (bandaid words LLMs use to fake continuity):
+- "In addition to this"
+- "It's worth pointing out"
+- "As previously mentioned"
+- "As we've discussed"
+- "As mentioned above"
+- "As I mentioned earlier"
+
+BANNED HYPE VOCABULARY (delete or replace with concrete):
+- "best-in-class", "industry-leading", "unparalleled"
+- "game-changing", "cutting-edge", "revolutionary"
+- "next-level", "world-class", "state-of-the-art"
+- "robust", "seamless", "synergy"
+- "leverage" (as verb), "unlock", "harness", "empower"
+- "ecosystem" (as buzzword)
+- "solution" (as vague noun; name the actual thing)
+- "streamline", "optimize" (as vague verbs)
+
+BANNED CONCEPT-COVER PHRASES (they signal "I don't have specifics"):
+- "a variety of"
+- "a range of"
+- "a number of"
+- "various factors"
+- "multiple aspects"
+- "several considerations"
+
+RHYTHM RULES:
+- No two consecutive paragraphs may start with the same word.
+- If two consecutive sentences within a paragraph both start with "The" or "This", vary one of them.
+- Long 3-clause "X, Y, and Z" lists — max one per section.
+- Passive-voice "is being" / "are being" constructions — rewrite to active if the actor is knowable.
+
+CROSS-SECTION REPETITION:
+- If a core noun (e.g. "transfer efficiency", "cure window") appears verbatim in 3+ sections, replace 1-2 mentions with a rephrasing that keeps the meaning but varies the surface form.
+
+═══════════════════════════════════════════════════════════
+  WHAT NOT TO TOUCH
+═══════════════════════════════════════════════════════════
 - H2 headings (preserve exactly).
 - The <blockquote> (preserve exactly, including the words inside).
-- Concrete claims (named systems, dated regulations, verifiable OEM figures) — leave them alone.
+- Concrete claims (named systems, dated regulations, OEM-announced capacity figures) — leave them alone.
 - Section count or order.
 
-WHAT NOT TO ADD:
-- New numbers (especially percentages or INR figures).
-- New claims.
-- Editorial commentary or notes.
+═══════════════════════════════════════════════════════════
+  WHAT NOT TO ADD
+═══════════════════════════════════════════════════════════
+- New numbers (especially percentages, °C values, RH percentages, INR cr/lakh figures).
+- New claims about OptiFinish, GEMA, DURR, Z-TAP or any named product.
+- Editorial commentary, notes, or "here's what I changed" annotations.
 
 OUTPUT: Return ONLY the polished body HTML. No JSON wrapper, no markdown code fences, no preamble, no explanation. The first character of your output must be '<' (the start of an HTML tag).`;
 
 async function runEditPass(fullBodyHtml: string): Promise<string> {
-  // Gemma 3 12B — plain-text output (Gemma on NVIDIA Build rejects
-  // response_format). 90s ceiling — sections were already expanded
-  // individually so the body is solid even if scrub gets skipped.
+  // Nemotron Super 49B — bigger than Gemma 12B, catches subtler cliché
+  // patterns and has better instruction-following on complex "kill these
+  // phrases" checklists. Plain-text output (skip JSON mode). 120s ceiling
+  // — sections were already expanded individually so if scrub times out
+  // the body is still solid.
   const editPromise = chatCompletion({
-    model: 'google/gemma-3-12b-it',
+    model: 'nvidia/llama-3.3-nemotron-super-49b-v1',
     messages: [
       { role: 'system', content: EDIT_SYSTEM_PROMPT },
-      { role: 'user', content: `Edit this draft. Tighten only. Preserve all H2s and any blockquote.\n\n${fullBodyHtml}` }
+      { role: 'user', content: `Edit this draft. Tighten only. Preserve all H2s and any blockquote. Kill every banned phrase you find.\n\n${fullBodyHtml}` }
     ],
-    temperature: 0.4,
+    temperature: 0.35,
     topP: 0.9,
-    maxTokens: 4000
+    maxTokens: 5000
   });
   const timeoutPromise = new Promise<string>((_, reject) =>
-    setTimeout(() => reject(new Error('editorial scrub exceeded 90s ceiling')), 90_000)
+    setTimeout(() => reject(new Error('editorial scrub exceeded 120s ceiling')), 120_000)
   );
   const text = await Promise.race([editPromise, timeoutPromise]);
   const trimmed = text.trim().replace(/^```(?:html)?\s*/i, '').replace(/\s*```$/i, '');
@@ -522,22 +682,18 @@ export async function generateBlogDraftMultipass(
     polished = assembled;
   }
 
-  // Defensive scrub for the two failure modes that damage trust most:
-  // (a) fabricated specific percentages slipping through (e.g. "22% re-coats")
-  // (b) first-person pronouns slipping through ("our facility", "we offer")
-  // These are last-mile catches; the prompt already forbids both, but the
-  // model occasionally ignores rules under length pressure. Log + flag in
-  // a comment so the editor sees what was caught.
-  const fabFlags = detectFabricatedNumbers(polished);
-  const fpFlags = detectFirstPersonInBody(polished);
-  if (fabFlags.length || fpFlags.length) {
-    const notes: string[] = [];
-    if (fabFlags.length)
-      notes.push(`fabricated-number candidates: ${fabFlags.slice(0, 5).join(', ')}`);
-    if (fpFlags.length)
-      notes.push(`first-person leaks: ${fpFlags.slice(0, 5).join(', ')}`);
-    console.warn(`[multipass] post-gen review flags — ${notes.join(' | ')}`);
-    polished = `<!--\n  EDITORIAL REVIEW FLAGS (auto-detected, do not publish without checking):\n  ${notes.join('\n  ')}\n-->\n${polished}`;
+  // Defensive editorial detectors — broadened set in editorialFlags.ts catches
+  // INR ranges, fabricated years, bare "we're / we've", and more outcome
+  // percentage patterns than the original narrower rule. Runs post-scrub so
+  // it sees the FINAL body the reader will see.
+  const editorialFlags = computeEditorialFlags(polished);
+  if (editorialFlags.hasAny) {
+    console.warn(
+      `[multipass] editorial flags — fab:${editorialFlags.fabricatedNumbers.length} fp:${editorialFlags.firstPersonLeaks.length} years:${editorialFlags.fabricatedYears.length}`
+    );
+    // Prepend an HTML comment for editor-visible marker in the source.
+    // The studio's Step 4 also surfaces a red banner via draft.editorialFlags.
+    polished = flagsToHtmlComment(editorialFlags) + polished;
   }
 
   const wordCount = wordCountOf(polished);
@@ -552,55 +708,39 @@ export async function generateBlogDraftMultipass(
       alt: p.alt
     }));
 
-  return {
+  const partialDraft: BlogDraft = {
     title: outline.title,
     subtitle: outline.subtitle,
     bodyHtml: polished,
     wordCount,
     snapshot: outline.snapshot,
-    imagePlacements
+    imagePlacements,
+    editorialFlags
   };
+
+  // ─── AEO pass — best-effort, never blocks publish ───
+  // Produces the Quick Answer / FAQ / entity metadata that makes the post
+  // citable by ChatGPT / Perplexity / Claude / Gemini. Runs after all draft
+  // passes so it sees the final body the reader will see. A failure here
+  // is logged and swallowed — the post ships without AEO but is otherwise
+  // complete.
+  const t3 = Date.now();
+  let aeo: AeoBundle | undefined;
+  try {
+    aeo = await generateAeoBundle(partialDraft);
+    console.log(
+      `[multipass] AEO ready (${((Date.now() - t3) / 1000).toFixed(1)}s): quickAnswer=${aeo.quickAnswer.split(/\s+/).length}w, faq=${aeo.faq.length}, entities=${aeo.entities.length}`
+    );
+  } catch (err) {
+    console.warn('[multipass] AEO generation failed (non-blocking):', err);
+  }
+
+  return { ...partialDraft, aeo };
 }
 
-// Spots obvious fabricated-statistic patterns. Tuned to be conservative —
-// it's better to miss a real fabrication than to flag a real verifiable
-// number (regulation date, OEM-announced capacity). Returns the raw phrases
-// that look suspicious so the editor knows what to verify.
-function detectFabricatedNumbers(html: string): string[] {
-  const text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
-  const hits: string[] = [];
-  // "22% reduction", "98% yield", "31% improvement" — outcome percentages
-  const outcomePercent =
-    /\b\d{1,3}(?:\.\d+)?%\s+(?:re-?coat|yield|reduction|increase|drop|improvement|cost|cut|gain|efficiency|throughput|adhesion|recovery|first-pass|rejection|defect)/gi;
-  // "5°C shift", "35°C inside", "92% humidity at" — physical claims with degrees / RH
-  const physical = /\b\d{1,3}(?:\.\d+)?\s*°\s?[CcFf]\b|\b\d{1,3}%\s+(?:humidity|relative humidity|RH)\b/gi;
-  // "INR 4.5 cr capex", "Rs 12 lakh" — specific INR amounts (excluding verified press-release figures)
-  const inr = /\b(?:INR|Rs\.?|₹)\s*\d{1,4}(?:[,.]\d+)*\s*(?:cr|crore|lakh|lakhs)\b/gi;
-  for (const re of [outcomePercent, physical, inr]) {
-    let m;
-    while ((m = re.exec(text)) !== null && hits.length < 8) hits.push(m[0]);
-  }
-  return Array.from(new Set(hits));
-}
-
-// Spots first-person pronouns and OptiFinish-as-author phrasings inside
-// the body. The CTA paragraph at the bottom may legitimately use second-
-// person; the rest should be third-person observational.
-function detectFirstPersonInBody(html: string): string[] {
-  const text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
-  const hits: string[] = [];
-  const patterns = [
-    /\b(?:our|we['']?(?:re|ve|ll)?|us|my|I['']?(?:m|ve|ll))\s+(?:facility|team|booth|line|plant|customers|engineers|approach|view|experience|guide|reference)/gi,
-    /\b(?:we|our|us)\s+(?:offer|provide|recommend|believe|build|sell|integrate|deliver|design|test)/gi,
-    /\bOptiFinish\s+(?:has|believes|offers|provides|recommends|has been)/gi,
-    /\bin\s+our\s+(?:experience|view|facility|tests|practice)/gi
-  ];
-  for (const re of patterns) {
-    let m;
-    while ((m = re.exec(text)) !== null && hits.length < 8) hits.push(m[0]);
-  }
-  return Array.from(new Set(hits));
-}
+// Detectors moved to src/services/editorialFlags.ts (shared with single-pass
+// engine). Kept these local wrappers only if legacy call sites need them —
+// no longer used in this file.
 
 function wordCountOf(html: string): number {
   return html.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;

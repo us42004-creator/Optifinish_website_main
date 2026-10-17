@@ -243,34 +243,73 @@ export async function generateSeo(
   };
 }
 
-export async function generateImage(prompt: string): Promise<string> {
-  // Photo library FIRST — Indian B2B readers can smell AI factory shots,
-  // so a real photo from /public/photos beats a Flux render every time.
-  // Only falls through to Flux when no library match clears the trust
-  // threshold (currently low because the library is mostly placeholders).
+export interface GenerateImageResult {
+  url: string;              // base64 data URL, ready for embedding
+  sourceLibraryId?: string; // set when the image came from photoLibrary — pass into excludeIds on the next call
+}
+
+/**
+ * Generates a single image for a section prompt.
+ *
+ * - Tries the curated photo library first (photo-first policy — real photos
+ *   beat Flux for B2B trust)
+ * - Falls back to FLUX.1-dev with the brand suffix + honesty clause
+ * - Placeholder on total Flux failure so the demo never fully breaks
+ *
+ * `excludeLibraryIds` — IDs already used earlier in the same post. Kills
+ * intra-post duplication: image 2 will never resolve to the same library
+ * photo as image 1 even when their prompts share tags.
+ */
+export async function generateImage(
+  prompt: string,
+  opts: { excludeLibraryIds?: string[] } = {}
+): Promise<GenerateImageResult> {
   try {
-    const realPhoto = await photoSearchBest(prompt);
+    const realPhoto = await photoSearchBest(prompt, {
+      excludeIds: opts.excludeLibraryIds
+    });
     if (realPhoto) {
-      console.log('[generateImage] using real photo from library:', realPhoto.url);
-      return realPhoto.url;
+      console.log('[generateImage] library hit:', realPhoto.id);
+      return { url: realPhoto.url, sourceLibraryId: realPhoto.id };
     }
   } catch (err) {
     console.warn('[generateImage] photo library lookup failed, falling through to Flux:', err);
   }
 
-  // Real Flux (FLUX.1-dev) via NVIDIA Build, with brand-style suffix.
+  // Real Flux via NVIDIA Build with brand suffix + anti-hallucination honesty clause
   const fullPrompt = applyBrandSuffix(prompt);
   try {
-    return await generateFluxImage({
+    const url = await generateFluxImage({
       prompt: fullPrompt,
-      steps: 30, // 30 keeps gen ~6–10s; bump to 50 for final renders
+      steps: 30,
       cfgScale: 5
     });
+    return { url };
   } catch (err) {
     console.error('[generateImage] Flux failed, using placeholder:', err);
     const seed = encodeURIComponent(prompt.slice(0, 30));
-    return `https://picsum.photos/seed/${seed}/1024/1024`;
+    return { url: `https://picsum.photos/seed/${seed}/1024/1024` };
   }
+}
+
+/**
+ * Generate images for an ordered list of placements SEQUENTIALLY, tracking
+ * which library photos have already been used so no two images in the same
+ * post resolve to the same source. This replaces the previous parallel-
+ * Promise.all pattern in App.tsx which allowed both image calls to race
+ * and win the same photo.
+ */
+export async function generateImagesForPlacements<
+  T extends { prompt: string; id?: string }
+>(placements: T[]): Promise<(T & GenerateImageResult)[]> {
+  const usedLibraryIds: string[] = [];
+  const results: (T & GenerateImageResult)[] = [];
+  for (const p of placements) {
+    const gen = await generateImage(p.prompt, { excludeLibraryIds: usedLibraryIds });
+    if (gen.sourceLibraryId) usedLibraryIds.push(gen.sourceLibraryId);
+    results.push({ ...p, ...gen });
+  }
+  return results;
 }
 
 // ─────────────────────────────────────────────────────────────

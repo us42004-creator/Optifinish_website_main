@@ -21,6 +21,7 @@ export default defineConfig(({ mode }) => {
   const KEY_DEEPSEEK = env.NVIDIA_DEEPSEEK_KEY || FALLBACK;
   const KEY_GEMMA    = env.NVIDIA_GEMMA_KEY    || FALLBACK;
   const KEY_NEMOTRON = env.NVIDIA_NEMOTRON_KEY || FALLBACK;
+  const KEY_TAVILY   = env.TAVILY_API_KEY      || '';
 
   // Per-request key dispatch. We can't read the request body in vite's
   // proxy.configure synchronously (it's a stream by then), so we attach a
@@ -89,6 +90,23 @@ export default defineConfig(({ mode }) => {
               proxyReq.setHeader('Accept', 'application/json');
             });
             proxy.on('error', (err) => console.error('[flux proxy error]', err.message));
+          }
+        },
+        // Browser POST /api/tavily/search  →  https://api.tavily.com/search
+        // TAVILY_API_KEY injected as Bearer token, never bundled in client.
+        '/api/tavily/search': {
+          target: 'https://api.tavily.com',
+          changeOrigin: true,
+          secure: true,
+          timeout: 30_000,
+          proxyTimeout: 30_000,
+          rewrite: () => '/search',
+          configure: (proxy) => {
+            proxy.on('proxyReq', (proxyReq) => {
+              proxyReq.setHeader('Authorization', `Bearer ${KEY_TAVILY}`);
+              proxyReq.setHeader('Accept', 'application/json');
+            });
+            proxy.on('error', (err) => console.error('[tavily proxy error]', err.message));
           }
         }
       }
