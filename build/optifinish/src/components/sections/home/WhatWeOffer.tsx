@@ -426,7 +426,7 @@ export default function WhatWeOffer() {
             </div>
             <div className="overflow-hidden pb-[0.15em]">
               <span ref={line2Ref} className="block" style={{ willChange: 'transform, opacity', color: '#FECE00' }}>
-                clearly organised.
+                full portfolio.
               </span>
             </div>
           </h2>

@@ -17,16 +17,16 @@ const PRODUCTS = [
     name: 'Z-TAP',
     tag: 'Flagship',
     tagline: 'Zero-touch robotic coating.',
-    desc: 'Mimic a motion once — Z-TAP records, perfects, and replicates it flawlessly across every part. Powered by the Fairino FR5 robot platform with native GEMA gun integration.',
+    desc: 'Mimic a motion once — Z-TAP records, perfects, and replicates it flawlessly across every part. Native GEMA gun integration, full coating line compatible.',
     specs: [
       'Motion mimic technology',
-      'Fairino FR5 robot platform',
       'GEMA gun integration',
       'Full coating line compatible',
+      '6-axis robotic arm',
     ],
     images: [null, '/images/products/ztap/step-mimic.gif', '/images/products/ztap/step-deploy.gif'] as (string | null)[],
     placeholderAccent: '#FECE00',
-    heroVideo: '/images/products/ztap/ztap-main.mp4' as string | undefined,
+    heroVideo: '/images/products/ztap/ztap-demo-full.mp4' as string | undefined,
     heroImage: undefined as string | undefined,
     detailImage: '/images/products/ztap/step-mimic.gif' as string | undefined,
     inUseImage: '/images/products/ztap/step-deploy.gif' as string | undefined,
@@ -485,7 +485,7 @@ export default function ProprietaryAutomation() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="flex flex-col gap-3">
                     {([
                       { label: 'Mimic teaching', key: 'detailImage' as const },
                       { label: 'Coating in action', key: 'inUseImage' as const },
@@ -494,7 +494,7 @@ export default function ProprietaryAutomation() {
                         key={label}
                         className="overflow-hidden rounded-[1.1rem] border border-ink/[0.07] bg-white/70 shadow-[0_4px_14px_rgba(0,0,0,0.05)]"
                       >
-                        <div className="relative aspect-[4/3] w-full bg-[#f0f0f0]">
+                        <div className="relative aspect-[16/9] w-full bg-[#f0f0f0]">
                           {product[key] ? (
                             product[key]!.endsWith('.gif') ? (
                               /* eslint-disable-next-line @next/next/no-img-element */
