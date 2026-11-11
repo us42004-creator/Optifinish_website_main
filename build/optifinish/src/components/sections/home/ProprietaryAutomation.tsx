@@ -12,6 +12,26 @@ const SLIDE_LABELS = ['Hero view', 'Detail view', 'In-use shot'];
 
 const PRODUCTS = [
   {
+    id: 'ztap',
+    href: '/products/automation/z-tap',
+    name: 'Z-TAP',
+    tag: 'Flagship',
+    tagline: 'Zero-touch robotic coating.',
+    desc: 'Mimic a motion once — Z-TAP records, perfects, and replicates it flawlessly across every part. Powered by the Fairino FR5 robot platform with native GEMA gun integration.',
+    specs: [
+      'Motion mimic technology',
+      'Fairino FR5 robot platform',
+      'GEMA gun integration',
+      'Full coating line compatible',
+    ],
+    images: [null, '/images/products/ztap/step-mimic.gif', '/images/products/ztap/step-deploy.gif'] as (string | null)[],
+    placeholderAccent: '#FECE00',
+    heroVideo: '/images/products/ztap/ztap-main.mp4' as string | undefined,
+    heroImage: undefined as string | undefined,
+    detailImage: '/images/products/ztap/step-mimic.gif' as string | undefined,
+    inUseImage: '/images/products/ztap/step-deploy.gif' as string | undefined,
+  },
+  {
     id: 'za01',
     href: '/products/automation/za01',
     name: 'OPTI-ZA-18',
@@ -24,14 +44,13 @@ const PRODUCTS = [
       'Line-compatible mounting',
       'Low maintenance design',
     ],
-    /* Mobile carousel images */
     images: [
       '/images/products/za01/recip_landscape.png',
       '/images/products/za01/recip_portrait.png',
       '/images/products/za01/recip_side.png',
     ] as (string | null)[],
     placeholderAccent: '#FECE00',
-    /* Desktop media */
+    heroVideo: undefined as string | undefined,
     heroImage: '/images/products/za01/recip_landscape.png' as string | undefined,
     detailImage: '/images/products/za01/recip_panel_hmi.png' as string | undefined,
     inUseImage: '/images/products/za01/recip_mount.png' as string | undefined,
@@ -55,28 +74,10 @@ const PRODUCTS = [
       '/images/products/sieve-machine/sieve-machine-03.jpg',
     ] as (string | null)[],
     placeholderAccent: '#FECE00',
+    heroVideo: undefined as string | undefined,
     heroImage: '/images/products/sieve-machine/sieve-machine-04.jpg',
     detailImage: '/images/products/sieve-machine/sieve-machine-02.jpg',
     inUseImage: '/images/products/sieve-machine/sieve-machine-03.jpg',
-  },
-  {
-    id: 'ztap',
-    href: '/products/automation/z-tap',
-    name: 'Z-TAP',
-    tag: 'Flagship',
-    tagline: 'Zero-touch robotic coating.',
-    desc: 'Mimic a motion once — Z-TAP records, perfects, and replicates it flawlessly across every part. Powered by the Fairino FR5 robot platform with native GEMA gun integration.',
-    specs: [
-      'Motion mimic technology',
-      'Fairino FR5 robot platform',
-      'GEMA gun integration',
-      'Full coating line compatible',
-    ],
-    images: [null, null, null] as (string | null)[],
-    placeholderAccent: '#FECE00',
-    heroImage: undefined as string | undefined,
-    detailImage: undefined as string | undefined,
-    inUseImage: undefined as string | undefined,
   },
 ];
 
@@ -200,15 +201,33 @@ export default function ProprietaryAutomation() {
                     transition={{ duration: 0.4, ease: 'easeInOut' }}
                     className="absolute inset-0"
                   >
-                    {product.images[currentImgIndex] ? (
-                      <Image
-                        src={product.images[currentImgIndex]!}
-                        alt={product.name}
-                        fill
-                        className="object-cover"
-                        style={{ objectPosition: 'center 25%' }}
-                        sizes="100vw"
+                    {product.heroVideo && currentImgIndex === 0 ? (
+                      <video
+                        src={product.heroVideo}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        className="absolute inset-0 h-full w-full object-cover"
                       />
+                    ) : product.images[currentImgIndex] ? (
+                      product.images[currentImgIndex]!.endsWith('.gif') ? (
+                        /* eslint-disable-next-line @next/next/no-img-element */
+                        <img
+                          src={product.images[currentImgIndex]!}
+                          alt={product.name}
+                          className="absolute inset-0 h-full w-full object-cover"
+                        />
+                      ) : (
+                        <Image
+                          src={product.images[currentImgIndex]!}
+                          alt={product.name}
+                          fill
+                          className="object-cover"
+                          style={{ objectPosition: 'center 25%' }}
+                          sizes="100vw"
+                        />
+                      )
                     ) : (
                       <div
                         className="flex h-full w-full flex-col items-center justify-center gap-3"
@@ -224,7 +243,7 @@ export default function ProprietaryAutomation() {
                           {SLIDE_LABELS[currentImgIndex]}
                         </span>
                         <span className="mt-1 rounded-full border border-white/10 px-3 py-1 text-[0.52rem] font-semibold uppercase tracking-[0.18em] text-white/20">
-                          Images coming soon
+                          Coming soon
                         </span>
                       </div>
                     )}
@@ -447,7 +466,16 @@ export default function ProprietaryAutomation() {
                 >
                   <div className="overflow-hidden rounded-[1.4rem] border border-ink/[0.07] bg-white/70 shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
                     <div className="relative aspect-[4/3] w-full bg-[#f0f0f0]">
-                      {product.heroImage ? (
+                      {product.heroVideo ? (
+                        <video
+                          src={product.heroVideo}
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                          className="absolute inset-0 h-full w-full object-cover"
+                        />
+                      ) : product.heroImage ? (
                         <Image src={product.heroImage} alt={product.name} fill className="object-cover" style={{ objectPosition: 'center 25%' }} sizes="55vw" />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center bg-ink/[0.03]">
@@ -459,8 +487,8 @@ export default function ProprietaryAutomation() {
 
                   <div className="grid grid-cols-2 gap-3">
                     {([
-                      { label: 'Detail view', key: 'detailImage' as const },
-                      { label: 'In-use shot',  key: 'inUseImage'  as const },
+                      { label: 'Mimic teaching', key: 'detailImage' as const },
+                      { label: 'Coating in action', key: 'inUseImage' as const },
                     ]).map(({ label, key }) => (
                       <div
                         key={label}
@@ -468,7 +496,12 @@ export default function ProprietaryAutomation() {
                       >
                         <div className="relative aspect-[4/3] w-full bg-[#f0f0f0]">
                           {product[key] ? (
-                            <Image src={product[key]!} alt={label} fill className="object-cover object-center" sizes="27vw" />
+                            product[key]!.endsWith('.gif') ? (
+                              /* eslint-disable-next-line @next/next/no-img-element */
+                              <img src={product[key]!} alt={label} className="absolute inset-0 h-full w-full object-cover" />
+                            ) : (
+                              <Image src={product[key]!} alt={label} fill className="object-cover object-center" sizes="27vw" />
+                            )
                           ) : (
                             <div className="flex h-full w-full items-center justify-center bg-ink/[0.03]">
                               <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-ink/20">Coming Soon</span>
