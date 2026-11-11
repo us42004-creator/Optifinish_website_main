@@ -191,7 +191,10 @@ export default function ProprietaryAutomation() {
               className="overflow-hidden rounded-[1.4rem] border border-ink/[0.08] bg-white/70 shadow-[0_4px_20px_rgba(0,0,0,0.06)]"
             >
               {/* Carousel image viewport */}
-              <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#f0f0f0]">
+              <div
+                className="relative aspect-[3/4] w-full overflow-hidden"
+                style={{ background: '#f0f0f0' }}
+              >
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={product.id + '-mob-img-' + currentImgIndex}
@@ -216,7 +219,7 @@ export default function ProprietaryAutomation() {
                         <img
                           src={product.images[currentImgIndex]!}
                           alt={product.name}
-                          className="absolute inset-0 h-full w-full object-cover"
+                          className="absolute inset-0 h-full w-full object-contain"
                         />
                       ) : (
                         <Image
@@ -492,15 +495,13 @@ export default function ProprietaryAutomation() {
                     ]).map(({ label, key }) => (
                       <div
                         key={label}
-                        className="overflow-hidden rounded-[1.1rem] border border-ink/[0.07] bg-[#0d0d0d] shadow-[0_4px_14px_rgba(0,0,0,0.05)]"
+                        className="overflow-hidden rounded-[1.1rem] border border-ink/[0.07] bg-white/60 shadow-[0_4px_14px_rgba(0,0,0,0.05)]"
                       >
-                        <div className="relative aspect-[4/3] w-full bg-[#0d0d0d]">
+                        <div className="relative aspect-[4/3] w-full bg-white/60">
                           {product[key] ? (
                             product[key]!.endsWith('.gif') ? (
-                              /* object-contain + p-2 letterboxes the GIF so its frame never
-                                 touches the card's rounded corners — text stays unclipped */
                               /* eslint-disable-next-line @next/next/no-img-element */
-                              <img src={product[key]!} alt={label} className="absolute inset-0 h-full w-full object-contain p-2" />
+                              <img src={product[key]!} alt={label} className="absolute inset-0 h-full w-full object-contain" />
                             ) : (
                               <Image src={product[key]!} alt={label} fill className="object-cover object-center" sizes="27vw" />
                             )

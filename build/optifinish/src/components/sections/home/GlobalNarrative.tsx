@@ -48,8 +48,8 @@ const CAROUSEL = [
     id: 'powder-plant',
     name: 'Powder Coating Plant',
     tag: 'Manufactured',
-    media: '/images/products/powder-coating-plant/powder-coating-hero.mp4',
-    type: 'video' as const,
+    media: '/images/products/optifinish-manufactured/powder-coating-plant/plant2.jpeg',
+    type: 'image' as const,
     href: '/products/optifinish-manufactured/powder-coating-plant',
   },
   {
@@ -132,7 +132,7 @@ function ProductCarousel() {
   const isDragging = useRef(false);
   const startX = useRef(0);
   const scrollLeft = useRef(0);
-  const CARD_W = 212; // card width + gap
+  const CARD_W = 256; // card width + gap (desktop)
 
   // Auto-scroll
   useEffect(() => {
@@ -224,7 +224,7 @@ function ProductCarousel() {
             }}
             className="group relative flex-none overflow-hidden rounded-[1rem] border border-white/[0.07] bg-white/[0.03]"
             style={{
-              width: 196,
+              width: 'clamp(148px, 38vw, 244px)',
               scrollSnapAlign: 'start',
               userSelect: 'none',
             }}
@@ -246,7 +246,7 @@ function ProductCarousel() {
                   alt={product.name}
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                  sizes="196px"
+                  sizes="(max-width: 640px) 38vw, 244px"
                   draggable={false}
                 />
               )}
