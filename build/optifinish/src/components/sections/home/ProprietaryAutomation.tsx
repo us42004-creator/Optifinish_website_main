@@ -492,15 +492,15 @@ export default function ProprietaryAutomation() {
                     ]).map(({ label, key }) => (
                       <div
                         key={label}
-                        className="overflow-hidden rounded-[1.1rem] border border-ink/[0.07] bg-[#e8e8e6] shadow-[0_4px_14px_rgba(0,0,0,0.05)]"
+                        className="overflow-hidden rounded-[1.1rem] border border-ink/[0.07] bg-[#0d0d0d] shadow-[0_4px_14px_rgba(0,0,0,0.05)]"
                       >
-                        <div className="relative aspect-[4/3] w-full bg-[#e8e8e6]">
+                        <div className="relative aspect-[4/3] w-full bg-[#0d0d0d]">
                           {product[key] ? (
                             product[key]!.endsWith('.gif') ? (
-                              <div className="absolute inset-[5px] overflow-hidden rounded-[0.75rem]">
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img src={product[key]!} alt={label} className="h-full w-full object-cover" />
-                              </div>
+                              /* object-contain + p-2 letterboxes the GIF so its frame never
+                                 touches the card's rounded corners — text stays unclipped */
+                              /* eslint-disable-next-line @next/next/no-img-element */
+                              <img src={product[key]!} alt={label} className="absolute inset-0 h-full w-full object-contain p-2" />
                             ) : (
                               <Image src={product[key]!} alt={label} fill className="object-cover object-center" sizes="27vw" />
                             )
