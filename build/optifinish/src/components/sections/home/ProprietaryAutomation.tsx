@@ -485,20 +485,20 @@ export default function ProprietaryAutomation() {
                     </div>
                   </div>
 
-                  <div className="flex flex-col gap-3">
+                  <div className="grid grid-cols-2 gap-3">
                     {([
                       { label: 'Mimic teaching', key: 'detailImage' as const },
                       { label: 'Coating in action', key: 'inUseImage' as const },
                     ]).map(({ label, key }) => (
                       <div
                         key={label}
-                        className="overflow-hidden rounded-[1.1rem] border border-ink/[0.07] bg-white/70 shadow-[0_4px_14px_rgba(0,0,0,0.05)]"
+                        className="overflow-hidden rounded-[1.1rem] border border-ink/[0.07] bg-[#f0f0f0] shadow-[0_4px_14px_rgba(0,0,0,0.05)]"
                       >
-                        <div className="relative aspect-[16/9] w-full bg-[#f0f0f0]">
+                        <div className="relative aspect-[4/3] w-full bg-[#f0f0f0]">
                           {product[key] ? (
                             product[key]!.endsWith('.gif') ? (
                               /* eslint-disable-next-line @next/next/no-img-element */
-                              <img src={product[key]!} alt={label} className="absolute inset-0 h-full w-full object-cover" />
+                              <img src={product[key]!} alt={label} className="absolute inset-0 h-full w-full object-contain" />
                             ) : (
                               <Image src={product[key]!} alt={label} fill className="object-cover object-center" sizes="27vw" />
                             )
