@@ -192,7 +192,7 @@ export default function ProprietaryAutomation() {
             >
               {/* Carousel image viewport */}
               <div
-                className="relative aspect-[3/4] w-full overflow-hidden"
+                className={`relative w-full overflow-hidden ${product.images[currentImgIndex]?.endsWith('.gif') ? 'aspect-[16/9]' : 'aspect-[3/4]'}`}
                 style={{ background: '#f0f0f0' }}
               >
                 <AnimatePresence mode="wait">
@@ -495,9 +495,9 @@ export default function ProprietaryAutomation() {
                     ]).map(({ label, key }) => (
                       <div
                         key={label}
-                        className="overflow-hidden rounded-[1.1rem] border border-ink/[0.07] bg-white/60 shadow-[0_4px_14px_rgba(0,0,0,0.05)]"
+                        className="overflow-hidden rounded-t-[1.1rem] rounded-b-[0.5rem] border border-ink/[0.07] bg-white/60 shadow-[0_4px_14px_rgba(0,0,0,0.05)]"
                       >
-                        <div className="relative aspect-[4/3] w-full bg-white/60">
+                        <div className="relative aspect-[16/9] w-full bg-white/60">
                           {product[key] ? (
                             product[key]!.endsWith('.gif') ? (
                               /* eslint-disable-next-line @next/next/no-img-element */
