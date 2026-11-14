@@ -30,10 +30,6 @@ export const metadata: Metadata = {
     title: 'Z-TAP Powder Coating Robot | OptiFinish',
     description: 'Mimic once, perfect every time. Z-TAP — proprietary IMU-based powder coating automation robot by OptiFinish.',
   },
-  icons: {
-    icon: '/clay-mark.svg',
-    shortcut: '/clay-mark.svg',
-  },
 };
 
 const productLD = productSchema({
